@@ -11,6 +11,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
+param(
+    # Parameter help description
+    [Parameter(mandatory=$false)]
+    [string]$WorkingDir
+)
+
 [cultureinfo]::CurrentCulture = 'en-US'
 if ($IsWIndows) { $host.ui.RawUI.WindowTitle = "Background Agent: Keep Open!" }
 ## any windows version below 10 invoke full screen mode.
@@ -21,7 +27,10 @@ if ($isWindows) {
     }
 }
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
-#$WorkingDir = "/root/hive/miners/custom/SWARM"
+#$WorkingDir = "/SWARM"
+if($IsLinux){
+    $env:SWARM_DIR = $WorkingDir;
+}
 Set-Location $env:SWARM_DIR
 $UtcTime = Get-Date -Date "1970-01-01 00:00:00Z"
 $UTCTime = $UtcTime.ToUniversalTime()
@@ -166,7 +175,9 @@ While ($True) {
     Global:New-StatTables
     Global:Get-Metrics
     Remove-Module "initial"
-    if ($global:DoNVIDIA -eq $true) { $NVIDIAStats = Global:Set-NvidiaStats }
+    if ($global:DoNVIDIA -eq $true) { 
+        $NVIDIAStats = Global:Set-NvidiaStats 
+    }
     if ($global:DoAMD -eq $true) { $AMDStats = Global:Set-AMDStats }
 
     ## Start API Calls For Each Miner

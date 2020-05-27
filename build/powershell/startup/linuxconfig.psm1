@@ -72,16 +72,19 @@ function Global:Get-Data {
     $Libs += [PSCustomObject]@{ link = "libcudart.so.9.2"; path = "libcudart.so.9.2.148" }
     $Libs += [PSCustomObject]@{ link = "libcudart.so"; path = "$($(vars).dir)/build/export/libcudart.so.10.2.89" }
 
-    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.0"; path = "libnvrtc-builtins.so.10.0.130" }
-    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.1"; path = "libnvrtc-builtins.so.10.1.105" }
-    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.2"; path = "libnvrtc-builtins.so.10.2.89" }
-    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.9.2"; path = "libnvrtc-builtins.so.9.2.148" }
-    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so"; path = "libnvrtc-builtins.so.10.2.89" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.0"; path = "$dir/build/export/libnvrtc-builtins.so.10.0.130" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.1"; path = "$dir/build/export/libnvrtc-builtins.so.10.1.105" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.2"; path = "$dir/build/export/libnvrtc-builtins.so.10.2.89" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.9.2"; path = "$dir/build/export/libnvrtc-builtins.so.9.2.148" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so"; path = "$dir/build/export/libnvrtc-builtins.so.10.2" }
 
-    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.0"; path = "libnvrtc.so.9.0.176" }
-    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.1"; path = "libnvrtc.so.9.2.xxx" }
-    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.2"; path = "$($(vars).dir)/build/export/libnvrtc.so.9.2.148" }
-    $Libs += [PSCustomObject]@{ link = "libnvrtc.so"; path = "$($(vars).dir)/build/export/libnvrtc.so.10.2.89" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.0"; path = "$dir/build/export/libnvrtc.so.10.0.130" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.1"; path = "$dir/build/export/libnvrtc.so.10.1.105" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.2"; path = "$dir/build/export/libnvrtc.so.10.2.89" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.0"; path = "$dir/build/export/libnvrtc.so.9.0.176" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.1"; path = "$dir/build/export/libnvrtc.so.9.2.xxx" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.2"; path = "$dir/build/export/libnvrtc.so.9.2.148" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc.so"; path = "$dir/build/export/libnvrtc.so.10.2" }
 
     Set-Location "$($(vars).dir)/build/export"
 

@@ -79,38 +79,48 @@ if (-not (test-path ".\build\export")) {
 }    
 
 $Libs = @()
-$Libs += [PSCustomObject]@{ link = "libcurl.so.4"; path = "libcurl.so.4.4.0" }
-$Libs += [PSCustomObject]@{ link = "libcurl.so.3"; path = "libcurl.so.4" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.9.2"; path = "libnvrtc-builtins.so.9.2.148" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.0"; path = "libnvrtc-builtins.so.10.0.130" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.1"; path = "libnvrtc-builtins.so.10.1.105" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.2"; path = "libnvrtc-builtins.so.10.2.89" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so"; path = "libnvrtc-builtins.so.10.2" }
-$Libs += [PSCustomObject]@{ link = "libcudart.so.8.0"; path = "libcudart.so.8.0.61" }
-$Libs += [PSCustomObject]@{ link = "libcudart.so.9.0"; path = "libcudart.so.9.0.176" }
-$Libs += [PSCustomObject]@{ link = "libcudart.so.9.1"; path = "libcudart.so.9.1.85" }
-$Libs += [PSCustomObject]@{ link = "libcudart.so.9.2"; path = "libcudart.so.9.2.148" }
-$Libs += [PSCustomObject]@{ link = "libcudart.so.10.0"; path = "libcudart.so.10.0.130" }
-$Libs += [PSCustomObject]@{ link = "libcudart.so.10.1"; path = "libcudart.so.10.1.105" }
-$Libs += [PSCustomObject]@{ link = "libcudart.so.10.2"; path = "libcudart.so.10.2.89" }
-$Libs += [PSCustomObject]@{ link = "libmicrohttpd.so.10"; path = "libmicrohttpd.so.10.34.0" }
-$Libs += [PSCustomObject]@{ link = "libhwloc.so.5"; path = "libhwloc.so.5.6.8" }
-$Libs += [PSCustomObject]@{ link = "libstdc++.so.6"; path = "libstdc++.so.6.0.25" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc.so"; path = "libnvrtc.so.10.2.89" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.0"; path = "libnvrtc.so.9.0.176" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.1"; path = "libnvrtc.so.9.2.xxx" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.2"; path = "libnvrtc.so.9.2.148" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.0"; path = "libnvrtc.so.10.0.130" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.1"; path = "libnvrtc.so.10.1.105" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.2"; path = "libnvrtc.so.10.2.89" }
+$Libs += [PSCustomObject]@{ link = "libcurl.so.4"; path = "$dir/build/export/libcurl.so.4.4.0" }
+$Libs += [PSCustomObject]@{ link = "libcurl.so.3"; path = "$dir/build/export/libcurl.so.4" }
+
+$Libs += [PSCustomObject]@{ link = "libmicrohttpd.so.10"; path = "$dir/build/export/libmicrohttpd.so.10.34.0" }
+$Libs += [PSCustomObject]@{ link = "libhwloc.so.5"; path = "$dir/build/export/libhwloc.so.5.6.8" }
+$Libs += [PSCustomObject]@{ link = "libstdc++.so.6"; path = "$dir/build/export/libstdc++.so.6.0.25" }
+
+$Libs += [PSCustomObject]@{ link = "libcudart.so.10.0"; path = "$dir/build/export/libcudart.so.10.0.130" }
+$Libs += [PSCustomObject]@{ link = "libcudart.so.10.1"; path = "$dir/build/export/libcudart.so.10.1.105" }
+$Libs += [PSCustomObject]@{ link = "libcudart.so.10.2"; path = "$dir/build/export/libcudart.so.10.2.89" }
+$Libs += [PSCustomObject]@{ link = "libcudart.so.8.0"; path = "$dir/build/export/libcudart.so.8.0.61" }
+$Libs += [PSCustomObject]@{ link = "libcudart.so.9.0"; path = "$dir/build/export/libcudart.so.9.0.176" }
+$Libs += [PSCustomObject]@{ link = "libcudart.so.9.1"; path = "$dir/build/export/libcudart.so.9.1.85" }
+$Libs += [PSCustomObject]@{ link = "libcudart.so.9.2"; path = "$dir/build/export/libcudart.so.9.2.148" }
+$Libs += [PSCustomObject]@{ link = "libcudart.so"; path = "$dir/build/export/libcudart.so.10.2.89" }
+
+#$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.0"; path = "$dir/build/export/libnvrtc-builtins.so.10.0.130" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.1"; path = "$dir/build/export/libnvrtc-builtins.so.10.1.105" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.2"; path = "$dir/build/export/libnvrtc-builtins.so.10.2.89" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.9.2"; path = "$dir/build/export/libnvrtc-builtins.so.9.2.148" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so"; path = "$dir/build/export/libnvrtc-builtins.so.10.2" }
+
+#$Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.0"; path = "$dir/build/export/libnvrtc.so.10.0.130" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.1"; path = "$dir/build/export/libnvrtc.so.10.1.105" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.2"; path = "$dir/build/export/libnvrtc.so.10.2.89" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.0"; path = "$dir/build/export/libnvrtc.so.9.0.176" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.1"; path = "$dir/build/export/libnvrtc.so.9.2.xxx" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.2"; path = "$dir/build/export/libnvrtc.so.9.2.148" }
+#$Libs += [PSCustomObject]@{ link = "libnvrtc.so"; path = "$dir/build/export/libnvrtc.so.10.2" }
+
+Set-Location "$dir/build/export"
 
 foreach ($lib in $Libs) {
-    $link = "$dir/build/export/$($lib.link)"
-    $path = "$dir/build/export/$($lib.path)"
+    $link = $lib.link
+    $path = $lib.path
     $check = [IO.File]::exists($link)
     if ($check) {
         Remove-Item $link -Force
     }
-    $Proc = Start-Process "ln" -ArgumentList "-s $path $link" -PassThru
+    $Proc = Start-Process "ln" -ArgumentList "-s -f $path $link" -PassThru
     $Proc | Wait-Process
-}                                     
+
+}
+Set-Location "/"
+Set-Location $dir     
