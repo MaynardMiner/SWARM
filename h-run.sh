@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+ [[ -e /usr/lib/x86_64-linux-gnu/libcurl-compat.so.3.0.0 ]] && export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:/hive/lib
 cd `dirname $0`
 
 [ -t 1 ] && . colors
