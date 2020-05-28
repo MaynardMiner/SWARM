@@ -48,56 +48,62 @@ function Global:Get-Data {
     }
 
     ## Extract export folder.
-    if (-not (test-path ".\build\export")) {
-        log "export folder not found. Exracting export.tar.gz" -ForegroundColor Yellow;
-        New-Item -ItemType Directory -Name "export" -path ".\build" | Out-Null;
-        $Proc = Start-Process "tar" -ArgumentList "-xzvf build/export.tar.gz -C build" -PassThru; 
+    if (-not (test-path "/usr/local/swarm/lib64")) {
+        ## HiveOS is messing with ownership of SWARM folder through custom miners.
+        ## I believe this is causing an issue with miners accessing libs contained in SWARM.
+        ## Testing has shown if libs are placed anywhere else, they work fine.
+        ## Therefor I have decided to place libs in a more proper location: /usr/local/swarm/lib64 
+        log "library folder not found (/usr/local/swarm/lib64). Exracting export.tar.gz" -ForegroundColor Yellow;
+        $check = [IO.Directory]::Exists("/usr/local/swarm")
+        if(!$check){
+         Start-Process "mkdir" -ArgumentList "/usr/local/swarm"
+        }
+        $check = [IO.Directory]::Exists("/usr/local/swarm/lib64")
+        if(!$check){
+            Start-Process "mkdir" -ArgumentList "/usr/local/swarm/lib64"
+        }
+        $Proc = Start-Process "tar" -ArgumentList "-xzvf build/lib64.tar.gz -C /usr/local/swarm" -PassThru; 
         $Proc | Wait-Process;
     }    
 
     $Libs = @()
-    $Libs += [PSCustomObject]@{ link = "libcurl.so.4"; path = "$($(vars).dir)/build/export/libcurl.so.4.4.0" }
-    $Libs += [PSCustomObject]@{ link = "libcurl.so.3"; path = "$($(vars).dir)/build/export/libcurl.so.4" }
+    $Libs += [PSCustomObject]@{ link = "libcurl.so.4"; path = "/usr/local/swarm/lib64/libcurl.so.4.4.0" }
+    $Libs += [PSCustomObject]@{ link = "libcurl.so.3"; path = "/usr/local/swarm/lib64/libcurl.so.4" }
 
-    $Libs += [PSCustomObject]@{ link = "libmicrohttpd.so.10"; path = "$($(vars).dir)/build/export/libmicrohttpd.so.10.34.0" }
-    $Libs += [PSCustomObject]@{ link = "libhwloc.so.5"; path = "$($(vars).dir)/build/export/libhwloc.so.5.6.8" }
-    $Libs += [PSCustomObject]@{ link = "libstdc++.so.6"; path = "$($(vars).dir)/build/export/libstdc++.so.6.0.25" }
+    $Libs += [PSCustomObject]@{ link = "libmicrohttpd.so.10"; path = "/usr/local/swarm/lib64/libmicrohttpd.so.10.34.0" }
+    $Libs += [PSCustomObject]@{ link = "libhwloc.so.5"; path = "/usr/local/swarm/lib64/libhwloc.so.5.6.8" }
+    $Libs += [PSCustomObject]@{ link = "libstdc++.so.6"; path = "/usr/local/swarm/lib64/libstdc++.so.6.0.25" }
 
-    $Libs += [PSCustomObject]@{ link = "libcudart.so.10.0"; path = "$($(vars).dir)/build/export/libcudart.so.10.0.130" }
-    $Libs += [PSCustomObject]@{ link = "libcudart.so.10.1"; path = "$($(vars).dir)/build/export/libcudart.so.10.1.105" }
-    $Libs += [PSCustomObject]@{ link = "libcudart.so.10.2"; path = "$($(vars).dir)/build/export/libcudart.so.10.2.89" }
-    $Libs += [PSCustomObject]@{ link = "libcudart.so.8.0"; path = "$($(vars).dir)/build/export/libcudart.so.8.0.61" }
-    $Libs += [PSCustomObject]@{ link = "libcudart.so.9.0"; path = "$($(vars).dir)/build/export/libcudart.so.9.0.176" }
-    $Libs += [PSCustomObject]@{ link = "libcudart.so.9.1"; path = "$($(vars).dir)/build/export/libcudart.so.9.1.85" }
-    $Libs += [PSCustomObject]@{ link = "libcudart.so.9.2"; path = "$($(vars).dir)/build/export/libcudart.so.9.2.148" }
-    $Libs += [PSCustomObject]@{ link = "libcudart.so"; path = "$($(vars).dir)/build/export/libcudart.so.10.2.89" }
+    $Libs += [PSCustomObject]@{ link = "libcudart.so.10.0"; path = "/usr/local/swarm/lib64/libcudart.so.10.0.130" }
+    $Libs += [PSCustomObject]@{ link = "libcudart.so.10.1"; path = "/usr/local/swarm/lib64/libcudart.so.10.1.105" }
+    $Libs += [PSCustomObject]@{ link = "libcudart.so.10.2"; path = "/usr/local/swarm/lib64/libcudart.so.10.2.89" }
+    $Libs += [PSCustomObject]@{ link = "libcudart.so.8.0"; path = "/usr/local/swarm/lib64/libcudart.so.8.0.61" }
+    $Libs += [PSCustomObject]@{ link = "libcudart.so.9.0"; path = "/usr/local/swarm/lib64/libcudart.so.9.0.176" }
+    $Libs += [PSCustomObject]@{ link = "libcudart.so.9.1"; path = "/usr/local/swarm/lib64/libcudart.so.9.1.85" }
+    $Libs += [PSCustomObject]@{ link = "libcudart.so.9.2"; path = "/usr/local/swarm/lib64/libcudart.so.9.2.148" }
+    $Libs += [PSCustomObject]@{ link = "libcudart.so"; path = "/usr/local/swarm/lib64/libcudart.so.10.2.89" }
 
-    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.0"; path = "$($(vars).dir)/build/export/libnvrtc-builtins.so.10.0.130" }
-    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.1"; path = "$($(vars).dir)/build/export/libnvrtc-builtins.so.10.1.105" }
-    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.2"; path = "$($(vars).dir)/build/export/libnvrtc-builtins.so.10.2.89" }
-    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.9.2"; path = "$($(vars).dir)/build/export/libnvrtc-builtins.so.9.2.148" }
-    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so"; path = "$($(vars).dir)/build/export/libnvrtc-builtins.so.10.2" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.0"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.10.0.130" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.1"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.10.1.105" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.2"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.10.2.89" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.9.2"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.9.2.148" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.10.2.89" }
 
-    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.0"; path = "$($(vars).dir)/build/export/libnvrtc.so.10.0.130" }
-    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.1"; path = "$($(vars).dir)/build/export/libnvrtc.so.10.1.105" }
-    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.2"; path = "$($(vars).dir)/build/export/libnvrtc.so.10.2.89" }
-    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.0"; path = "$($(vars).dir)/build/export/libnvrtc.so.9.0.176" }
-    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.1"; path = "$($(vars).dir)/build/export/libnvrtc.so.9.1.xxx" }
-    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.2"; path = "$($(vars).dir)/build/export/libnvrtc.so.9.2.148" }
-    $Libs += [PSCustomObject]@{ link = "libnvrtc.so"; path = "$($(vars).dir)/build/export/libnvrtc.so.10.2" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.0"; path = "/usr/local/swarm/lib64/libnvrtc.so.10.0.130" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.1"; path = "/usr/local/swarm/lib64/libnvrtc.so.10.1.105" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.2"; path = "/usr/local/swarm/lib64/libnvrtc.so.10.2.89" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.0"; path = "/usr/local/swarm/lib64/libnvrtc.so.9.0.176" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.1"; path = "/usr/local/swarm/lib64/libnvrtc.so.9.1.xxx" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.2"; path = "/usr/local/swarm/lib64/libnvrtc.so.9.2.148" }
+    $Libs += [PSCustomObject]@{ link = "libnvrtc.so"; path = "/usr/local/swarm/lib64/libnvrtc.so.10.2.89" }
 
-    Set-Location "$($(vars).dir)/build/export"
+    Set-Location "/usr/local/swarm/lib64/"
 
     foreach ($lib in $Libs) {
-        $link = $lib.link
-        $path = $lib.path
-        $check = [IO.File]::exists($link)
-        if ($check) {
-            Remove-Item $link -Force
-        }
-        $Proc = Start-Process "ln" -ArgumentList "-s -f $path $link" -PassThru
+        $link = $lib.link; 
+        $path = $lib.path; 
+        $Proc = Start-Process "ln" -ArgumentList "-sf $path $link" -PassThru; 
         $Proc | Wait-Process
-    
     }
     Set-Location "/"
     Set-Location $($(vars).dir)     
