@@ -1,4 +1,4 @@
-## Project Currently Undergoing Heavy Maintenance/Testing. Please Use/Download Release.
+## Project Currently Undergoing Heavy Testing. Please Use Latest Release.
 
 # SWARM: Profit Switching AI For HiveOS, Linux, & Windows
 
