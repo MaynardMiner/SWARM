@@ -2268,7 +2268,8 @@ you wish to edit/modify it.
 * Library path outside of SWARM dir in case third
   party app tampers with file permissions.
 * Fix h-run.sh for latest HiveOS stable image
-  (will export linux library for SSL)
+  (will export linux library for SSL).
+* All libs links are direct file paths.
 
 ## Updates
 * phoenix-miner updated
