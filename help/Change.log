@@ -2254,3 +2254,24 @@ as is will not work correctly.
 * t-rex updated
 * bminer updated
 * miniz updated
+
+############################################
+############################################
+
+# SWARM 3.1.4
+
+Note: Library path for SWARM has changed location.
+SWARM library path is installed in /usr/local/swarm if
+you wish to edit/modify it.
+
+## Improvements
+* Library path outside of SWARM dir in case third
+  party app tampers with file permissions.
+* Fix h-run.sh for latest HiveOS stable image
+  (will export linux library for SSL)
+
+## Updates
+* phoenix-miner updated
+* t-rex updated
+* teamredminer updated
+

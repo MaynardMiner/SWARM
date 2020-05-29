@@ -1,5 +1,3 @@
-## Project Currently Undergoing Heavy Testing. Please Use Latest Release.
-
 # SWARM: Profit Switching AI For HiveOS, Linux, & Windows
 
 **IMPORTANT** : SWARM attempts to provide miners that work for as many cards as possible. Some miners may work for your cards, some may not. All miners are set with default settings provided from developers themselves (with logging enabled, if available). There is a ``-Bans`` argument that lets you remotely remove miners from the list. SWARM should support, if not all late model cards.
