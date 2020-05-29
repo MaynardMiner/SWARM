@@ -194,7 +194,7 @@
     "NVIDIA2": ".\\bin\\phoenix-2\\PhoenixMiner.exe",
     "NVIDIA3": ".\\bin\\phoenix-3\\PhoenixMiner.exe",
     "minername": "PhoenixMiner.exe",
-    "version": "4.9c",
+    "version": "5.0b",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/phoenix-miner-windows.zip"
   },
@@ -238,9 +238,9 @@
     "NVIDIA2": ".\\bin\\trex-2\\t-rex.exe",
     "NVIDIA3": ".\\bin\\trex-3\\t-rex.exe",
     "minername": "t-rex.exe",
-    "version": "0.15.6",
+    "version": "0.15.7",
     "optional": "No",
-    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.15.6/t-rex-0.15.6-win-cuda10.0.zip"
+    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.15.7/t-rex-0.15.7-win-cuda10.0.zip"
   },
   "zjazz": {
     "name": "zjazz",
