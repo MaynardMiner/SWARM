@@ -149,6 +149,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                         }
                         "grin-miner" { global:set-minerconfig $NewMiner $Logs }
                         "gminer" { $MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
+                        "wildrig-nv" { $MinerArguments = "--opencl-devices $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
                         "lolminer" { $MinerArguments = "--devices NVIDIA $($MinerCurrent.Arguments)" }
                         default { $MinerArguments = "$($MinerCurrent.Arguments)" }
                     }
