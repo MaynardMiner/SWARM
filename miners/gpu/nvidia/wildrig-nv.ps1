@@ -1,32 +1,50 @@
-$(vars).AMDTypes | ForEach-Object {
+$(vars).NVIDIATypes | ForEach-Object {
     
-    $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
+
+    $ref = "wildrig-nv";
 
     ##Miner Path Information
-    if ($(vars).amd.wildrig.$ConfigType) { $Path = "$($(vars).amd.wildrig.$ConfigType)" }
+    if ($(vars).nvidia.$ref.$ConfigType) { $Path = "$($(vars).nvidia.$ref.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).amd.wildrig.uri) { $Uri = "$($(vars).amd.wildrig.uri)" }
+    if ($(vars).nvidia.$ref.uri) { $Uri = "$($(vars).nvidia.$ref.uri)" }
     else { $Uri = "None" }
-    if ($(vars).amd.wildrig.minername) { $MinerName = "$($(vars).amd.wildrig.minername)" }
+    if ($(vars).nvidia.$ref.minername) { $MinerName = "$($(vars).nvidia.$ref.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "wildrig-$Num"; $Port = "2900$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$ref-$Num"; $Port = "6400$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
+        1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
+        2 { $Get_Devices = $(vars).NVIDIADevices2; $Rig = $(arg).RigName2 }
+        3 { $Get_Devices = $(vars).NVIDIADevices3; $Rig = $(arg).RigName3 }
     }
 
     ##Log Directory
     $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
-    if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
+    if ($Get_Devices -ne "none") {
+        $GPUDevices1 = $Get_Devices
+        $GPUDevices1 = $GPUDevices1 -replace ',', ' '
+        $Devices = $GPUDevices1
+    }
     else { $Devices = $Get_Devices }    
+    
+    $ArgDevices = $Null
+    if ($Get_Devices -ne "none") {
+        $GPUEDevices = $Get_Devices
+        $GPUEDevices = $GPUEDevices -split ","
+        $GPUEDevices | ForEach-Object { $ArgDevices += "$($(vars).GCount.NVIDIA.$_)," }
+        $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1)
+    }
+    else { 
+        $(vars).GCount.NVIDIA.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($(vars).GCount.NVIDIA.$_)," }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
 
     ##Get Configuration File
     ##This is located in config\miners
-    $MinerConfig = $Global:config.miners.wildrig
-
+    $MinerConfig = $Global:config.miners.$ref
+    
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = "/usr/local/swarm/lib64"
     $Miner_Dir = Join-Path ($(vars).dir) ((Split-Path $Path).replace(".", ""))
@@ -69,11 +87,12 @@ $(vars).AMDTypes | ForEach-Object {
                     Prestart   = $PreStart
                     Type       = $ConfigType
                     Path       = $Path
-                    Devices    = "none"
+                    ArgDevices = $ArgDevices
+                    Devices    = $Devices
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
-                    Version    = "$($(vars).amd.wildrig.version)"
+                    Version    = "$($(vars).nvidia.$ref.version)"
                     DeviceCall = "wildrig"
-                    Arguments  = "--opencl-platforms amd --api-port $Port --algo $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Pool_Host):$($_.Port) --donate-level 1 --user $($_.$User) --pass $($_.$Pass)$($Diff) --log-file `'$Log`' $($MinerConfig.$ConfigType.commands.$($MinerConfig.$ConfigType.naming.$($_.Algorithm)))"
+                    Arguments  = "--opencl-platforms nvidia --api-port $Port --algo $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Pool_Host):$($_.Port) --donate-level 1 --user $($_.$User) --pass $($_.$Pass)$($Diff) --log-file `'$Log`' $($MinerConfig.$ConfigType.commands.$($MinerConfig.$ConfigType.naming.$($_.Algorithm)))"
                     HashRates  = $Stat.Hour
                     Quote      = if ($HashStat) { [Convert]::ToDecimal($HashStat * $_.Price) }else { 0 }
                     Rejections = $Stat.Rejections

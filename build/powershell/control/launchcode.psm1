@@ -114,6 +114,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                         "miniz" { $MinerArguments = "-cd $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "energiminer" { $MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "gminer" { $MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
+                        "wildrig-nv" { $MinerArguments = "--opencl-devices $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
                         "dstm" { $MinerArguments = "--dev $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "claymore" { $MinerArguments = "-di $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "trex" { $MinerArguments = "-d $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }

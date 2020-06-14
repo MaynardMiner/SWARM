@@ -340,5 +340,16 @@
     "version": "1.05",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/SWARM-MINER-linux.tar.gz"
+  },
+  "wildrig-nv": {
+    "name": "wildrig-nv",
+    "type": "nvidia",
+    "AMD1": ".\\bin\\wildrig-nv-1\\wildrig-multi",
+    "AMD2": ".\\bin\\wildrig-nv-2\\wildrig-multi",
+    "AMD3": ".\\bin\\wildrig-nv-3\\wildrig-multi",
+    "minername": "wildrig-multi",
+    "version": "0.24.1",
+    "optional": "No",
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.24.1/wildrig-multi-linux-0.24.1.tar.gz"
   }        
 }

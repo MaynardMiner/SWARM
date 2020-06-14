@@ -307,5 +307,16 @@
     "version": "1.05",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/SWARM-MINER-windows.zip"
+  },
+  "wildrig-nv": {
+    "name": "wildrig-nv",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\wildrig-nv-1\\wildrig.exe",
+    "NVIDIA2": ".\\bin\\wildrig-nv-2\\wildrig.exe",
+    "NVIDIA3": ".\\bin\\wildrig-nv-3\\wildrig.exe",
+    "minername": "wildrig.exe",
+    "version": "0.25.1",
+    "optional": "No",
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.25.1/wildrig-multi-windows-0.25.1.7z"
   }
 }
