@@ -31,9 +31,9 @@
     "type": "cpu",
     "CPU": ".\\bin\\xmrig-cpu-1\\xmrig",
     "minername": "xmrig",
-    "version": "5.6.0",
+    "version": "6.2.0",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v5.6.0/xmrig-5.6.0-xenial-x64.tar.gz"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.2.0-beta/xmrig-6.2.0-beta-xenial-x64.tar.gz"
   },
   "xmrigcc-cpu": {
     "name": "xmrigcc-cpu",

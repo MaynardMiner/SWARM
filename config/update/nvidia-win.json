@@ -271,9 +271,9 @@
     "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig.exe",
     "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "5.6.0",
+    "version": "6.2.0",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v5.6.0/xmrig-5.6.0-msvc-cuda10_1-win64.zip"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.2.0-beta/xmrig-6.2.0-beta-msvc-cuda10_2-win64.zip"
   },
   "nv-lolminer": {
     "name": "nv-lolminer",
