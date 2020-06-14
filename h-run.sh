@@ -46,6 +46,8 @@ PVERSION=`pwsh -version`
 ## If pwsh is wrong version, install it again.
 if [ "$PVERSION" != "PowerShell 7.0.2" ]; then
 echo "updating powershell to latest version"
+echo "removing lib folder"
+rm -rf /usr/local/swarm
 rm -rf /opt/microsoft/powershell/
 rm -rf /usr/bin/pwsh
 rm -rf /usr/bin/pwsh-preview
