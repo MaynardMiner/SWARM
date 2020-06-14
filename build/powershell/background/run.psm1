@@ -7,7 +7,7 @@ function Global:Set-APIFailure {
     Write-Host "API Summary Failed- Could Not Total Hashrate Or No Accepted Shares" -Foreground Red; 
 }
 
-function Global:Get-GPUs { $GPU = $global:Devices[$i]; $(vars).GCount.$($global:TypeS).$GPU };
+function Global:Get-GPUs { $GPU = $global:Devices[$global:i]; $(vars).GCount.$($global:TypeS).$GPU };
 
 function Global:Write-MinerData1 {
     Write-Host " "
@@ -32,7 +32,8 @@ function Global:Set-Array {
         [string]$factor
     )
     try {
-        $Parsed = $ParseRates | ForEach-Object { Invoke-Expression $_ }
+        $Parsed = $ParseRates | ForEach-Object {if($_.count -gt 1) {$_ | Select -First 1 }else{$_}}
+        $Parsed = $Parsed | ForEach-Object { Invoke-Expression $_ }
         $Parse = $Parsed | Select-Object -Skip $i -First 1
         if ($null -eq $Parse) { $Parse = 0 }
     }
