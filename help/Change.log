@@ -2276,3 +2276,23 @@ you wish to edit/modify it.
 * t-rex updated
 * teamredminer updated
 
+############################################
+############################################
+
+# SWARM 3.1.5
+
+## What's New?
+  * Wildrig added to NVIDIA.
+    * This is a beta release
+  * cuckaroo29bfc added.
+
+## Improvements
+  * libs updated (hiveos will auto-update)
+  * small improvements to api gathering from
+    miners for wildrig.
+  * Fixed mc= in wallets.json
+
+## Updates
+ * xmrig updated
+ * wildrig updated
+ * gminer updated
