@@ -22,8 +22,8 @@
             "bmw512": "bmw512",
             "skein2": "skein2",
             "kawpow": "kawpow",
-            "lyra2rev2": "lyra2rev2",
-            "lyra2rev3": "lyra2rev3"
+            "lyra2rev2": "lyra2v2",
+            "lyra2rev3": "lyra2v3"
         },
         "fee": {
             "bmw512": 1,
@@ -55,8 +55,8 @@
             "bmw512": "bmw512",
             "skein2": "skein2",
             "kawpow": "kawpow",
-            "lyra2rev2": "lyra2rev2",
-            "lyra2rev3": "lyra2rev3"
+            "lyra2rev2": "lyra2v2",
+            "lyra2rev3": "lyra2v3"
         },
         "fee": {
             "bmw512": 1,
@@ -88,8 +88,8 @@
             "bmw512": "bmw512",
             "skein2": "skein2",
             "kawpow": "kawpow",
-            "lyra2rev2": "lyra2rev2",
-            "lyra2rev3": "lyra2rev3"
+            "lyra2rev2": "lyra2v2",
+            "lyra2rev3": "lyra2v3"
         },
         "fee": {
             "bmw512": 1,
