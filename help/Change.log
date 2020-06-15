@@ -2284,9 +2284,10 @@ you wish to edit/modify it.
 ## What's New?
   * Wildrig added to NVIDIA.
     * This is a beta release
-  * cuckaroo29bfc added.
+  * cuckaroo29-bfc added.
 
 ## Improvements
+  * support latest powershell (auto-updates in hiveos)
   * libs updated (hiveos will auto-update)
   * small improvements to api gathering from
     miners for wildrig.
