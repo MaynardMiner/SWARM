@@ -8,7 +8,6 @@
             "ethash": "",
             "cuckaroo29d": "",
             "cuckatoo31": "",
-            "cuckaroo29-bfc": "",
             "eaglesong": "",
             "handshake": "",
             "kawpow": ""
@@ -17,7 +16,6 @@
             "ethash": "",
             "cuckaroo29d": "",
             "cuckatoo31": "",
-            "cuckaroo29-bfc": "",
             "eaglesong": "",
             "handshake": "",
             "kawpow": ""
@@ -26,7 +24,6 @@
             "ethash": "ethash",
             "cuckaroo29d": "cuckaroo29d",
             "cuckatoo31": "cuckatoo31",
-            "cuckaroo29-bfc": "bfc",
             "eaglesong": "eaglesong",
             "handshake": "hns",
             "kawpow": "kawpow"
@@ -35,7 +32,6 @@
             "ethash": 0.65,
             "cuckaroo29d": 2,
             "cuckatoo31": 2,
-            "cuckaroo29-bfc": 2,
             "eaglesong": 2,
             "handshake": 2,
             "kawpow": 2
@@ -50,7 +46,6 @@
             "ethash": "",
             "cuckaroo29d": "",
             "cuckatoo31": "",
-            "cuckaroo29-bfc": "",
             "eaglesong": "",
             "handshake": "",
             "kawpow": ""
@@ -59,7 +54,6 @@
             "ethash": "",
             "cuckaroo29d": "",
             "cuckatoo31": "",
-            "cuckaroo29-bfc": "",
             "eaglesong": "",
             "handshake": "",
             "kawpow": ""
@@ -68,7 +62,6 @@
             "ethash": "ethash",
             "cuckaroo29d": "cuckaroo29d",
             "cuckatoo31": "cuckatoo31",
-            "cuckaroo29-bfc": "cuckaroo29-bfc",
             "eaglesong": "eaglesong",
             "handshake": "hns",
             "kawpow": "kawpow"
@@ -77,7 +70,6 @@
             "ethash": 0.65,
             "cuckaroo29d": 2,
             "cuckatoo31": 2,
-            "cuckaroo29-bfc": 2,
             "eaglesong": 2,
             "handshake": 2,
             "kawpow": 2
@@ -91,7 +83,6 @@
             "ethash": "",
             "cuckaroo29d": "",
             "cuckatoo31": "",
-            "cuckaroo29-bfc": "",
             "eaglesong": "",
             "handshake": "",
             "kawpow": ""
@@ -100,7 +91,6 @@
             "ethash": "",
             "cuckaroo29d": "",
             "cuckatoo31": "",
-            "cuckaroo29-bfc": "",
             "eaglesong": "",
             "handshake": "",
             "kawpow": ""
@@ -109,7 +99,6 @@
             "ethash": "ethash",
             "cuckaroo29d": "cuckaroo29d",
             "cuckatoo31": "cuckatoo31",
-            "cuckaroo29-bfc": "cuckaroo29-bfc",
             "eaglesong": "eaglesong",
             "handshake": "hns",
             "kawpow": "kawpow"
@@ -118,7 +107,6 @@
             "ethash": 0.65,
             "cuckaroo29d": 2,
             "cuckatoo31": 2,
-            "cuckaroo29-bfc": 2,
             "eaglesong": 2,
             "handshake": 2,
             "kawpow": 2

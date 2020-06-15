@@ -444,11 +444,6 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "kawpow" "kawpow" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "kawpow" 2 -ErrorAction SilentlyContinue
 
-                                                $Data.$_.commands | Add-Member "cuckaroo29-bfc" "" -ErrorAction SilentlyContinue
-                                                $Data.$_.difficulty | Add-Member "cuckaroo29-bfc" "" -ErrorAction SilentlyContinue 
-                                                $Data.$_.naming | Add-Member "cuckaroo29-bfc" "bfc" -ErrorAction SilentlyContinue
-                                                $Data.$_.fee | Add-Member "cuckaroo29-bfc" 2 -ErrorAction SilentlyContinue
-
                                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
