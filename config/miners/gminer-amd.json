@@ -17,7 +17,8 @@
             "equihash_192/7": "",
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_200/9": ""
+            "equihash_200/9": "",
+            "cuckaroo29-bfc": ""
         },
         "difficulty": {
             "cuckoo_cycle": "",
@@ -27,7 +28,8 @@
             "equihash_192/7": "",
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_200/9": ""
+            "equihash_200/9": "",
+            "cuckaroo29-bfc": ""
         },
         "naming": {
             "cuckoo_cycle": "cuckoo_cycle",
@@ -37,7 +39,8 @@
             "equihash_192/7": "equihash_192/7",
             "equihash_144/5": "equihash_144/5",
             "equihash_210/9": "equihash_210/9",
-            "equihash_200/9": "equihash_210/9"
+            "equihash_200/9": "equihash_210/9",
+            "cuckaroo29-bfc": "cuckaroo29-bfc"
         },
         "fee": {
             "cuckoo_cycle": 2,
@@ -47,7 +50,8 @@
             "equihash_192/7": 2,
             "equihash_144/5": 2,
             "equihash_210/9": 2,
-            "equihash_200/9": 2
+            "equihash_200/9": 2,
+            "cuckaroo29-bfc": 2
         }
     }
 }

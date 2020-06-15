@@ -64,6 +64,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         switch ($Sel) {
                             "ethash" { $Pass = ""; $Naming = "ethstratum"; $AddArgs = "" }
                             "cuckaroom" { $Pass = ""; $Naming = "cuckaroo29m"; $AddArgs = "-pers auto " }
+                            "cuckaroo29-bfc" { $Pass = ""; $Naming = "bfc"; $AddArgs = "-pers auto " }
                             "cuckatoo31" { $Pass = ""; $Naming = "cuckatoo31"; $AddArgs = "-pers auto " }
                             "equihash_150/5" { $Pass = ""; $Naming = "beam"; $AddArgs = "" }
                             "equihash_144/5" { $Pass = ""; $Naming = "zhash"; $AddArgs = "" }
@@ -76,6 +77,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         switch ($Sel) {
                             "ethash" { $Pass = ""; $Naming = "ethproxy"; $AddArgs = "" }
                             "cuckaroom" { $Pass = ""; $Naming = "cuckaroo29m"; $AddArgs = "-pers auto " }
+                            "cuckaroo29-bfc" { $Pass = ""; $Naming = "bfc"; $AddArgs = "-pers auto " }
                             "cuckatoo31" { $Pass = ""; $Naming = "cuckatoo31"; $AddArgs = "-pers auto " }
                             "equihash_150/5" { $Pass = ""; $Naming = "beam"; $AddArgs = "" }
                             "equihash_144/5" { $Pass = ""; $Naming = "zhash"; $AddArgs = "" }

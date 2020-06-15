@@ -6,22 +6,26 @@
         "commands": {
             "eaglesong": "",
             "handshake": "",
-            "kawpow": ""
+            "kawpow": "",
+            "cuckaroo29-bfc": ""
         },
         "difficulty": {
             "eaglesong": "",
             "handshake": "",
-            "kawpow": ""
+            "kawpow": "",
+            "cuckaroo29-bfc": ""
         },
         "naming": {
             "eaglesong": "eaglesong",
             "handshake": "hns",
-            "kawpow": "kawpow"
+            "kawpow": "kawpow",
+            "cuckaroo29-bfc": "bfc"
         },
         "fee": {
             "eaglesong": 2,
             "handshake": 2,
-            "kawpow": 2
+            "kawpow": 2,
+            "cuckaroo29-bfc": 2
         }
     },
     "name": "nbminer-amd"

@@ -71,6 +71,7 @@ $(vars).AMDTypes | ForEach-Object {
                         }
                     }
                     "cuckaroo29" { $Stratum = "nicehash+tcp://"; $A = "cuckarood" }
+                    "cuckaroo29-bfc" { $Stratum = "nicehash+tcp://"; $A = "bfc" }
                     "cuckaroo29d" { $Stratum = "nicehash+tcp://"; $A = "cuckarood" }
                     "cuckatoo31" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo" }
                     "handshake" { $Stratum = "stratum+tcp://"; $A = "hns" }

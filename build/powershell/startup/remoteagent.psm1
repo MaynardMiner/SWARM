@@ -444,6 +444,11 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "kawpow" "kawpow" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "kawpow" 2 -ErrorAction SilentlyContinue
 
+                                                $Data.$_.commands | Add-Member "cuckaroo29-bfc" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "cuckaroo29-bfc" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "cuckaroo29-bfc" "bfc" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "cuckaroo29-bfc" 2 -ErrorAction SilentlyContinue
+
                                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
@@ -548,6 +553,11 @@ Access Denied Error prevented.
                                                 $Data.$_.difficulty | Add-Member "beamv2" "" -ErrorAction SilentlyContinue 
                                                 $Data.$_.naming | Add-Member "beamv2" "beamv2" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "beamv2" 2 -ErrorAction SilentlyContinue
+
+                                                $Data.$_.commands | Add-Member "cuckaroo29-bfc" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "cuckaroo29-bfc" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "cuckaroo29-bfc" "bfc" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "cuckaroo29-bfc" 2 -ErrorAction SilentlyContinue
 
                                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
@@ -687,11 +697,6 @@ Access Denied Error prevented.
                                     if ($ChangeFile -eq "gminer-amd.json") {
                                         $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach { 
                                             if ($_ -ne "name") {
-                                                $Data.$_.commands | Add-Member "cuckatoo31" "" -ErrorAction SilentlyContinue
-                                                $Data.$_.difficulty | Add-Member "cuckatoo31" "" -ErrorAction SilentlyContinue 
-                                                $Data.$_.naming | Add-Member "cuckatoo31" "cuckatoo31" -ErrorAction SilentlyContinue
-                                                $Data.$_.fee | Add-Member "cuckatoo31" 2 -ErrorAction SilentlyContinue
-
                                                 $Data.$_.commands | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue
                                                 $Data.$_.difficulty | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue 
                                                 $Data.$_.naming | Add-Member "equihash_96/5" "equihash_96/5" -ErrorAction SilentlyContinue
@@ -707,10 +712,10 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "beamv2" "beamv2" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "beamv2" 2 -ErrorAction SilentlyContinue
 
-                                                $Data.$_.commands | Add-Member "cuckaroom" "" -ErrorAction SilentlyContinue
-                                                $Data.$_.difficulty | Add-Member "cuckaroom" "" -ErrorAction SilentlyContinue 
-                                                $Data.$_.naming | Add-Member "cuckaroom" "cuckaroom" -ErrorAction SilentlyContinue
-                                                $Data.$_.fee | Add-Member "cuckaroom" 2 -ErrorAction SilentlyContinue
+                                                $Data.$_.commands | Add-Member "cuckaroo29-bfc" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "cuckaroo29-bfc" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "cuckaroo29-bfc" "cuckaroo29-bfc" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "cuckaroo29-bfc" 2 -ErrorAction SilentlyContinue
 
                                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
