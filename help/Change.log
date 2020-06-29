@@ -2298,10 +2298,16 @@ you wish to edit/modify it.
  * wildrig updated
  * gminer updated
 
- ############################################
+############################################
 ############################################
 
 # SWARM 3.1.6
+
+## Improvements
+* SWARM removes entire previous miner folder from bin
+  when updating. Should resolve download errors, and remove
+  potential previous saved information which may cause conflict
+  (intensity and difficulty files, etc.)
 
 ## Updates
  * t-rex updated
