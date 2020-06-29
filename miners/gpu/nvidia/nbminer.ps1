@@ -73,6 +73,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "cuckaroo29-bfc" { $Stratum = "nicehash+tcp://"; $A = "bfc" }
                     "cuckaroo29d" { $Stratum = "nicehash+tcp://"; $A = "cuckarood" }
                     "cuckatoo31" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo" }
+                    "cuckatoo32" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo32" }
                     "handshake" { $Stratum = "stratum+tcp://"; $A = "hns" }
                     "kawpow" { $Stratum = "stratum+tcp://"; $A = "kawpow" }
                     default { $Stratum = "stratum+tcp://"; $A = "$($MinerConfig.$ConfigType.naming.$MinerAlgo)" }

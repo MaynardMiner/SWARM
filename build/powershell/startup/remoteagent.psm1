@@ -439,6 +439,11 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "handshake" "hns" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "handshake" 2 -ErrorAction SilentlyContinue
 
+                                                $Data.$_.commands | Add-Member "cuckatoo32" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "cuckatoo32" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "cuckatoo32" "cuckatoo32" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "cuckatoo32" 2 -ErrorAction SilentlyContinue
+
                                                 $Data.$_.commands | Add-Member "kawpow" "" -ErrorAction SilentlyContinue
                                                 $Data.$_.difficulty | Add-Member "kawpow" "" -ErrorAction SilentlyContinue 
                                                 $Data.$_.naming | Add-Member "kawpow" "kawpow" -ErrorAction SilentlyContinue
