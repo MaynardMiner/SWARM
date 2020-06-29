@@ -159,7 +159,7 @@ function Global:Get-MinerBinary($Miner, $Reason) {
     if ($Reason -eq "Update" -and $Miner.Type -notlike "*ASIC*") {
         if (test-path $Miner.Path) {
             Write-Log "Removing Old Miner..." -ForegroundColor Yellow
-            $A = Resolve-Path $Miner.Path
+            $A = Split-Path (Resolve-Path $Miner.Path)
             if($IsWindows)
             {
                 Remove-Item $A -Recurse -Force 
