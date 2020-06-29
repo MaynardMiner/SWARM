@@ -117,9 +117,9 @@
     "AMD2": ".\\bin\\teamredminer-2\\teamredminer.exe",
     "AMD3": ".\\bin\\teamredminer-3\\teamredminer.exe",
     "minername": "teamredminer.exe",
-    "version": "0.7.3",
+    "version": "0.7.7",
     "optional": "No",
-    "uri": "https://github.com/todxx/teamredminer/releases/download/0.7.3/teamredminer-v0.7.3-win.zip"
+    "uri": "https://github.com/todxx/teamredminer/releases/download/0.7.7/teamredminer-v0.7.7-win.zip"
   },
   "xmr-stak": {
     "name": "xmr-stak",
