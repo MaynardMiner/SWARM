@@ -121,8 +121,8 @@ function Global:Get-Metrics {
             ## 8 = 4 LA in Linux for a quad core processor, etc.
 
             [Decimal]$LOADAVG_FACTOR_1F = 0.9200444146293232478931553241
-            [Decimal]$LOADAVG_FACTOR_5F = 0.6592406302004437462547604110
-            [Decimal]$LOADAVG_FACTOR_15F = 0.2865047968601901003248854266
+            [Decimal]$LOADAVG_FACTOR_5F = 0.9834714538216174894737477501
+            [Decimal]$LOADAVG_FACTOR_15F = 0.9944598480048967508795473394
             $Length = 0
             $CPU = [Decimal[]](Get-CimInstance -className Win32_PerfFormattedData_PerfOS_System).ProcessorQueueLength
             $Length += $($CPU | Measure-Object -Sum).Sum
