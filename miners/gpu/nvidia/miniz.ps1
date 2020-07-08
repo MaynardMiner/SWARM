@@ -74,6 +74,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "equihash_125/4" { $AddArgs = "--par=125,4 --pers auto " }       
                     "equihash_150/5" { $AddArgs = "--par=150,5 --pers auto " } 
                     "beamv2" { $AddArgs = "--par=150,5,3 --pers auto " }   
+                    "beamhashv3" { $AddArgs = "--par=150,5s --pers auto " }   
                 }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                 [PSCustomObject]@{
