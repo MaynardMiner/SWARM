@@ -103,6 +103,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         }
                     }
                     "eaglesong" { $AddArgs = "--algo eaglesong " }
+                    "beamhashv3" { $AddArgs = "--algo beamhash " }
                 }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                 [PSCustomObject]@{

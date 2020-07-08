@@ -175,6 +175,11 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "cuckatoo32" "cuckatoo32" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "cuckatoo32" 2 -ErrorAction SilentlyContinue
 
+                                                $Data.$_.commands | Add-Member "beamhashv3" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "beamhashv3" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "beamhashv3" "beamhashv3" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "beamhashv3" 2 -ErrorAction SilentlyContinue
+
                                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
@@ -778,6 +783,11 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "cuckaroo29-bfc" "cuckaroo29-bfc" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "cuckaroo29-bfc" 2 -ErrorAction SilentlyContinue
 
+                                                $Data.$_.commands | Add-Member "beamhashv3" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "beamhashv3" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "beamhashv3" "beamhashv3" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "beamhashv3" 2 -ErrorAction SilentlyContinue
+
                                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
@@ -993,6 +1003,7 @@ Access Denied Error prevented.
                                         $Data | add-Member "scryptn2" @{alt_names = @("scryptn2"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                         $Data | add-Member "kawpow" @{alt_names = @("kawpow","kapow","kaapow"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
                                         $Data | add-Member "kangaroo12" @{alt_names = @("kangaroo12,k12"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                        $Data | add-Member "beamhashv3" @{alt_names = @("beamhashv3,Beamv3"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                     }
                                 
 

@@ -62,9 +62,9 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner.exe",
     "AMD3": ".\\bin\\gminer-amd-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "2.10",
+    "version": "2.15",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.10/gminer_2_10_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.15/gminer_2_15_windows64.zip"
   },
   "phoenix-amd": {
     "name": "phoenix-amd",
@@ -106,9 +106,9 @@
     "AMD2": ".\\bin\\lolMiner-AMD-2\\lolMiner.exe",
     "AMD3": ".\\bin\\lolMiner-AMD-3\\lolMiner.exe",
     "minername": "lolMiner.exe",
-    "version": "1.01",
+    "version": "1.03",
     "optional": "No",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.01/lolMiner_v1.01_Lin64.tar.gz"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.03/lolMiner_v1.03_Win64.zip"
   },
   "teamredminer": {
     "name": "teamredminer",
