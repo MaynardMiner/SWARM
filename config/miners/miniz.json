@@ -12,7 +12,8 @@
             "equihash_125/4": "",
             "equihash_150/5": "",
             "equihash_96/5": "",
-            "beamv2": ""
+            "beamv2": "",
+            "beamhashv3": ""
         },
         "difficulty": {
             "equihash_144/5": "",
@@ -60,7 +61,8 @@
             "equihash_125/4": "",
             "equihash_150/5": "",
             "equihash_96/5": "",
-            "beamv2": ""
+            "beamv2": "",
+            "beamhashv3": ""
         },
         "difficulty": {
             "equihash_144/5": "",
@@ -108,7 +110,8 @@
             "equihash_125/4": "",
             "equihash_150/5": "",
             "equihash_96/5": "",
-            "beamv2": ""
+            "beamv2": "",
+            "beamhashv3": ""
         },
         "difficulty": {
             "equihash_144/5": "",
