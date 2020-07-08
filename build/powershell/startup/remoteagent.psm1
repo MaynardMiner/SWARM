@@ -1004,6 +1004,7 @@ Access Denied Error prevented.
                                         $Data | add-Member "kawpow" @{alt_names = @("kawpow","kapow","kaapow"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
                                         $Data | add-Member "kangaroo12" @{alt_names = @("kangaroo12,k12"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                         $Data | add-Member "beamhashv3" @{alt_names = @("beamhashv3,Beamv3"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
+                                        $Data | add-Member "cuckaroo29-bfc" @{alt_names = @("cuckaroo29-bfc,cuckaroo29bfc"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                     }
                                 
 

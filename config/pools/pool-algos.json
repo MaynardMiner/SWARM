@@ -131,6 +131,16 @@
       "comma seperated"
     ]
   },
+  "beamhashv3": {
+    "alt_names": [
+      "beamhashv3",
+      "beamv3"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "bitcore": {
     "alt_names": [
       "bitcore"
