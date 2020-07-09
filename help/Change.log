@@ -2347,3 +2347,11 @@ you wish to edit/modify it.
 * Fixed issues with updater causing problems
   with Kangaroo12, cuckaroo29-bfc, beamhashv3
   other other algos when adding them to configs.
+  
+  ############################################
+############################################
+
+# SWARM 3.1.9
+
+## Improvments
+* beamhashv3 rejection issue: fixed equihash specification.
