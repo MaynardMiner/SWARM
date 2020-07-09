@@ -348,8 +348,8 @@
     "NVIDIA2": ".\\bin\\wildrig-nv-2\\wildrig-multi",
     "NVIDIA3": ".\\bin\\wildrig-nv-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.25.1",
+    "version": "0.25.2",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.25.1/wildrig-multi-linux-0.25.1.tar.gz"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.25.2/wildrig-multi-linux-0.25.2.tar.gz"
   }        
 }
