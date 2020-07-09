@@ -2337,3 +2337,13 @@ you wish to edit/modify it.
 * wildrig updated
 * gminer updated
 * miniz updated (beamhashv3 added)
+
+############################################
+############################################
+
+# SWARM 3.1.8
+
+## Improvments
+* Fixed issues with updater causing problems
+  with Kangaroo12, cuckaroo29-bfc, beamhashv3
+  other other algos when adding them to configs.
