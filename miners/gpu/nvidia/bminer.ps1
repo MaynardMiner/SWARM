@@ -69,6 +69,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                             "equihash_150/5" { $Pass = ""; $Naming = "beam"; $AddArgs = "" }
                             "equihash_144/5" { $Pass = ""; $Naming = "zhash"; $AddArgs = "" }
                             "beamv2" { $Pass = ""; $Naming = "beamhash2"; $AddArgs = "" }
+                            "beamhashv3" { $Pass = ""; $Naming = "beamhash3"; $AddArgs = "" }
                             "eaglesong" { $Pass = ""; $Naming = "eaglesong"; $AddArgs = "" }
                             "kawpow" { $Pass = ""; $Naming = "raven"; $AddArgs = "" }
                         }
@@ -82,6 +83,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                             "equihash_150/5" { $Pass = ""; $Naming = "beam"; $AddArgs = "" }
                             "equihash_144/5" { $Pass = ""; $Naming = "zhash"; $AddArgs = "" }
                             "beamv2" { $Pass = ""; $Naming = "beamhash2"; $AddArgs = "" }
+                            "beamhashv3" { $Pass = ""; $Naming = "beamhash3"; $AddArgs = "" }
                             "eaglesong" { $Pass = ""; $Naming = "eaglesong"; $AddArgs = "" }
                             "kawpow" { $Pass = ""; $Naming = "raven"; $AddArgs = "" }
                         }
