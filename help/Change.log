@@ -2317,3 +2317,23 @@ you wish to edit/modify it.
  * bminer updated
  * miniz updated
  * lolminer updated
+
+############################################
+############################################
+
+# SWARM 3.1.7
+
+## Dev Note
+* At the time of release, I was having difficulty
+  getting bminer to work with beamhashv3. Left in
+  SWARM in case users want to troubleshoot.
+
+## What's New?
+* beamhashv3 added.
+
+## Updates
+* lolminer updated
+* bminer updated
+* wildrig updated
+* gminer updated
+* miniz updated (beamhashv3 added)
