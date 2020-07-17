@@ -727,11 +727,6 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "cuckaroo29-bfc" "cuckaroo29-bfc" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "cuckaroo29-bfc" 2 -ErrorAction SilentlyContinue
 
-                                                $Data.$_.commands | Add-Member "cuckarooz29" "" -ErrorAction SilentlyContinue
-                                                $Data.$_.difficulty | Add-Member "cuckarooz29" "" -ErrorAction SilentlyContinue 
-                                                $Data.$_.naming | Add-Member "cuckarooz29" "cuckarooz29" -ErrorAction SilentlyContinue
-                                                $Data.$_.fee | Add-Member "cuckarooz29" 2 -ErrorAction SilentlyContinue
-
                                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
