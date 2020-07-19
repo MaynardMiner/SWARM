@@ -42,7 +42,7 @@ Class GPU {
         else { $this.Errors += "No Temp" }
 
         if ($FanSpeed -lt 101 -and $FanSpeed -gt -1) {
-            $this.FanSpeed = $FanSpeed
+            $this.FanSpeed = 0;
         }
         else { $this.Errors += "No Speed" }
 
