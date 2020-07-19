@@ -50,6 +50,7 @@ if ($Name -in $(arg).PoolName) {
 
     $Pool_Data = $nicehash_Request.miningAlgorithms | 
     Where-Object paying -gt 0 | 
+    Where-Object speed -gt 0 |
     ForEach-Object -Parallel {
         $N = $using:name
         $P_ALgos = $using:Pool_Algos;

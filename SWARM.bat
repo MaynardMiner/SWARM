@@ -31,4 +31,4 @@ cd /D %~dp0
 :: pwsh -executionpolicy Bypass -command ".\startup.ps1 -hive_hash aera123144asithgsd123kgh32fglsdkjhgw"
 
 
-pwsh -executionpolicy Bypass -command ".\startup.ps1 -Hive_hash ab1172091a9de3006185116f29aa32a7814796b7"
+pwsh -executionpolicy Bypass -command ".\startup.ps1"
