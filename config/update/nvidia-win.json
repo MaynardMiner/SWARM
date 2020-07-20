@@ -84,9 +84,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
     "minername": "bminer.exe",
-    "version": "16.2.7",
+    "version": "16.2.9",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.2.7-2efa85a-amd64.zip"
+    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.2.9-c613f85-amd64.zip"
   },
   "ehssand": {
     "name": "ehssand",
@@ -106,9 +106,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
     "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "2.18",
+    "version": "2.19",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.18/gminer_2_18_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.19/gminer_2_19_windows64.zip"
   },
   "claymore": {
     "name": "claymore",
