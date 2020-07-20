@@ -107,7 +107,7 @@ function Global:Start-NVIDIAOC($NewOC) {
                         for ($i = 0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
                             [Double]$Max = $Max_Power[$i]
                             [Double]$Value = $NVOCPL | % { iex $_ }  ## String to double/int issue.
-                            [Double]$Limit = [math]::Round(($Value / $Max) * 100, 0)
+                            [Double]$Limit = [math]::Round(($Value / $Max) * 120, 0)
                             $OCArgs += "-setPowerTarget:$($OCCount.NVIDIA.$i),$($Limit) "
                             $ocmessage += "Setting GPU $($OCCount.NVIDIA.$i) Power Limit To $($Limit)%"
                         }
@@ -116,7 +116,7 @@ function Global:Start-NVIDIAOC($NewOC) {
                         for ($i = 0; $i -lt $NVOCPL.Count; $i++) {
                             [Double]$Max = $Max_Power[$i]
                             [Double]$Value = $NVOCPL[$i] | % { iex $_ } ## String to double/int issue.
-                            [Double]$Limit = [math]::Round(($Value / $Max) * 100, 0)
+                            [Double]$Limit = [math]::Round(($Value / $Max) * 120, 0)
                             $OCArgs += "-setPowerTarget:$($i),$($Limit) "
                             $ocmessage += "Setting GPU $i Power Limit To $($Limit)%"
                         }

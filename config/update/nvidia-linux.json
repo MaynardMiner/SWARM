@@ -40,7 +40,7 @@
     "NVIDIA2": ".\\bin\\phoenix-2\\PhoenixMiner",
     "NVIDIA3": ".\\bin\\phoenix-3\\PhoenixMiner",
     "minername": "PhoenixMiner",
-    "version": "5.0b",
+    "version": "5.1b",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz"
   },
@@ -216,9 +216,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner",
     "NVIDIA3": ".\\bin\\gminer-3\\miner",
     "minername": "miner",
-    "version": "2.15",
+    "version": "2.19",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.15/gminer_2_15_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.19/gminer_2_19_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",
@@ -238,9 +238,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "16.2.7",
+    "version": "16.2.9",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-v16.2.7-2efa85a-amd64.tar.xz"
+    "uri": "https://www.bminercontent.com/releases/bminer-v16.2.9-c613f85-amd64.tar.xz"
   },
   "miniz": {
     "name": "miniz",

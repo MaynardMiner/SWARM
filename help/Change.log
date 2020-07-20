@@ -2348,10 +2348,38 @@ you wish to edit/modify it.
   with Kangaroo12, cuckaroo29-bfc, beamhashv3
   other other algos when adding them to configs.
   
-  ############################################
+############################################
 ############################################
 
 # SWARM 3.1.9
 
 ## Improvments
 * beamhashv3 rejection issue: fixed equihash specification.
+
+############################################
+############################################
+
+# SWARM 3.2.1
+
+## Improvements
+* Nicehash improvements
+  * Removes algorithms from table/list when
+    there is no one currently mining on it.
+  * Cuckarooz29 added.
+* Updated mining powershell version support
+  to 7.0.3
+
+## Windows Improvements
+* Autofan
+  * When nvidia-smi reports [error], defaults current speed as 0.
+* Power limit
+  * Power limit set by 1-120%, not 1-100%...Should be closer to your
+    wattage setting through dashboard.
+* Removed arguments from SWARM.bat, should auto-run SWARM help.
+
+## Updates
+* phoenix miner updated
+* nanominer updated
+* teamredminer updated
+* gminer updated
+* bminer updated

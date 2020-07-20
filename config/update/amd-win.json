@@ -62,9 +62,9 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner.exe",
     "AMD3": ".\\bin\\gminer-amd-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "2.15",
+    "version": "2.19",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.15/gminer_2_15_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.19/gminer_2_19_windows64.zip"
   },
   "phoenix-amd": {
     "name": "phoenix-amd",
@@ -73,7 +73,7 @@
     "AMD2": ".\\bin\\phoenix-amd-2\\PhoenixMiner.exe",
     "AMD3": ".\\bin\\phoenix-amd-3\\PhoenixMiner.exe",
     "minername": "PhoenixMiner.exe",
-    "version": "5.0b",
+    "version": "5.1b",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/phoenix-miner-windows.zip"
   },
@@ -117,9 +117,9 @@
     "AMD2": ".\\bin\\teamredminer-2\\teamredminer.exe",
     "AMD3": ".\\bin\\teamredminer-3\\teamredminer.exe",
     "minername": "teamredminer.exe",
-    "version": "0.7.7",
+    "version": "0.7.8",
     "optional": "No",
-    "uri": "https://github.com/todxx/teamredminer/releases/download/0.7.7/teamredminer-v0.7.7-win.zip"
+    "uri": "https://github.com/todxx/teamredminer/releases/download/0.7.8/teamredminer-v0.7.8-win.zip"
   },
   "xmr-stak": {
     "name": "xmr-stak",
@@ -227,9 +227,9 @@
     "AMD2": ".\\bin\\nanominer-2\\nanominer.exe",
     "AMD3": ".\\bin\\nanominer-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "1.9.4",
+    "version": "1.9.6",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.9.4/nanominer-windows-1.9.4.zip"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.9.6/nanominer-windows-1.9.6.zip"
   },
   "nbminer-amd": {
     "name": "nbminer-amd",
