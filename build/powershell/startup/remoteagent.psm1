@@ -564,6 +564,11 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "beamhashv3" "beamhashv3" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "beamhashv3" 2 -ErrorAction SilentlyContinue
 
+                                                $Data.$_.commands | Add-Member "cuckarooz29" "" -ErrorAction SilentlyContinue
+                                                $Data.$_.difficulty | Add-Member "cuckarooz29" "" -ErrorAction SilentlyContinue 
+                                                $Data.$_.naming | Add-Member "cuckarooz29" "cuckarooz29" -ErrorAction SilentlyContinue
+                                                $Data.$_.fee | Add-Member "cuckarooz29" 2 -ErrorAction SilentlyContinue
+
                                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                                 $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
