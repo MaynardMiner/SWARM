@@ -2383,3 +2383,22 @@ you wish to edit/modify it.
 * teamredminer updated
 * gminer updated
 * bminer updated
+
+############################################
+############################################
+
+# SWARM 3.2.2
+
+## What's New
+* New software created: NVClocks.
+  * Can set fan speed in Windows for
+    dual fan aware gpu's via commandline.
+  * Can set a % based power limit based on
+    desired watts. This software will auto-gather
+    maximum power limit %, and then convert wattage
+    vs. max watts to % value.
+
+## Improvements
+* ``bench`` command will output if a file was found.
+* ``bench`` command notates where to get benchmarks
+   names (get benchmarks).
