@@ -19,6 +19,7 @@ function Global:Start-NVIDIAOC($NewOC) {
     $ocmessage = @()
     $OCCount = Get-Content ".\debug\oclist.txt" | ConvertFrom-JSon
     $FansArgs = @()
+    $PowerArgs = @()
 
     ## Get Power limits
     $Max_Power = invoke-expression "nvidia-smi --query-gpu=power.max_limit --format=csv" | ConvertFrom-CSV
@@ -51,13 +52,13 @@ function Global:Start-NVIDIAOC($NewOC) {
                     $NVOCFAN = $NVOCFan -split " "
                     if ($NVOCFAN.Count -eq 1) {
                         for ($i = 0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
-                            $FansArgs += "--index $i --speed $($NVOCFan)"
+                            $FansArgs += "-i $i -s $($NVOCFan)"
                             $ocmessage += "Setting GPU $($OCCount.NVIDIA.$i) Fan Speed To $($NVOCFan)`%"
                         }
                     }
                     else {
                         for ($i = 0; $i -lt $NVOCFAN.Count; $i++) {
-                            $FansArgs += "--index $i --speed $($NVOCFan[$i])"
+                            $FansArgs += "-i $i -s $($NVOCFan[$i])"
                             $ocmessage += "Setting GPU $i Fan Speed To $($NVOCFan[$i])`%"
                         }
                     }
@@ -107,18 +108,16 @@ function Global:Start-NVIDIAOC($NewOC) {
                         for ($i = 0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
                             [Double]$Max = $Max_Power[$i]
                             [Double]$Value = $NVOCPL | % { iex $_ }  ## String to double/int issue.
-                            [Double]$Limit = [math]::Round(($Value / $Max) * 120, 0)
-                            $OCArgs += "-setPowerTarget:$($OCCount.NVIDIA.$i),$($Limit) "
-                            $ocmessage += "Setting GPU $($OCCount.NVIDIA.$i) Power Limit To $($Limit)%"
+                            $PowerArgs += "-i $i -p $Value,$Max"
+                            $ocmessage += "Setting GPU $($OCCount.NVIDIA.$i) Power Limit To $($Value) watts"
                         }
                     }
                     else {
                         for ($i = 0; $i -lt $NVOCPL.Count; $i++) {
                             [Double]$Max = $Max_Power[$i]
                             [Double]$Value = $NVOCPL[$i] | % { iex $_ } ## String to double/int issue.
-                            [Double]$Limit = [math]::Round(($Value / $Max) * 120, 0)
-                            $OCArgs += "-setPowerTarget:$($i),$($Limit) "
-                            $ocmessage += "Setting GPU $i Power Limit To $($Limit)%"
+                            $PowerArgs += "-i $i -p $Value,$Max"
+                            $ocmessage += "Setting GPU $i Power Limit To $($Value) watts"
                         }
                     }
                 }
@@ -132,7 +131,8 @@ function Global:Start-NVIDIAOC($NewOC) {
 
     if ([string]$OcArgs -ne "") {
         $script += "Invoke-Expression `'.\inspector\nvidiaInspector.exe $OCArgs`'"
-        if ($FansArgs) { $FansArgs | ForEach-Object { $script += "Invoke-Expression `'.\nvfans\nvfans.exe $($_)`'" } }
+        if ($FansArgs.count -gt 0 ) { $FansArgs | ForEach-Object { $script += "Invoke-Expression `'.\nvfans\NVClocks.exe $($_)`'" } }
+        if ($PowerArgs.count -gt 0) { $PowerArgs | ForEach-Object { $script += "Invoke-Expression `'.\nvfans\NVClocks.exe $($_)`'" } }
         $ScriptFile = "$($(vars).dir)\build\apps\hive_nvoc_start.ps1"
         $Script | OUt-File $ScriptFile
         $start = [launchcode]::New()
