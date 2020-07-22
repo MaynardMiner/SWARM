@@ -10,6 +10,8 @@ cd `dirname $0`
 
 SWARMDIR=${PWD##*/}
 SWARMCONF="$PWD/$SWARMDIR.conf"
+LIB_RESET=true
+ISDONE=`cat /hive/miners/custom/SWARM/build/data/lib.txt`
 
 ## Make a config dir to the lastest version.
 if [ ! -f $SWARMCONF ]
@@ -26,6 +28,13 @@ fi
 
 ## SWARM does its own logging
 logs-off
+
+## Remove lib if changes
+if [ "$LIB_RESET" = true ] && [ "$ISDONE" = "Not Done" ]; then
+  echo "Removing libs for update"  
+  rm -rf /usr/local/swarm/lib64
+  echo "Done" | tee /hive/miners/custom/SWARM/build/data/lib.txt
+fi
 
 ## If pwsh is not installed.
 if ! [ -x "$(command -v pwsh)" ]; then
@@ -46,7 +55,6 @@ PVERSION=`pwsh -version`
 ## If pwsh is wrong version, install it again.
 if [ "$PVERSION" != "PowerShell 7.0.3" ]; then
 echo "updating powershell to latest version"
-echo "removing lib folder"
 rm -rf /usr/local/swarm
 rm -rf /opt/microsoft/powershell/
 rm -rf /usr/bin/pwsh
