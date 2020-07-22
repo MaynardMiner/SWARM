@@ -1,0 +1,34 @@
+#!/bin/bash
+
+## ************QUICK ARGUMENTS CHEAT SHEET**************************************************
+##
+##
+## NOTE: YOU CAN RUN ".\startup.ps1 -Help" for a guided configuration
+##
+##
+## Rigname: Name of your rig
+## Currency: Preferred Fiat Currency
+## CoinExchange: AltCoin Coin Pricing (Besides BTC).
+## Location: EUROPE ASIA US (Choose one).
+## Poolname: Remove Pools As You See Fit. Add Custom Pools If You Like.
+## Type: NVIDIA1 or AMD1 or AMD1,NVIDIA2 or NVIDIA1,NVIDIA2,NVIDIA3 (maximum of three)
+## Wallet1: Your BTC Wallet. Add -Wallet2 or -Wallet3 if using -Type NVIDIA2 or NVIDIA3
+## Donate: Donation in percent
+## WattOMeter: Use Watt Calculations (Default is 0.10 / kwh). Can be modified. See Wiki
+
+## ************NOTE***********************
+## If you do not intend to use HiveOS, add -HiveOS No
+## FOR ALL ARGUMENTS: SEE help folder. Explanation on how to use -Type NVIDIA1,NVIDIA2,NVIDIA3 is provided.
+## HERE is an example of basic arguments:
+##
+## pwsh -executionpolicy Bypass -command ".\startup.ps1 -RigName1 SWARM -Location US -PoolName nlpool,blockmasters,zergpool,nicehash,fairpool,ahashpool,blazepool,hashrefinery,zpool -Type AMD1 -Wallet1 1RVNsdO6iuwEHfoiuwe123hsdfljk -Donate .5"
+
+## This creates a screen for SWARM to work in, and then runs startup:
+
+## Remove '#' if you wish to automatically run install linux
+## Needs to be started as root
+## ./install_linux
+
+screen -S miner -m pwsh -command "&.\startup.ps1"
+echo "swarm started on miner screen"
+echo "type sudo screen -r miner to view"
