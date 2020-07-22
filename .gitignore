@@ -7,6 +7,7 @@ build/data/info.txt
 build/data/system.txt
 build/data/timetable.txt
 build/data/deviation.txt
+build/data/lib.txt
 build/export/*
 build/pid/*
 logs/*
