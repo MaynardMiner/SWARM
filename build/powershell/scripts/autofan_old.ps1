@@ -370,7 +370,7 @@ class RIG {
         $this.GPUS | Where Model -eq "NVIDIA" | ForEach-Object {
             if ($_.New_Speed -ne $_.FanSpeed) {
                 $SetFan = $null
-                Invoke-Expression ".\build\apps\nvfans\nvfans.exe --index $($_.OC_Number) --speed $($_.New_Speed)" | Tee-Object -Variable SetFan
+                Invoke-Expression ".\build\apps\nvclocks\NVClocks.exe --index $($_.OC_Number) --speed $($_.New_Speed)" | Tee-Object -Variable SetFan
             }
         }
     }

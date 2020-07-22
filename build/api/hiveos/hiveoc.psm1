@@ -131,8 +131,8 @@ function Global:Start-NVIDIAOC($NewOC) {
 
     if ([string]$OcArgs -ne "") {
         $script += "Invoke-Expression `'.\inspector\nvidiaInspector.exe $OCArgs`'"
-        if ($FansArgs.count -gt 0 ) { $FansArgs | ForEach-Object { $script += "Invoke-Expression `'.\nvfans\NVClocks.exe $($_)`'" } }
-        if ($PowerArgs.count -gt 0) { $PowerArgs | ForEach-Object { $script += "Invoke-Expression `'.\nvfans\NVClocks.exe $($_)`'" } }
+        if ($FansArgs.count -gt 0 ) { $FansArgs | ForEach-Object { $script += "Invoke-Expression `'.\nvclocks\NVClocks.exe $($_)`'" } }
+        if ($PowerArgs.count -gt 0) { $PowerArgs | ForEach-Object { $script += "Invoke-Expression `'.\nvclocks\NVClocks.exe $($_)`'" } }
         $ScriptFile = "$($(vars).dir)\build\apps\hive_nvoc_start.ps1"
         $Script | OUt-File $ScriptFile
         $start = [launchcode]::New()
