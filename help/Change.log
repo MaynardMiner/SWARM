@@ -2402,3 +2402,20 @@ you wish to edit/modify it.
 * ``bench`` command will output if a file was found.
 * ``bench`` command notates where to get benchmarks
    names (get benchmarks).
+
+############################################
+############################################
+
+# SWARM 3.2.3
+
+## Improvements
+* Added more readme's in folders.
+* Added auto-lib updater in HiveOS
+* Added lib removal (for updates) in install_linux
+
+## Miner Updates
+* teamredminer updated
+* miniz updated
+* xmrig updated (kawpow added)
+* xmrigcc updated
+* bminer updated
