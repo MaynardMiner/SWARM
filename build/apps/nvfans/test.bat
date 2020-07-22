@@ -1,0 +1,2 @@
+nvfans.exe --help
+pause

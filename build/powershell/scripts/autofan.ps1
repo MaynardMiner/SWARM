@@ -381,7 +381,7 @@ class RIG {
             $_.Set_Speed($this.Config); 
             if ($_.New_Speed -ne $_.FanSpeed) {
                 $FanArgs = "--index $($_.OC_Number) --speed $($_.New_Speed)"
-                $Path = [IO.Path]::Join($Global:Dir, "build\apps\nvclocks\nvclocks.exe")
+                $Path = [IO.Path]::Join($Global:Dir, "build\apps\nvfans\nvfans.exe")
                 $debug = [IO.Path]::Join($Global:Dir, "debug\nv_fan.txt")
                 $Proc = Start-Process $Path -ArgumentList "$FanArgs" -NoNewWindow -PassThru -RedirectStandardOutput $debug
                 $Proc | Wait-Process

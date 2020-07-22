@@ -503,7 +503,7 @@ function Global:Start-OC($Miner) {
         $script = @()
         $script += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
         $script += "Invoke-Expression `'.\inspector\nvidiaInspector.exe $NVIDIAOCArgs`'"
-        if ($NFanArgs) { $NFansArgs | ForEach-Object { $script += "Invoke-Expression `'.\nvclocks\NVClocks.exe $($_)`'" } }
+        if ($NFanArgs) { $NFansArgs | ForEach-Object { $script += "Invoke-Expression `'.\nvfans\nvfans.exe $($_)`'" } }
         Set-Location ".\build\apps"
         $script | Out-File "NVIDIA-oc-start.ps1"
         $exec = "$PSHOME\pwsh.exe"
