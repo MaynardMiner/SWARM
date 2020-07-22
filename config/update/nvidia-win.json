@@ -84,9 +84,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
     "minername": "bminer.exe",
-    "version": "16.2.9",
+    "version": "16.2.11",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.2.9-c613f85-amd64.zip"
+    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.2.11-4ecd066-amd64.zip"
   },
   "ehssand": {
     "name": "ehssand",
@@ -183,7 +183,7 @@
     "NVIDIA2": ".\\bin\\miniz-2\\miniZ.exe",
     "NVIDIA3": ".\\bin\\miniz-3\\miniZ.exe",
     "minername": "miniZ.exe",
-    "version": "v1.6v3",
+    "version": "v1.6v5",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/miniz-windows.zip"
   },
