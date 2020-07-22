@@ -22,8 +22,9 @@ function Global:Start-NVIDIAOC($NewOC) {
     $PowerArgs = @()
 
     ## Get Power limits
-    $Max_Power = invoke-expression "nvidia-smi --query-gpu=power.max_limit --format=csv" | ConvertFrom-CSV
-    $Max_Power = $Max_Power.'power.max_limit [W]' | % { $_ = $_.replace(" W","").replace(".00",""); $_ }
+    $Get_Power = invoke-expression "nvidia-smi --query-gpu=power.max_limit,power.default_limit --format=csv" | ConvertFrom-CSV
+    $Max_Power = $Get_Power.'power.max_limit [W]' | % { $_ = $_.replace(" W","").replace(".00",""); $_ }
+    $Default_Power = $Get_Power.'power.default_limit [W]' | % { $_ = $_.replace(" W","").replace(".00",""); $_ }
 
     $HiveNVOC.Keys | % {
         $key = $_
@@ -106,16 +107,24 @@ function Global:Start-NVIDIAOC($NewOC) {
                     $NVOCPL = $NVOCPL -split " "
                     if ($NVOCPL.Count -eq 1) {
                         for ($i = 0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
+                            if($NVOCPL -eq "0") {
+                                $Value = $Default_Power
+                            } else {
+                                $Value = $NVOCPL
+                            }
                             $Max = $Max_Power
-                            $Value = $NVOCPL
                             $PowerArgs += "-i $i -p $Value,$Max"
                             $ocmessage += "Setting GPU $($OCCount.NVIDIA.$i) Power Limit To $($Value) watts"
                         }
                     }
                     else {
                         for ($i = 0; $i -lt $NVOCPL.Count; $i++) {
+                            if($NVOCPL[$i] -eq "0") {
+                                $Value = $Default_Power[$i]
+                            } else {
+                                $Value = $NVOCPL[$i]
+                            }
                             $Max = $Max_Power[$i]
-                            $Value = $NVOCPL[$i]
                             $PowerArgs += "-i $i -p $Value,$Max"
                             $ocmessage += "Setting GPU $i Power Limit To $($Value) watts"
                         }
