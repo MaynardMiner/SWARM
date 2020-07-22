@@ -172,9 +172,9 @@
     "AMD2": ".\\bin\\xmrig-amd-2\\xmrig.exe",
     "AMD3": ".\\bin\\xmrig-amd-3\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "6.2.0",
+    "version": "6.3.0",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.2.0-beta/xmrig-6.2.0-beta-gcc-win64.zip"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.3.0/xmrig-6.3.0-msvc-cuda10_2-win64.zip"
   },
   "xmrigcc-amd": {
     "name": "xmrigcc-amd",
@@ -183,9 +183,9 @@
     "AMD2": ".\\bin\\xmrigcc-amd-2\\xmrigDaemon-amd.exe",
     "AMD3": ".\\bin\\xmrigcc-amd-3\\xmrigDaemon-amd.exe",
     "minername": "xmrigDaemon-amd.exe",
-    "version": "1.9.3",
+    "version": "2.7.0",
     "optional": "No",
-    "uri": "https://github.com/Bendr0id/xmrigCC-amd/releases/download/1.9.3/xmrigCC-amd-1.9.3-with_tls-mvc-win64.zip"
+    "uri": "https://github.com/Bendr0id/xmrigCC/releases/download/2.7.0/xmrigCC-2.7.0-with_tls_and_gzip-mvc-win64.zip"
   },
   "srbminer": {
     "name": "srbminer",

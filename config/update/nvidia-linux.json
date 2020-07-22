@@ -273,7 +273,7 @@
     "minername": "xmrig",
     "version": "6.2.0",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.2.0-beta/xmrig-6.2.0-beta-xenial-x64.tar.gz"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/xmrig-linux.tar.xz"
   },
   "cc-verus": {
     "name": "cc-verus",

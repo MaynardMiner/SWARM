@@ -31,18 +31,18 @@
     "type": "cpu",
     "CPU": ".\\bin\\xmrig-cpu-1\\xmrig",
     "minername": "xmrig",
-    "version": "6.2.0",
+    "version": "6.3.0",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.2.0-beta/xmrig-6.2.0-beta-xenial-x64.tar.gz"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/xmrig-linux.tar.xz"
   },
   "xmrigcc-cpu": {
     "name": "xmrigcc-cpu",
     "type": "cpu",
     "CPU": ".\\bin\\xmrigcc-cpu-1\\xmrigDaemon",
     "minername": "xmrigDaemon",
-    "version": "2.6.2",
+    "version": "2.7.0",
     "optional": "No",
-    "uri": "https://github.com/Bendr0id/xmrigCC/releases/download/2.6.2/xmrigCC-2.6.2-with_tls_and_gzip-mvc-win64.zip"
+    "uri": "https://github.com/Bendr0id/xmrigCC/releases/download/2.7.0/xmrigCC-2.7.0-with_tls_and_gzip-gcc7-linux-static-amd64.tar.gz"
   },
   "sugarchain": {
     "name": "sugarchain",

@@ -219,7 +219,7 @@
     "minername": "xmrig",
     "version": "6.2.0",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.2.0-beta/xmrig-6.2.0-beta-xenial-x64.tar.gz"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/xmrig-linux.tar.xz"
   },
   "xmrigcc-amd": {
     "name": "xmrigcc-amd",
@@ -228,9 +228,9 @@
     "AMD2": ".\\bin\\xmrigcc-amd-2\\xmrigDaemon-amd",
     "AMD3": ".\\bin\\xmrigcc-amd-3\\xmrigDaemon-amd",
     "minername": "xmrigDaemon",
-    "version": "1.9.3",
+    "version": "2.7.0",
     "optional": "No",
-    "uri": "https://github.com/Bendr0id/xmrigCC-amd/releases/download/1.9.3/xmrigCC-amd-1.9.3-with_tls-gcc7-linux-static-miner_only-x64.tar.gz"
+    "uri": "https://github.com/Bendr0id/xmrigCC/releases/download/2.7.0/xmrigCC-2.7.0-with_tls_and_gzip-gcc7-linux-static-amd64.tar.gz"
   },
   "progminer-amd": {
     "name": "progminer-amd",
