@@ -95,7 +95,7 @@ function Global:Set-NvidiaStats {
                 $NVIDIAFans = $ninfo.'fan.speed [%]' | ForEach-Object { $_ -replace ("\%", "") }
                 $NVIDIATemps = $ninfo.'temperature.gpu'
                 $NVIDIAPower = $ninfo.'power.draw [W]' | 
-                ForEach-Object { $_.replace("\[Not Supported\]","75").replace("\[N\/A]", "75").replace(" W",""); }        
+                ForEach-Object { $_.replace("[Not Supported]","75").replace("[N/A]","75").replace(" W",""); }        
                 $NVIDIAStats = @{ }
                 $NVIDIAStats.Add("Fans", $NVIDIAFans)
                 $NVIDIAStats.Add("Temps", $NVIDIATemps)
