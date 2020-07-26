@@ -66,11 +66,11 @@ $(vars).AMDTypes | ForEach-Object {
                     "equihash_125/4" { $AddArgs = "--coin ZEL --tls 0 " }
                     "beamv2" { $AddArgs = "--coin BEAM-II --tls 0 " }
                     "equihash_192/7" { $AddArgs = "--coin AUTO192_7 " }
-                    "cuckatoo31" { $AddArgs = "--coin MWC-C31 " }
-                    "cuckaroom" { $AddArgs = "--coin GRIN-C29M " }
-                    "cuckatoo32" { $AddArgs = "--coin GRIN-C32 " }
-                    "cuckarood29v" { $AddArgs = "--coin MWC-C29D " }
-                    "beamhashv3" { $AddArgs = "--coin BEAM --tls 0" }
+                    "cuckatoo31" { $AddArgs = "--algo C31 " }
+                    "cuckaroom" { $AddArgs = "--algo C29M " }
+                    "cuckatoo32" { $AddArgs = "--algo C32 " }
+                    "cuckarood29v" { $AddArgs = "--algo C29D " }
+                    "beamhashv3" { $AddArgs = "--algo BEAM-III --tls 0" }
                 }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 [PSCustomObject]@{
