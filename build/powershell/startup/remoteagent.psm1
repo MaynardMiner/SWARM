@@ -180,10 +180,10 @@ Access Denied Error prevented.
                                                 $Data.$_.naming | Add-Member "beamhashv3" "beamhashv3" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "beamhashv3" 2 -ErrorAction SilentlyContinue
 
-                                                $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
-                                                $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
-                                                $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
-                                                $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
+                                                $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29", "cuckarood29v"
+                                                $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29", "cuckarood29v"
+                                                $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29", "cuckarood29v"
+                                                $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29", "cuckarood29v"
                                             }
                                         }
                                     }
