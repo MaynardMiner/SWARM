@@ -66,7 +66,7 @@ $(vars).AMDTypes | ForEach-Object {
                     "equihash_125/4" { $AddArgs = "--coin ZEL --tls 0 " }
                     "beamv2" { $AddArgs = "--coin BEAM-II --tls 0 " }
                     "equihash_192/7" { $AddArgs = "--coin AUTO192_7 " }
-                    "cuckatoo31" { $AddArgs = "--coin GRIN-AT31 " }
+                    "cuckatoo31" { $AddArgs = "--coin MWC-C31 " }
                     "cuckaroom" { $AddArgs = "--coin GRIN-C29M " }
                     "cuckatoo32" { $AddArgs = "--coin GRIN-C32 " }
                     "cuckarood29v" { $AddArgs = "--coin MWC-C29D " }
