@@ -69,7 +69,6 @@ $(vars).AMDTypes | ForEach-Object {
                     "cuckatoo31" { $AddArgs = "--coin MWC-C31 " }
                     "cuckaroom" { $AddArgs = "--coin GRIN-C29M " }
                     "cuckatoo32" { $AddArgs = "--coin GRIN-C32 " }
-                    "cuckarood29v" { $AddArgs = "--coin MWC-C29D " }
                     "beamhashv3" { $AddArgs = "--coin BEAM --tls 0" }
                 }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
