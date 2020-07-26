@@ -94,7 +94,7 @@ function Global:Set-NvidiaStats {
                 $ninfo = $nvidiaout | ConvertFrom-CSV
                 $NVIDIAFans = $ninfo.'fan.speed [%]' | ForEach-Object { $_ -replace ("\%", "") }
                 $NVIDIATemps = $ninfo.'temperature.gpu'
-                $NVIDIAPower = $ninfo.'power.draw [W]' | ForEach-Object { $_ -replace ("\[Not Supported\]", "75") } | ForEach-Object { $_ -replace (" W", "") }        
+                $NVIDIAPower = $ninfo.'power.draw [W]' | ForEach-Object { $_ -replace ("\[N\/A]", "75") } | ForEach-Object { $_ -replace (" W", "") }        
                 $NVIDIAStats = @{ }
                 $NVIDIAStats.Add("Fans", $NVIDIAFans)
                 $NVIDIAStats.Add("Temps", $NVIDIATemps)
