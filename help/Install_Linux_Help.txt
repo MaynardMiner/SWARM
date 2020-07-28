@@ -1,0 +1,12 @@
+install_linux is the installer for SWARM.
+
+What does the installer do?
+
+-Automatically adds commands to /usr/bin, so they can be ran from any console.
+-Automatically adds all required libs to /usr/local/swarm.
+-Installs Powershell (supported version).
+
+It is recommended when you update SWARM, you run that version install_linux to update libs/commands/powershell
+as neccessary.
+
+Since it installs items in root, it requires root to run.
