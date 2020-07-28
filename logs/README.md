@@ -12,10 +12,15 @@ or was being used.
 So if you have the following
 
 miner1.log
+
 miner2.log
+
 miner3.log
+
 miner4-active.log
+
 miner5.log
+
 miner6.log
 
 This means that miner4-active is the current active log. Every log past it is likely present due to a restart

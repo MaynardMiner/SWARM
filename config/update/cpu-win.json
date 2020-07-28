@@ -31,18 +31,18 @@
     "type": "cpu",
     "CPU": ".\\bin\\xmrig-cpu-1\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "6.2.0",
+    "version": "6.3.0",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.2.0-beta/xmrig-6.2.0-beta-gcc-win64.zip"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.3.0/xmrig-6.3.0-msvc-cuda10_2-win64.zip"
   },
   "xmrigcc-cpu": {
     "name": "xmrigcc-cpu",
     "type": "cpu",
     "CPU": ".\\bin\\xmrigcc-cpu-1\\xmrigDaemon.exe",
     "minername": "xmrigDaemon.exe",
-    "version": "2.6.2",
+    "version": "2.7.0",
     "optional": "No",
-    "uri": "https://github.com/Bendr0id/xmrigCC/releases/download/2.6.2/xmrigCC-2.6.2-with_tls_and_gzip-mvc-win64.zip"
+    "uri": "https://github.com/Bendr0id/xmrigCC/releases/download/2.7.0/xmrigCC-2.7.0-with_tls_and_gzip-mvc-win64.zip"
   },
   "sugarchain": {
     "name": "sugarchain",

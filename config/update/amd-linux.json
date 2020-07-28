@@ -30,9 +30,9 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner",
     "AMD3": ".\\bin\\gminer-amd-3\\miner",
     "minername": "miner",
-    "version": "2.15",
+    "version": "2.19",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.15/gminer_2_15_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.19/gminer_2_19_linux64.tar.xz"
   },
   "kbminer-amd": {
     "name": "kbminer-amd",
@@ -96,7 +96,7 @@
     "AMD2": ".\\bin\\phoenix-amd-2\\PhoenixMiner",
     "AMD3": ".\\bin\\phoenix-amd-3\\PhoenixMiner",
     "minername": "PhoenixMiner",
-    "version": "5.0b",
+    "version": "5.1b",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz"
   },
@@ -162,9 +162,9 @@
     "AMD2": ".\\bin\\teamredminer-2\\teamredminer",
     "AMD3": ".\\bin\\teamredminer-3\\teamredminer",
     "minername": "teamredminer",
-    "version": "0.7.7",
+    "version": "0.7.8",
     "optional": "No",
-    "uri": "https://github.com/todxx/teamredminer/releases/download/0.7.7/teamredminer-v0.7.7-linux.tgz"
+    "uri": "https://github.com/todxx/teamredminer/releases/download/0.7.8/teamredminer-v0.7.8-linux.tgz"
   },
   "xmr-stak": {
     "name": "xmr-stak",
@@ -219,7 +219,7 @@
     "minername": "xmrig",
     "version": "6.2.0",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.2.0-beta/xmrig-6.2.0-beta-xenial-x64.tar.gz"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/xmrig-linux.tar.xz"
   },
   "xmrigcc-amd": {
     "name": "xmrigcc-amd",
@@ -228,9 +228,9 @@
     "AMD2": ".\\bin\\xmrigcc-amd-2\\xmrigDaemon-amd",
     "AMD3": ".\\bin\\xmrigcc-amd-3\\xmrigDaemon-amd",
     "minername": "xmrigDaemon",
-    "version": "1.9.3",
+    "version": "2.7.0",
     "optional": "No",
-    "uri": "https://github.com/Bendr0id/xmrigCC-amd/releases/download/1.9.3/xmrigCC-amd-1.9.3-with_tls-gcc7-linux-static-miner_only-x64.tar.gz"
+    "uri": "https://github.com/Bendr0id/xmrigCC/releases/download/2.7.0/xmrigCC-2.7.0-with_tls_and_gzip-gcc7-linux-static-amd64.tar.gz"
   },
   "progminer-amd": {
     "name": "progminer-amd",
@@ -261,9 +261,9 @@
     "AMD2": ".\\bin\\nanominer-2\\nanominer",
     "AMD3": ".\\bin\\nanominer-3\\nanominer",
     "minername": "nanominer",
-    "version": "1.9.4",
+    "version": "1.9.6",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.9.4/nanominer-linux-1.9.4.tar.gz"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.9.6/nanominer-linux-1.9.6.tar.gz"
   },
   "nbminer-amd": {
     "name": "nbminer-amd",

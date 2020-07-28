@@ -14,7 +14,8 @@
             "cryptonight-fast": "",
             "random-arq": "",
             "random-sfx": "",
-            "randomx": ""
+            "randomx": "",
+            "kawpow": ""
         },
         "difficulty": {
             "cryptonight-v8": "",
@@ -26,7 +27,8 @@
             "cryptonight-fast": "",
             "random-arq": "",
             "random-sfx": "",
-            "randomx": ""
+            "randomx": "",
+            "kawpow": ""
         },
         "naming": {
             "cryptonight-v8": "cn/2",
@@ -38,7 +40,8 @@
             "cryptonight-fast": "cn/half",
             "random-arq": "rx/arq",
             "random-sfx": "rx/sfx",
-            "randomx": "rx/0"
+            "randomx": "rx/0",
+            "kawpow": "kawpow"
         },
         "fee": {
             "cryptonight-v8": 1,
@@ -50,7 +53,8 @@
             "cryptonight-fast": 1,
             "random-arq": 1,
             "random-sfx": 1,
-            "randomx": 1
+            "randomx": 1,
+            "kawpow": 1
         }   
     },
     "NVIDIA2": {
@@ -67,7 +71,8 @@
             "cryptonight-fast": "",
             "random-arq": "",
             "random-sfx": "",
-            "randomx": ""
+            "randomx": "",
+            "kawpow": ""
         },
         "difficulty": {
             "cryptonight-v8": "",
@@ -79,7 +84,8 @@
             "cryptonight-fast": "",
             "random-arq": "",
             "random-sfx": "",
-            "randomx": ""
+            "randomx": "",
+            "kawpow": ""
         },
         "naming": {
             "cryptonight-v8": "cn/2",
@@ -91,7 +97,8 @@
             "cryptonight-fast": "cn/half",
             "random-arq": "rx/arq",
             "random-sfx": "rx/sfx",
-            "randomx": "rx/0"
+            "randomx": "rx/0",
+            "kawpow": "kawpow"
         },
         "fee": {
             "cryptonight-v8": 1,
@@ -103,7 +110,8 @@
             "cryptonight-fast": 1,
             "random-arq": 1,
             "random-sfx": 1,
-            "randomx": 1
+            "randomx": 1,
+            "kawpow": 1
         }   
     },
     "NVIDIA3": {
@@ -120,7 +128,8 @@
             "cryptonight-fast": "",
             "random-arq": "",
             "random-sfx": "",
-            "randomx": ""
+            "randomx": "",
+            "kawpow": ""
         },
         "difficulty": {
             "cryptonight-v8": "",
@@ -132,7 +141,8 @@
             "cryptonight-fast": "",
             "random-arq": "",
             "random-sfx": "",
-            "randomx": ""
+            "randomx": "",
+            "kawpow": ""
         },
         "naming": {
             "cryptonight-v8": "cn/2",
@@ -144,7 +154,8 @@
             "cryptonight-fast": "cn/half",
             "random-arq": "rx/arq",
             "random-sfx": "rx/sfx",
-            "randomx": "rx/0"
+            "randomx": "rx/0",
+            "kawpow": "kawpow"
         },
         "fee": {
             "cryptonight-v8": 1,
@@ -156,7 +167,8 @@
             "cryptonight-fast": 1,
             "random-arq": 1,
             "random-sfx": 1,
-            "randomx": 1
+            "randomx": 1,
+            "kawpow": 1
         }   
     }
 }

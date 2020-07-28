@@ -17,7 +17,7 @@ $Nicehash_Ports =
 "lyra2rev3":"3373",         "mtp":"3374",               "cryptonightr":"3375",      "cuckoocycle":"3376",
 "grincuckarood29":"3377",   "beamv2":"3378",            "x16rv2":"3379",            "randomxmonero":"3380",
 "eaglesong":"3381",         "cuckaroom": "3382",        "grincuckatoo32":"3383",    "handshake":"3384",
-"kawpow": "3385",           "cuckaroo29bfc": "3386",     "beamv3": "3387"
+"kawpow": "3385",           "cuckaroo29bfc": "3386",     "beamv3": "3387",          "cuckarooz29": "3388"
 }'    
 
 $Nicehash_Ports = $Nicehash_Ports | ConvertFrom-Json
@@ -50,6 +50,7 @@ if ($Name -in $(arg).PoolName) {
 
     $Pool_Data = $nicehash_Request.miningAlgorithms | 
     Where-Object paying -gt 0 | 
+    Where-Object speed -gt 0 |
     ForEach-Object -Parallel {
         $N = $using:name
         $P_ALgos = $using:Pool_Algos;

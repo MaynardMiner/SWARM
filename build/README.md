@@ -26,7 +26,9 @@ Contains third party applications that SWARM uses.
 
 Placeholder for data files, such as vendor identification list, and photos for wiki.
 
-## export
+## lib64.tar.gz
 
-Libs for linux that miners require to run. They are in SWARM so that SWARM can be ran
-in most linux environments.
+Libs for linux that miners require to run. On firs time run (HiveOS) or install (Linux),
+SWARM creates the location ``/usr/local/swarm``, and places these libs there. When new
+miner instances are loaded through ``screen``, SWARM will export the lib64 folder located
+there.

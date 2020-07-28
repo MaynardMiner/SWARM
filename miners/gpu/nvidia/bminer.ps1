@@ -72,6 +72,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                             "beamhashv3" { $Pass = ""; $Naming = "beamhash3"; $AddArgs = "" }
                             "eaglesong" { $Pass = ""; $Naming = "eaglesong"; $AddArgs = "" }
                             "kawpow" { $Pass = ""; $Naming = "raven"; $AddArgs = "" }
+                            "cuckarooz29" { $Pass = ""; $Naming = "cuckaroo29z"; $AddArgs = "" }
                         }
                     }
                     "zergpool" {

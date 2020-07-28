@@ -2348,10 +2348,74 @@ you wish to edit/modify it.
   with Kangaroo12, cuckaroo29-bfc, beamhashv3
   other other algos when adding them to configs.
   
-  ############################################
+############################################
 ############################################
 
 # SWARM 3.1.9
 
 ## Improvments
 * beamhashv3 rejection issue: fixed equihash specification.
+
+############################################
+############################################
+
+# SWARM 3.2.1
+
+## Improvements
+* Nicehash improvements
+  * Removes algorithms from table/list when
+    there is no one currently mining on it.
+  * Cuckarooz29 added.
+* Updated mining powershell version support
+  to 7.0.3
+
+## Windows Improvements
+* Autofan
+  * When nvidia-smi reports [error], defaults current speed as 0.
+* Power limit
+  * Power limit set by 1-120%, not 1-100%...Should be closer to your
+    wattage setting through dashboard.
+* Removed arguments from SWARM.bat, should auto-run SWARM help.
+
+## Updates
+* phoenix miner updated
+* nanominer updated
+* teamredminer updated
+* gminer updated
+* bminer updated
+
+############################################
+############################################
+
+# SWARM 3.2.2
+
+## What's New
+* New software created: NVClocks.
+  * Can set fan speed in Windows for
+    dual fan aware gpu's via commandline.
+  * Can set a % based power limit based on
+    desired watts. This software will auto-gather
+    maximum power limit %, and then convert wattage
+    vs. max watts to % value.
+
+## Improvements
+* ``bench`` command will output if a file was found.
+* ``bench`` command notates where to get benchmarks
+   names (get benchmarks).
+
+############################################
+############################################
+
+# SWARM 3.2.3
+
+## Improvements
+* Added more readme's in folders.
+* Added auto-lib updater in HiveOS
+* Added lib removal (for updates) in install_linux
+
+## Miner Updates
+* teamredminer updated
+* miniz updated
+* xmrig updated (kawpow added)
+* xmrigcc updated
+* bminer updated

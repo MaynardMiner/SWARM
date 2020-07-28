@@ -20,7 +20,8 @@
             "equihash_125/4": "",
             "kawpow": "",
             "cuckaroo29-bfc": "",
-            "beamhashv3": ""
+            "beamhashv3": "",
+            "cuckarooz29": ""
         },
         "difficulty": {
             "cuckoo_cycle": "",
@@ -38,7 +39,8 @@
             "equihash_125/4": "",
             "kawpow": "",
             "cuckaroo29-bfc": "",
-            "beamhashv3": ""
+            "beamhashv3": "",
+            "cuckarooz29": ""
         },
         "naming": {
             "cuckoo_cycle": "cuckoo_cycle",
@@ -56,7 +58,9 @@
             "equihash_125/4": "equihash_125/4",
             "kawpow": "kawpow",
             "cuckaroo29-bfc": "cuckaroo29-bfc",
-            "beamhashv3": "beamhashv3"
+            "beamhashv3": "beamhashv3",
+            "cuckarooz29": "cuckarooz29"
+
         },
         "fee": {
             "cuckoo_cycle": 2,
@@ -74,7 +78,8 @@
             "equihash_125/4": 2,
             "kawpow": 2,
             "cuckaroo29-bfc": 2,
-            "beamhashv3": 2
+            "beamhashv3": 2,
+            "cuckarooz29": 2
         }
     },
     "NVIDIA2": {
@@ -97,7 +102,8 @@
             "equihash_125/4": "",
             "kawpow": "",
             "cuckaroo29-bfc": "",
-            "beamhashv3": ""
+            "beamhashv3": "",
+            "cuckarooz29": ""
         },
         "difficulty": {
             "cuckoo_cycle": "",
@@ -115,7 +121,8 @@
             "equihash_125/4": "",
             "kawpow": "",
             "cuckaroo29-bfc": "",
-            "beamhashv3": ""
+            "beamhashv3": "",
+            "cuckarooz29": ""
         },
         "naming": {
             "cuckoo_cycle": "cuckoo_cycle",
@@ -133,7 +140,9 @@
             "equihash_125/4": "equihash_125/4",
             "kawpow": "kawpow",
             "cuckaroo29-bfc": "cuckaroo29-bfc",
-            "beamhashv3": "beamhashv3"
+            "beamhashv3": "beamhashv3",
+            "cuckarooz29": "cuckarooz29"
+
         },
         "fee": {
             "cuckoo_cycle": 2,
@@ -151,7 +160,8 @@
             "equihash_125/4": 2,
             "kawpow": 2,
             "cuckaroo29-bfc": 2,
-            "beamhashv3": 2
+            "beamhashv3": 2,
+            "cuckarooz29": 2
         }
     },
     "NVIDIA3": {
@@ -174,7 +184,8 @@
             "equihash_125/4": "",
             "kawpow": "",
             "cuckaroo29-bfc": "",
-            "beamhashv3": ""
+            "beamhashv3": "",
+            "cuckarooz29": ""
         },
         "difficulty": {
             "cuckoo_cycle": "",
@@ -192,7 +203,8 @@
             "equihash_125/4": "",
             "kawpow": "",
             "cuckaroo29-bfc": "",
-            "beamhashv3": ""
+            "beamhashv3": "",
+            "cuckarooz29": ""
         },
         "naming": {
             "cuckoo_cycle": "cuckoo_cycle",
@@ -210,7 +222,9 @@
             "equihash_125/4": "equihash_125/4",
             "kawpow": "kawpow",
             "cuckaroo29-bfc": "cuckaroo29-bfc",
-            "beamhashv3": "beamhashv3"
+            "beamhashv3": "beamhashv3",
+            "cuckarooz29": "cuckarooz29"
+
         },
         "fee": {
             "cuckoo_cycle": 2,
@@ -228,7 +242,8 @@
             "equihash_125/4": 2,
             "kawpow": 2,
             "cuckaroo29-bfc": 2,
-            "beamhashv3": 2
+            "beamhashv3": 2,
+            "cuckarooz29": 2
         }
    }
 }

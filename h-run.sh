@@ -33,29 +33,29 @@ disk-expand
 rm -rf /opt/microsoft/powershell/
 rm -rf /usr/bin/pwsh
 rm -rf /usr/bin/pwsh-preview
-wget https://github.com/PowerShell/PowerShell/releases/download/v7.0.2/powershell-7.0.2-linux-x64.tar.gz -O /tmp/powershell.tar.gz --no-check-certificate
-mkdir -p /opt/microsoft/powershell/7.0.2
-tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7.0.2
-chmod +x /opt/microsoft/powershell/7.0.2/pwsh
-ln -s /opt/microsoft/powershell/7.0.2/pwsh /usr/bin/pwsh
+wget https://github.com/PowerShell/PowerShell/releases/download/v7.0.3/powershell-7.0.3-linux-x64.tar.gz -O /tmp/powershell.tar.gz --no-check-certificate
+mkdir -p /opt/microsoft/powershell/7.0.3
+tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7.0.3
+chmod +x /opt/microsoft/powershell/7.0.3/pwsh
+ln -s /opt/microsoft/powershell/7.0.3/pwsh /usr/bin/pwsh
 rm -rf /tmp/powershell.tar.gz
 fi
 
 PVERSION=`pwsh -version`
 
 ## If pwsh is wrong version, install it again.
-if [ "$PVERSION" != "PowerShell 7.0.2" ]; then
+if [ "$PVERSION" != "PowerShell 7.0.3" ]; then
 echo "updating powershell to latest version"
 echo "removing lib folder"
 rm -rf /usr/local/swarm
 rm -rf /opt/microsoft/powershell/
 rm -rf /usr/bin/pwsh
 rm -rf /usr/bin/pwsh-preview
-wget https://github.com/PowerShell/PowerShell/releases/download/v7.0.2/powershell-7.0.2-linux-x64.tar.gz -O /tmp/powershell.tar.gz --no-check-certificate
-mkdir -p /opt/microsoft/powershell/7.0.2
-tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7.0.2
-chmod +x /opt/microsoft/powershell/7.0.2/pwsh
-ln -s /opt/microsoft/powershell/7.0.2/pwsh /usr/bin/pwsh
+wget https://github.com/PowerShell/PowerShell/releases/download/v7.0.3/powershell-7.0.3-linux-x64.tar.gz -O /tmp/powershell.tar.gz --no-check-certificate
+mkdir -p /opt/microsoft/powershell/7.0.3
+tar zxf /tmp/powershell.tar.gz -C /opt/microsoft/powershell/7.0.3
+chmod +x /opt/microsoft/powershell/7.0.3/pwsh
+ln -s /opt/microsoft/powershell/7.0.3/pwsh /usr/bin/pwsh
 rm -rf /tmp/powershell.tar.gz
 fi
 
