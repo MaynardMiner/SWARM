@@ -9,12 +9,16 @@
 ## Rigname: Name of your rig
 ## Currency: Preferred Fiat Currency
 ## CoinExchange: AltCoin Coin Pricing (Besides BTC).
-## Location: EUROPE ASIA US (Choose one).
+## Location: EUROPE ASIA US JAPAN (Choose one).
 ## Poolname: Remove Pools As You See Fit. Add Custom Pools If You Like.
 ## Type: NVIDIA1 or AMD1 or AMD1,NVIDIA2 or NVIDIA1,NVIDIA2,NVIDIA3 (maximum of three)
+## Type: CPU can be added, but -CPUThreads must be used (see help on arguments)
+## Type: ASIC can be used, compatible with cgminer & bfgminer (most asics)
+## Type: -ASIC_IP and -ASIC_ALGO must be used with -Type ASIC (see help on arguments)
 ## Wallet1: Your BTC Wallet. Add -Wallet2 or -Wallet3 if using -Type NVIDIA2 or NVIDIA3
 ## Donate: Donation in percent
 ## WattOMeter: Use Watt Calculations (Default is 0.10 / kwh). Can be modified. See Wiki
+## Hive_Hash: HiveOS Farm Hash
 
 ## ************NOTE***********************
 ## If you do not intend to use HiveOS, add -HiveOS No
