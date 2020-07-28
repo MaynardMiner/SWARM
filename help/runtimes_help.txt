@@ -1,0 +1,16 @@
+Runtimes
+
+SWARM has a script called runtimes.ps1
+
+This script can be ran to create a daily start/stop time for SWARM.
+
+Sample Usage:
+.\runtimes.ps1 08:00 17:30
+
+Allows SWARM to only run between those times. Will check every 5 minutes
+It will stop SWARM, and start SWARM when required.
+
+Linux requires install_linux (if not HiveOS) for commands to be installed.
+Windows requires SWARM to have ran at least once for commands to be installed.
+
+Keep file in main directory of SWARM. Should be ran while in main directory of SWARM
