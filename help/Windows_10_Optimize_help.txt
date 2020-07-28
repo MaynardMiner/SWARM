@@ -1,0 +1,29 @@
+Windows_10_Optimize.bat Will run Win_Optimize.ps1.
+
+It NEEDS to be ran as administrator. select > Runas > Administrator
+
+
+This will do the following when ran:
+    -Replace Utiliman with CMD
+    -Disable Lock Screen Windows Feature
+    -Disable Windows Update sharing
+    -Disable Windows Error Reporting
+    -Disable Automatic Updates (For now- You can never fully disable.)
+    -Disable Hibernation
+    -Disabling Windows Tracking Services
+    -Disabling Windows Defender (For now- You can never fully disable.)
+    -Removing Error And Customer Reporting Scheduled Tasks
+    -Disable One-Drive
+
+ Optimize AMD Cards / Reset Drivers.
+ This will update AMD registry for efficient GPU mining.
+ This will not affect cards bios directly.
+ HOWEVER THIS WILL HARM USING THIS MACHINE FOR GAMING!
+ Don't run this script if you wish to game with this machine as well!
+
+ IMPORTANT: THIS WILL HARM GAMING SETTINGS FOR WINDOWS WITH AMD CARDS.
+ THIS NEEDS TO RUN AS ADMIN. IT SETS GPUS TO COMPUTE MODE.
+
+ DON'T RUN WITH SWARM RUNNING!
+
+ REBOOT advised afterwards.

@@ -1,0 +1,17 @@
+Hive Windows Reset
+
+HiveOS on the linux side is a complex program that is integrated directly into the runtime of the linux OS. SWARM in Windows does not
+have the ability to do this. It is an application that runs on startup, and therefor issues like it accidentally being closed or
+application/console issues can occasionally cause problems.
+
+If you run into such problems- I have created a script that resets all HiveOS data (including parameters) to a near fresh-install status.
+This means that you can run Hive_Windows_Reset.bat, and it will remove all historical data besides stat and configs (excluding parameters)
+
+The instructions are simple:
+
+1.) Run Hive_Windows_Reset.bat
+
+2.) Start SWARM, and the help will start again.
+
+3.) [OPTIONAL] Open SWARM.bat with a text editor, and add your -Hive_Hash parameter so you will autoconnect again.
+    Instructions on how to add (and example) will be within SWARM.bat
