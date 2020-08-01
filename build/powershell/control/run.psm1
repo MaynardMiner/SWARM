@@ -335,7 +335,46 @@ function Global:Start-NewMiners {
             else {
                 $Miner.Status = "Running"
                 if ($Miner.Type -notlike "*ASIC*") { log "Process is $(Split-Path $Miner.Path -Leaf)[$($Miner.XProcess.ID)]" }
-                if ($Miner.Type -notlike "*ASIC*") { log "$($Miner.MinerName) Is Running!" -ForegroundColor Green }
+                if ($Miner.Type -notlike "*ASIC*") { 
+                    log "$($Miner.MinerName) Is Running!" -ForegroundColor Green 
+                    ## Change Process priority
+                    ## It has been found that lowering priority may
+                    ## Help with performance
+                    ## Some miners (like cryptodredge) will set their
+                    ## Priority to above normal- Crashing any rig with
+                    ## A not-so-great CPU in Windows.
+                    if ($IsWindows) {
+                        if (
+                            $Miner.Type -eq "NVIDIA1" -or
+                            $Miner.Type -eq "NVIDIA2" -or
+                            $Miner.Type -eq "NVIDIA3" -or
+                            $Miner.Type -eq "AMD1"
+                        ) {
+                            log "Setting process priority" -ForegroundColor Cyan
+                            $bool_array = @()
+                            $Miner.SubProcesses | Foreach-Object {
+                                $bool_array += $true;
+                            }
+                            do {
+                                for ($i = 0; $i -lt $Miner.SubProcesses.Count; $i++) {
+                                    $Proc = $Miner.SubProcesses[$i]
+                                    if (
+                                        !$Proc.HasExited -and 
+                                        $Proc.PriorityClass -ne "Normal"
+                                    ) {
+                                        $Proc.PriorityClass = "Normal"
+                                    }
+                                    elseif ($Proc.HasExited) {
+                                        $bool_array[$i] = $false
+                                    }
+                                    elseif ($Proc.PriorityClass -eq "Normal") {
+                                        $bool_array[$i] = $false
+                                    }
+                                }
+                            } while ($bool_array -contains $true)
+                        }
+                    }
+                }
                 else { log "$($Miner.Name) has successfully switched pools!" -ForeGroundColor Green }
                 $(vars).current_procs += $Miner.Xprocess.ID
             }

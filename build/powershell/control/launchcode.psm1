@@ -402,10 +402,6 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
       
                 if ($JobOutput.ProcessId -ne 0) {
                     $Process = Get-Process | Where-Object Id -EQ $JobOutput.ProcessId
-                    ## Change Process priority
-                    ## It has been found that lowering priority may
-                    ## Help with performance
-                    if(!$Process.HasExited){ $Process.PriorityClass = "BelowNormal"; }
                 }
                 $Process
             }
