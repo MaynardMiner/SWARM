@@ -4,6 +4,8 @@
 
 Windows Version Does Not Require HiveOS Windows. SWARM is built with all HiveOS API methods, and its own utilities like autofan, and overclocking. However, the overclocking for AMD requires prior registry modifications and compute mode activated to fully manipulate power play tables. If you are unsure how to do this- Run Win_Optimize.bat as an administrator. This will make an attempt to edit/make the registry entries for you, and set cards in compute mode. Reboot afterwards.
 
+**Developer Note**: I am aware of how brutal the codebase is. This is a 4 year old project, I have had to thousands of changes/additions along the way. Sometimes even I scratch my head. If you need clarification on how something works, I am more than happy to answer in the issues section. I eventually plan to sit down and re-write the entire thing into a much cleaner format, but right now it works....so....
+
 ## SWARM wiki:
 
 https://github.com/MaynardMiner/SWARM/wiki
