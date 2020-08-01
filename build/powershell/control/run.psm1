@@ -263,10 +263,6 @@ function Global:Start-NewMiners {
                     if ($Sel.XProcess.Id -ne $null) {
                         $Childs = Get-Process | Where { $_.Parent.Id -eq $Sel.XProcess.Id }
                         Write-Log "Closing all Previous Child Processes For $($Sel.Type)" -ForeGroundColor Cyan
-                        $Child = $Childs | % {
-                            $Proc = $_; 
-                            Get-Process | Where { $_.Parent.Id -eq $Proc.Id } 
-                        }
                     }
                     if ($Sel.HasExited -eq $false) {
                         do {
@@ -296,7 +292,7 @@ function Global:Start-NewMiners {
                                 }
                                 Restart-Computer
                             }
-                        }Until($false -notin $Child.HasExited)
+                        }Until($false -notin $Childs.HasExited)
                     }
                     if ($Sel.SubProcesses -and $false -in $Sel.SubProcesses.HasExited) { 
                         $Sel.SubProcesses | % { $Check = $_.CloseMainWindow(); if ($Check -eq $False) { Stop-Process -Id $_.Id -ErrorAction Ignore } }
@@ -311,13 +307,14 @@ function Global:Start-NewMiners {
                 if ($IsWindows) {
                     $(vars).QuickTimer.restart()
                     do {
-                        $Miner.SubProcesses = if ($Miner.Xprocess.Id) { Get-Process | Where { $_.Parent.ID -eq $Miner.Xprocess.Id } } else { $Null }
-                        if ($Miner.Subprocesses) {
-                            $Miner.SubProcesses = $Miner.SubProcesses | % { $Cur = $_.id; Get-Process | Where $_.Parent.ID -eq $Child | Where ProcessName -eq $Miner.MinerName.Replace(".exe", "") }
-                        }
+                        $Miner.SubProcesses = if ($Miner.Xprocess.Id) {
+                            Get-Process | 
+                            Where { $_.Parent.ID -eq $Miner.Xprocess.Id} |
+                            Where ProcessName -eq $Miner.MinerName.Replace(".exe", "")
+                        } else { $Null }
                         Write-Log "Getting Process Id For $($Miner.Name)"
                         Start-Sleep -S 1
-                    }Until($Null -ne $Miner.SubProcesses -or $(vars).QuickTimer.Elapsed.TotalSeconds -ge 5)
+                    } Until($Null -ne $Miner.SubProcesses -or $(vars).QuickTimer.Elapsed.TotalSeconds -ge 5)
                 }
             }
             else {
