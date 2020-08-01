@@ -405,7 +405,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                     ## Change Process priority
                     ## It has been found that lowering priority may
                     ## Help with performance
-                    $Process.PriorityClass = "BelowNormal";
+                    if(!$Process.HasExited){ $Process.PriorityClass = "BelowNormal"; }
                 }
                 $Process
             }
