@@ -14,14 +14,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function Global:Build-Hashtable {
     $(vars).Hashtable = @{};
-    foreach($type in $(vars).BestActiveMiners.Type) {
+    foreach ($type in $(vars).BestActiveMiners.Type) {
         $(vars).Hashtable.Add($type, 
-        @{
-            hashrate = [decimal]0; 
-            watts = [decimal]0; 
-            counts = [decimal]0;
-            actual = [decimal]0;
-        }
+            @{
+                hashrate = [decimal]0; 
+                watts    = [decimal]0; 
+                counts   = [decimal]0;
+                actual   = [decimal]0;
+            }
         )
     }
 }
@@ -33,17 +33,18 @@ function Global:Get-Power {
     )
 
     $res = Global:Get-SWARMTCP
-    if($res.$Type.hash){
+    if ($res.$Type.hash) {
         $data = [Double]$res.$Type.Watts
-    } else {
+    }
+    else {
         $data = 0
-   }
+    }
    
-   $data
+    $data
 }
 
 function Global:Set-Hashtable {
-    $No_Watts = @("CPU","ASIC")
+    $No_Watts = @("CPU", "ASIC")
     $(vars).Hashtable.keys | Foreach {
         $key = $_
         $Miner_HashRates = [decimal](Global:Get-HashRate -Type $key);
@@ -51,17 +52,18 @@ function Global:Set-Hashtable {
             $GPUPower = [decimal](Global:Get-Power $key); 
         }
         $(vars).Hashtable.$key.actual = $Miner_HashRates
-        if($(vars).Hashtable.$key.counts -ne 0 -and $Miner_HashRates -ne 0) {
+        if ($(vars).Hashtable.$key.counts -ne 0 -and $Miner_HashRates -ne 0) {
             $(vars).Hashtable.$key.counts++;
             $(vars).Hashtable.$key.hashrate = [decimal]( ( ($(vars).Hashtable.$key.hashrate * $(vars).Hashtable.$key.counts) + $Miner_HashRates ) / ( $(vars).Hashtable.$key.counts + 1) );
-            if($GPUPower) {
-                $(vars).Hashtable.$key.watts =   [decimal]( ( ($(vars).Hashtable.$key.watts * $(vars).Hashtable.$key.counts) + $GPUPower ) / ( $(vars).Hashtable.$key.counts + 1) );
+            if ($GPUPower) {
+                $(vars).Hashtable.$key.watts = [decimal]( ( ($(vars).Hashtable.$key.watts * $(vars).Hashtable.$key.counts) + $GPUPower ) / ( $(vars).Hashtable.$key.counts + 1) );
             }
-        } elseif($Miner_HashRates -ne 0) {
+        }
+        elseif ($Miner_HashRates -ne 0) {
             $(vars).Hashtable.$key.counts++;
-            $(vars).Hashtable.$key.hashrate =  [decimal]$Miner_HashRates;
-            if($GPUPower) {
-                $(vars).Hashtable.$key.watts =  [decimal]$GPUPower;
+            $(vars).Hashtable.$key.hashrate = [decimal]$Miner_HashRates;
+            if ($GPUPower) {
+                $(vars).Hashtable.$key.watts = [decimal]$GPUPower;
             }
         }
     }
