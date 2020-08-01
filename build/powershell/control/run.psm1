@@ -348,11 +348,7 @@ function Global:Start-NewMiners {
                             $Miner.Type -eq "AMD1"
                         ) {
                             log "Setting process priority" -ForegroundColor Cyan
-                            $bool_array = @()
-                            $Miner.SubProcesses | Foreach-Object {
-                                $bool_array += $true;
-                            }
-                            do {
+                            do{
                                 for ($i = 0; $i -lt $Miner.SubProcesses.Count; $i++) {
                                     $Proc = $Miner.SubProcesses[$i]
                                     if (
@@ -368,7 +364,7 @@ function Global:Start-NewMiners {
                                         $bool_array[$i] = $false
                                     }
                                 }
-                            } while ($bool_array -contains $true)
+                            } until ($Miner.SubProcesses.HasExited -notcontains $false -or $Miner.SubProcesses.PriorityClass -eq "BelowNormal")
                         }
                     }
                 }
