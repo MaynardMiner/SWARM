@@ -360,14 +360,14 @@ function Global:Start-NewMiners {
                                     $Proc = $Miner.SubProcesses[$i]
                                     if (
                                         !$Proc.HasExited -and 
-                                        $Proc.PriorityClass -ne "Normal"
+                                        $Proc.PriorityClass -ne "BelowNormal"
                                     ) {
-                                        $Proc.PriorityClass = "Normal"
+                                        $Proc.PriorityClass = "BelowNormal"
                                     }
                                     elseif ($Proc.HasExited) {
                                         $bool_array[$i] = $false
                                     }
-                                    elseif ($Proc.PriorityClass -eq "Normal") {
+                                    elseif ($Proc.PriorityClass -eq "BelowNormal") {
                                         $bool_array[$i] = $false
                                     }
                                 }
