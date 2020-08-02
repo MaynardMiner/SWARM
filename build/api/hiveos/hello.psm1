@@ -16,6 +16,8 @@ function Global:Start-Hello($RigData) {
     [System.Net.ServicePointManager]::SecurityProtocol = $AllProtocols
     
     $message = @()
+    $gpu = @()
+    $gpu += $RigData.gpu
 
     $Hello = @{
         method  = "hello"
@@ -31,14 +33,14 @@ function Global:Start-Hello($RigData) {
             net_interfaces   = ""
             openvpn          = "0"
             lan_config       = ""
-            gpu              = if($RigData.gpu){@($RigData.gpu)}else{""}
+            gpu              = $gpu
             gpu_count_amd    = "$($RigData.gpu_count_amd)"
             gpu_count_nvidia = "$($RigData.gpu_count_nvidia)"
-            worker_name      = "$($global:Config.hive_params.Worker)" 
             version          = ""
             kernel           = "$($RigData.kernel)"
             amd_version      = "$($RigData.amd_version)"
             nvidia_version   = "$($RigData.nvidia_version)"
+            ref_id           = ""
             mb               = @{
                 manufacturer = "$($RigData.mb.manufacturer)"
                 product      = "$($RigData.mb.product)" 

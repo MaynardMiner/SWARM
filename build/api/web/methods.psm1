@@ -33,6 +33,8 @@ function Global:Get-RigData {
             $RigData.mb.Add("manufacturer", $manu)
             $prod = $(Get-CimInstance Win32_BaseBoard | Select-Object Product).Product
             $RigData.mb.Add("product", $prod)
+            $uuid = (Get-CimInstance Win32_ComputerSystemProduct).UUID
+            $RigData.mb.Add("system_uuid",$uuid)
             $RigData.Add("cpu", @{ })
             $cpud = Get-CimInstance -Class Win32_processor | Select Name, DeviceID, NumberOfCores
             $cpuname = $cpud.name.Trim()
