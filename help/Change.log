@@ -2425,6 +2425,11 @@ you wish to edit/modify it.
 
 # SWARM 3.2.4
 
+## Note
+* Windows HiveOS wiki was updated with a couple of
+  neccessary items that should be done to prevent
+  issues when using HiveOS/SWARM.
+
 ## Improvements
 * Windows stability improvements: Downgrade
   miner processes that forcer their priority to
@@ -2433,9 +2438,13 @@ you wish to edit/modify it.
 * Fix minor typos in background agent.
 * Fix bad connection for single gpus in HiveOS (only affected
   rig with 1 gpu).
+* SWARM should output miner exec name and device group when
+  a miner fails to close, and SWARM AI elects to restart computer.
 
 ## Miner Updates
 * teamredminer updated
 * phoenix miner Updated
 * xmrig updated
 * bminer updated
+* gminer updated
+* cryptodredge updated
