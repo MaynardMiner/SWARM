@@ -300,7 +300,7 @@ function Global:Stop-AllMiners {
                         }
                         if ($Num -gt 180) {
                             if ($(arg).Startup -eq "Yes") {
-                                $HiveMessage = "2 minutes miner will not close on $($_.Type) - Restarting Computer"
+                                $HiveMessage = "2 minutes $($Sel.MinerName) will not close on $($Sel.Type) - Restarting Computer"
                                 $HiveWarning = @{result = @{command = "timeout" } }
                                 if ($(vars).WebSites) {
                                     $(vars).WebSites | ForEach-Object {
@@ -330,6 +330,7 @@ function Global:Stop-AllMiners {
 
         ## Linux
         elseif ($(arg).Platform -eq "linux") {
+            $Sel = $_
             ## Miner never started to begin with. Nothing to do here.
             if ($Null -eq $_.XProcess) { $_.Status = "Failed" }
             ## Miner is running, needs to close, but is not ASIC.
@@ -384,7 +385,7 @@ function Global:Stop-AllMiners {
                             ## We need to let user know there is an issue.
                             ## This can break SWARM.
                             if ($(arg).Startup -eq "Yes") {
-                                $HiveMessage = "2 minutes miner will not close on $($_.Type) - Restarting Computer"
+                                $HiveMessage = "2 minutes $($Sel.MinerName) will not close on $($Sel.Type) - Restarting Computer"
                                 $HiveWarning = @{result = @{command = "timeout" } }
                                 if ($(vars).WebSites) {
                                     $(vars).WebSites | ForEach-Object {
