@@ -2419,3 +2419,23 @@ you wish to edit/modify it.
 * xmrig updated (kawpow added)
 * xmrigcc updated
 * bminer updated
+
+############################################
+############################################
+
+# SWARM 3.2.4
+
+## Improvements
+* Windows stability improvements: Downgrade
+  miner processes that forcer their priority to
+  high (causes huge stability issues for larger rigs).
+* Fix minor typos in windows launch for process tracking.
+* Fix minor typos in background agent.
+* Fix bad connection for single gpus in HiveOS (only affected
+  rig with 1 gpu).
+
+## Miner Updates
+* teamredminer updated
+* phoenix miner Updated
+* xmrig updated
+* bminer updated
