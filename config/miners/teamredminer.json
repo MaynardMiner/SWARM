@@ -28,7 +28,8 @@
             "mtp": "",
             "cuckatoo31": "",
             "ethash" : "",
-            "kawpow": ""
+            "kawpow": "",
+            "cuckarood29": ""
         },
         "difficulty": {
             "chukwa": "",
@@ -49,7 +50,8 @@
             "mtp": "",
             "cuckatoo31": "",
             "ethash": "",
-            "kawpow": ""
+            "kawpow": "",
+            "cuckarood29": ""
         },
         "naming": {
             "chukwa": "trtl_chukwa",
@@ -70,7 +72,8 @@
             "mtp": "mtp",
             "cuckatoo31": "cuckatoo31_grin",
             "ethash": "ethash",
-            "kawpow": "kawpow"
+            "kawpow": "kawpow",
+            "cuckarood29": "cuckarood29"
         },
         "fee": {
             "chukwa": 2.5,
@@ -92,7 +95,8 @@
             "cuckatoo31": 2.5,
             "chukwa512": 2.5,
             "ethash": 2.5,
-            "kawpow": 2.5
+            "kawpow": 2.5,
+            "cuckarood29": 2.5
         }
     }
 }
