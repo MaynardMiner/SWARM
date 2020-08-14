@@ -7,4 +7,4 @@ have to re-sync each rig.
 
 ## Improvements:
 Windows HiveOS: Fix issues with HiveOS that caused rig to continously change
-identity. Was related to machine having potential active MAC addresseses.
+identity. Was related to machine potentially having multiple active MAC addresseses.
