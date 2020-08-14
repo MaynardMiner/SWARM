@@ -13,8 +13,18 @@ function Global:Get-RigData {
     Switch ($IsWindows) {
         $True {
             $RigData = @{ }
-            $getuid = (Get-CimInstance win32_networkadapterconfiguration | where { $_.IPAddress -ne $null } | select MACAddress).MacAddress -replace ("`:", "")
-            $string1 = "$getuid".ToLower()
+            $getuid = (Get-CimInstance win32_networkadapterconfiguration | where { $_.IPAddress -ne $null } | select MACAddress).MacAddress[0] -replace ("`:", "")
+            $uuid = (Get-CimInstance Win32_ComputerSystemProduct).UUID
+            $RigData.Add("cpu", @{ })
+            $cpud = Get-CimInstance -Class Win32_processor | Select Name, ProcessorId, NumberOfCores
+            $cpuname = $cpud.name.Trim()
+            $RigData.cpu.Add("model", $cpuname)
+            $cpucores = $cpud.NumberOfCores
+            $RigData.cpu.Add("cores", $cpucores)
+            $cpuid = $cpud.ProcessorId
+            $RigData.cpu.Add("cpu_id", $cpuid)
+            $string1 = $getuid + "-" + $uuid + "-" + $cpuid
+            $string1 = "$string1".ToLower()
             $uid = Global:Get-StringHash $string1
             $RigData.Add("uid", $uid)
             $BootTime = $((Get-CimInstance -ClassName win32_operatingsystem | select lastbootuptime).lastbootuptime)
@@ -33,16 +43,7 @@ function Global:Get-RigData {
             $RigData.mb.Add("manufacturer", $manu)
             $prod = $(Get-CimInstance Win32_BaseBoard | Select-Object Product).Product
             $RigData.mb.Add("product", $prod)
-            $uuid = (Get-CimInstance Win32_ComputerSystemProduct).UUID
             $RigData.mb.Add("system_uuid",$uuid)
-            $RigData.Add("cpu", @{ })
-            $cpud = Get-CimInstance -Class Win32_processor | Select Name, DeviceID, NumberOfCores
-            $cpuname = $cpud.name.Trim()
-            $RigData.cpu.Add("model", $cpuname)
-            $cpucores = $cpud.NumberOfCores
-            $RigData.cpu.Add("cores", $cpucores)
-            $cpuid = $cpud.DeviceID
-            $RigData.cpu.Add("cpu_id", $cpuid)
             $AES = $(Invoke-Expression ".\build\apps\features-win\features-win.exe" | Select -Skip 1 | ConvertFrom-StringData)."AES-NI"
             if ($AES -eq "Yes") { $HasAES = 1 }else { $HasAES = 0 }
             $RigData.cpu.Add("aes", $HasAES)
