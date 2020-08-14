@@ -1,1 +1,10 @@
 # SWARM 3.2.5
+
+## Notes:
+In Windows- Method to attain unique identifier for rig on HiveOS has chaged.
+This will cause HiveOS to assume rig is connecting for first time. You will
+have to re-sync each rig.
+
+## Improvements:
+Windows HiveOS: Fix issues with HiveOS that caused rig to continously change
+identity. Was related to machine having potential active MAC addresseses.
