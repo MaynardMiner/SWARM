@@ -452,7 +452,6 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
             ##Remove Old Logs
             $MinerLogs = Get-ChildItem "logs" | Where-Object Name -like "*$($MinerCurrent.Type)*"
             $MinerLogs | ForEach-Object { if (Test-Path "$($_)") { Remove-Item "$($_)" -Force } }
-            Start-Sleep -S .5
 
             ##Ensure bestminers.txt has been written (for slower storage drives)
             $FileTimer = New-Object -TypeName System.Diagnostics.Stopwatch
@@ -469,29 +468,17 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
             ##Bash Script to free Port
             if ($MinerCurrent.Port -ne 0) {
                 Write-Log "Clearing Miner Port `($($MinerCurrent.Port)`).." -ForegroundColor Cyan
-                $warn = 0;
                 $proc = Start-Process ".\build\bash\killcx.sh" -ArgumentList $MinerCurrent.Port -PassThru
-                do {
-                    $proc | Wait-Process -Timeout 5 -ErrorAction Ignore
-                    if ($proc.HasExited -eq $false) {
-                        log "Still Waiting For Port To Clear..." -ForegroundColor Cyan
-                        $warn += 5 
-                    }
-                    else { $warn = $(arg).time_wait }
-                }while ($warn -lt $(arg).time_wait)
-                
-                if ($warn -eq 2) { 
-                    log "Warning: Port still listed as TIME_WAIT, but launching anyway" -ForegroundColor Yellow 
-                    if ($Proc.HasExited -eq $false) {
-                        kill $Proc.Id -ErrorAction Ignore
-                    }
-                } 
-                elseif ($Warn -eq 10) { log "Port Was Cleared" -ForegroundColor Cyan }
+                try {
+                    $proc | Wait-Process -Timeout 15 -ErrorAction Stop
+                    log "Miner API Port Was Cleared!" -ForegroundColor Cyan
+                }
+                catch {
+                    log "Warning: Miner API Port still listed as TIME_WAIT after 15 seconds, but launching anyway" -ForegroundColor Yellow
+                    Stop-Process $proc
+                }
             }
 
-            ## Stop killcx.sh script
-            if ($proc.HasExited -eq $false) { Stop-Process $proc }
-            
             ##Notification To User That Miner Is Attempting To start
             log "Starting $($MinerCurrent.Name) Mining $($MinerCurrent.Symbol) on $($MinerCurrent.Type)" -ForegroundColor Cyan
 
@@ -537,9 +524,6 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
             $Algo = ($MinerCurrent.Algo).Replace("`/", "_")
             $TestScript | Set-Content "$MinerDir/swarm_start_$($Algo).sh"
     
-            ## .5 Second Delay After Read/Write Of Config Files. For Slower Drives.
-            Start-Sleep -S .5
-
             ## Run HiveOS hugepages commmand if algo is randomx
             if (
                 $MinerCurrent.algo -eq "randomx" -and

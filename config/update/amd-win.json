@@ -1,4 +1,5 @@
 {
+  "name": "amd-win",
   "srbmulti": {
     "name": "srbmulti",
     "type": "amd",
@@ -10,7 +11,6 @@
     "optional": "No",
     "uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.4.3/SRBMiner-Multi-0-4-3-win64.zip"
   },
-  "name": "amd-win",
   "claymore-amd": {
     "name": "claymore-amd",
     "type": "amd",
@@ -62,9 +62,9 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner.exe",
     "AMD3": ".\\bin\\gminer-amd-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "2.20",
+    "version": "2.21",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.20/gminer_2_20_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.21/gminer_2_21_windows64.zip"
   },
   "phoenix-amd": {
     "name": "phoenix-amd",
@@ -106,9 +106,9 @@
     "AMD2": ".\\bin\\lolMiner-AMD-2\\lolMiner.exe",
     "AMD3": ".\\bin\\lolMiner-AMD-3\\lolMiner.exe",
     "minername": "lolMiner.exe",
-    "version": "1.03",
+    "version": "1.06",
     "optional": "No",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.03/lolMiner_v1.03_Win64.zip"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.06/lolMiner_v1.06_Win64.zip"
   },
   "teamredminer": {
     "name": "teamredminer",
@@ -227,9 +227,9 @@
     "AMD2": ".\\bin\\nanominer-2\\nanominer.exe",
     "AMD3": ".\\bin\\nanominer-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "1.9.6",
+    "version": "1.10.0",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.9.6/nanominer-windows-1.9.6.zip"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.10.0/nanominer-windows-1.10.0.zip"
   },
   "nbminer-amd": {
     "name": "nbminer-amd",

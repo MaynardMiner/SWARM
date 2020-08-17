@@ -1,4 +1,5 @@
 {
+  "name": "cpu-linux",
   "bubasik": {
     "name": "bubasik",
     "type": "cpu",
