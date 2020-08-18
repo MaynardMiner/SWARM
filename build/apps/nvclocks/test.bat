@@ -18,5 +18,6 @@
 :: New PL: 87
 :: Press any key to exit ....
 
-NVClocks -i 0 -s 100
+pushd %~dp0
+NVClocks -i 0 -p 175,200
 cmd.exe
