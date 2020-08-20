@@ -1,4 +1,4 @@
-# SWARM 3.2.6
+# SWARM 3.2.7
 
 ## Improvements:
-* Windows- Power limit control for Nvidia cards was improved.
+* Changed t-rex miner cuda version to 10.

@@ -2471,3 +2471,11 @@ identity. Was related to machine potentially having multiple active MAC addresse
 * lolminer updated
 * nanominer updated
 * t-rex updated
+
+############################################
+############################################
+
+# SWARM 3.2.6
+
+## Improvements:
+* Windows- Power limit control for Nvidia cards was improved.
