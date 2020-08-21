@@ -33,7 +33,7 @@ $Global:Config.vars.dir = $Global:Config.vars.dir -replace "/var/tmp", "/root"
 Set-Location $Global:Config.vars.dir
 if (-not (test-path ".\debug")) { New-Item -Path "debug" -ItemType Directory | Out-Null }
 
-if($GLobal:Config.vars.dir -like "* *") {
+if ($GLobal:Config.vars.dir -like "* *") {
     Write-Host "Warning: Detected File Path To Be $($Global:Config.vars.dir)" -ForegroundColor Red
     Write-Host "Because there is a space within a parent directory," -ForegroundColor Red
     Write-Host "This will cause certain logs and miners to not start." -ForegroundColor Red
@@ -279,6 +279,11 @@ if ($(arg).Type -like "*AMD*") {
         Global:Add-Module "$($(vars).startup)\cl.psm1"
         [string]$(vars).AMDPlatform = Global:Get-AMDPlatform
         log "AMD OpenCL Platform is $($(vars).AMDPlatform)"
+        if ([string]$(vars).AMDPlatform -eq "") {
+            log "Failed to get OpenCL plaform. Use -CLPlatform." -ForegroundColor Red 
+            log "Using default 0 for AMD OpenCL platform"
+            $(vars).AMDPlatform = "0"
+        }
     }
 }
 
@@ -334,21 +339,21 @@ Global:Remove-Modules
 
 $(vars).Remove("BusData")
 $(vars).Remove("GPU_Count")
-$(vars).Add("Check_Interval",(Get-Date).ToUniversalTime());
-$(vars).Add("switch",$true);
-$(vars).Add("ETH_exchange",0);
-$(vars).Add("Load_Timer",(Get-Date).ToUniversalTime());
-$(vars).Add("Hashtable",@{});
+$(vars).Add("Check_Interval", (Get-Date).ToUniversalTime());
+$(vars).Add("switch", $true);
+$(vars).Add("ETH_exchange", 0);
+$(vars).Add("Load_Timer", (Get-Date).ToUniversalTime());
+$(vars).Add("Hashtable", @{});
 [GC]::Collect()
 [GC]::WaitForPendingFinalizers()
 [GC]::Collect()    
 
-if($(arg).Throttle -eq 0) {
+if ($(arg).Throttle -eq 0) {
     $(arg).Throttle = ([Environment]::ProcessorCount + 1)
 }
 
 ## Make stats folder if it doesn't exist
-if(-not (test-path ".\stats")) {
+if (-not (test-path ".\stats")) {
     new-item "stats" -ItemType Directory | Out-Null
 }
 
@@ -375,12 +380,12 @@ While ($true) {
         ##  This allows the abililty to remove/add variables to both, as well as clear them all with a single command.
         ##  These are all global values- It can be used with user-created modules.
 
-        if(
+        if (
             $(vars).switch -ne $true -and 
             [math]::Round(((Get-Date).ToUniversalTime() - $(vars).Check_Interval).TotalSeconds) -ge $(($(arg).Interval) * 60)
         ) {
-           $(vars).switch = $true
-           $(vars).Check_Interval = (Get-Date).ToUniversalTime()
+            $(vars).switch = $true
+            $(vars).Check_Interval = (Get-Date).ToUniversalTime()
         }
         $(vars).Load_Timer = (Get-Date).ToUniversalTime()
 
