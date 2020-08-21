@@ -145,27 +145,27 @@ function Global:Get-GPUCount {
             }
         }
         Write-Host "SWARM is Attempting to Get Card Information- If SWARM doesn't continue, a card is not responding." -ForegroundColor Yellow
-        invoke-expression ".\build\apps\amdmeminfo\amdmeminfo" | Tee-Object  -Variable amdmeminfo | Out-Null
-        $amdmeminfo = $amdmeminfo | where { $_ -notlike "*AMDMemInfo by Zuikkis `<zuikkis`@gmail.com`>*" } | where { $_ -notlike "*Updated by Yann St.Arnaud `<ystarnaud@gmail.com`>*" }
-        $amdmeminfo = $amdmeminfo | Select -skip 1
-        $amdmeminfo = $amdmeminfo.replace("Found Card: ", "Found Card=")
-        $amdmeminfo = $amdmeminfo.replace("Chip Type: ", "Chip Type=")
-        $amdmeminfo = $amdmeminfo.replace("BIOS Version: ", "BIOS Version=")
-        $amdmeminfo = $amdmeminfo.replace("PCI: ", "PCI=")
-        $amdmeminfo = $amdmeminfo.replace("OpenCL Platform: ", "OpenCL Platform=")
-        $amdmeminfo = $amdmeminfo.replace("OpenCL ID: ", "OpenCL ID=")
-        $amdmeminfo = $amdmeminfo.replace("Subvendor: ", "Subvendor=")
-        $amdmeminfo = $amdmeminfo.replace("Subdevice: ", "Subdevice=")
-        $amdmeminfo = $amdmeminfo.replace("Sysfs Path: ", "Sysfs Path=")
-        $amdmeminfo = $amdmeminfo.replace("Memory Type: ", "Memory Type=")
-        $amdmeminfo = $amdmeminfo.replace("Memory Model: ", "Memory Model=")
-        for ($i = 0; $i -lt $amdmeminfo.count; $i++) { $amdmeminfo[$i] = "$($amdmeminfo[$i]);" }
-        $amdmeminfo | % { $_ = $_ + ";" }
-        $amdmeminfo = [string]$amdmeminfo
-        $amdmeminfo = $amdmeminfo.split("-----------------------------------;")
-        $memarray = @()
-        for ($i = 0; $i -lt $amdmeminfo.count; $i++) { $item = $amdmeminfo[$i].split(";"); $data = $item | ConvertFrom-StringData; $memarray += [PSCustomObject]@{"busid" = $data."PCI"; "mem_type" = $data."Memory Model"; "bios" = $data."BIOS Version" } }
-        $amdmeminfo = $memarray
+       ## invoke-expression ".\build\apps\amdmeminfo\amdmeminfo" | Tee-Object  -Variable amdmeminfo | Out-Null
+       ## $amdmeminfo = $amdmeminfo | where { $_ -notlike "*AMDMemInfo by Zuikkis `<zuikkis`@gmail.com`>*" } | where { $_ -notlike "*Updated by Yann St.Arnaud `<ystarnaud@gmail.com`>*" }
+       ## $amdmeminfo = $amdmeminfo | Select -skip 1
+       ## $amdmeminfo = $amdmeminfo.replace("Found Card: ", "Found Card=")
+       ## $amdmeminfo = $amdmeminfo.replace("Chip Type: ", "Chip Type=")
+       ## $amdmeminfo = $amdmeminfo.replace("BIOS Version: ", "BIOS Version=")
+       ## $amdmeminfo = $amdmeminfo.replace("PCI: ", "PCI=")
+       ## $amdmeminfo = $amdmeminfo.replace("OpenCL Platform: ", "OpenCL Platform=")
+       ## $amdmeminfo = $amdmeminfo.replace("OpenCL ID: ", "OpenCL ID=")
+       ## $amdmeminfo = $amdmeminfo.replace("Subvendor: ", "Subvendor=")
+       ## $amdmeminfo = $amdmeminfo.replace("Subdevice: ", "Subdevice=")
+       ## $amdmeminfo = $amdmeminfo.replace("Sysfs Path: ", "Sysfs Path=")
+       ## $amdmeminfo = $amdmeminfo.replace("Memory Type: ", "Memory Type=")
+       ## $amdmeminfo = $amdmeminfo.replace("Memory Model: ", "Memory Model=")
+       ## for ($i = 0; $i -lt $amdmeminfo.count; $i++) { $amdmeminfo[$i] = "$($amdmeminfo[$i]);" }
+       ## $amdmeminfo | % { $_ = $_ + ";" }
+       ## $amdmeminfo = [string]$amdmeminfo
+       ## $amdmeminfo = $amdmeminfo.split("-----------------------------------;")
+       ## $memarray = @()
+       ## for ($i = 0; $i -lt $amdmeminfo.count; $i++) { $item = $amdmeminfo[$i].split(";"); $data = $item | ConvertFrom-StringData; $memarray += [PSCustomObject]@{"busid" = $data."PCI"; "mem_type" = $data."Memory Model"; "bios" = $data."BIOS Version" } }
+       ## $amdmeminfo = $memarray
     }
 
     ## Add cards based on bus order
