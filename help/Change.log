@@ -1,4 +1,8 @@
-# SWARM 3.2.7
+# SWARM 3.2.8
 
 ## Improvements:
-* Changed t-rex miner cuda version to 10.
+* Removed amdmeminfo error output in linux. (it wasn't issue- just annoying).
+* Output warning if HiveOS keys in Windows are corrupted (likely due to bad
+  reconnection). Prevent using corrupted keys to help re-sync with HiveOS.
+* Default OpenCL platform to "0" if auto-detection fails. 90% of the time
+  it is 0 anyways.

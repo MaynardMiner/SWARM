@@ -2479,3 +2479,11 @@ identity. Was related to machine potentially having multiple active MAC addresse
 
 ## Improvements:
 * Windows- Power limit control for Nvidia cards was improved.
+
+############################################
+############################################
+
+# SWARM 3.2.7
+
+## Improvements:
+* Changed t-rex miner cuda version to 10.
