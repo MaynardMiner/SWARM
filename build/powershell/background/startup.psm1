@@ -16,12 +16,12 @@ function Global:Get-Params {
     }
     if (Test-Path ".\config\parameters\Hive_params_keys.json") {
         try {
-            $HiveStuff = Get-Content ".\config\parameters\Hive_params_keys.json" | ConvertFrom-Json -ErrorAction Stop
+            $HiveStuff = Get-Content ".\config\parameters\Hive_params_keys.json" | ConvertFrom-Json
             $HiveStuff.PSObject.Properties.Name | % { $global:Config.hive_params.Add("$($_)", $HiveStuff.$_) }
             $HiveStuff = $null    
         }
         catch {
-            log "Hive_params_keys.json was corrupted. Not using, will attempt to reconnect without it." -ForegroundColor Red
+            Write-Host "Hive_params_keys.json was corrupted. Not using, will attempt to reconnect without it." -ForegroundColor Red
         }
     }
     if (-not $global:Config.hive_params.Id) {
