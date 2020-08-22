@@ -11,6 +11,22 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
+function Global:Get-MinerExec($path, $Name){
+    $sub_dirs = [IO.Directory]::GetDirectories($path);
+    $current_files = [IO.Directory]::GetFiles($path);
+
+    foreach($file in $current_files) {
+        $file_name = [IO.Path]::GetFileName($file)
+        if($file_name -eq $Name) {
+            return [IO.Path]::GetDirectoryName($file);
+        }
+    }
+
+    foreach($sub_dir in $sub_dirs) {
+        Global:Get-MinerExec $sub_dir $name
+    }
+}
+
 function Global:Expand-WebRequest {
     param(
         [Parameter(Mandatory = $true, Position = 0)]
@@ -99,9 +115,9 @@ function Global:Expand-WebRequest {
             else { log "Extraction Failed!" -ForegroundColor darkred; break }
 
             ##Now the fun part find the dir that the exec is in.
-            $Search = Get-ChildItem -Path ".\x64\$temp" -Filter "$Name" -Recurse -ErrorAction SilentlyContinue
+            $Search = Get-MinerExec ".\x64\$temp" $Name
             if (-not $Search) { log "Miner Executable Not Found" -ForegroundColor DarkRed; break }
-            $Contents = $Search.Directory.FullName | Select -First 1
+            $Contents = $Search
             $DirName = Split-Path $Contents -Leaf
             Move-Item -Path $Contents -Destination ".\bin" -Force | Out-Null; Start-Sleep -S 1
             Rename-Item -Path ".\bin\$DirName" -NewName "$BinPath" | Out-Null; Start-Sleep -S 1
@@ -118,13 +134,14 @@ function Global:Expand-WebRequest {
             New-Item -Path ".\x64\$temp" -ItemType "Directory" -Force | Out-Null; Start-Sleep -S 1
             if ($IsWindows) { $Proc = Start-Process ".\build\apps\7z\7z.exe" "x `"$($(vars).dir)\$X64_zip`" -o`"$($(vars).dir)\x64\$temp`" -y" -PassThru -WindowStyle Minimized -verb Runas; $Proc | Wait-Process }
             else { $Proc = Start-Process "unzip" -ArgumentList "$($(vars).dir)/$X64_zip -d $($(vars).dir)/x64/$temp" -PassThru; $Proc | Wait-Process }
+
             $Stuff = Get-ChildItem ".\x64\$Temp"
             if ($Stuff) { log "Extraction Succeeded!" -ForegroundColor Green }
             else { log "Extraction Failed!" -ForegroundColor darkred; break }
 
-            $Search = Get-ChildItem -Path ".\x64\$temp" -Filter "$Name" -Recurse -ErrorAction SilentlyContinue
+            $Search = Get-MinerExec ".\x64\$temp" $Name
             if (-not $Search) { log "Miner Executable Not Found" -ForegroundColor DarkRed; break }
-            $Contents = $Search.Directory.FullName | Select -First 1
+            $Contents = $Search
             $DirName = Split-Path $Contents -Leaf
             Move-Item -Path $Contents -Destination ".\bin" -Force | Out-Null; Start-Sleep -S 1
             Rename-Item -Path ".\bin\$DirName" -NewName "$BinPath" | Out-Null
@@ -144,7 +161,7 @@ function Global:Expand-WebRequest {
     }
     if (Test-Path $Path) {
         $Version | Set-Content ".\bin\$BinPath\swarm-version.txt"
-        log "Finished Successfully!" -ForegroundColor Green  
+        log "Finished Successfully!" -ForegroundColor Green 
     }
 }
 
