@@ -306,6 +306,11 @@ Access Denied Error prevented.
                                                 $Data.$_.difficulty | Add-Member "kawpow" "" -ErrorAction SilentlyContinue 
                                                 $Data.$_.naming | Add-Member "kawpow" "kawpow" -ErrorAction SilentlyContinue
                                                 $Data.$_.fee | Add-Member "kawpow" 2 -ErrorAction SilentlyContinue
+
+                                                $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomx"
+                                                $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "randomx"
+                                                $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "randomx"
+                                                $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "randomx"
                                             }
                                         }
                                     }
