@@ -7,3 +7,8 @@
 * Default OpenCL platform to "0" if auto-detection fails. 90% of the time
   it is 0 anyways.
 * Remove randomx on nanominer. Was using cpu instead of GPU.
+* Fix downloading miners that place their file in a different
+  folder name.
+
+  ## Updates
+  * xmrigcc updated
