@@ -180,6 +180,6 @@ if ($Start -eq $true) {
             Write-Host "Saving Arguments To .\config\parameters\newarguments.json" -ForegroundColor Yellow
             $Parsed | ConvertTo-Json | Out-File ".\config\parameters\newarguments.json"
         }
-        Invoke-Expression ".\swarm.ps1"
+        . .\swarm.ps1
     }
 }
