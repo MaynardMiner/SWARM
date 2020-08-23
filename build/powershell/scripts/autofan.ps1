@@ -557,7 +557,7 @@ While ($True) {
     $RIG.Handle_Errors();
     $RIG.Adjust();
     $RIG.Log_Cleanup();
-    [int]$Time = [math]::Round(10 - $Loop_Timer.Elapsed.Seconds, 0)
+    [int]$Time = [math]::Round(5 - $Loop_Timer.Elapsed.Seconds, 0)
     if ($Time -gt 0) { Start-Sleep -S $Time };
     $Loop_Timer.Restart()
 }
