@@ -145,7 +145,7 @@ if (test-path ".\debug\watchdog.txt") {
 
 Remove-Module -Name "startup"
 
-if ($IsWindows) { $(vars).Add("Cores", $(Get-CimInstance -ClassName "Win32_Processor" | Select-Object-Object -Property "NumberOfCores").NumberOfCores) }
+if ($IsWindows) { $(vars).Add("Cores", $(Get-CimInstance -ClassName "Win32_Processor" | Select-Object -Property "NumberOfCores").NumberOfCores) }
 
 While ($True) {
 
@@ -610,13 +610,13 @@ While ($True) {
 
     ##Select-Object Algo For Online Stats
     if ($global:HIVE_ALGO.Main) { $Global:StatAlgo = $global:HIVE_ALGO.Main }
-    else { $FirstMiner = $global:HIVE_ALGO.keys | Select-Object-Object -First 1; if ($FirstMiner) { $Global:StatAlgo = $global:HIVE_ALGO.$FirstMiner } }
+    else { $FirstMiner = $global:HIVE_ALGO.keys | Select-Object -First 1; if ($FirstMiner) { $Global:StatAlgo = $global:HIVE_ALGO.$FirstMiner } }
 
     if ($global:Web_Stratum.Main) { $Global:StatStratum = $global:Web_Stratum.Main }
-    else { $FirstStrat = $global:Web_Stratum.keys | Select-Object-Object -First 1; if ($FirstStrat) { $Global:StatStratum = $global:HIVE_ALGO.$FirstStrat } }
+    else { $FirstStrat = $global:Web_Stratum.keys | Select-Object -First 1; if ($FirstStrat) { $Global:StatStratum = $global:HIVE_ALGO.$FirstStrat } }
 
     if ($global:Workers.Main) { $Global:StatWorker = $global:Workers.Main }
-    else { $FirstWorker = $global:Workers.keys | Select-Object-Object -First 1; if ($FirstWorker) { $Global:StatWorker = $global:Workers.$FirstWorker } }
+    else { $FirstWorker = $global:Workers.keys | Select-Object -First 1; if ($FirstWorker) { $Global:StatWorker = $global:Workers.$FirstWorker } }
 
     ##Now To Format All Stats For Online Table And Screen
     if ($global:DoNVIDIA) {
@@ -635,7 +635,7 @@ While ($True) {
         }
     }
     if ($global:DoASIC) {
-        $numbers = $($global:CurrentMiners | Where-Object-Object Type -like "*ASIC*").Count
+        $numbers = $($global:CurrentMiners | Where-Object Type -like "*ASIC*").Count
         for ($global:i = 0; $global:i -lt $numbers; $global:i++) { $global:ASICHashTable += 0; }
     }
 

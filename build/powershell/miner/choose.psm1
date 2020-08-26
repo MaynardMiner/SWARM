@@ -14,14 +14,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 function Global:Remove-BadMiners {
     $BadMiners = @()
     if ($(arg).Threshold -ne 0) {
-        $(vars).Miners | Foreach-Object-Object { 
+        $(vars).Miners | Foreach-Object { 
             if ($_.Profit -gt $(arg).Threshold) { 
                 $BadMiners += $_ 
                 $(vars).Thresholds += "$($_.Name) mining $($_.Algo) was removed this run: Profit/Day above $($(arg).Threshold) BTC"
             }
         } 
     }
-    $BadMiners | Foreach-Object-Object { $(vars).Miners.Remove($_) }
+    $BadMiners | Foreach-Object { $(vars).Miners.Remove($_) }
 }
 
 function Global:Get-BestMiners {
@@ -71,11 +71,11 @@ function Global:Get-BestMiners {
 function Global:Get-Conservative {
     if ($(arg).Conserve -eq "Yes") {
         $bestminers_combo = @()
-        $(arg).Type | Foreach-Object-Object {
+        $(arg).Type | Foreach-Object {
             $SelType = $_
             $ConserveArray = @()
-            $ConserveArray += $(vars).Miners_Combo | Where-Object-Object Type -EQ $SelType | Where-Object-Object Profit -EQ $NULL
-            $ConserveArray += $(vars).Miners_Combo | Where-Object-Object Type -EQ $SelType | Where-Object-Object Profit -GT 0
+            $ConserveArray += $(vars).Miners_Combo | Where-Object Type -EQ $SelType | Where-Object Profit -EQ $NULL
+            $ConserveArray += $(vars).Miners_Combo | Where-Object Type -EQ $SelType | Where-Object Profit -GT 0
         }
         $bestminers_combo += $ConserveArray
     }

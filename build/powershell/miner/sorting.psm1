@@ -414,21 +414,21 @@ function Global:Start-MinerReduction {
     $CutMiners = @()
     $(arg).Type | ForEach-Object {
         $GetType = $_;
-        $(vars).Miners.Symbol | Select-Object-Object -Unique | ForEach-Object {
-            $zero = $(vars).Miners | Where-Object-Object Type -eq $GetType | Where-Object-Object Symbol -eq $_ | Where-Object-Object Quote -EQ 0; 
-            $nonzero = $(vars).Miners | Where-Object-Object Type -eq $GetType | Where-Object-Object Symbol -eq $_ | Where-Object-Object Quote -NE 0;
+        $(vars).Miners.Symbol | Select-Object -Unique | ForEach-Object {
+            $zero = $(vars).Miners | Where-Object Type -eq $GetType | Where-Object Symbol -eq $_ | Where-Object Quote -EQ 0; 
+            $nonzero = $(vars).Miners | Where-Object Type -eq $GetType | Where-Object Symbol -eq $_ | Where-Object Quote -NE 0;
 
             if ($zero) {
                 $GetMinersToCut = @()
                 $GetMinersToCut += $zero
                 $GetMinersToCut += $nonzero | Sort-Object @{Expression = "Quote"; Descending = $true }
-                $GetMinersToCut = $GetMinersToCut | Select-Object-Object -Skip 1;
+                $GetMinersToCut = $GetMinersToCut | Select-Object -Skip 1;
                 $GetMinersToCut | ForEach-Object { $CutMiners += $_ };
             }
             else {
                 $GetMinersToCut = @()
                 $GetMinersToCut = $nonzero | Sort-Object @{Expression = "Quote"; Descending = $true };
-                $GetMinersToCut = $GetMinersToCut | Select-Object-Object -Skip 1;
+                $GetMinersToCut = $GetMinersToCut | Select-Object -Skip 1;
                 $GetMinersToCut | ForEach-Object { $CutMiners += $_ };
             }
         }
@@ -454,7 +454,7 @@ function Global:Start-Sorting {
 
         $Miner = $_
      
-        $MinerPool = $Miner.MinerPool | Select-Object-Object -Unique
+        $MinerPool = $Miner.MinerPool | Select-Object -Unique
 
         if ($Miner.Power -gt 0) { $WattCalc3 = (((([Double]$Miner.Power * 24) / 1000) * $(vars).WattEx) * -1)}
         else { $WattCalc3 = 0 }
@@ -484,7 +484,7 @@ function Global:Start-Sorting {
 function Global:Add-SwitchingThreshold {
     $(vars).BestActiveMiners | ForEach-Object {
         $Sel = $_
-        $SWMiner = $(vars).Miners | Where-Object-Object Path -EQ $Sel.path | Where-Object-Object Arguments -EQ $Sel.Arguments | Where-Object-Object Type -EQ $Sel.Type 
+        $SWMiner = $(vars).Miners | Where-Object Path -EQ $Sel.path | Where-Object Arguments -EQ $Sel.Arguments | Where-Object Type -EQ $Sel.Type 
         if ($SWMiner -and $NULL -ne $SWMiner.Profit -and $SWMiner.Profit -ne "bench") {
             if ($(arg).Switch_Threshold) {
                 log "Switching_Threshold changes $($SWMiner.Name) $($SWMiner.Algo) base factored price from $(($SWMiner.Profit * $(vars).Rates.$($(arg).Currency)).ToString("N2"))" -ForegroundColor Cyan -NoNewLine -Start; 

@@ -86,7 +86,7 @@ class STAT_METHODS {
 
    ## Get Sum of values
    static [Microsoft.PowerShell.Commands.GenericMeasureInfo]Theta([Int]$Period, [Decimal[]]$Values) {
-      return $Values | Select-Object-Object -Last $Period | Measure-Object -Sum 
+      return $Values | Select-Object -Last $Period | Measure-Object -Sum 
    }
 
    ## Checks if a day has passed, and whether or not
@@ -131,7 +131,7 @@ class STAT_METHODS {
          If longer than a day- Then we reset entirely.
       #>
       if ($Last_Pull -gt 86400) {
-         $old.Live_Values = $old.Live_Values | Select-Object-Object -Last 1
+         $old.Live_Values = $old.Live_Values | Select-Object -Last 1
          $old.Minute_10_EMA = $value
          $old.Minute_15_EMA = $value
          $old.Minute_30_EMA = $value
@@ -151,7 +151,7 @@ class STAT_METHODS {
          $old.Pulls = 1
       }
       elseif ($Last_Pull -gt 14440) {
-         $old.Live_Values = @(([Convert]::ToDecimal($old.Day_MA)), ($old.Live_Values | Select-Object-Object -Last 1))
+         $old.Live_Values = @(([Convert]::ToDecimal($old.Day_MA)), ($old.Live_Values | Select-Object -Last 1))
          $old.Minute_10_EMA = $old.Day_EMA
          $old.Minute_15_EMA = $old.Day_EMA
          $old.Minute_30_EMA = $old.Day_EMA
@@ -164,7 +164,7 @@ class STAT_METHODS {
          $old.Hour_4_MA = $old.Day_MA
       }
       elseif ($last_Pull -gt 3600) {
-         $old.Live_Values = @(([Convert]::ToDecimal($old.Hour_4_MA)), ($old.Live_Values | Select-Object-Object -Last 1))
+         $old.Live_Values = @(([Convert]::ToDecimal($old.Hour_4_MA)), ($old.Live_Values | Select-Object -Last 1))
          $old.Minute_10_EMA = $old.Hour_4_EMA
          $old.Minute_15_EMA = $old.Hour_4_EMA
          $old.Minute_30_EMA = $old.Hour_4_EMA
@@ -175,7 +175,7 @@ class STAT_METHODS {
          $old.Hour_MA = $old.Hour_4_MA
       }
       elseif ($last_Pull -gt 1800) {
-         $old.Live_Values = @(([Convert]::ToDecimal($old.Hour_MA)), ($old.Live_Values | Select-Object-Object -Last 1))
+         $old.Live_Values = @(([Convert]::ToDecimal($old.Hour_MA)), ($old.Live_Values | Select-Object -Last 1))
          $old.Minute_10_EMA = $old.Hour_EMA
          $old.Minute_15_EMA = $old.Hour_EMA
          $old.Minute_30_EMA = $old.Hour_EMA
@@ -184,14 +184,14 @@ class STAT_METHODS {
          $old.Minute_30_MA = $old.Hour_MA
       }
       elseif ($last_Pull -gt 900) {
-         $old.Live_Values = @(([Convert]::ToDecimal($old.Minute_30_MA)), ($old.Live_Values | Select-Object-Object -Last 1))
+         $old.Live_Values = @(([Convert]::ToDecimal($old.Minute_30_MA)), ($old.Live_Values | Select-Object -Last 1))
          $old.Minute_10_EMA = $old.Minute_30_EMA
          $old.Minute_15_EMA = $old.Minute_30_EMA
          $old.Minute_10_MA = $old.Minute_30_MA
          $old.Minute_15_MA = $old.Minute_30_MA
       }
       elseif ($last_Pull -gt 600) {
-         $old.Live_Values = @(([Convert]::ToDecimal($old.Minute_15_MA)), ($old.Live_Values | Select-Object-Object -Last 1))
+         $old.Live_Values = @(([Convert]::ToDecimal($old.Minute_15_MA)), ($old.Live_Values | Select-Object -Last 1))
          $old.Minute_10_EMA = $old.Minute_15_EMA
          $old.Minute_10_MA = $old.Minute_15_MA
       }
@@ -371,7 +371,7 @@ class Pool_Stat : Stat {
 
             ## Keep only 24hrs worth of values.
             if ($old.Live_Values.Count -gt 288) {
-               $old.Live_Values = $old.Live_Values | Select-Object-Object -Last 288
+               $old.Live_Values = $old.Live_Values | Select-Object -Last 288
             }
 
             ## Add live values and make EMA

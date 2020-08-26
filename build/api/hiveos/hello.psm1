@@ -87,7 +87,7 @@ function Global:Start-WebStartup($response, $Site) {
         $RigConf = Get-Content ".\debug\get-hive-hello.txt" | ConvertFrom-Json
     }
     if ($RigConf) {
-        $RigConf.result | Get-Member -MemberType NoteProperty | Select-Object-Object -ExpandProperty Name | ForEach-Object {
+        $RigConf.result | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
             $Action = $_
             Switch ($Action) {
                 "config" {
