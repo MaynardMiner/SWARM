@@ -457,11 +457,18 @@ function Global:Start-Sorting {
         $MinerPool = $Miner.MinerPool | Select-Object -Unique
         $Quote = $Miner.Quote;
         $Miner.Quote = $Miner.Hashrate_Adjusted * $Quote;
+
+        ## Reduce hashrate of all miners of the same algorithm and type as the best miners to reduce switching.
+        ## This means that miner must be x % better in hashrate/rej ratio to switch. Where x% is -Hashrate_Threshold.
         $IsBestMiner = ($Null -ne (($(vars).BestActiveMiners | Where-Object Path -EQ $Miner.Path | Where-Object Arguments -EQ $Miner.Arguments | Where-Object Type -EQ $Miner.Type)))
+        $IsSameAlgoAsBestMiner = ($Null -ne ($(vars)).BestActiveMiners | Where-Object Algo -eq $Miner.Algo | Where-Object Type -eq $Miner.Type)
         
-        if($(arg).Hashrate_Threshold -gt 0 -and $IsBestMiner) {
-            $Miner.Quote = ($Miner.Hashrate_Adjusted * (1 + ( $(arg).Hashrate_Threshold / 100) ) ) * $Quote
-            log "$($Miner.Name) hashrate was increased by $($($arg).Hashrate_Threshold)% to reduce switching."
+        if($(arg).Hashrate_Threshold -gt 0 -and !$IsSameAlgoAsBestMiner -and $IsBestMiner) {
+            $Miner.Quote = ($Miner.Hashrate_Adjusted * (1 - ( $(arg).Hashrate_Threshold / 100) ) ) * $Quote
+        }
+
+        if($IsBestMiner -and $(arg).Hashrate_Threshold -gt 0) {
+            log "All miners that mine $($Miner.algo) that is not $($miner.name) was reduced by -Hashrate_Threshold $((arg).Hashrate_Threshold) % to reduce switching." -ForeGroundColor Magenta;
         }
 
         if ($Miner.Power -gt 0) { $WattCalc3 = (((([Double]$Miner.Power * 24) / 1000) * $(vars).WattEx) * -1)}
