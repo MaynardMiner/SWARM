@@ -1,6 +1,6 @@
 function Global:Watch-Hashrate {
     $Warning = $true
-    [double]$Minhashes = $Global:Config.hive_params.Wd_minhashes | Select-String "custom" | % { $_ -split "`'`{custom:" | Select -Last 1 } | % { $_ -replace "`}`'", "" }
+    [double]$Minhashes = $Global:Config.hive_params.Wd_minhashes | Select-String "custom" | ForEach-Object { $_ -split "`'`{custom:" | Select-Object -Last 1 } | ForEach-Object { $_ -replace "`}`'", "" }
     if ([double]$global:GPUKHS -gt $Minhashes) { $Warning = $false }
     if ($Warning -eq $true) {
         $No_Hash = [math]::Round(((Get-Date) - [datetime]$(vars).watchdog_start).TotalMinutes, 2)

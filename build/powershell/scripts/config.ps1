@@ -54,7 +54,7 @@ if ($continue -eq $true) {
 
 if ($continue -eq $true) { 
     $filepaths = Get-ChildItem ".\config"
-    $filepaths | % { $List = Get-ChildItem $_; if ($config_name -in $List.BaseName) { $Item = $_ } }
+    $filepaths | Foreach-Object { $List = Get-ChildItem $_; if ($config_name -in $List.BaseName) { $Item = $_ } }
     if (-not $Item) {
         $Get += "No config found that matches $config_name"
         Write-Host "No config found that matches $config_name"

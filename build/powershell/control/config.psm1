@@ -32,7 +32,7 @@ function Global:set-minerconfig($ConfigMiner, $Logs) {
                 "cuckaroo29" {
                     switch -WildCard ($ConfigMiner.Type) {
                         "*NVIDIA*" {
-                            $MinerDevices | % {
+                            $MinerDevices | Foreach-Object  {
                                 $ConfigFile += "[[mining.miner_plugin_config]]"
                                 $ConfigFile += "plugin_name = `"cuckaroo_cuda_29`""
                                 $ConfigFile += "[mining.miner_plugin_config.parameters]"
@@ -50,7 +50,7 @@ function Global:set-minerconfig($ConfigMiner, $Logs) {
                             }
                         }
                         "*AMD*" {
-                            $MinerDevices | % {
+                            $MinerDevices | Foreach-Object  {
                                 $ConfigFile += "[[mining.miner_plugin_config]]"
                                 $ConfigFile += "plugin_name = `"ocl_cuckaroo`""
                                 $ConfigFile += "[mining.miner_plugin_config.parameters]"
@@ -64,9 +64,9 @@ function Global:set-minerconfig($ConfigMiner, $Logs) {
                 "cuckatoo31" {
                     $NDevices = Get-Content ".\debug\gpucount.txt"
                     $NDevices = $NDevices | Select-String "VGA", "3D"
-                    $NDevices = $NDevices | Where { $_ -like "*NVIDIA*" -and $_ -notlike "*nForce*" }
-                    $MinerDevices | % {
-                        $Current = $NDevices | Select -skip $($_) -First 1
+                    $NDevices = $NDevices | Where-Object { $_ -like "*NVIDIA*" -and $_ -notlike "*nForce*" }
+                    $MinerDevices | Foreach-Object  {
+                        $Current = $NDevices | Select-Object -skip $($_) -First 1
                         if ($Current -Like "*GTX*") {
                             $ConfigFile += "[[mining.miner_plugin_config]]"
                             $ConfigFile += "plugin_name = `"cuckatoo_mean_cuda_gtx_31`""
@@ -160,8 +160,8 @@ function Global:set-nicehash {
     }
     $Workers += @{time = 0; commands = @(@{id = 1; method = "subscribe"; params = [array]"$($NHPool):$($NHPort)", "$($NHUser)" }) }
     $Workers += @{time = 2; commands = @(@{id = 1; method = "algorithm.add"; params = @($NHAlgo) }) }
-    $NHMDevices | foreach { $Workers += @{time = 3; commands = @(@{id = 1; method = "worker.add"; params = [array]"$NHAlgo", "$($_)"; }) } }
-    $NHMDevices | Foreach { $Workers += @{time = 10; loop = 10; commands = @(@{id = 1; method = "worker.print.speed"; params = @("$($_)") }) } }
+    $NHMDevices | ForEach-Object { $Workers += @{time = 3; commands = @(@{id = 1; method = "worker.add"; params = [array]"$NHAlgo", "$($_)"; }) } }
+    $NHMDevices | ForEach-Object { $Workers += @{time = 10; loop = 10; commands = @(@{id = 1; method = "worker.print.speed"; params = @("$($_)") }) } }
 
     $Workers | ConvertTo-Json -Depth 4 | Set-Content $CommandFile
 

@@ -23,18 +23,18 @@ function Global:Start-NVIDIAOC($NewOC) {
 
     ## Get Power limits
     $Get_Power = invoke-expression "nvidia-smi --query-gpu=power.max_limit,power.default_limit --format=csv" | ConvertFrom-CSV
-    $Max_Power = $Get_Power.'power.max_limit [W]' | % { $_ = $_.replace(" W","").replace(".00",""); $_ }
-    $Default_Power = $Get_Power.'power.default_limit [W]' | % { $_ = $_.replace(" W","").replace(".00",""); $_ }
+    $Max_Power = $Get_Power.'power.max_limit [W]'.replace(" W","").replace(".00","")
+    $Default_Power = $Get_Power.'power.default_limit [W]'.replace(" W","").replace(".00","")
 
-    $HiveNVOC.Keys | % {
+    $HiveNVOC.Keys | Foreach-Object  {
         $key = $_
         Switch ($key) {
             "OHGODAPILL_ENABLED" {
                 if ($HiveNVOC.OHGODAPILL_ENABLED -eq 1) {
                     $PillArg = $HiveNVOC.OHGODAPILL_ARG
                     $PillDelay = $HiveNVOC.RUNNING_DELAY
-                    $PillProc = Get-Process | Where Name -eq "OhGodAnETHlargementPill-r2"
-                    if ($PillProc) { $PillProc | % { Stop-Process -Id $_.ID } }
+                    $PillProc = Get-Process | Where-Object  Name -eq "OhGodAnETHlargementPill-r2"
+                    if ($PillProc) { $PillProc | Foreach-Object  { Stop-Process -Id $_.ID } }
                     if ($HiveNVOC.OHGODAPILL_START_TIMEOUT -gt 0) { $Sleep = "timeout $($HiveNVOC.OHGODAPILL_START_TIMEOUT) > NUL" }
                     $Script = @()
                     $Script += "$Sleep"
@@ -43,8 +43,8 @@ function Global:Start-NVIDIAOC($NewOC) {
                     $Process = Start-Process ".\build\apps\pill.bat" -WindowStyle Minimized
                 }
                 else {
-                    $PillProc = Get-Process | Where Name -eq "OhGodAnETHlargementPill-r2"
-                    if ($PillProc) { $PillProc | % { Stop-Process -Id $_.ID } }
+                    $PillProc = Get-Process | Where-Object  Name -eq "OhGodAnETHlargementPill-r2"
+                    if ($PillProc) { $PillProc | Foreach-Object  { Stop-Process -Id $_.ID } }
                 }
             }
             "FAN" {
@@ -54,13 +54,13 @@ function Global:Start-NVIDIAOC($NewOC) {
                     if ($NVOCFAN.Count -eq 1) {
                         for ($i = 0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
                             $FansArgs += "-i $i -s $($NVOCFan)"
-                            $ocmessage += "Setting GPU $($OCCount.NVIDIA.$i) Fan Speed To $($NVOCFan)`%"
+                            $ocmessage += "Setting GPU $($OCCount.NVIDIA.$i) Fan Speed To $($NVOCFan)`Foreach-Object "
                         }
                     }
                     else {
                         for ($i = 0; $i -lt $NVOCFAN.Count; $i++) {
                             $FansArgs += "-i $i -s $($NVOCFan[$i])"
-                            $ocmessage += "Setting GPU $i Fan Speed To $($NVOCFan[$i])`%"
+                            $ocmessage += "Setting GPU $i Fan Speed To $($NVOCFan[$i])`Foreach-Object "
                         }
                     }
                 }
@@ -150,7 +150,7 @@ function Global:Start-NVIDIAOC($NewOC) {
         $arguments = "-executionpolicy bypass -command `"$ScriptFile`""
         $CommandLine += " " + $arguments
         $start_oc = $start.New_Miner($filepath, $CommandLine, (split-path $ScriptFile))
-        $Proc = Get-Process | Where id -eq $start_oc.dwProcessId
+        $Proc = Get-Process | Where-Object  id -eq $start_oc.dwProcessId
         $Proc | Wait-Process
         $ocmessage
         $ocmessage | Set-Content ".\debug\ocnvidia.txt"
@@ -392,7 +392,7 @@ function Global:Start-AMDOC($NewOC) {
         ## Fan Settings
         if ($FanSpeed) {
             $OCArgs += "Fan_ZeroRPM=0 Fan_P0=25;$($FanSpeed) Fan_P1=25;$($FanSpeed) Fan_P2=25;$($FanSpeed) Fan_P3=25;$($FanSpeed) Fan_P4=25;$($FanSpeed) "
-            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Fan Speed To $($FanSpeed)`%"
+            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Fan Speed To $($FanSpeed)`Foreach-Object "
         }
         
         ## Ref Settings
@@ -412,7 +412,7 @@ function Global:Start-AMDOC($NewOC) {
         $arguments = "-executionpolicy bypass -command `"$ScriptFile`""
         $CommandLine += " " + $arguments
         $start_oc = $start.New_Miner($filepath, $CommandLine, (split-path $ScriptFile))
-        $Proc = Get-Process | Where id -eq $start_oc.dwProcessId
+        $Proc = Get-Process | Where-Object  id -eq $start_oc.dwProcessId
         $Proc | Wait-Process
         $ocmessage
         $ocmessage | Set-Content ".\debug\ocamd.txt"

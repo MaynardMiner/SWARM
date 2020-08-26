@@ -57,7 +57,7 @@ if ($Name -in $(arg).PoolName) {
         $Algorithms = $using:Algos;
         $Pipe_Hammer = $using:Ban_Hammer;
         $Algo = $_.Algorithm.ToLower()
-        $Nicehash_Algorithm = $P_ALgos.PSObject.Properties.Name | Where { $Algo -in $P_ALgos.$_.alt_names }
+        $Nicehash_Algorithm = $P_ALgos.PSObject.Properties.Name | Where-Object { $Algo -in $P_ALgos.$_.alt_names }
         if ($Algorithms -contains $Nicehash_Algorithm) {
             if ($N -notin $P_ALgos.$Nicehash_Algorithm.exclusions -and $Nicehash_Algorithm -notin $Pipe_Hammer) {
 
@@ -98,8 +98,8 @@ if ($Name -in $(arg).PoolName) {
                 if ($Params.Historical_Bias -ne "") {
                     $SmallestValue = 1E-20 
                     $Values = $Params.Historical_Bias.Split("`:")
-                    $Max_Penalty = [double]($Values | Select -First 1)
-                    $Max_Bonus = [double]($Values | Select -Last 1)
+                    $Max_Penalty = [double]($Values | Select-Object -First 1)
+                    $Max_Bonus = [double]($Values | Select-Object -Last 1)
                 
                     ## Penalize
                     if ($Stat.Historical_Bias -lt 0) {

@@ -21,7 +21,7 @@ function Global:Start-Shuffle($X, $Y) {
 }
 
 function Global:Get-Theta($Calcs, $Values) { 
-    $Values | Select -Last $Calcs | Measure-Object -Sum 
+    $Values | Select-Object -Last $Calcs | Measure-Object -Sum 
 }
 
 function Global:Set-Stat {
@@ -177,7 +177,7 @@ function Global:Set-Stat {
     
     ## Add new values, rotate first value if above max periods
     $Stat.Values += [decimal]$Value
-    if ($Stat.Values.Count -gt $Max_Periods) { $Stat.Values = $Stat.Values | Select -Skip 1 }    
+    if ($Stat.Values.Count -gt $Max_Periods) { $Stat.Values = $Stat.Values | Select-Object -Skip 1 }    
     
     if ($Stat.Locked -eq $false) {
 
@@ -194,7 +194,7 @@ function Global:Set-Stat {
         }    
 
         ## Calculate moving average for each time period
-        $Calcs.keys | foreach {
+        $Calcs.keys | ForEach-Object {
             $T = $Stat.Values
             $Theta = (Global:Get-Theta -Calcs $Calcs.$_ -Values $T)
             $Alpha = [Double](Global:Get-Alpha($Theta.Count))
@@ -225,7 +225,7 @@ function Global:Set-Stat {
     if (-not (Test-Path "stats")) { New-Item "stats" -ItemType "directory" }
 
     ## Convert final values to decimal values, and set new file.
-    $Stat.Values = @( $Stat.Values | % { [Decimal]$_ } )
+    $Stat.Values = @( $Stat.Values | ForEach-Object { [Decimal]$_ } )
     $Stat.Live = [Decimal]$Value
     $Stat.Minute = [Decimal]$Stat.Minute
     $Stat.Minute_5 = [Decimal]$Stat.Minute_5
@@ -274,7 +274,7 @@ function Global:Set-WStat {
 
     $Path = ".\wallet\values\$Name.txt"
     $Date = $Date.ToUniversalTime()
-    $Pool = $Name -split "_" | Select -First 1
+    $Pool = $Name -split "_" | Select-Object -First 1
 
     if (Test-Path $Path) { $WStat = Get-Content $Path | ConvertFrom-Json }
     if ($WStat) {
@@ -303,7 +303,7 @@ function Global:Set-WStat {
 
 function Global:get-wstats {
     $GetWStats = [PSCustomObject]@{ }
-    if (Test-Path ".\wallet\values") { Global:Get-ChildItemContent ".\wallet\values" | ForEach { $GetWStats | Add-Member $_.Name $_.Content } }
+    if (Test-Path ".\wallet\values") { Global:Get-ChildItemContent ".\wallet\values" | ForEach-Object { $GetWStats | Add-Member $_.Name $_.Content } }
     $GetWStats
 }
 

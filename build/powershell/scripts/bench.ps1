@@ -116,7 +116,7 @@ bench all
                 $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json
                 if ($Name -in $GetPoolBlock.Name) {
                     $Get += "Found $($Name) in Pool Block file"
-                    $NewPoolBlock = $GetPoolBlock | Where Name -ne $Name | ConvertTo-Json
+                    $NewPoolBlock = $GetPoolBlock | Where-Object Name -ne $Name | ConvertTo-Json
                     if ($NewPoolBlock) { $NewPoolBlock | Set-Content ".\timeout\pool_block\pool_block.txt" }
                     else { Clear-Content ".\timeout\pool_block\pool_block.txt" }
                 }
@@ -125,7 +125,7 @@ bench all
                 $GetPoolBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json
                 if ($Name -in $GetPoolBlock.Name) {
                     $Get += "Found $($Name) in Algo Block file"
-                    $NewPoolBlock = $GetPoolBlock | Where Name -ne $Name | ConvertTo-Json
+                    $NewPoolBlock = $GetPoolBlock | Where-Object Name -ne $Name | ConvertTo-Json
                     if ($NewPoolBlock) { $NewPoolBlock | Set-Content ".\timeout\algo_block\algo_block.txt" }
                     else { Clear-Content ".\timeout\algo_block\algo_block.txt" }
                 }
@@ -134,7 +134,7 @@ bench all
                 $GetPoolBlock = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json
                 if ($Name -in $GetPoolBlock.Name) {
                     $Get += "Found $($Name) in Miner Block file"
-                    $NewPoolBlock = $GetPoolBlock | Where Name -ne $Name | ConvertTo-Json
+                    $NewPoolBlock = $GetPoolBlock | Where-Object Name -ne $Name | ConvertTo-Json
                     if ($NewPoolBlock) { $NewPoolBlock | Set-Content ".\timeout\miner_block\miner_block.txt" }
                     else { Clear-Content ".\timeout\miner_block\miner_block.txt" }
                 }
@@ -144,7 +144,7 @@ bench all
                 $GetPoolBlock = Get-Content ".\timeout\download_block\download_block.txt"
                 if ($Name -in $GetPoolBlock) {
                     $Get += "Found $($Name) in Download Block file"
-                    $NewPoolBlock = $GetPoolBlock | Where Name -ne $Name | ConvertTo-Json
+                    $NewPoolBlock = $GetPoolBlock | Where-Object Name -ne $Name | ConvertTo-Json
                     if ($NewPoolBlock) { $NewPoolBlock | Set-Content ".\timeout\download_block\download_block.txt" }
                     else { Clear-Content ".\timeout\download_block\download_block.txt" }
                 }
@@ -163,7 +163,7 @@ bench all
                 $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json
                 if ($Name -in $GetPoolBlock.Algo) {
                     $Get += "Found $($Name) in Pool Block file"
-                    $NewPoolBlock = $GetPoolBlock | Where Algo -ne $Name | ConvertTo-Json
+                    $NewPoolBlock = $GetPoolBlock | Where-Object Algo -ne $Name | ConvertTo-Json
                     if ($NewPoolBlock) { $NewPoolBlock | Set-Content ".\timeout\pool_block\pool_block.txt" }
                     else { Clear-Content ".\timeout\pool_block\pool_block.txt" }
                 }
@@ -172,7 +172,7 @@ bench all
                 $GetPoolBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json
                 if ($Name -in $GetPoolBlock.Algo) {
                     $Get += "Found $($Name) in Algo Block file"
-                    $NewPoolBlock = $GetPoolBlock | Where Algo -ne $Name | ConvertTo-Json
+                    $NewPoolBlock = $GetPoolBlock | Where-Object Algo -ne $Name | ConvertTo-Json
                     if ($NewPoolBlock) { $NewPoolBlock | Set-Content ".\timeout\algo_block\algo_block.txt" }
                     else { Clear-Content ".\timeout\algo_block\algo_block.txt" }
                 }

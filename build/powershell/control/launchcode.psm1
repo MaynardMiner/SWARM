@@ -175,11 +175,11 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                             $Connection = $MinerCurrent.Connection
                             $Username = $MinerCurrent.Username
                             $Password = $MinerCurrent.Password
-                            $NewLines = $ConfFile | ForEach-Object {
-                                if ($_ -like "*<Connection Url =*") { $_ = "<Connection Url = `"stratum+tcp://$Connection`"" }
-                                if ($_ -like "*Username =*") { $_ = "            Username = `"$Username`"    " }
-                                if ($_ -like "*Password =*" ) { $_ = "            Password = `"$Password`">    " }
-                                if ($_ -notlike "*<Connection Url*" -or $_ -notlike "*Username*" -or $_ -notlike "*Password*") { $_ }
+                            for($i=0; $i -lt $NewLines.Count; $i++) {
+                                if ($NewLines[$i] -like "*<Connection Url =*") { $NewLines[$i] = "<Connection Url = `"stratum+tcp://$Connection`"" }
+                                if ($NewLines[$i] -like "*Username =*") { $NewLines[$i] = "            Username = `"$Username`"    " }
+                                if ($NewLines[$i] -like "*Password =*" ) { $NewLines[$i] = "            Password = `"$Password`">    " }
+                                if ($NewLines[$i] -notlike "*<Connection Url*" -or $NewLines[$i] -notlike "*Username*" -or $NewLines[$i] -notlike "*Password*") { $NewLines[$i] }
                             }
                             Clear-Content ".\lyclMiner.conf" -force
                             $NewLines | Set-Content ".\lyclMiner.conf"
@@ -198,11 +198,11 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                             $Connection = $MinerCurrent.Connection
                             $Username = $MinerCurrent.Username
                             $Password = $MinerCurrent.Password
-                            $NewLines = $ConfFile | ForEach-Object {
-                                if ($_ -like "*<Connection Url =*") { $_ = "<Connection Url = `"stratum+tcp://$Connection`"" }
-                                if ($_ -like "*Username =*") { $_ = "            Username = `"$Username`"    " }
-                                if ($_ -like "*Password =*" ) { $_ = "            Password = `"$Password`">    " }
-                                if ($_ -notlike "*<Connection Url*" -or $_ -notlike "*Username*" -or $_ -notlike "*Password*") { $_ }
+                            for($i=0; $i -lt $NewLines.Count; $i++) {
+                                if ($NewLines[$i] -like "*<Connection Url =*") { $NewLines[$i] = "<Connection Url = `"stratum+tcp://$Connection`"" }
+                                if ($NewLines[$i] -like "*Username =*") { $NewLines[$i] = "            Username = `"$Username`"    " }
+                                if ($NewLines[$i] -like "*Password =*" ) { $NewLines[$i] = "            Password = `"$Password`">    " }
+                                if ($NewLines[$i] -notlike "*<Connection Url*" -or $NewLines[$i] -notlike "*Username*" -or $NewLines[$i] -notlike "*Password*") { $NewLines[$i] }
                             }
                             Clear-Content ".\lyclMiner.conf" -force
                             $NewLines | Set-Content ".\lyclMiner.conf"
@@ -225,7 +225,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
         }
 
         if ($(arg).Platform -eq "windows") {
-            if ($MinerProcess -eq $null -or $MinerProcess.HasExited -eq $true) {
+            if ($null -eq $MinerProcess -or $MinerProcess.HasExited -eq $true) {
             
                 #dir
                 $WorkingDirectory = Join-Path $($(vars).dir) $(Split-Path $($MinerCurrent.Path))
@@ -266,7 +266,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 try { 
                     $NetPath = Join-Path $(vars).dir $MinerCurrent.Path.replace(".\", "")
                     $NetName = Split-Path $MinerCurrent.Path -leaf
-                    $Net = Get-NetFireWallRule | Where DisplayName -like "*$NetName*"
+                    $Net = Get-NetFireWallRule | Where-Object DisplayName -like "*$NetName*"
                     ## Clear old names from older versions.
                     foreach ($name in $net) {
                         if ($name.DisplayName -ne $NetPath) {
@@ -277,7 +277,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                         }
                     }
                     ## Add if miner path is not listed.
-                    if (-not ($net | Where DisplayName -eq $NetPath)) {
+                    if (-not ($net | Where-Object DisplayName -eq $NetPath)) {
                         try {
                             New-NetFirewallRule -DisplayName "$NetPath" -Direction Inbound -Program $NetPath -Action Allow -ErrorAction Ignore | Out-Null
                         }
@@ -374,7 +374,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 $Job = Start-Job -ArgumentList $PID, $WorkingDirectory, (Convert-Path ".\build\apps\launchcode.dll"), ".\swarm_start_$($Algo).ps1", $(arg).hidden {
                     param($ControllerProcessID, $WorkingDirectory, $dll, $ps1, $Hidden)
                     Set-Location $WorkingDirectory
-                    $ControllerProcess = Get-Process | Where Id -eq $ControllerProcessID
+                    $ControllerProcess = Get-Process | Where-Object Id -eq $ControllerProcessID
                     if ($null -eq $ControllerProcess) { return }
                     Add-Type -Path $dll
                     $start = [launchcode]::New()
@@ -387,7 +387,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                     $arguments = "-executionpolicy bypass -Windowstyle $WindowStyle -file `"$ps1`""
                     $CommandLine += " " + $arguments
                     $New_Miner = $start.New_Miner($filepath, $CommandLine, $WorkingDirectory)
-                    $Process = Get-Process | Where id -eq $New_Miner.dwProcessId
+                    $Process = Get-Process | Where-Object id -eq $New_Miner.dwProcessId
                     if ($null -eq $Process) { 
                         [PSCustomObject]@{ProcessId = $null }
                         return
@@ -401,8 +401,8 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                     } while ($Process.HasExited -eq $false)
                 }
       
-                do { sleep 1; $JobOutput = Receive-Job $Job }
-                while ($JobOutput -eq $null)
+                do { Start-Sleep 1; $JobOutput = Receive-Job $Job }
+                while ($null -eq $JobOutput)
       
                 if ($JobOutput.ProcessId -ne 0) {
                     $Process = Get-Process | Where-Object Id -EQ $JobOutput.ProcessId
@@ -601,9 +601,9 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 #Write We Are getting ID
                 log "Getting Process ID for $($MinerCurrent.MinerName)"
                 ## Now we get all plausible process id's based on miner name
-                $Miner_IDs = Get-Process | Where Name -eq  (Split-Path $MinerEXE -Leaf)
+                $Miner_IDs = Get-Process | Where-Object Name -eq  (Split-Path $MinerEXE -Leaf)
                 ## We search the parent process's parent ID.
-                $MinerProcess = $Miner_IDs | Where { $($_.Parent).Parent.Id -eq $Screen_ID }
+                $MinerProcess = $Miner_IDs | Where-Object { $($_.Parent).Parent.Id -eq $Screen_ID }
 
             }until($null -ne $MinerProcess -or ($MinerTimer.Elapsed.TotalSeconds) -ge 10)  
             ##Stop Timer

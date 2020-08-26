@@ -119,7 +119,7 @@ function Global:Get-AlgoMiners {
         $start_time = (Get-Date).ToUniversalTime()
         log "Checking Algo Miners. . . ." -ForegroundColor Yellow
         ##Load Only Needed Algorithm Miners
-        Global:Get-Miners | % { $(vars).Miners.Add($_) | Out-Null }
+        Global:Get-Miners | ForEach-Object { $(vars).Miners.Add($_) | Out-Null }
         remove AlgoPools
         [GC]::Collect()
         [GC]::WaitForPendingFinalizers()
@@ -135,7 +135,7 @@ function Global:Get-CoinMiners {
         $(vars).Coins = $true
         log "Checking Coin Miners. . . . ." -ForegroundColor Yellow
         ##Load Only Needed Coin Miners
-        Global:Get-Miners | % { $(vars).Miners.Add($_) | Out-Null }
+        Global:Get-Miners | ForEach-Object { $(vars).Miners.Add($_) | Out-Null }
         remove CoinPools
         [GC]::Collect()
         [GC]::WaitForPendingFinalizers()
@@ -149,8 +149,8 @@ function Global:Confirm-Backup {
     if ($(vars).No_Miners -ge 10 -and $(arg).startup -eq "Yes") {
         log "No Miners Last 10 Intervals- Migrating Backup And Then Restarting" -Foreground DarkRed
         if (test-path ".\Backup") {
-            $backup_stats = Get-ChildItem ".\backup" | Where BaseName -like "*hashrate*"
-            $backup_stats | % {
+            $backup_stats = Get-ChildItem ".\backup" | Where-Object BaseName -like "*hashrate*"
+            $backup_stats | ForEach-Object {
                 Copy-Item $_ -Destination ".\stats" -Force
             }
         }

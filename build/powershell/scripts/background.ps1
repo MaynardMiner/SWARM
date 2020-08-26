@@ -21,7 +21,7 @@ param(
 if ($IsWIndows) { $host.ui.RawUI.WindowTitle = "Background Agent: Keep Open!" }
 ## any windows version below 10 invoke full screen mode.
 if ($isWindows) {
-    $os_string = "$([System.Environment]::OSVersion.Version)".split(".") | Select -First 1
+    $os_string = "$([System.Environment]::OSVersion.Version)".split(".") | Select-Object -First 1
     if ([int]$os_string -lt 10) {
         invoke-expression "mode 800"
     }
@@ -44,7 +44,7 @@ if($isWindows){$env:Path += ";$($(vars).dir)\build\cmd"}
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$WorkingDir`'" -WindowStyle Minimized } }catch { }
 try { $Net = Get-NetFireWallRule } catch { }
 if ($Net) {
-    try { if ( -not ( $Net | Where { $_.DisplayName -like "*background.ps1*" } ) ) { New-NetFirewallRule -DisplayName 'background.ps1' -Direction Inbound -Program "$workingdir\build\powershell\scripts\background.ps1" -Action Allow | Out-Null } } catch { }
+    try { if ( -not ( $Net | Where-Object { $_.DisplayName -like "*background.ps1*" } ) ) { New-NetFirewallRule -DisplayName 'background.ps1' -Direction Inbound -Program "$workingdir\build\powershell\scripts\background.ps1" -Action Allow | Out-Null } } catch { }
 }
 $Net = $null
 
@@ -59,7 +59,7 @@ $(vars).Add("web", "$($(vars).dir)\build\api\web")
 
 if (Test-Path ".\debug\data.xml") {
     $(vars).Add("onboard", ([xml](Get-Content ".\debug\data.xml")))
-    $(vars).onboard = $(vars).onboard.gpuz_dump.card | Where vendor -ne "AMD/ATI" | Where vendor -ne "NVIDIA"
+    $(vars).onboard = $(vars).onboard.gpuz_dump.card | Where-Object vendor -ne "AMD/ATI" | Where-Object vendor -ne "NVIDIA"
 }
 
 $p = [Environment]::GetEnvironmentVariable("PSModulePath")
@@ -127,7 +127,7 @@ $Global:StartTime = Get-Date
 $CheckForSWARM = ".\build\pid\miner_pid.txt"
 if (Test-Path $CheckForSWARM) { 
     $global:GETSWARMID = Get-Content $CheckForSWARM; 
-    $Global:GETSWARM = Get-Process | Where ID -eq $global:GETSWARMID
+    $Global:GETSWARM = Get-Process | Where-Object ID -eq $global:GETSWARMID
 }
 $(vars).ADD("GCount", (Get-Content ".\debug\devicelist.txt" | ConvertFrom-Json))
 $(vars).ADD("BackgroundTimer", (New-Object -TypeName System.Diagnostics.Stopwatch))
@@ -145,7 +145,7 @@ if (test-path ".\debug\watchdog.txt") {
 
 Remove-Module -Name "startup"
 
-if ($IsWindows) { $(vars).Add("Cores", $(Get-CimInstance -ClassName "Win32_Processor" | Select-Object -Property "NumberOfCores").NumberOfCores) }
+if ($IsWindows) { $(vars).Add("Cores", $(Get-CimInstance -ClassName "Win32_Processor" | Select-Object-Object -Property "NumberOfCores").NumberOfCores) }
 
 While ($True) {
 
@@ -596,7 +596,7 @@ While ($True) {
             ## ADD Power to API
             if ($global:TypeS -eq "NVIDIA" -or $global:TypeS -eq "AMD") {
                 $WattValue = 0
-                $Global:Devices | % { 
+                $Global:Devices | Foreach-Object { 
                     $WattGPU = $(vars).GCOUNT.$global:TypeS.$_
                     if ($GPUPower.$WattGPU) { 
                         $WattValue += $GPUPower.$WattGPU
@@ -608,15 +608,15 @@ While ($True) {
     }
 
 
-    ##Select Algo For Online Stats
+    ##Select-Object Algo For Online Stats
     if ($global:HIVE_ALGO.Main) { $Global:StatAlgo = $global:HIVE_ALGO.Main }
-    else { $FirstMiner = $global:HIVE_ALGO.keys | Select-Object -First 1; if ($FirstMiner) { $Global:StatAlgo = $global:HIVE_ALGO.$FirstMiner } }
+    else { $FirstMiner = $global:HIVE_ALGO.keys | Select-Object-Object -First 1; if ($FirstMiner) { $Global:StatAlgo = $global:HIVE_ALGO.$FirstMiner } }
 
     if ($global:Web_Stratum.Main) { $Global:StatStratum = $global:Web_Stratum.Main }
-    else { $FirstStrat = $global:Web_Stratum.keys | Select-Object -First 1; if ($FirstStrat) { $Global:StatStratum = $global:HIVE_ALGO.$FirstStrat } }
+    else { $FirstStrat = $global:Web_Stratum.keys | Select-Object-Object -First 1; if ($FirstStrat) { $Global:StatStratum = $global:HIVE_ALGO.$FirstStrat } }
 
     if ($global:Workers.Main) { $Global:StatWorker = $global:Workers.Main }
-    else { $FirstWorker = $global:Workers.keys | Select-Object -First 1; if ($FirstWorker) { $Global:StatWorker = $global:Workers.$FirstWorker } }
+    else { $FirstWorker = $global:Workers.keys | Select-Object-Object -First 1; if ($FirstWorker) { $Global:StatWorker = $global:Workers.$FirstWorker } }
 
     ##Now To Format All Stats For Online Table And Screen
     if ($global:DoNVIDIA) {
@@ -635,7 +635,7 @@ While ($True) {
         }
     }
     if ($global:DoASIC) {
-        $numbers = $($global:CurrentMiners | Where-Object Type -like "*ASIC*").Count
+        $numbers = $($global:CurrentMiners | Where-Object-Object Type -like "*ASIC*").Count
         for ($global:i = 0; $global:i -lt $numbers; $global:i++) { $global:ASICHashTable += 0; }
     }
 
@@ -669,7 +669,7 @@ While ($True) {
         Remove-Variable numbers -ErrorAction Ignore
     }
 
-    ##Select Only For Each Device Group
+    ##Select-Object Only For Each Device Group
     $DeviceTable = @()
     if ([string]$(arg).GPUDevices1) { $DeviceTable += $(arg).GPUDevices1 -split "," }
     if ([string]$(arg).GPUDevices2) { $DeviceTable += $(arg).GPUDevices2 -split "," }

@@ -96,7 +96,7 @@ class RIG {
     RIG() {
         ## Set Websites
         $Path = [IO.Path]::Join($GLobal:Dir, "config\parameters\newarguments.json");
-        $Params = cat $Path | ConvertFrom-Json;
+        $Params = Get-Content $Path | ConvertFrom-Json;
         if ([string]$Params.Hive_Hash -ne "" -and [string]$Params.Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") {
             $this.Websites += "HiveOS";
         }
@@ -111,13 +111,13 @@ class RIG {
 
         ## Add GPUS
         $Path = [IO.Path]::Join($GLobal:Dir, "debug\hive_hello.txt")
-        $GPU_List = $(cat $Path | ConvertFrom-Json).params.gpu
+        $GPU_List = $(Get-Content $Path | ConvertFrom-Json).params.gpu
         $Path = [IO.Path]::Join($GLobal:Dir, "debug\oclist.txt")
-        $GPU_OCList = cat $Path | ConvertFrom-Json
+        $GPU_OCList = Get-Content $Path | ConvertFrom-Json
         $NVIDIA_Count = 0
         $AMD_Count = 0
         $Count = 0
-        $GPU_List | % {
+        $GPU_List | ForEach-Object {
             $Sel = $_
             Switch ($Sel.Brand) {
                 "nvidia" {
@@ -136,7 +136,7 @@ class RIG {
         }
 
         ## Print Found GPUS
-        $This.GPUS | % {
+        $This.GPUS | Foreach-Object {
             Write-Host "GPU $($_.Rig_Number): $($_.Model), Slot Number $($_.Device_Number), $($_.Model) GPU Number $($_.OC_Number)"
         }
     }
@@ -235,7 +235,7 @@ class RIG {
     [void] Get_GPUData() {
 
         ## Reset errors if miner was just stopped
-        $This.GPUS | % { [string[]]$_.Errors = @() }
+        $This.GPUS | Foreach-Object { [string[]]$_.Errors = @() }
         
         if ("NVIDIA" -in $This.Models) {
             $this.Get_NVIDIA()
@@ -285,15 +285,15 @@ class RIG {
 
         if ($nvidiaout -and $continue -eq $true ) {
             $Stats = @()
-            $nvidiaout | % {
+            $nvidiaout | Foreach-Object {
                 $Stats += @{ $($_.'pci.bus_id' -replace '00000000:', '') = @{
-                        fan  = $( $_.'fan.speed [%]' -replace ' \%', '')
+                        fan  = $( $_.'fan.speed [Foreach-Object]' -replace ' \Foreach-Object', '')
                         temp = $($_.'temperature.gpu')
                     }
                 }
             }
 
-            $This.GPUS | Where Model -eq "NVIDIA" | % {
+            $This.GPUS | Where-Object Model -eq "NVIDIA" | Foreach-Object {
                 if ($Stats.$($_.Bus_Id)) {
                     $Speed = if ([int]$Stats.$($_.Bus_Id).temp) { [Int]$Stats.$($_.Bus_Id).fan } else { -1 };
 
@@ -305,14 +305,14 @@ class RIG {
             }
         }
         else {
-            $This.GPUS | Where Model -eq "NVIDIA" | % {
+            $This.GPUS | Where-Object Model -eq "NVIDIA" | Foreach-Object {
                 $_.Errors += "No Data"
             }
         }
     }
 
     [void] Get_AMD() {
-        if ($this.GPUS | Where model -eq "AMD") {
+        if ($this.GPUS | Where-Object model -eq "AMD") {
             $continue = $false
             $stats = @()
             try {
@@ -352,21 +352,21 @@ class RIG {
             }
 
             if ($stats -and $continue -eq $true) {
-                $Cards = $This.GPUS | Where Model -eq "AMD"
+                $Cards = $This.GPUS | Where-Object Model -eq "AMD"
 
                 ## First Check To Make Sure All Values Are There:
-                $Temps = $stats | % { $_.Temperature }
-                $Fans = $stats | % { $_.'Fan Speed %' }
+                $Temps = $stats | Foreach-Object { $_.Temperature }
+                $Fans = $stats | Foreach-Object { $_.'Fan Speed Foreach-Object' }
 
                 ## Add New Temperature Readings
                 for ($i = 0; $i -lt $Cards.Count; $i++) {
-                    $this.GPUS | Where model -eq "AMD" | Where Device_Number -eq $i | % {
+                    $this.GPUS | Where-Object model -eq "AMD" | Where-Object Device_Number -eq $i | Foreach-Object {
                         $_.Update([Int]$Temps[$i], [Int]$fans[$i], [Int]$This.Config.CRITICAL_TEMP)
                     } 
                 }
             }
             else {
-                $This.GPUS | Where Model -eq "AMD" | % {
+                $This.GPUS | Where-Object Model -eq "AMD" | Foreach-Object {
                     $_.Errors += "No Data"
                 }
             }
@@ -377,7 +377,7 @@ class RIG {
         Write-Host ""
         Write-Host "Target Temperature is currently: $($this.Config.TARGET_TEMP)" -ForegroundColor Yellow
         if ("NVIDIA" -in $this.Models) { Write-Host "NVIDIA GPUS" -ForegroundColor Green }
-        $this.GPUS | Where Model -eq "NVIDIA" | ForEach-Object {
+        $this.GPUS | Where-Object Model -eq "NVIDIA" | ForEach-Object {
             $_.Set_Speed($this.Config); 
             if ($_.New_Speed -ne $_.FanSpeed) {
                 $FanArgs = "--index $($_.OC_Number) --speed $($_.New_Speed)"
@@ -389,12 +389,12 @@ class RIG {
             Write-Host "GPU $($_.Rig_Number): " -NoNewLine
             Write-Host "Temp: $($_.cur_temp), " -ForegroundColor Red -NoNewline
             Write-Host "Fan Speed: $($_.FanSpeed), " -ForegroundColor Cyan -NoNewline 
-            Write-Host "Change: $($_.New_Speed - $_.FanSpeed)%, " -ForegroundColor Yellow -NoNewline
-            Write-Host "Actual New Fan Speed %: $($_.New_Speed)" -ForegroundColor Green -NoNewline
+            Write-Host "Change: $($_.New_Speed - $_.FanSpeed)Foreach-Object, " -ForegroundColor Yellow -NoNewline
+            Write-Host "Actual New Fan Speed Foreach-Object: $($_.New_Speed)" -ForegroundColor Green -NoNewline
             Write-Host ""    
         }
         if ("AMD" -in $this.Models -and $this.Config.NO_AMD -ne 1) { Write-Host "AMD GPUS" -ForegroundColor Red }
-        $this.GPUS | Where Model -eq "AMD" | ForEach-Object {
+        $this.GPUS | Where-Object Model -eq "AMD" | ForEach-Object {
             if ($Config.NO_AMD -ne 1) {
                 $_.Set_Speed($this.Config); 
                 if ($_.New_Speed -ne $_.FanSpeed) {
@@ -406,15 +406,15 @@ class RIG {
                 Write-Host "GPU $($_.Rig_Number): " -NoNewLine
                 Write-Host "Temp: $($_.cur_temp), " -ForegroundColor Red -NoNewline
                 Write-Host "Fan Speed: $($_.FanSpeed), " -ForegroundColor Cyan -NoNewline 
-                Write-Host "Change: $($_.New_Speed - $_.FanSpeed)%, " -ForegroundColor Yellow -NoNewline
-                Write-Host "Actual New Fan Speed %: $($_.New_Speed)" -ForegroundColor Green -NoNewline
+                Write-Host "Change: $($_.New_Speed - $_.FanSpeed)Foreach-Object, " -ForegroundColor Yellow -NoNewline
+                Write-Host "Actual New Fan Speed Foreach-Object: $($_.New_Speed)" -ForegroundColor Green -NoNewline
                 Write-Host ""    
             }
         }
     }
 
     Handle_Errors() {
-        $this.GPUS | % {
+        $this.GPUS | Foreach-Object {
             $Errors = $_.Errors
             ## Determine Error
             if ($Errors) {
@@ -450,7 +450,7 @@ class RIG {
 
                 ## Notify Website:
                 if ($Message -and $this.Websites) {
-                    $this.Websites | % { $Send = [Message]::New("message", "warning", $message, "$($_)") }
+                    $this.Websites | Foreach-Object { $Send = [Message]::New("message", "warning", $message, "$($_)") }
                 }
 
                 ## Take Action:
@@ -502,13 +502,13 @@ class Message {
             "HiveOS" { 
                 $Path = [IO.Path]::Join($Global:Dir, "config\parameters\Hive_params_keys.json")
                 if (test-path $Path) { 
-                    $miner_keys = cat ".\config\parameters\Hive_params_keys.json" | ConvertFrom-Json 
+                    $miner_keys = Get-Content ".\config\parameters\Hive_params_keys.json" | ConvertFrom-Json 
                 } 
             }
             "SWARM" { 
                 $Path = [IO.Path]::Join($Global:Dir, "config\parameters\SWARM_params_keys.json")
                 if (Test-Path ".\config\parameters\SWARM_params_keys.json") { 
-                    $miner_keys = cat ".\config\parameters\SWARM_params_keys.json" | ConvertFrom-Json 
+                    $miner_keys = Get-Content ".\config\parameters\SWARM_params_keys.json" | ConvertFrom-Json 
                 } 
             }
         }
@@ -531,7 +531,7 @@ class Message {
 $host.ui.RawUI.WindowTitle = "Autofan"
 ## any windows version below 10 invoke full screen mode.
 if ($isWindows) {
-    $os_string = "$([System.Environment]::OSVersion.Version)".split(".") | Select -First 1
+    $os_string = "$([System.Environment]::OSVersion.Version)".split(".") | Select-Object -First 1
     if ([int]$os_string -lt 10) {
         invoke-expression "mode 800"
     }

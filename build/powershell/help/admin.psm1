@@ -53,17 +53,17 @@ Answer"
                     $Num = 1
                     $table = [ordered]@{ }
                     $Get = @()
-                    $Get += Get-ChildItem ".\miners\cpu" | Foreach {
+                    $Get += Get-ChildItem ".\miners\cpu" | ForEach-Object {
                         "$Num $($_.BaseName)";
                         $table.Add("$Num", "$($_.BaseName)")
                         $Num++;
                     }   
-                    $Get += Get-ChildItem ".\miners\gpu\amd" | Foreach {
+                    $Get += Get-ChildItem ".\miners\gpu\amd" | ForEach-Object {
                         "$Num $($_.BaseName)-1";
                         $table.Add("$Num", "$($_.BaseName)-1")
                         $Num++;
                     }
-                    $Get += Get-ChildItem ".\miners\gpu\nvidia" | Foreach {
+                    $Get += Get-ChildItem ".\miners\gpu\nvidia" | ForEach-Object {
                         "$Num $($_.BaseName)-1";
                         $table.Add("$Num", "$($_.BaseName)-1");
                         $Num++;
@@ -87,7 +87,7 @@ Number"
                     $Num = 1
                     $table = [ordered]@{ }
                     $Get = @()
-                    $Get += Get-ChildItem ".\algopools" | Foreach {
+                    $Get += Get-ChildItem ".\algopools" | ForEach-Object {
                         "$Num $($_.BaseName)";
                         $table.Add("$Num", "$($_.BaseName)")
                         $Num++;
@@ -106,7 +106,7 @@ Number"
                     $Num = 1
                     $table = [ordered]@{ }
                     $Get = @()
-                    $(vars).config.Type | % { $Get += "$Num $($_)"; $table.Add("$Num", "$($_)"); $Num++ }
+                    $(vars).config.Type | ForEach-Object { $Get += "$Num $($_)"; $table.Add("$Num", "$($_)"); $Num++ }
                     do {
                         $ans2 = Read-Host -Prompt "Please select the device group you wish to set a ban for
                         
@@ -122,17 +122,17 @@ Number"
             $Num = 1
             $table = [ordered]@{ }
             $Get = @()
-            $Get += Get-ChildItem ".\miners\cpu" | Foreach {
+            $Get += Get-ChildItem ".\miners\cpu" | ForEach-Object {
                 "$Num $($_.BaseName)";
                 $table.Add("$Num", "$($_.BaseName)")
                 $Num++;
             }   
-            $Get += Get-ChildItem ".\miners\gpu\amd" | Foreach {
+            $Get += Get-ChildItem ".\miners\gpu\amd" | ForEach-Object {
                 "$Num $($_.BaseName)-1";
                 $table.Add("$Num", "$($_.BaseName)-1")
                 $Num++;
             }
-            $Get += Get-ChildItem ".\miners\gpu\nvidia" | Foreach {
+            $Get += Get-ChildItem ".\miners\gpu\nvidia" | ForEach-Object {
                 "$Num $($_.BaseName)-1";
                 $table.Add("$Num", "$($_.BaseName)-1");
                 $Num++;
@@ -159,9 +159,9 @@ Number"
 
                 $Num = 1
                 $Algos = [ordered]@{ }
-                $List.PSObject.Properties.Name | % { $Algos.Add("$Num", $_); $Num++ }
+                $List.PSObject.Properties.Name | ForEach-Object { $Algos.Add("$Num", $_); $Num++ }
                 $AlgoTable = @()
-                $Algos.keys | % { $AlgoTable += "$($_) $($Algos.$_)" }
+                $Algos.keys | ForEach-Object { $AlgoTable += "$($_) $($Algos.$_)" }
     
                 $ans4 = Read-Host -Prompt "What Algorithm do you wish to prohibit?
 
@@ -396,7 +396,7 @@ function Global:Get-Optional {
         $Num = 1
         $table = [ordered]@{ }
         $Get = @()
-        $Get += Get-ChildItem ".\miners\optional_and_old" | Foreach {
+        $Get += Get-ChildItem ".\miners\optional_and_old" | ForEach-Object {
             "$Num $($_.BaseName)";
             $table.Add("$Num", "$($_.BaseName)")
             $Num++;
@@ -409,7 +409,7 @@ $($Get -join "`n")
 
 Answer"
         $ans = $ans.split(",")
-        $ans = $ans | % { $Table.$_ } 
+        $ans = $ans | ForEach-Object { $Table.$_ } 
         do {
             if($IsWindows){Clear-Host} elseif($IsLinux){$Host.UI.Write("`e[3;J`e[H`e[2J")}
             $Confirm = Read-Host -Prompt "You have entered the following miners

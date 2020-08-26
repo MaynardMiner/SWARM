@@ -36,6 +36,7 @@ $parsed = @{ }
 $start = $false
 $noconfig = $false
 
+
 ## Arguments take highest priority
 if ($args) {
     ## First run -help
@@ -55,13 +56,13 @@ if ($args) {
     ## defaults not specified.
     else {
         $Start = $true
-        $args | % {
-            if ($_ -is [string]) {
-                $_ = $_.replace("cnight", "cryptonight")
+        for($i=0; $i -lt $arg.count; $i++) {
+            if ($arg[$i] -is [string]) {
+                $arg[$i] = $arg[$i].replace("cnight", "cryptonight")
             }
             $Command = $false
-            $ListCheck = $_ -replace "-", ""
-            if ($_[0] -eq "-") { $Command = $true; $Com = $_ -replace "-", "" }
+            $ListCheck = $arg[$i] -replace "-", ""
+            if ($arg[$i][0] -eq "-") { $Command = $true; $Com = $arg[$i] -replace "-", "" }
             if ($Command -eq $true) {
                 if ($ListCheck -in $List) {
                     if ($ListCheck -notin $parsed.keys) {
@@ -80,11 +81,11 @@ if ($args) {
                 }            
             }
             else {
-                if ($parsed.$Com -eq "new") { $parsed.$Com = $_ }
+                if ($parsed.$Com -eq "new") { $parsed.$Com = $arg[$i] }
                 else {
                     $NewArray = @()
-                    $Parsed.$Com | % { $NewArray += $_ }
-                    $NewArray += $_
+                    $Parsed.$Com | Foreach-Object { $NewArray += $arg[$i] }
+                    $NewArray += $arg[$i]
                     $Parsed.$Com = $NewArray
                 }
             }
@@ -100,7 +101,7 @@ elseif (test-path ".\config.json") {
     $arguments = Get-Content ".\config.json" | ConvertFrom-Json
     if ([string]$arguments -ne "") {
         $Start = $true
-        $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
+        $arguments.PSObject.Properties.Name | Foreach-Object { $Parsed.Add("$($_)", $arguments.$_) }
     }
     ## run help if no newarguments
     elseif (-not (test-path ".\config\parameters\newarguments.json")) {
@@ -121,8 +122,8 @@ elseif (test-path ".\config.json") {
         $parsed = @{ }
         $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
         $defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
-        $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }    
-        $defaults.PSObject.Properties.Name | % {
+        $arguments.PSObject.Properties.Name | Foreach-Object { $Parsed.Add("$($_)", $arguments.$_) }    
+        $defaults.PSObject.Properties.Name | Foreach-Object {
             if ($_ -notin $Parsed.keys) {
                 $Parsed.Add("$($_)", $defaults.$_)
             }
@@ -136,8 +137,8 @@ elseif (Test-Path ".\config\parameters\newarguments.json") {
     $parsed = @{ }
     $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
     $defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
-    $arguments.PSObject.Properties.Name | % { $Parsed.Add("$($_)", $arguments.$_) }
-    $defaults.PSObject.Properties.Name | % {
+    $arguments.PSObject.Properties.Name | Foreach-Object { $Parsed.Add("$($_)", $arguments.$_) }
+    $defaults.PSObject.Properties.Name | Foreach-Object {
         if ($_ -notin $Parsed.keys) {
             $Parsed.Add("$($_)", $defaults.$_)
         }
@@ -160,7 +161,7 @@ else {
 }
 
 if ($Start -eq $true) {
-    $Defaults.PSObject.Properties.Name | % { if ($_ -notin $Parsed.keys) { $Parsed.Add("$($_)", $Defaults.$_) } }
+    $Defaults.PSObject.Properties.Name | Foreach-Object { if ($_ -notin $Parsed.keys) { $Parsed.Add("$($_)", $Defaults.$_) } }
 
     $Parsed | convertto-json | Out-File ".\config\parameters\commandline.json"
 

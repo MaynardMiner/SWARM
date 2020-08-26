@@ -38,11 +38,11 @@ function Global:Send-WebStats {
                     }
                 }
                 else { $SwarmResponse = Global:Start-webcommand -command $response -website $_ }
-                if ($SwarmResponse -ne $null) {
+                if ($null -ne $SwarmResponse) {
                     if ($SwarmResponse -eq "config") {
                         Write-Warning "Config Command Initiated- Restarting SWARM"
                         $MinerFile = Get-Content ".\build\pid\miner_pid.txt"
-                        if ($MinerFile) { $MinerId = Get-Process | Where Id -eq $MinerFile }
+                        if ($MinerFile) { $MinerId = Get-Process | Where-Object Id -eq $MinerFile }
                         if ($MinerId) {
                             Stop-Process $MinerId
                             Start-Sleep -S 3

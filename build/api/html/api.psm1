@@ -63,7 +63,7 @@ function Global:Get-APIServer {
                                     $Types | ForEach-Object {
                                         $MinersOn = $false
                                         $Selected = $getsummary | Where-Object Type -eq $_
-                                        $Selected | ForEach-Object { if ($_.Profit -ne $null) { $MinersOn = $true } }
+                                        $Selected | ForEach-Object { if ($null -ne $_.Profit) { $MinersOn = $true } }
                                         if ($MinersOn -eq $true) { $Selected = $Selected | Sort-Object -Property Profit -Descending }
                                         else { $Selected = $Selected | Sort-Object -Property Pool_Estimate -Descending }                
                                         $result += @{"$($_)" = @($Selected) }
@@ -94,7 +94,7 @@ function Global:Get-APIServer {
                                     $Types | ForEach-Object {
                                         $MinersOn = $false
                                         $Selected = $getbest | Where-Object Type -eq $_
-                                        $Selected | ForEach-Object { if ($_.Profit -ne $null) { $MinersOn = $true } }
+                                        $Selected | ForEach-Object { if ($null -ne $_.Profit) { $MinersOn = $true } }
                                         if ($MinersOn -eq $true) { $Selected = $Selected | Sort-Object -Property Profit -Descending }
                                         else { $Selected = $Selected | Sort-Object -Property Pool_Estimate -Descending }                
                                         $result += @{"$($_)" = @($Selected) }

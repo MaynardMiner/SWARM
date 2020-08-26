@@ -32,7 +32,7 @@ function Global:Set-Array {
         [string]$factor
     )
     try {
-        $Parsed = $ParseRates | ForEach-Object {if($_.count -gt 1) {$_ | Select -First 1 }else{$_}}
+        $Parsed = $ParseRates | ForEach-Object {if($_.count -gt 1) {$_ | Select-Object -First 1 }else{$_}}
         $Parsed = $Parsed | ForEach-Object { Invoke-Expression $_ }
         $Parse = $Parsed | Select-Object -Skip $i -First 1
         if ($null -eq $Parse) { $Parse = 0 }

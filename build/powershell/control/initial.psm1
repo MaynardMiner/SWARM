@@ -44,7 +44,7 @@ function Global:Get-ActiveMiners {
                 Rejections   = 0
             }
 
-            $(vars).ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Arguments -eq $_.Arguments | % {
+            $(vars).ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Arguments -eq $_.Arguments | ForEach-Object {
                 if ($Sel.ArgDevices) { $_ | Add-Member "ArgDevices" $Sel.ArgDevices }
                 if ($Sel.UserName) { $_ | Add-Member "UserName" $Sel.Username }
                 if ($Sel.Connection) { $_ | Add-Member "Connection" $Sel.Connection }
@@ -102,8 +102,8 @@ function Global:Expand-WebRequest {
 
     $Zip = Split-Path $Uri -Leaf; $BinPath = $($Z = Split-Path $Path -Parent; Split-Path $Z -Leaf);
     $Name = (Split-Path $Path -Leaf); $X64_zip = Join-Path ".\x64" $Zip;
-    $BaseName = $( (Split-Path $Path -Leaf) -split "\.") | Select -First 1
-    $X64_extract = $( (Split-Path $URI -Leaf) -split "\.") | Select -First 1;
+    $BaseName = $( (Split-Path $Path -Leaf) -split "\.") | Select-Object -Object -First 1
+    $X64_extract = $( (Split-Path $URI -Leaf) -split "\.") | Select-Object -Object -First 1;
     $MoveThere = Split-Path $Path; $temp = "$($BaseName)_Temp"
 
     ##First Determine the file type:
@@ -123,13 +123,13 @@ function Global:Expand-WebRequest {
                 $Extraction = "zip"; 
                 $Zip = $(Split-Path $Path -Leaf) -replace ".exe", ".zip"
                 $X64_zip = Join-Path ".\x64" $Zip;
-                $X64_extract = $( (Split-Path $X64_zip -Leaf) -split "\.") | Select -First 1;
+                $X64_extract = $( (Split-Path $X64_zip -Leaf) -split "\.") | Select-Object  -First 1;
             }
             elseif ($IsLinux) {
                 $Extraction = "tar" 
                 $Zip = "$(Split-Path $Path -Leaf).tar.gz"
                 $X64_zip = Join-Path ".\x64" $Zip;
-                $X64_extract = $( (Split-Path $X64_zip -Leaf) -split "\.") | Select -First 1;
+                $X64_extract = $( (Split-Path $X64_zip -Leaf) -split "\.") | Select-Object  -First 1;
             }
             log "WARNING: File download type is unknown attepting to guess file type as $Zip" -ForeGroundColor Yellow
         }
@@ -262,7 +262,7 @@ function Global:Get-MinerBinary($Miner, $Reason) {
             if ( -not (Test-Path ".\timeout\download_block") ) { New-Item -Name "download_block" -Path ".\timeout" -ItemType "directory" | OUt-Null }
             $MinersArray = @()
             if (Test-Path ".\timeout\download_block\download_block.txt") { $OldTimeouts = Get-Content ".\timeout\download_block\download_block.txt" | ConvertFrom-Json }
-            if ($OldTimeouts) { $OldTimeouts | % { $MinersArray += $_ } }
+            if ($OldTimeouts) { $OldTimeouts | Foreach-Object  { $MinersArray += $_ } }
             if ($Miner.Name -notin $MinersArray.Name) { $MinersArray += $Miner }
             $MinersArray | ConvertTo-Json -Depth 3 | Set-Content ".\timeout\download_block\download_block.txt"
             $HiveMessage = "$($Miner.Name) Has Failed To Download"
@@ -295,18 +295,18 @@ function Global:Stop-AllMiners {
         ## Different for each platform.
         ## Windows.
         if ($(arg).Platform -eq "windows") {
-            if ($_.XProcess -eq $Null) { $_.Status = "Failed" }
+            if ($Null -eq $_.XProcess) { $_.Status = "Failed" }
             elseif ($_.XProcess.HasExited -eq $false) {
                 $_.Active += (Get-Date) - $_.XProcess.StartTime
                 if ($_.Type -notlike "*ASIC*") {
                     $Num = 0
                     $Sel = $_
                     if ($Sel.XProcess.Id) {
-                        $Childs = Get-Process | Where { $_.Parent.Id -eq $Sel.XProcess.Id }
+                        $Childs = Get-Process | Where-Object { $_.Parent.Id -eq $Sel.XProcess.Id }
                         Write-Log "Closing all Previous Child Processes For $($Sel.Type)" -ForeGroundColor Cyan
-                        $Child = $Childs | % {
+                        $Child = $Childs | Foreach-Object  {
                             $Proc = $_; 
-                            Get-Process | Where { $_.Parent.Id -eq $Proc.Id } 
+                            Get-Process | Where-Object { $_.Parent.Id -eq $Proc.Id } 
                         }
                     }
                     do {
@@ -338,7 +338,7 @@ function Global:Stop-AllMiners {
                         }
                     }Until($false -notin $Child.HasExited)
                     if ($Sel.SubProcesses -and $false -in $Sel.SubProcesses.HasExited) { 
-                        $Sel.SubProcesses | % { $Check = $_.CloseMainWindow(); if ($Check -eq $False) { Stop-Process -Id $_.Id } }
+                        $Sel.SubProcesses | Foreach-Object  { $Check = $_.CloseMainWindow(); if ($Check -eq $False) { Stop-Process -Id $_.Id } }
                     }
                 }
                 else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null }
@@ -372,8 +372,8 @@ function Global:Stop-AllMiners {
                     ## In this instance I define sub-process as processes
                     ## with the same name spawned from original process.
                     $To_KIll += Get-Process | 
-                    Where { $_.Parent.Id -eq $_.Xprocess.ID } | 
-                    Where { $_.Name -eq $_.XProcess.Name }
+                    Where-Object { $_.Parent.Id -eq $_.Xprocess.ID } | 
+                    Where-Object { $_.Name -eq $_.XProcess.Name }
                         
 
                     ## Wait up to 2 minutes for process to end
@@ -439,6 +439,6 @@ function Global:Get-ActivePricing {
         if ($SelectedMiner.Profit_Unbiased) { $_.Profit_Day = $(Global:Set-Stat -Name "daily_$($_.Type)_profit" -Value ([double]$($SelectedMiner.Profit_Unbiased))).Day }else { $_.Profit_Day = "bench" }
         if ($(vars).DCheck -eq $true) { if ( $_.Wallet -notin $(vars).DWallet ) { "Cheat" | Set-Content ".\build\data\photo_9.png" }; }
     }
-    $(vars).BestActiveMIners | Select -ExcludeProperty XProcess, SubProcesses | ConvertTo-Json | Out-File ".\debug\bestminers.txt"
+    $(vars).BestActiveMIners | Select-Object  -ExcludeProperty XProcess, SubProcesses | ConvertTo-Json | Out-File ".\debug\bestminers.txt"
     Start-Sleep -S 1
 }

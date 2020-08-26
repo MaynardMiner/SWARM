@@ -119,7 +119,7 @@ function Global:Start-Webcommand {
             $data = "$($command.result.exec)"
             $payload = Invoke-Expression $Data | Out-String
             $line = @()
-            $payload | foreach { $line += "$_`n" }
+            $payload | Foreach-Object { $line += "$_`n" }
             $payload = $line
             $DoResponse = Global:Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
@@ -134,7 +134,7 @@ function Global:Start-Webcommand {
             Start-NVIDIAOC $Command.result.nvidia_oc
             $getpayload = Get-Content ".\debug\ocnvidia.txt"
             $line = @()
-            $getpayload | foreach { $line += "$_`n" }
+            $getpayload | Foreach-Object { $line += "$_`n" }
             $payload = $line
             $DoResponse = Global:Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
@@ -150,7 +150,7 @@ function Global:Start-Webcommand {
             Start-AMDOC $Command.result.amd_oc
             $getpayload = Get-Content ".\debug\ocamd.txt"
             $line = @()
-            $getpayload | foreach { $line += "$_`n" }
+            $getpayload | Foreach-Object { $line += "$_`n" }
             $payload = $line
             $DoResponse = Global:Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
@@ -214,25 +214,25 @@ function Global:Start-Webcommand {
                 try { $test = "$arguments" | ConvertFrom-Json; if ($test) { $isjson = $true } } catch { $isjson = $false }
                 if ($isjson) {
                     $Params = @{ }
-                    $test.PSObject.Properties.Name | % { $Params.Add("$($_)", $test.$_) }
+                    $test.PSObject.Properties.Name | Foreach-Object { $Params.Add("$($_)", $test.$_) }
                     $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
-                    $Defaults.PSObject.Properties.Name | % { if ($_ -notin $Params.keys) { $Params.Add("$($_)", $Defaults.$_) } }
+                    $Defaults.PSObject.Properties.Name | Foreach-Object { if ($_ -notin $Params.keys) { $Params.Add("$($_)", $Defaults.$_) } }
 
                 }
                 else {
                     $argjson = @{ }
                     $arguments = $arguments -split " -"
-                    $arguments = $arguments | foreach { $_.trim(" ") }
-                    $arguments = $arguments | % { $_.trimstart("-") }
-                    $arguments | foreach { $argument = $_ -split " " | Select -first 1; $argparam = $_ -split " " | Select -last 1; $argjson.Add($argument, $argparam); }
+                    $arguments = $arguments | Foreach-Object { $_.trim(" ") }
+                    $arguments = $arguments | Foreach-Object { $_.trimstart("-") }
+                    $arguments | Foreach-Object { $argument = $_ -split " " | Select-Object -first 1; $argparam = $_ -split " " | Select-Object -last 1; $argjson.Add($argument, $argparam); }
                     $argjson = $argjson | ConvertTo-Json | ConvertFrom-Json
   
                     $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json   
                     $Params = @{ }
   
-                    $Defaults | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % { $Params.Add("$($_)", $Defaults.$_) }
+                    $Defaults | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Foreach-Object { $Params.Add("$($_)", $Defaults.$_) }
   
-                    $argjson | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                    $argjson | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Foreach-Object {
                         if ($argjson.$_ -ne $Params.$_) {
                             switch ($_) {
                                 default { $Params.$_ = $argjson.$_ }

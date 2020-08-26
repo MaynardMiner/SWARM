@@ -6,8 +6,8 @@ function Global:Get-StatsNanominer {
         if ($Data) {
             $Data = $Data.Statistics
             switch ($global:MinerAlgo) {
-                "ethash" { $Data.Devices | % { $global:RAW += [Double]$_.hashrates.hashrate * 1000000 } }
-                default { $Data.Devices | % { $global:RAW += [Double]$_.hashrates.hashrate } }
+                "ethash" { $Data.Devices | ForEach-Object { $global:RAW += [Double]$_.hashrates.hashrate * 1000000 } }
+                default { $Data.Devices | ForEach-Object { $global:RAW += [Double]$_.hashrates.hashrate } }
             }
             Global:Write-MinerData2;
             try { 
@@ -20,8 +20,8 @@ function Global:Get-StatsNanominer {
                 }
             }
             catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };
-            $Data.Devices | % { $global:MinerACC += [Double]$_.hashrates.gpuAccepted; $global:ALLACC += [Double]$_.hashrates.gpuAccepted }
-            $Data.Devices | % { $global:MinerREJ += [Double]$_.hashrates.gpuDenied; $global:ALLREJ += [Double]$_.hashrates.gpuDenied }
+            $Data.Devices | ForEach-Object { $global:MinerACC += [Double]$_.hashrates.gpuAccepted; $global:ALLACC += [Double]$_.hashrates.gpuAccepted }
+            $Data.Devices | ForEach-Object { $global:MinerREJ += [Double]$_.hashrates.gpuDenied; $global:ALLREJ += [Double]$_.hashrates.gpuDenied }
             $Data.devices.speed | ForEach-Object { $global:GPUKHS += [Double]$_.hashrates.hashrate / 1000 }
         }
     }

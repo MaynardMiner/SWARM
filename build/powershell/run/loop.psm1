@@ -45,7 +45,7 @@ function Global:Get-Power {
 
 function Global:Set-Hashtable {
     $No_Watts = @("CPU", "ASIC")
-    $(vars).Hashtable.keys | Foreach {
+    $(vars).Hashtable.keys | ForEach-Object {
         $key = $_
         $Miner_HashRates = [decimal](Global:Get-HashRate -Type $key);
         if ($(arg).WattOMeter -eq "Yes" -and $key -notin $No_Watts) { 

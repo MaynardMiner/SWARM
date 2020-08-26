@@ -63,7 +63,7 @@ function Global:Start-HiveTune {
                     $OCT.Restart()
                     $CheckFile = ".\debug\ocnvidia.txt"
                     do {
-                        $LastWrite = Get-Item $CheckFile | Foreach { $_.LastWriteTime }
+                        $LastWrite = Get-Item $CheckFile | Where-Object  { $_.LastWriteTime }
                         $CheckTime = [math]::Round(($CheckDate - $LastWrite).TotalSeconds)
                         $TOtalTime = $OCT.Elapsed.TotalSeconds
                         Start-Sleep -Milliseconds 50
@@ -85,7 +85,7 @@ function Global:Start-HiveTune {
                     $OCT.Restart()
                     $CheckFile = ".\debug\ocamd.txt"
                     do {
-                        $LastWrite = Get-Item $CheckFile | Foreach { $_.LastWriteTime }
+                        $LastWrite = Get-Item $CheckFile | Where-Object  { $_.LastWriteTime }
                         $CheckTime = [math]::Round(($CheckDate - $LastWrite).TotalSeconds)
                         $TOtalTime = $OCT.Elapsed.TotalSeconds
                         Start-Sleep -Milliseconds 50
@@ -110,7 +110,7 @@ function Global:Start-HiveTune {
                     $Checkfile = "/var/log/nvidia-oc.log"
                     do {
                         if(test-path $Checkfile){
-                        $LastWrite = Get-Item $CheckFile | Foreach { $_.LastWriteTime }
+                        $LastWrite = Get-Item $CheckFile | Where-Object  { $_.LastWriteTime }
                         $CheckTime = [math]::Round(($CheckDate - $LastWrite).TotalSeconds)
                         $TOtalTime = $OCT.Elapsed.TotalSeconds
                         }
@@ -133,7 +133,7 @@ function Global:Start-HiveTune {
                     $Checkfile = "/var/log/amd-oc.log"
                     do {
                         if(test-path $Checkfile){
-                        $LastWrite = Get-Item $CheckFile | Foreach { $_.LastWriteTime }
+                        $LastWrite = Get-Item $CheckFile | Where-Object  { $_.LastWriteTime }
                         $CheckTime = [math]::Round(($CheckDate - $LastWrite).TotalSeconds)
                         $TOtalTime = $OCT.Elapsed.TotalSeconds
                         Start-Sleep -Milliseconds 50

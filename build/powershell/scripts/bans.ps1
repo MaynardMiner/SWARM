@@ -34,8 +34,8 @@ if (Test-Path $BanDir) { $BanJson = Get-Content $BanDir | ConvertFrom-Json }
 
 $Screen = @()
 $JsonBanHammer = @()
-$BanJson | % { $(vars).BanHammer += $_ }
-$BanJson | % { $JsonBanHammer += $_ }
+$BanJson | Foreach-Object { $(vars).BanHammer += $_ }
+$BanJson | Foreach-Object { $JsonBanHammer += $_ }
 
 $BanChange = $false
 $PoolChange = $false
@@ -43,7 +43,7 @@ $PoolChange = $false
 switch ($Action) {
     "add" {
         if ($Bans) {
-            $Bans | % {
+            $Bans | Foreach-Object {
 
                 $Arg = $_ -split "`:"
     
@@ -60,8 +60,8 @@ switch ($Action) {
                     }
                 }
                 else {
-                    $Item = $_ -split "`:" | Select -First 1
-                    $Value = $_ -split "`:" | Select -Last 1
+                    $Item = $_ -split "`:" | Select-Object -First 1
+                    $Value = $_ -split "`:" | Select-Object -Last 1
                     switch ($Launch) {
                         "command" {
                             if($Item -in $PoolJson.keys) {
@@ -95,7 +95,7 @@ switch ($Action) {
     }
     "remove" {
         if ($Bans) {
-            $Bans | % {
+            $Bans | Foreach-Object {
                 $Arg = $_ -split "`:"
                 if ($Arg.Count -eq 1) {
                     switch ($Launch) {
@@ -107,12 +107,12 @@ switch ($Action) {
                     }
                 }
                 else {
-                    $Item = $_ -split "`:" | Select -First 1
-                    $Value = $_ -split "`:" | Select -Last 1
+                    $Item = $_ -split "`:" | Select-Object -First 1
+                    $Value = $_ -split "`:" | Select-Object -Last 1
                     switch ($Launch) {
                         "Command" {
                             if ($Value -in $PoolJson.$Item.exclusions) {
-                                $PoolJson.$Item.exclusions = $PoolJson.$Item.exclusions | Where {$_ -ne $Value}
+                                $PoolJson.$Item.exclusions = $PoolJson.$Item.exclusions | Where-Object {$_ -ne $Value}
                                 $PoolChange = $true
                                 $Screen += "Removed $Value in $Item exclusions in pool-algos.json"
                             }

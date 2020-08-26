@@ -38,7 +38,7 @@ function Global:Start-OC($Miner) {
         if (Test-Path (".\build\pid\pill_pid.txt")) {
             $PillPID = Get-Content ".\build\pid\pill_pid.txt"
             if ($PillPID) {
-                $PillProcess = Get-Process | Where id -eq $PillPID
+                $PillProcess = Get-Process | Where-Object  id -eq $PillPID
                 if ($PillProcess.HasExited -eq $false) {
                     Stop-Process -Id $PillPID
                 }
@@ -56,7 +56,7 @@ function Global:Start-OC($Miner) {
         else { $OCPillDevices = Global:Get-DeviceString -TypeDevices $Miner.Devices }
 
         ##Build Arguments
-        $OCPillDevices | foreach { $PillDevices += "$($_)," }
+        $OCPillDevices | Foreach-Object  { $PillDevices += "$($_)," }
         $PillDevices = $PillDevices.Substring(0, $PillDevices.Length - 1)
         $PillDevices = "--RevA $PillDevices"
 
@@ -94,8 +94,8 @@ function Global:Start-OC($Miner) {
             do {
                 Start-Sleep -S 1
                 $ProcessId = if (Test-Path ".\build\pid\pill_pid.txt") { Get-Content ".\build\pid\pill_pid.txt" }
-                if ($ProcessID -ne $null) { $Process = Get-Process | Where id -eq $ProcessId }
-            }until($ProcessId -ne $null -or ($PillTimer.Elapsed.TotalSeconds) -ge 10)  
+                if ($null -ne $ProcessID) { $Process = Get-Process | Where-Object  id -eq $ProcessId }
+            }until($null -ne $ProcessId -or ($PillTimer.Elapsed.TotalSeconds) -ge 10)  
             $PillTimer.Stop()
         }
 
@@ -167,7 +167,7 @@ function Global:Start-OC($Miner) {
                     if ($Core.Count -gt 1) {
                         $Cores = $Core[$i]
                     }
-                    else { $Cores = $Core | Select -First 1 }
+                    else { $Cores = $Core | Select-Object  -First 1 }
                     $GPU = $OCDevices[$i]
                     $X = 3
                     Switch ($Card[$GPU]) {
@@ -190,7 +190,7 @@ function Global:Start-OC($Miner) {
                     if ($Fan.Count -gt 1) {
                         $Fans = $Fan[$i]
                     }
-                    else { $Fans = $Fan | Select -First 1 }
+                    else { $Fans = $Fan | Select-Object  -First 1 }
                     $GPU = $OCDevices[$i]
                     if ($(arg).Platform -eq "linux") { $NSettings += " -a [gpu:$GPU]/GPUFanControlState=1 -a [fan:$($(vars).GCount.NVIDIA.$GPU)]/GPUTargetFanSpeed=$($Fans)" }
                     if ($(arg).Platform -eq "windows") { $NFanArgs += "--index $GPU --speed $($Fans)" }
@@ -204,7 +204,7 @@ function Global:Start-OC($Miner) {
                     if ($Mem.Count -gt 1) {
                         $Mems = $Mem[$i]
                     }
-                    else { $Mems = $Mem | Select -First 1 }
+                    else { $Mems = $Mem | Select-Object  -First 1 }
                     $GPU = $OCDevices[$i]
                     $X = 3
                     Switch ($Card[$GPU]) {
@@ -226,20 +226,20 @@ function Global:Start-OC($Miner) {
             $NPL = @()
             if ($Power) {
                 $Max_Power = invoke-expression "nvidia-smi --query-gpu=power.max_limit --format=csv" | ConvertFrom-CSV
-                $Max_Power = $Max_Power.'power.max_limit [W]' | % { $_ = $_ -replace " W", ""; $_ }            
+                $Max_Power = $Max_Power.'power.max_limit [W]'.replace(" W","").replace(".00","")           
                 $DONVIDIAOC = $true
                 for ($i = 0; $i -lt $OCDevices.Count; $i++) {
                     if ($Power.Count -gt 1) {
                         [Double]$Max = $Max_Power[$i]
-                        [Double]$Value = $Power[$i] | % { iex $_ } ## String to double/int issue.
+                        [Double]$Value = $Power[$i] | Foreach-Object  { Invoke-Expression $_ } ## String to double/int issue.
                         [Double]$Limit = [math]::Round(($Value / $Max) * 100, 0)
                         $Powers = $Power[$i]
                     }
                     else {
                         [Double]$Max = $Max_Power[$i]
-                        [Double]$Value = $Power | Select -First 1 | % { iex $_ } ## String to double/int issue.
+                        [Double]$Value = $Power | Select-Object  -First 1 | Foreach-Object  { Invoke-Expression $_ } ## String to double/int issue.
                         [Double]$Limit = [math]::Round(($Value / $Max) * 100, 0)
-                        $Powers = $Power | Select -First 1 
+                        $Powers = $Power | Select-Object  -First 1 
                     }
                     $GPU = $OCDevices[$i]
                     if ($(arg).Platform -eq "linux") { $NPL += "nvidia-smi -i $GPU -pl $($Powers)"; }
@@ -333,11 +333,11 @@ function Global:Start-OC($Miner) {
                         if ($MemClock.Count -gt 1) {
                             $MemClocks = $MemClock[$i]
                         }
-                        else { $MemClocks = $MemClock | Select -First 1 }
+                        else { $MemClocks = $MemClock | Select-Object  -First 1 }
                         if ($MemState.Count -gt 1) {
                             $MemStates = $MemState[$i]
                         }
-                        else { $MemStates = $MemState | Select -First 1 }
+                        else { $MemStates = $MemState | Select-Object  -First 1 }
                         $GPU = $OCDevices[$i]
                         $MEMArgs = $null
                         if ($MemClock[$GPU]) { $MEMArgs += " --mem-clock $($MemClocks)" }
@@ -355,7 +355,7 @@ function Global:Start-OC($Miner) {
                         if ($CoreClock.Count -gt 1) {
                             $CoreClocks = $CoreClock[$i]
                         }
-                        else { $CoreClocks = $CoreClock | Select -First 1 }
+                        else { $CoreClocks = $CoreClock | Select-Object  -First 1 }
                         $GPU = $OCDevices[$i]
                         $PStates = 8
                         for ($j = 1; $j -lt $PStates; $j++) {
@@ -377,7 +377,7 @@ function Global:Start-OC($Miner) {
                         if ($Voltage.Count -gt 1) {
                             $Voltages = $Voltage[$i]
                         }
-                        else { $Voltages = $Voltage | Select -First 1 }
+                        else { $Voltages = $Voltage | Select-Object  -First 1 }
                         $GPU = $OCDevices[$i]
                         for ($ia = 0; $ia -lt 16; $ia++) {
                             if ($Voltages) { $VoltArgs += "wolfamdctrl -i $($(vars).GCount.AMD.$GPU) --vddc-table-set $($Voltages) --volt-state $ia" }
@@ -392,7 +392,7 @@ function Global:Start-OC($Miner) {
                         if ($Fans.Count -gt 1) {
                             $Fanss = $Fans[$i]
                         }
-                        else { $Fanss = $Fans | Select -First 1 }
+                        else { $Fanss = $Fans | Select-Object  -First 1 }
                         $DOAmdOC = $true
                         $GPU = $OCDevices[$i]
                         $FanArgs = $null
@@ -407,20 +407,20 @@ function Global:Start-OC($Miner) {
             if ($(arg).Platform -eq "windows") {
                 Invoke-Expression ".\build\apps\odvii\odvii.exe s" | Tee-Object -Variable stats | OUt-Null
                 $stats = $stats | ConvertFrom-StringData
-                $Model = $stats.keys | % { if ($_ -like "*Model*") { $stats.$_ } }
+                $Model = $stats.keys | Foreach-Object  { if ($_ -like "*Model*") { $stats.$_ } }
                 $Default_Core_Clock = @{ }
                 $Default_Core_Voltage = @{ }
                 $Default_Mem_Clock = @{ }
                 $Default_Mem_Voltage = @{ }
-                $stats.keys | % { if ($_ -like "*Core Clock*") { $Default_Core_Clock.Add($_, $stats.$_) } }
-                $stats.keys | % { if ($_ -like "*Core Voltage*") { $Default_Core_Voltage.Add($_, $stats.$_) } }
-                $stats.keys | % { if ($_ -like "*Mem Clock*") { $Default_Mem_Clock.Add($_, $stats.$_) } }
-                $stats.keys | % { if ($_ -like "*Mem Voltage*") { $Default_Mem_Voltage.Add($_, $stats.$_) } }
+                $stats.keys | Foreach-Object  { if ($_ -like "*Core Clock*") { $Default_Core_Clock.Add($_, $stats.$_) } }
+                $stats.keys | Foreach-Object  { if ($_ -like "*Core Voltage*") { $Default_Core_Voltage.Add($_, $stats.$_) } }
+                $stats.keys | Foreach-Object  { if ($_ -like "*Mem Clock*") { $Default_Mem_Clock.Add($_, $stats.$_) } }
+                $stats.keys | Foreach-Object  { if ($_ -like "*Mem Voltage*") { $Default_Mem_Voltage.Add($_, $stats.$_) } }
                                     
                 $Ascript += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
                 Invoke-Expression ".\build\apps\odvii\odvii.exe s" | Tee-Object -Variable Model | OUt-Null
                 $Model = $Model | ConvertFrom-StringData
-                $Model = $Model.keys | % { if ($_ -like "*Model*") { $Model.$_ } }
+                $Model = $Model.keys | Foreach-Object  { if ($_ -like "*Model*") { $Model.$_ } }
     
                 for ($i = 0; $i -lt $(vars).GCount.AMD.PSObject.Properties.Name.Count; $i++) {
                     $OCArgs += "-ac$($(vars).GCount.AMD.$i) "
@@ -576,7 +576,7 @@ function Global:Start-OC($Miner) {
         $OCMessage += ""
     }
 
-    $OCMessage | % {
+    $OCMessage | Foreach-Object  {
         log "$($_)" -ForegroundColor Cyan
     }
 

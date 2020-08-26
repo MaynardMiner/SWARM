@@ -26,7 +26,7 @@ if ($Name -in $(arg).PoolName) {
         $Pipe_Name = $using:Name;
         $N = $_.Name;
         $_ | Add-Member "Original_Algo" $N;
-        $_.Name = $Pipe_Algos.PSObject.Properties.Name | Where { $N -in $Pipe_Algos.$_.alt_names };
+        $_.Name = $Pipe_Algos.PSObject.Properties.Name | Where-Object { $N -in $Pipe_Algos.$_.alt_names };
         if ($_.Name) { if ($_.Name -in $Algo_List -and $Pipe_Name -notin $Pipe_Algos.$($_.Name).exclusions -and $_.Name -notin $Pipe_Hammer) { return $_ } }
     } -ThrottleLimit $(arg).Throttle
 
@@ -80,8 +80,8 @@ if ($Name -in $(arg).PoolName) {
         if ($Params.Historical_Bias -ne "") {
             $SmallestValue = 1E-20 
             $Values = $Params.Historical_Bias.Split("`:")
-            $Max_Penalty = [double]($Values | Select -First 1)
-            $Max_Bonus = [double]($Values | Select -Last 1)
+            $Max_Penalty = [double]($Values | Select-Object -First 1)
+            $Max_Bonus = [double]($Values | Select-Object -Last 1)
 
             ## Penalize
             if ($Stat.Historical_Bias -lt 0) {

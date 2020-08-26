@@ -12,7 +12,7 @@ function Global:Get-CoinShares {
     $(arg).Type | ForEach-Object { $(vars).Share_Table.Add("$($_)", @{ }) }
 
     ##For 
-    $(arg).Poolname | % {
+    $(arg).Poolname | ForEach-Object {
         switch ($_) {
             "zergpool" { Global:Get-ZergpoolData }
             "nlpool" { Global:Get-NlPoolData }        

@@ -5,18 +5,18 @@ function Global:Stop-ActiveMiners {
         if ($_.BestMiner -eq $false) {
         
             if ($(arg).Platform -eq "windows") {
-                if ($_.XProcess -eq $Null -and $_.Status -ne "Idle") { $_.Status = "Failed" }
+                if ($Null -eq $_.XProcess -and $_.Status -ne "Idle") { $_.Status = "Failed" }
                 elseif ($_.XProcess.HasExited -eq $false) {
                     $_.Active += (Get-Date) - $_.XProcess.StartTime
                     if ($_.Type -notlike "*ASIC*") {
                         $Num = 0
                         $Sel = $_
                         if ($Sel.XProcess.Id) {
-                            $Childs = Get-Process | Where { $_.Parent.Id -eq $Sel.XProcess.Id }
+                            $Childs = Get-Process | Where-Object { $_.Parent.Id -eq $Sel.XProcess.Id }
                             Write-Log "Closing all Previous Child Processes For $($Sel.Type)" -ForeGroundColor Cyan
-                            $Child = $Childs | % {
+                            $Child = $Childs | ForEach-Object {
                                 $Proc = $_; 
-                                Get-Process | Where { $_.Parent.Id -eq $Proc.Id } 
+                                Get-Process | Where-Object { $_.Parent.Id -eq $Proc.Id } 
                             }
                         }
                         do {
@@ -48,7 +48,7 @@ function Global:Stop-ActiveMiners {
                             }
                         }Until($false -notin $Child.HasExited)
                         if ($Sel.SubProcesses -and $false -in $Sel.SubProcesses.HasExited) { 
-                            $Sel.SubProcesses | % { $Check = $_.CloseMainWindow(); if ($Check -eq $False) { Stop-Process -Id $_.Id } }
+                            $Sel.SubProcesses | ForEach-Object { $Check = $_.CloseMainWindow(); if ($Check -eq $False) { Stop-Process -Id $_.Id } }
                         }
                     }
                     else { $_.Xprocess.HasExited = $true; $_.XProcess.StartTime = $null }
@@ -107,14 +107,14 @@ function Global:Stop-ActiveMiners {
                         else {
                             log "Warning- There was no screen that matches $($_.Type)" -Foreground Red
                         }
-                        $Bash_ID = Get-Process | Where { $_.Parent.Id -eq $Screen_Id }
+                        $Bash_ID = Get-Process | Where-Object { $_.Parent.Id -eq $Screen_Id }
 
                         ## Get all sub-processes
                         ## In this instance I define sub-process as processes
                         ## with the same name spawned from original process.
                         $To_KIll += Get-Process | 
-                        Where { $_.Parent.Id -eq $_.Xprocess.ID } | 
-                        Where { $_.Name -eq $_.XProcess.Name }
+                        Where-Object { $_.Parent.Id -eq $_.Xprocess.ID } | 
+                        Where-Object { $_.Name -eq $_.XProcess.Name }
 
                         ## Get the bash process miner is launch in.
                         
@@ -204,7 +204,7 @@ function Global:Start-NewMiners {
             if ($Reason -eq "Launch") {
                 ## Check for Websites, Load Modules
                 if ($(vars).WebSites -and $(vars).WebSites -ne "") {
-                    $GetNetMods = @($(vars).NetModules | Foreach { Get-ChildItem $_ })
+                    $GetNetMods = @($(vars).NetModules | ForEach-Object { Get-ChildItem $_ })
                     $GetNetMods | ForEach-Object { Import-Module -Name "$($_.FullName)" }
                     $(vars).WebSites | ForEach-Object {
                         switch ($_) {
@@ -261,8 +261,8 @@ function Global:Start-NewMiners {
                 if ($_.Type -notlike "*ASIC*") {
                     $Num = 0
                     $Sel = $_
-                    if ($Sel.XProcess.Id -ne $null) {
-                        $Childs = Get-Process | Where { $_.Parent.Id -eq $Sel.XProcess.Id }
+                    if ($null -ne $Sel.XProcess.Id) {
+                        $Childs = Get-Process | Where-Object { $_.Parent.Id -eq $Sel.XProcess.Id }
                         Write-Log "Closing all Previous Child Processes For $($Sel.Type)" -ForeGroundColor Cyan
                     }
                     if ($Sel.HasExited -eq $false) {
@@ -296,7 +296,7 @@ function Global:Start-NewMiners {
                         }Until($false -notin $Childs.HasExited)
                     }
                     if ($Sel.SubProcesses -and $false -in $Sel.SubProcesses.HasExited) { 
-                        $Sel.SubProcesses | % { $Check = $_.CloseMainWindow(); if ($Check -eq $False) { Stop-Process -Id $_.Id -ErrorAction Ignore } }
+                        $Sel.SubProcesses | ForEach-Object { $Check = $_.CloseMainWindow(); if ($Check -eq $False) { Stop-Process -Id $_.Id -ErrorAction Ignore } }
                     }
                 }
             }
@@ -310,8 +310,8 @@ function Global:Start-NewMiners {
                     do {
                         $Miner.SubProcesses = if ($Miner.Xprocess.Id) {
                             Get-Process | 
-                            Where { $_.Parent.ID -eq $Miner.Xprocess.Id} |
-                            Where ProcessName -eq $Miner.MinerName.Replace(".exe", "")
+                            Where-Object { $_.Parent.ID -eq $Miner.Xprocess.Id} |
+                            Where-Object ProcessName -eq $Miner.MinerName.Replace(".exe", "")
                         } else { $Null }
                         Write-Log "Getting Process Id For $($Miner.Name)"
                         Start-Sleep -S 1
@@ -325,7 +325,7 @@ function Global:Start-NewMiners {
             }
 
             ##Confirm They are Running
-            if ($Miner.XProcess -eq $null -or $Miner.Xprocess.HasExited -eq $true) {
+            if ($null -eq $Miner.XProcess -or $Miner.Xprocess.HasExited -eq $true) {
                 $Miner.Status = "Failed"
                 $(vars).NoMiners = $true
                 log "$($Miner.MinerName) Failed To Launch" -ForegroundColor Darkred

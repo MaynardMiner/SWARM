@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ## any windows version below 10 invoke full screen mode.
 if ($isWindows) {
-    $os_string = "$([System.Environment]::OSVersion.Version)".split(".") | Select -First 1
+    $os_string = "$([System.Environment]::OSVersion.Version)".split(".") | Select-Object -First 1
     if ([int]$os_string -lt 10) {
         invoke-expression "mode 800"
     }
@@ -51,7 +51,7 @@ if ($IsWindows) {
     if (Test-Path $ID) { 
         $Get_SWARM = Get-Content $ID 
         if ($Get_SWARM) { 
-            $SWARMID = Get-Process | Where id -eq $Agent 
+            $SWARMID = Get-Process | Where-Object id -eq $Agent 
             if ($SWARMID) {
                 $SWARMID.Kill()
             }
@@ -67,7 +67,7 @@ if ($IsWindows) {
     ## Remove all old SWARM Paths and add current
     if ("$($Global:Config.vars.dir)\build\cmd" -notin $Path_List) {
         Write-Host "Please Wait- Setting Environment Variables..." -ForegroundColor Green
-        $Path_List = $Path_List | Where { $_ -notlike "*SWARM*" }
+        $Path_List = $Path_List | Where-Object { $_ -notlike "*SWARM*" }
         $Path_List += "$($Global:Config.vars.dir)\build\cmd"
         $New_PATH = $Path_List -join (';')    
         [System.Environment]::SetEnvironmentVariable('Path', $New_PATH, $Target1)
@@ -127,7 +127,7 @@ if ($IsWindows) {
         $Net = Get-NetFireWallRule 
         if ($Net) {
             try { 
-                if ( -not ( $Net | Where { $_.DisplayName -like "*swarm.ps1*" } ) ) { 
+                if ( -not ( $Net | Where-Object { $_.DisplayName -like "*swarm.ps1*" } ) ) { 
                     New-NetFirewallRule -DisplayName 'swarm.ps1' -Direction Inbound -Program "$($(vars).dir)\swarm.ps1" -Action Allow | Out-Null
                 } 
             }
@@ -310,9 +310,9 @@ if ($(arg).Type -like "*NVIDIA*" -or $(arg).Type -like "*AMD*" -or $(arg).Type -
     if ([string]$(arg).GPUDevices3) { $(vars).Add("NVIDIADevices3", ([String]$(arg).GPUDevices3 -replace " ", ",")) } else { $(vars).Add("NVIDIADevices3", "none") }
 
     $(vars).Add("GCount", (Get-Content ".\debug\devicelist.txt" | ConvertFrom-Json))
-    $(vars).Add("NVIDIATypes", @()); if ($(arg).Type -like "*NVIDIA*") { $(arg).Type | Where { $_ -like "*NVIDIA*" } | % { $(vars).NVIDIATypes += $_ } }
-    $(vars).Add("CPUTypes", @()); if ($(arg).Type -like "*CPU*") { $(arg).Type | Where { $_ -like "*CPU*" } | % { $(vars).CPUTypes += $_ } }
-    $(vars).Add("AMDTypes", @()); if ($(arg).Type -like "*AMD*") { $(arg).Type | Where { $_ -like "*AMD*" } | % { $(vars).AMDTypes += $_ } }
+    $(vars).Add("NVIDIATypes", @()); if ($(arg).Type -like "*NVIDIA*") { $(arg).Type | Where-Object { $_ -like "*NVIDIA*" } | Foreach-Object { $(vars).NVIDIATypes += $_ } }
+    $(vars).Add("CPUTypes", @()); if ($(arg).Type -like "*CPU*") { $(arg).Type | Where-Object { $_ -like "*CPU*" } | Foreach-Object { $(vars).CPUTypes += $_ } }
+    $(vars).Add("AMDTypes", @()); if ($(arg).Type -like "*AMD*") { $(arg).Type | Where-Object { $_ -like "*AMD*" } | Foreach-Object { $(vars).AMDTypes += $_ } }
 }
 
 
@@ -551,7 +551,7 @@ While ($true) {
                     try {
                         Global:Add-Module "$($(vars).web)\methods.psm1"
                         Global:Get-WebModules $Sel
-                        $SendToHive = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
+                        $null = Global:Start-webcommand -command $HiveWarning -swarm_message $HiveMessage -Website "$($Sel)"
                     }
                     catch { log "WARNING: Failed To Notify $($Sel)" -ForeGroundColor Yellow } 
                     Global:Remove-WebModules $sel

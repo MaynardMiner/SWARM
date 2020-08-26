@@ -46,11 +46,11 @@ function Global:Start-Webcommand {
             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
             $SendResponse = Invoke-RestMethod "$($global:config.$Param.Mirror)/worker/api" -TimeoutSec 10 -Method POST -Body $DoResponse -ContentType 'application/json'
             $trigger = "exec"
-            $Enabled = $(cat ".\config\parameters\autofan.json" | ConvertFrom-Json | ConvertFrom-StringData).ENABLED
+            $Enabled = $(Get-Content ".\config\parameters\autofan.json" | ConvertFrom-Json | ConvertFrom-StringData).ENABLED
             if ($Enabled -eq 1) {
                 $ID = ".\build\pid\autofan.txt"
                 if (Test-Path $ID) { $Agent = Get-Content $ID }
-                if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent}
+                if ($Agent) { $BackGroundID = Get-Process | Where-Object id -eq $Agent}
                 if (-not $BackGroundId -or $BackGroundID.name -ne "pwsh") {
                     Write-Host "Starting Autofan" -ForeGroundColor Cyan              
                     $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
@@ -61,8 +61,8 @@ function Global:Start-Webcommand {
                         Start-Sleep -S 1
                         Write-Host "Getting Process ID for AutoFan"
                         $ProcessId = if (Test-Path ".\build\pid\autofan.txt") { Get-Content ".\build\pid\autofan.txt" }
-                        if ($ProcessID -ne $null) { $Process = Get-Process | Where Id -eq $ProcessId }
-                    }until($ProcessId -ne $null -or ($BackgroundTimer.Elapsed.TotalSeconds) -ge 10)  
+                        if ($null -ne $ProcessID) { $Process = Get-Process | Where-Object Id -eq $ProcessId }
+                    }until($null -ne $ProcessId -or ($BackgroundTimer.Elapsed.TotalSeconds) -ge 10)  
                     $BackgroundTimer.Stop()
                 }
             }
@@ -70,7 +70,7 @@ function Global:Start-Webcommand {
                 Write-Host "Stopping Autofan" -ForegroundColor Cyan
                 $ID = ".\build\pid\autofan.txt"
                 if (Test-Path $ID) { $Agent = Get-Content $ID }
-                if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
+                if ($Agent) { $BackGroundID = Get-Process | Where-Object id -eq $Agent }
                 if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }                   
             }
         }
@@ -97,7 +97,7 @@ function Global:Start-Webcommand {
             Write-Host $method $messagetype $data
             $trigger = "reboot"
             $MinerFile = Get-Content ".\build\pid\miner_pid.txt"
-            if ($MinerFile) { $MinerId = Get-Process | Where Id -eq $MinerFile }
+            if ($MinerFile) { $MinerId = Get-Process | Where-Object Id -eq $MinerFile }
             if ($MinerId) {
                 Stop-Process $MinerId
                 Start-Sleep -S 3
@@ -112,7 +112,7 @@ function Global:Start-Webcommand {
             $data = "$($command.result.exec)"
             Invoke-Expression $Data | Tee-Object -Variable payload
             $line = @()
-            $payload | foreach { $line += "$_`n" }
+            $payload | ForEach-Object { $line += "$_`n" }
             $payload = $line
             $DoResponse = Global:Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
@@ -127,7 +127,7 @@ function Global:Start-Webcommand {
             Start-NVIDIAOC $Command.result.nvidia_oc
             $getpayload = Get-Content ".\debug\ocnvidia.txt"
             $line = @()
-            $getpayload | foreach { $line += "$_`n" }
+            $getpayload | ForEach-Object { $line += "$_`n" }
             $payload = $line
             $DoResponse = Global:Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
@@ -143,7 +143,7 @@ function Global:Start-Webcommand {
             Start-AMDOC $Command.result.amd_oc
             $getpayload = Get-Content ".\debug\ocamd.txt"
             $line = @()
-            $getpayload | foreach { $line += "$_`n" }
+            $getpayload | ForEach-Object { $line += "$_`n" }
             $payload = $line
             $DoResponse = Global:Set-Response -Method $method -messagetype $messagetype -Data $data -CommandID $command.result.id -Payload $payload -Site $WebSite
             $DoResponse = $DoResponse | ConvertTo-JSon -Depth 1
@@ -200,44 +200,44 @@ function Global:Start-Webcommand {
                 try { $test = "$arguments" | ConvertFrom-Json; if ($test) { $isjson = $true } } catch { $isjson = $false }
                 if ($isjson) {
                     $Params = @{ }
-                    $test.PSObject.Properties.Name | % { $Params.Add("$($_)", $test.$_) }
+                    $test.PSObject.Properties.Name | Foreach-Object -Object  { $Params.Add("$($_)", $test.$_) }
                     $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
-                    $Defaults.PSObject.Properties.Name | % { if ($_ -notin $Params.keys) { $Params.Add("$($_)", $Defaults.$_) } }
+                    $Defaults.PSObject.Properties.Name | Foreach-Object -Object  { if ($_ -notin $Params.keys) { $Params.Add("$($_)", $Defaults.$_) } }
 
                 }
                 else {
                     $argjson = @{}
                     $arguments = $arguments -split " -"
-                    $arguments = $arguments | foreach { $_.trim(" ") }
-                    $arguments = $arguments | % { $_.trimstart("-") }
-                    $arguments | foreach { $argument = $_ -split " " | Select -first 1; $argparam = $_ -split " " | Select -last 1; $argjson.Add($argument, $argparam); }
+                    $arguments = $arguments | Foreach-Object -Object  { $_.trim(" ") }
+                    $arguments = $arguments | Foreach-Object -Object  { $_.trimstart("-") }
+                    $arguments | Foreach-Object -Object  { $argument = $_ -split " " | Select-Object  -first 1; $argparam = $_ -split " " | Select-Object  -last 1; $argjson.Add($argument, $argparam); }
                     $argjson = $argjson | ConvertTo-Json | ConvertFrom-Json
   
                     $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json   
                     $Params = @{ }
   
-                    $Defaults | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % { $Params.Add("$($_)", $Defaults.$_) }
+                    $Defaults | Get-Member -MemberType NoteProperty | Select-Object  -ExpandProperty Name | Foreach-Object -Object  { $Params.Add("$($_)", $Defaults.$_) }
   
-                    $argjson | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                    $argjson | Get-Member -MemberType NoteProperty | Select-Object  -ExpandProperty Name | Foreach-Object -Object  {
                         if ($argjson.$_ -ne $Params.$_) {
                             switch ($_) {
                                 default { $Params.$_ = $argjson.$_ }
-                                "Bans" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_.replace('cnight','cryptonight') }; $Params.$_ = $NewParamArray }
-                                "Coin" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "Algorithm" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "GPUDevices3" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "GPUDevices2" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "GPUDevices1" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "Asic_Algo" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "Asic_IP" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "optional" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "Type" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "Poolname" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "Currency" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "PasswordCurrency1" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "PasswordCurrency2" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "PasswordCurrency3" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                "coin_params" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "Bans" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object  { $NewParamArray += $_.replace('cnight','cryptonight') }; $Params.$_ = $NewParamArray }
+                                "Coin" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object  { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "Algorithm" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object  { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "GPUDevices3" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object  { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "GPUDevices2" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object  { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "GPUDevices1" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object  { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "Asic_Algo" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object  { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "Asic_IP" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object  { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "optional" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object  { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "Type" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object  { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "Poolname" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object  { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "Currency" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object  { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "PasswordCurrency1" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object  { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "PasswordCurrency2" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object  { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "PasswordCurrency3" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object  { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                "coin_params" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object  { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                             }
                         }
                     }

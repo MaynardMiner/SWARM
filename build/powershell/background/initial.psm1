@@ -87,7 +87,7 @@ function Global:New-StatTables {
         }
     }
     if ($global:DoASIC) { 
-        $ASICS = $global:CurrentMiners.Type | Where { $_ -like "*ASIC*" }
+        $ASICS = $global:CurrentMiners.Type | Where-Object { $_ -like "*ASIC*" }
         for ($i = 0; $i -lt $ASICS.Count; $i++) {
             $global:ASICHashRates | Add-Member -MemberType NoteProperty -Name "$i" -Value 0; 
         }
@@ -102,7 +102,7 @@ function Global:Get-Metrics {
             $diskSpace = [math]::Round($diskSpace)
             $global:diskSpace = "$($diskSpace)G"
             $global:ramtotal = Get-Content ".\debug\ram.txt" | Select-Object -First 1
-            $global:ramfree = try { [math]::Round((Get-Ciminstance Win32_OperatingSystem -ErrorAction Stop | Select FreePhysicalMemory).FreePhysicalMemory / 1kb, 2) } catch { Write-Host "Failed To Get RAM Size" -ForegroundColor Red, 0 }
+            $global:ramfree = try { [math]::Round((Get-Ciminstance Win32_OperatingSystem -ErrorAction Stop | Select-Object FreePhysicalMemory).FreePhysicalMemory / 1kb, 2) } catch { Write-Host "Failed To Get RAM Size" -ForegroundColor Red, 0 }
 
             ## LOAD AVERAGE NOTES FOR WINDOWS:
             ## We use an exponentially weighted moving average, just like Unix systems do

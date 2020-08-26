@@ -34,7 +34,7 @@ Function Global:Get-WalletTable {
 
     $Sym = @()
 
-    $GetWStats | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % {
+    $GetWStats | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
         $WalletTable += [PSCustomObject]@{
             Address        = $GetWStats.$_.Address
             Pool           = $GetWStats.$_.Pool
@@ -49,7 +49,7 @@ Function Global:Get-WalletTable {
     if (-not $asjson) {
         $global:Format = @()
         $global:Format += ""
-        $WalletTable | % {
+        $WalletTable | ForEach-Object {
             $global:Format += "Address: $($_.Address)"
             $global:Format += "Pool: $($_.Pool)"
             $global:Format += "Ticker: $($_.Ticker)"
@@ -59,12 +59,12 @@ Function Global:Get-WalletTable {
             $global:Format += ""
         }
 
-        $Sym | % {
-            $Grouping = $WalletTable | Where Ticker -eq $_
+        $Sym | ForEach-Object {
+            $Grouping = $WalletTable | Where-Object Ticker -eq $_
             $Total_Unpaid = 0
             $Total_Balance = 0
-            $Grouping.Unpaid | % { $Total_Unpaid += $_ }
-            $Grouping.Balance | % { $Total_Balance += $_ }
+            $Grouping.Unpaid | ForEach-Object { $Total_Unpaid += $_ }
+            $Grouping.Balance | ForEach-Object { $Total_Balance += $_ }
 
             $global:Format += ""
             $global:Format += "Total $($_) Balance = $Total_Balance"

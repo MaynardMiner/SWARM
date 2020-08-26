@@ -4,7 +4,7 @@ function Global:Add-LogErrors {
         $errormesage = "[$TimeStamp]: SWARM Generated The Following Warnings/Errors-"
         $errormesage | Add-Content $global:log_params.logname
         $Message = @()
-        $error | foreach { $Message += "$($_.InvocationInfo.InvocationName)`: $($_.Exception.Message)"; $Message += $_.InvocationINfo.PositionMessage; $Message += $_.InvocationInfo.Line; $Message += $_.InvocationINfo.Scriptname; $MEssage += "" }
+        $error | ForEach-Object { $Message += "$($_.InvocationInfo.InvocationName)`: $($_.Exception.Message)"; $Message += $_.InvocationINfo.PositionMessage; $Message += $_.InvocationInfo.Line; $Message += $_.InvocationINfo.Scriptname; $MEssage += "" }
         $Message | Add-Content $global:log_params.logname
         $error.clear()
     }
@@ -57,7 +57,7 @@ function Global:Get-ChildItemContent {
     }
 
     $AllContent = New-Object System.Collections.ArrayList
-    $ChildItems | % { $AllContent.Add($_) | Out-Null }
+    $ChildItems | ForEach-Object { $AllContent.Add($_) | Out-Null }
     $AllContent
 }
 
@@ -66,12 +66,12 @@ function Global:start-killscript {
     ## Get Processes That Could Be Running:
     $To_Kill = @()
     if (test-path ".\build\pid") {
-        $Miner_PIDs = Get-ChildItem ".\build\pid" | Where BaseName -like "*info*"
+        $Miner_PIDs = Get-ChildItem ".\build\pid" | Where-Object BaseName -like "*info*"
         if ($Miner_PIDs) {
-            $Miner_PIDs | % {
+            $Miner_PIDs | ForEach-Object {
                 $Content = Get-Content $_ | ConvertFrom-Json
                 $Name = Split-Path $Content.miner_exec -Leaf
-                $To_Kill += Get-Process | Where Id -eq $Content.pid | Where Name -eq $Name
+                $To_Kill += Get-Process | Where-Object Id -eq $Content.pid | Where-Object Name -eq $Name
             }
         }
     }
@@ -98,7 +98,7 @@ function Global:start-killscript {
     $OpenedScreens = @()
     $GetScreens = (invoke-expression "screen -ls" | Select-String $OpenScreens).Line
     foreach ($screen in $OpenScreens) { 
-        $GetScreens | % { 
+        $GetScreens | ForEach-Object { 
             if ($_ -like "*$screen*") { 
                 $OpenedScreens += $screen 
             }
@@ -124,7 +124,7 @@ function Global:start-killscript {
     $OpenedScreens = @()
     $GetScreens = (invoke-expression "screen -ls" | Select-String $OpenScreens).Line
     foreach ($screen in $OpenScreens) { 
-        $GetScreens | % { 
+        $GetScreens | ForEach-Object { 
             if ($_ -like "*$screen*") { 
                 $OpenedScreens += $screen 
             }
@@ -149,7 +149,7 @@ function Global:start-killscript {
 
 function Global:Add-Module($Path) {
     $name = $(Get-Item $Path).BaseName
-    $A = Get-Module | Where Name -eq $name
+    $A = Get-Module | Where-Object Name -eq $name
     if (-not $A) { Import-Module -Name $Path -Scope Global }
     if ($name -notin $global:config.vars.modules) {
         $DoNotAdd = @("")
@@ -169,7 +169,7 @@ function Global:Remove-Modules {
         $name = $(Get-Item $Path).BaseName
         if ($Name -in $mods) {
             Remove-Module -Name $name
-            $global:config.vars.modules = $global:config.vars.modules | where { $_ -ne $name }
+            $global:config.vars.modules = $global:config.vars.modules | Where-Object { $_ -ne $name }
         }
     }
     else {

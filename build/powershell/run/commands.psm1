@@ -50,7 +50,7 @@ function Global:Get-StatusLite {
 
 function Global:Get-PriceMessage {
     $Total = 0;
-    $(vars).BestActiveMIners | % {
+    $(vars).BestActiveMIners | ForEach-Object {
         if ($_.Profit_Day -ne "bench") { $ScreenProfit = "$($Value = $_.Profit_Day * $(vars).Rates.$($(arg).Currency); $Total += $Value; $Value.ToString("N2")) $($(arg).Currency)/Day" } else { $ScreenProfit = "Benchmarking" }
         $ProfitMessage = "Current Daily Profit For $($_.Type): $ScreenProfit"
         $ProfitMessage | Out-File ".\debug\minerstats.txt" -Append
@@ -104,7 +104,7 @@ function Global:Get-Commands {
 function Global:Get-Logo {
     log '
                                                                         (                    (      *     
-                                                                         )\ ) (  (      (     )\ ) (  `    
+                                                                         )\ ) (  (      (     )\ ) (  `
                                                                          (()/( )\))(     )\   (()/( )\))(   
                                                                           /(_)|(_)()\ |(((_)(  /(_)|(_)()\  
                                                                          (_)) _(())\_)()\ _ )\(_)) (_()((_) 
@@ -125,13 +125,13 @@ function Global:Update-Logging {
         Remove-Item ".\logs\*crash_report*" -Force -Recurse -ErrorAction SilentlyContinue
         $global:log_params.lognum = 0
     }
-    if ((Get-ChildItem ".\logs" | Where BaseName -match "crash_report").count -gt 12) {
+    if ((Get-ChildItem ".\logs" | Where-Object BaseName -match "crash_report").count -gt 12) {
         Remove-Item ".\logs\*crash_report*" -Force -Recurse -ErrorAction SilentlyContinue
     }
     if ($(vars).logtimer.Elapsed.TotalSeconds -ge 3600) {
         Start-Sleep -S 3
         if (Test-Path ".\logs\*active*") {
-            $OldActiveFile = Get-ChildItem ".\logs" | Where BaseName -like "*active*"
+            $OldActiveFile = Get-ChildItem ".\logs" | Where-Object BaseName -like "*active*"
             $OldActiveFile | ForEach-Object {
                 $RenameActive = $_.fullname -replace ("-active", "")
                 if (Test-Path $RenameActive) { Remove-Item $RenameActive -Force }

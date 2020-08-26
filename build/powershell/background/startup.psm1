@@ -6,18 +6,18 @@ function Global:Get-Params {
     $global:Config.Add("summary",@{ })
     if (Test-Path ".\config\parameters\newarguments.json") {
         $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
-        $arguments.PSObject.Properties.Name | % { $global:config.params.Add("$($_)", $arguments.$_) }
+        $arguments.PSObject.Properties.Name | ForEach-Object { $global:config.params.Add("$($_)", $arguments.$_) }
         $arguments = $null
     }
     else {
         $arguments = Get-Content ".\config\parameters\commandline.json" | ConvertFrom-Json
-        $arguments.PSObject.Properties.Name | % { $global:Config.params.Add("$($_)", $arguments.$_) }
+        $arguments.PSObject.Properties.Name | ForEach-Object { $global:Config.params.Add("$($_)", $arguments.$_) }
         $arguments = $null
     }
     if (Test-Path ".\config\parameters\Hive_params_keys.json") {
         try {
             $HiveStuff = Get-Content ".\config\parameters\Hive_params_keys.json" | ConvertFrom-Json
-            $HiveStuff.PSObject.Properties.Name | % { $global:Config.hive_params.Add("$($_)", $HiveStuff.$_) }
+            $HiveStuff.PSObject.Properties.Name | ForEach-Object { $global:Config.hive_params.Add("$($_)", $HiveStuff.$_) }
             $HiveStuff = $null    
         }
         catch {
@@ -42,7 +42,7 @@ function Global:Get-Params {
 
     if (Test-Path ".\config\parameters\SWARM_params_keys.json") {
         $SWARMStuff = Get-Content ".\config\parameters\SWARM_params_keys.json" | ConvertFrom-Json
-        $SWARMStuff.PSObject.Properties.Name | % { $global:Config.SWARM_Params.Add("$($_)", $SWARMStuff.$_) }
+        $SWARMStuff.PSObject.Properties.Name | ForEach-Object { $global:Config.SWARM_Params.Add("$($_)", $SWARMStuff.$_) }
         Write-Host $global:Config.SWARM_Params.Mirror
         $SWARMStuff = $null
     }

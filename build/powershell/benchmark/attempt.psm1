@@ -6,7 +6,7 @@ function Global:Get-MinerTimeout($miner) {
         if ($null -eq $miner.xprocess) { $reason = "no start" }
         else {
             if ($Miner.Type -ne "*ASIC*") {
-                $MinerProc = Get-Process | Where Id -eq $miner.xprocess.id
+                $MinerProc = Get-Process | Where-Object Id -eq $miner.xprocess.id
                 if ($null -eq $MinerProc) { $reason = "crashed" }
                 else { $reason = "no hash" }
             }
@@ -29,7 +29,7 @@ function Global:Set-Warnings {
 
     switch ($command) {
         "clear" {
-            if ([string]$(vars).Warnings.$name.bad -ne "") { $(vars).Warnings = $(vars).Warnings | Where $($_.keys -ne $name) }
+            if ([string]$(vars).Warnings.$name.bad -ne "") { $(vars).Warnings = $(vars).Warnings | Where-Object $($_.keys -ne $name) }
         }
         "add" {
             if ([string]$(vars).Warnings.$name.bad -eq "") {
@@ -110,7 +110,7 @@ function Global:Start-WattOMeter {
 
 function Global:Start-Benchmark {
     $(vars).Previous_Miners = @()
-    $(vars).BestActiveMIners | Where { $_.BestMiner -eq $true } | ForEach-Object {
+    $(vars).BestActiveMIners | Where-Object { $_.BestMiner -eq $true } | ForEach-Object {
         $(vars).Previous_Miners += $_
         ## Bools for bans
         $MinerPoolBan = $false
@@ -164,9 +164,9 @@ function Global:Start-Benchmark {
                 log "Attempting to record hashrate for $($_.Name) $($_.Symbol)" -foregroundcolor "Cyan"
                 ##Check For High Rejections
                 $Rj = Global:Get-Rejections -Type $_.Type
-                $Percent = $RJ -split "`:" | Select -First 1
-                $Percent = $RJ.replace("NaN", "0").Split(':') | Select -First 1
-                $Shares = $RJ.Split(':') | Select -Last 1
+                $Percent = $RJ -split "`:" | Select-Object -First 1
+                $Percent = $RJ.replace("NaN", "0").Split(':') | Select-Object -First 1
+                $Shares = $RJ.Split(':') | Select-Object -Last 1
                 if ([Double]$Percent -gt $(arg).Rejections -and [Double]$Shares -gt 0) {
                     log "Rejection Percentage at $Percent out of $Shares shares- Adding Strike Against Miner" -Foreground Red
                     $Global:Strike = $True

@@ -87,7 +87,7 @@ function Global:Start-WebStartup($response, $Site) {
         $RigConf = Get-Content ".\debug\get-hive-hello.txt" | ConvertFrom-Json
     }
     if ($RigConf) {
-        $RigConf.result | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+        $RigConf.result | Get-Member -MemberType NoteProperty | Select-Object-Object -ExpandProperty Name | ForEach-Object {
             $Action = $_
             Switch ($Action) {
                 "config" {
@@ -121,7 +121,7 @@ function Global:Start-WebStartup($response, $Site) {
                             $sendResponse = $DoResponse | Global:Invoke-WebCommand -Site $Site -Action "Message"
                             $SendResponse
                             $DoResponse = @{method = "password_change_received"; params = @{rig_id = $global:Config.$Params.Id; passwd = $global:Config.$Params.Password }; jsonrpc = "2.0"; id = "0" }
-                            $send2Response = $DoResponse | Global:Invoke-WebCommand -Site $Site -Action "Message"
+                            $null = $DoResponse | Global:Invoke-WebCommand -Site $Site -Action "Message"
                         }
                     }
 
@@ -143,36 +143,36 @@ function Global:Start-WebStartup($response, $Site) {
                         try { $test = "$arguments" | ConvertFrom-Json; if ($test) { $isjson = $true } } catch { $isjson = $false }
                         if ($isjson) {
                             $Params = @{ }
-                            $test.PSObject.Properties.Name | % { $Params.Add("$($_)", $test.$_) }
+                            $test.PSObject.Properties.Name | Foreach-Object { $Params.Add("$($_)", $test.$_) }
                             $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
-                            $Defaults.PSObject.Properties.Name | % { if ($_ -notin $Params.keys) { $Params.Add("$($_)", $Defaults.$_) } }
+                            $Defaults.PSObject.Properties.Name | Foreach-Object { if ($_ -notin $Params.keys) { $Params.Add("$($_)", $Defaults.$_) } }
     
                         }
                         else {
                             $arguments = $arguments -split " -"
-                            $arguments = $arguments | foreach { $_.trim(" ") }
-                            $arguments = $arguments | % { $_.trimstart("-") }
-                            $arguments | foreach { $argument = $_ -split " " | Select -first 1; $argparam = $_ -split " " | Select -last 1; $argjson.Add($argument, $argparam); }
+                            $arguments = $arguments | Foreach-Object { $_.trim(" ") }
+                            $arguments = $arguments | Foreach-Object { $_.trimstart("-") }
+                            $arguments | Foreach-Object { $argument = $_ -split " " | Select-Object -first 1; $argparam = $_ -split " " | Select-Object -last 1; $argjson.Add($argument, $argparam); }
                             $argjson = $argjson | ConvertTo-Json | ConvertFrom-Json
       
                             $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json   
                             $Params = @{ }
       
-                            $Defaults | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | % { $Params.Add("$($_)", $Defaults.$_) }
+                            $Defaults | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Foreach-Object { $Params.Add("$($_)", $Defaults.$_) }
       
-                            $argjson | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                            $argjson | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Foreach-Object {
                                 if ($argjson.$_ -ne $Params.$_) {
                                     switch ($_) {
                                         default { $Params.$_ = $argjson.$_ }
-                                        "Bans" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_.replace('cnight','cryptonight') }; $Params.$_ = $NewParamArray }
-                                        "Coin" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                        "Algorithm" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                        "GPUDevices3" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                        "Config.params.GPUDevices2" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                        "GPUDevices1" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                        "Asic_Algo" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                        "Type" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
-                                        "Poolname" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "Bans" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object { $NewParamArray += $_.replace('cnight','cryptonight') }; $Params.$_ = $NewParamArray }
+                                        "Coin" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "Algorithm" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "GPUDevices3" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "Config.params.GPUDevices2" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "GPUDevices1" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "Asic_Algo" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "Type" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
+                                        "Poolname" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                     }
                                 }
                             }
@@ -187,7 +187,7 @@ function Global:Start-WebStartup($response, $Site) {
                         if([string]$Params.CpuThreads -eq "") { $params.CpuThreads = $(vars).threads }
                         $global:Config.params = @{ }
                         $global:Config.user_params = @{ }
-                        $params.keys | % {
+                        $params.keys | Foreach-Object {
                             $Global:Config.params.Add($_ , $Params.$_ ) 
                             $Global:Config.user_params.Add( $_ , $Params.$_ )
                         }

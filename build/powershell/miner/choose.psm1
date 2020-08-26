@@ -14,41 +14,41 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 function Global:Remove-BadMiners {
     $BadMiners = @()
     if ($(arg).Threshold -ne 0) {
-        $(vars).Miners | ForEach-Object { 
+        $(vars).Miners | Foreach-Object-Object { 
             if ($_.Profit -gt $(arg).Threshold) { 
                 $BadMiners += $_ 
                 $(vars).Thresholds += "$($_.Name) mining $($_.Algo) was removed this run: Profit/Day above $($(arg).Threshold) BTC"
             }
         } 
     }
-    $BadMiners | ForEach-Object { $(vars).Miners.Remove($_) }
+    $BadMiners | Foreach-Object-Object { $(vars).Miners.Remove($_) }
 }
 
 function Global:Get-BestMiners {
     $BestMiners = @()
     $trigger = $False;
-    $(arg).Type | foreach {
+    $(arg).Type | Foreach-Object {
         $SelType = $_
         $BestTypeMiners = @()
         $OldMiners = @()
         $OldTypeMiners = @()
         $MinerCombo = @()
 
-        $TypeMiners = $(vars).Miners | Where Type -EQ $SelType
-        $(vars).BestActiveMiners | ForEach { $(vars).Miners | Where Path -EQ $_.Path | Where Arguments -EQ $_.Arguments | Where Type -EQ $SelType | ForEach { $OldMiners += $_ } }
+        $TypeMiners = $(vars).Miners | Where-Object Type -EQ $SelType
+        $(vars).BestActiveMiners | Foreach-Object { $(vars).Miners | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments | Where-Object Type -EQ $SelType | Foreach-Object { $OldMiners += $_ } }
         if ($OldMiners) {
-            $OldTypeMiners += $OldMiners | Where Profit -gt 0 | Sort-Object @{Expression = "Profit"; Descending = $true } | Select -First 1
-            $OldTypeMiners += $OldMiners | Where Profit -lt 0 | Sort-Object @{Expression = "Profit"; Descending = $false } | Select -First 1
-            $OldTypeMiners = $OldTypeMiners | Select -First 1
-            $OldTypeMiners | foreach { $_ | Add-Member "Old" "Yes" }
+            $OldTypeMiners += $OldMiners | Where-Object Profit -gt 0 | Sort-Object @{Expression = "Profit"; Descending = $true } | Select-Object -First 1
+            $OldTypeMiners += $OldMiners | Where-Object Profit -lt 0 | Sort-Object @{Expression = "Profit"; Descending = $false } | Select-Object -First 1
+            $OldTypeMiners = $OldTypeMiners | Select-Object -First 1
+            $OldTypeMiners | Foreach-Object { $_ | Add-Member "Old" "Yes" }
         }
         if ($OldTypeMiners) { $MinerCombo += $OldTypeMiners }
         if ($(vars).switch -eq $true) {
-            $MinerCombo += $TypeMiners | Where Profit -NE $NULL
-            $BestTypeMiners += $TypeMiners | Where Profit -EQ $NULL | Select -First 1
-            $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -gt 0 | Sort-Object { ($_ | Measure Profit -Sum).Sum } -Descending | Select -First 1
-            $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -lt 0 | Sort-Object { ($_ | Measure Profit -Sum).Sum } -Descending | Select -First 1
-            $BestMiners += $BestTypeMiners | Select -first 1
+            $MinerCombo += $TypeMiners | Where-Object Profit -NE $NULL
+            $BestTypeMiners += $TypeMiners | Where-Object Profit -EQ $NULL | Select-Object -First 1
+            $BestTypeMiners += $MinerCombo | Where-Object Profit -NE $Null | Where-Object Profit -gt 0 | Sort-Object { ($_ | Measure-Object Profit -Sum).Sum } -Descending | Select-Object -First 1
+            $BestTypeMiners += $MinerCombo | Where-Object Profit -NE $Null | Where-Object Profit -lt 0 | Sort-Object { ($_ | Measure-Object Profit -Sum).Sum } -Descending | Select-Object -First 1
+            $BestMiners += $BestTypeMiners | Select-Object -first 1
             $trigger = $true
         }
         else {
@@ -56,11 +56,11 @@ function Global:Get-BestMiners {
             if($OldTypeMiners) {
                 $BestMiners += $OldTypeMiners
             } else {
-                $MinerCombo += $TypeMiners | Where Profit -NE $NULL
-                $BestTypeMiners += $TypeMiners | Where Profit -EQ $NULL | Select -First 1
-                $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -gt 0 | Sort-Object { ($_ | Measure Profit -Sum).Sum } -Descending | Select -First 1
-                $BestTypeMiners += $MinerCombo | Where Profit -NE $Null | Where Profit -lt 0 | Sort-Object { ($_ | Measure Profit -Sum).Sum } -Descending | Select -First 1
-                $BestMiners += $BestTypeMiners | Select -first 1    
+                $MinerCombo += $TypeMiners | Where-Object Profit -NE $NULL
+                $BestTypeMiners += $TypeMiners | Where-Object Profit -EQ $NULL | Select-Object -First 1
+                $BestTypeMiners += $MinerCombo | Where-Object Profit -NE $Null | Where-Object Profit -gt 0 | Sort-Object { ($_ | Measure-Object Profit -Sum).Sum } -Descending | Select-Object -First 1
+                $BestTypeMiners += $MinerCombo | Where-Object Profit -NE $Null | Where-Object Profit -lt 0 | Sort-Object { ($_ | Measure-Object Profit -Sum).Sum } -Descending | Select-Object -First 1
+                $BestMiners += $BestTypeMiners | Select-Object -first 1    
             }
         }
     }
@@ -71,11 +71,11 @@ function Global:Get-BestMiners {
 function Global:Get-Conservative {
     if ($(arg).Conserve -eq "Yes") {
         $bestminers_combo = @()
-        $(arg).Type | ForEach-Object {
+        $(arg).Type | Foreach-Object-Object {
             $SelType = $_
             $ConserveArray = @()
-            $ConserveArray += $(vars).Miners_Combo | Where-Object Type -EQ $SelType | Where-Object Profit -EQ $NULL
-            $ConserveArray += $(vars).Miners_Combo | Where-Object Type -EQ $SelType | Where-Object Profit -GT 0
+            $ConserveArray += $(vars).Miners_Combo | Where-Object-Object Type -EQ $SelType | Where-Object-Object Profit -EQ $NULL
+            $ConserveArray += $(vars).Miners_Combo | Where-Object-Object Type -EQ $SelType | Where-Object-Object Profit -GT 0
         }
         $bestminers_combo += $ConserveArray
     }

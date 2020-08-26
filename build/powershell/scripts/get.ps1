@@ -289,7 +289,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         Import-Module -Name "$($(vars).global)\hashrates.psm1"
         if (Test-Path ".\debug\bestminers.txt") { $BestMiners = Get-Content ".\debug\bestminers.txt" | ConvertFrom-Json }
         else { $Get += "No miners running" }
-        $ASIC = $BestMiners | Where Type -eq $argument2
+        $ASIC = $BestMiners | Where-Object Type -eq $argument2
         if ($ASIC) {
             $Get += "Miner Name: $($ASIC.MinerName)"
             $Get += "Miner Currently Mining: $($ASIC.Symbol)"
@@ -297,7 +297,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             $request = Global:Get-TCP -Port $ASIC.Port -Server $ASIC.Server -Message $Command -Timeout 5
             if ($request) {
                 $response = $request | ConvertFrom-Json
-                $PoolDetails = $response.POOLS | Where Pool -eq 1
+                $PoolDetails = $response.POOLS | Where-Object Pool -eq 1
                 if ($PoolDetails) {
                     if ($PoolDetails[-1] -notmatch "}") { $PoolDetails = $PoolDetails.Substring(0, $PoolDetails.Length - 1) }
                     $PoolDetails | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | % {
@@ -320,21 +320,21 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             if ($argument2) {
                 switch ($argument2) {
                     "all" {
-                        $StatNames = Get-ChildItem ".\stats" | Where Name -LIKE "*hashrate*"
+                        $StatNames = Get-ChildItem ".\stats" | Where-Object Name -LIKE "*hashrate*"
                         $StatNames = $StatNames.Name -replace ".txt", ""
                         $Stats = [PSCustomObject]@{ }
                         if (Test-Path "stats") { Get-ChildItemContent "stats" | ForEach { $Stats | Add-Member $_.Name $_.Content } }
                     }
                     default {
                         $Stats = [PSCustomObject]@{ }
-                        $StatNames = Get-ChildItem ".\stats" | Where Name -like "*$argument2*"
+                        $StatNames = Get-ChildItem ".\stats" | Where-Object Name -like "*$argument2*"
                         $StatNames = $StatNames.Name -replace ".txt", ""
                         if (Test-Path "stats") { Get-ChildItemContent "stats" | ForEach { $Stats | Add-Member $_.Name $_.Content } }
                     }
                 } 
             }
             else {
-                $StatNames = Get-ChildItem ".\stats" | Where Name -LIKE "*hashrate*"
+                $StatNames = Get-ChildItem ".\stats" | Where-Object Name -LIKE "*hashrate*"
                 $StatNames = $StatNames.Name -replace ".txt", ""
                 $Stats = [PSCustomObject]@{ }
                 if (Test-Path "stats") { Get-ChildItemContent "stats" | ForEach { $Stats | Add-Member $_.Name $_.Content } }
@@ -414,7 +414,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 $Type = $Stat_table.Type | Select -Unique
                 $Test = "$me[${white}mMiner${me}[0m"
                 $Type | Sort-Object | ForEach-Object {
-                    $Miner_Table = $Stat_Table | Where Type -eq $_
+                    $Miner_Table = $Stat_Table | Where-Object Type -eq $_
                     if ($Argument2) { $Miner_Table = $Miner_Table | Sort-Object -Property Profit -Descending | Select -First ([int]$Argument2) }
                     $global:index = 1
                     if ($WattTable -and $ShareTable -and $VolumeTable) {
@@ -670,14 +670,14 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         else { $Get += "No oc settings found" }
     }
     "miners" {
-        $GetJsons = Get-ChildItem ".\config\miners" | Where Extension -ne ".md"
+        $GetJsons = Get-ChildItem ".\config\miners" | Where-Object Extension -ne ".md"
         $ConvertJsons = [PSCustomObject]@{ }
         $GetJsons.Name | foreach { $Getfile = Get-Content ".\config\miners\$($_)" | ConvertFrom-Json; $ConvertJsons | Add-Member $Getfile.Name $Getfile -Force }
         if ($argument2) {
             $Get += "Current $Argument2 Miner List:"
             $Get += " "   
-            $ConvertJsons.PSObject.Properties.Name | Where { $ConvertJsons.$_.$Argument2 } | foreach { $Get += "$($_)" }
-            $Selected = $ConvertJsons.PSObject.Properties.Name | Where { $_ -eq $Argument3 } | % { $ConvertJsons.$_ }
+            $ConvertJsons.PSObject.Properties.Name | Where-Object { $ConvertJsons.$_.$Argument2 } | foreach { $Get += "$($_)" }
+            $Selected = $ConvertJsons.PSObject.Properties.Name | Where-Object { $_ -eq $Argument3 } | % { $ConvertJsons.$_ }
             if ($Selected) {
                 $Platform = Get-Content ".\debug\os.txt"
                 if ($argument2 -like "*NVIDIA*") {
@@ -885,7 +885,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                 ## Now we need to stop miner to prevent any read access issues.
                 if (Test-Path "$Dir\build\pid\miner_pid.txt") {
                     $MinerFile = Get-Content "$Dir\build\pid\miner_pid.txt"
-                    if ($MinerFile) { $MinerId = Get-Process | Where Id -eq $MinerFile }
+                    if ($MinerFile) { $MinerId = Get-Process | Where-Object Id -eq $MinerFile }
                     if ($MinerID) { Stop-Process $MinerId -Force }
                     $Get += "Stopping Old Miner and waiting 5 seconds`n"
                     Start-Sleep -S 5

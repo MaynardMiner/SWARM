@@ -20,9 +20,9 @@ function Global:Get-Pools {
     )
 
     Switch ($PoolType) {
-        "Algo" { $GetPools = if ($Items) { Global:Get-ChildItemContent -Items $Items | ForEach { if ($_ -ne $Null) { $_.Content | Add-Member @{Name = $_.Name } -PassThru } } } }
-        "Coin" { $GetPools = if ($Items) { Global:Get-ChildItemContent -Items $Items | ForEach { if ($_ -ne $Null) { $_.Content | Add-Member @{ Name = $_.Name } -PassThru } } } }
-        "Custom" { $GetPools = if ($Items) { Global:Get-ChildItemContent -Items $Items | ForEach { if ($_ -ne $Null) { $_.Content | Add-Member @{Name = $_.Name } -PassThru } } } }
+        "Algo" { $GetPools = if ($Items) { Global:Get-ChildItemContent -Items $Items | ForEach-Object { if ($_ -ne $Null) { $_.Content | Add-Member @{Name = $_.Name } -PassThru } } } }
+        "Coin" { $GetPools = if ($Items) { Global:Get-ChildItemContent -Items $Items | ForEach-Object { if ($_ -ne $Null) { $_.Content | Add-Member @{ Name = $_.Name } -PassThru } } } }
+        "Custom" { $GetPools = if ($Items) { Global:Get-ChildItemContent -Items $Items | ForEach-Object { if ($_ -ne $Null) { $_.Content | Add-Member @{Name = $_.Name } -PassThru } } } }
     }
 
     $GetPools
@@ -30,12 +30,12 @@ function Global:Get-Pools {
 }
 function Global:Get-AlgoPools {
     $start_time = (Get-Date).ToUniversalTime()
-    $Files = Get-ChildItem "algopools" | Where BaseName -in $(arg).poolname
+    $Files = Get-ChildItem "algopools" | Where-Object BaseName -in $(arg).poolname
     log "Checking Algo Pools." -Foregroundcolor yellow;
     $AllAlgoPools = Global:Get-Pools -PoolType "Algo" -Items $Files
     ##Get Custom Pools
     log "Adding Custom Pools. ." -ForegroundColor Yellow;
-    $Files = Get-ChildItem "custompools" | Where BaseName -in $(arg).poolname
+    $Files = Get-ChildItem "custompools" | Where-Object BaseName -in $(arg).poolname
     $(vars).AlgoPools = New-Object System.Collections.ArrayList
     $AllCustomPools = Global:Get-Pools -PoolType "Custom" -Items $Files
 
@@ -64,7 +64,7 @@ function Global:Get-CoinPools {
     ##Optional: Load Coin Database
     if ($(arg).Auto_Coin -eq "Yes") {
         $start_time = (Get-Date).ToUniversalTime()
-        $coin_files = Get-ChildItem "coinpools" | Where BaseName -in $(arg).poolname
+        $coin_files = Get-ChildItem "coinpools" | Where-Object BaseName -in $(arg).poolname
         log "Adding Coin Pools. . ." -ForegroundColor Yellow
         $AllCoinPools = Global:Get-Pools -PoolType "Coin" -Items $coin_files        
         $(vars).CoinPools = New-Object System.Collections.ArrayList

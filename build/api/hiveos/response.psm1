@@ -16,10 +16,10 @@ function Global:Set-Stats($Site) {
         "SWARM" { $Params = "Swarm_Params" }
     }
     $mem = @($($global:ramfree), [math]::round($global:ramtotal - $global:ramfree,2))
-    $global:GPUHashTable = $global:GPUHashTable | foreach { $_ -replace ("GPUKHS=", "") }
-    $global:GPUPowerTable = $global:GPUPowerTable | foreach { $_ -replace ("GPUWATTS=", "") }
-    $global:GPUFanTable = $global:GPUFanTable | foreach { $_ -replace ("GPUFAN=", "") }
-    $global:GPUTempTable = $global:GPUTempTable | foreach { $_ -replace ("GPUTEMP=", "") }
+    $global:GPUHashTable = $global:GPUHashTable | Foreach-Object  { $_ -replace ("GPUKHS=", "") }
+    $global:GPUPowerTable = $global:GPUPowerTable | Foreach-Object  { $_ -replace ("GPUWATTS=", "") }
+    $global:GPUFanTable = $global:GPUFanTable | Foreach-Object  { $_ -replace ("GPUFAN=", "") }
+    $global:GPUTempTable = $global:GPUTempTable | Foreach-Object  { $_ -replace ("GPUTEMP=", "") }
     $AR = @("$global:ALLACC", "$global:ALLREJ")
 
     if ($GPUHashTable) {
@@ -37,7 +37,7 @@ function Global:Set-Stats($Site) {
     }
 
     if($(vars).onboard){
-        $(vars).onboard | % {
+        $(vars).onboard | Foreach-Object  {
         $Hash = @()
         $Hash += "0"
         $Hash += $global:GPUTempTable
