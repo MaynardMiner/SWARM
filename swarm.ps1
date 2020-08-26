@@ -772,7 +772,6 @@ While ($true) {
         Get-Job -State Completed | Remove-Job
         [GC]::Collect()
         [GC]::WaitForPendingFinalizers()
-        [GC]::Collect()    
         Clear-History
 
     }until($Error.Count -gt 0)

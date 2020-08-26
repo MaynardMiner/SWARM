@@ -1,3 +1,5 @@
+. .\build\powershell\global\miner_stat.ps1;
+. .\build\powershell\global\modules.ps1;
 $(vars).CPUTypes | ForEach-Object {
     
     $ConfigType = $_;

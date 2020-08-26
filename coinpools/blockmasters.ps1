@@ -1,4 +1,4 @@
-$Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName;
+. .\build\powershell\global\modules.ps1
 $Pool_Request = [PSCustomObject]@{ } 
 $NOGLT = "DOESNOTMATTER";
 $X = "";
@@ -9,13 +9,11 @@ if ($Name -in $(arg).PoolName) {
 
     try { $Pool_Request = Invoke-RestMethod "http://blockmasters.co/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
     catch {
-        log "SWARM contacted ($Name) for a failed API check. (Coins)"; 
-        return
+        return "SWARM contacted ($Name) for a failed API check. (Coins)"; 
     }
 
     if (($Pool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        log "SWARM contacted ($Name) but ($Name) the response was empty." 
-        return
+        return "SWARM contacted ($Name) but ($Name) the response was empty." 
     }
 
     # Make an algo list, include asic algorithms not usually in SWARM

@@ -20,38 +20,39 @@ function Global:Get-ChildItemContent {
 
     if ($Items) { $Child = $Items }
     else { $Child = Get-ChildItem $Path }
-
-    $ChildItems = $Child | ForEach-Object {
+    $ChildItems = @();
+    $Child | ForEach-Object {
         $Name = $_.BaseName
         $FullName = $_.FullName
-        $Content = @()
         if ($_.Extension -eq ".ps1") {
-            $Content = &$_.FullName
+            $Runspace = [runspacefactory]::CreateRunspace();
+            $Runspace.Open();
+            $PowerShell = [powershell]::Create()
+            $PowerShell.runspace = $Runspace
+            $Script_Content = [IO.File]::ReadAllText($_.FullName);
+            $script = [Scriptblock]::Create($Script_Content);
+            $Runspace.SessionStateProxy.SetVariable("Wallets",$Global:Wallets);
+            $Runspace.SessionStateProxy.SetVariable("Config",$Global:Config);
+            $Runspace.SessionStateProxy.SetVariable("Name", $Name)
+            $Runspace.SessionStateProxy.Path.SetLocation($($(vars).dir)) | Out-Null;
+            $handle = $PowerShell.AddScript($script).BeginInvoke();
+            While(!$handle.IsCompleted) {
+                Start-Sleep -Milliseconds 200
+            }
+            $Content = $PowerShell.EndInvoke($handle);
+            $PowerShell.Dispose();
+            $Runspace.Close();
+            $Runspace.Dispose();
+            if($Content.GetType() -eq [string]) {
+                log $Content -ForeGroundColor Yellow;
+                $Content = $Null;
+            }
         }
         else {
             try { $Content = $_ | Get-Content | ConvertFrom-Json }catch { log "WARNING: Could Not Identify $FullName, It Is Corrupt- Remove File To Stop." -ForegroundColor Red }
         }
         $Content | ForEach-Object {
-            [PSCustomObject]@{Name = $Name; Content = $_ }
-        }
-    }
-
-    $ChildItems | ForEach-Object {
-        $Item = $_
-        $ItemKeys = $Item.Content.PSObject.Properties.Name.Clone()
-        $ItemKeys | ForEach-Object {
-            if ($Item.Content.$_ -is [String]) {
-                $Item.Content.$_ = Invoke-Expression "`"$($Item.Content.$_)`""
-            }
-            elseif ($Item.Content.$_ -is [PSCustomObject]) {
-                $Property = $Item.Content.$_
-                $PropertyKeys = $Property.PSObject.Properties.Name
-                $PropertyKeys | ForEach-Object {
-                    if ($Property.$_ -is [String]) {
-                        $Property.$_ = Invoke-Expression "`"$($Property.$_)`""
-                    }
-                }
-            }
+            $ChildItems += [PSCustomObject]@{Name = $Name; Content = $_ }
         }
     }
 

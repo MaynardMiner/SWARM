@@ -9,20 +9,19 @@
 ## fine. I don't know the difference this pool causes in comparision
 ## to nicehash, but it seems to cause weird bugs in miners.
 
-$Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
+. .\build\powershell\global\modules.ps1
 $Whalesburg_Request = [PSCustomObject]@{ } 
  
 if ($(arg).PoolName -eq $Name) {
     try { $Whalesburg_Request = Invoke-RestMethod "https://payouts.whalesburg.com/profitabilities/share_price" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
-    catch { Write-Warning "SWARM contacted ($Name) but there was no response."; return }
+    catch { return "SWARM contacted ($Name) but there was no response." }
   
     if (-not $Whalesburg_Request.mh_per_second_price) { 
-        Write-Warning "SWARM contacted ($Name) but ($Name) the response was empty.";
-        return
+        return "SWARM contacted ($Name) but ($Name) the response was empty.";
     }
 
     try { $(vars).ETH_exchange = Invoke-RestMethod "https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH&tsyms=BTC" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
-    catch { Write-Warning "SWARM failed to get ETH Pricing for $Name"; return }
+    catch { return "SWARM failed to get ETH Pricing for $Name"; return }
 
     $(vars).ETH_exchange = $(vars).ETH_exchange.ETH.BTC
 

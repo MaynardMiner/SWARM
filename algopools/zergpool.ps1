@@ -1,4 +1,5 @@
-$Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
+. .\build\powershell\global\modules.ps1
+
 $Pool_Request = [PSCustomObject]@{ } 
 
 $X = ""
@@ -6,11 +7,10 @@ if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" }
  
 if ($Name -in $(arg).PoolName) {
     try { $Pool_Request = Invoke-RestMethod "http://api.zergpool.com:8080/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
-    catch { log "SWARM contacted ($Name) but there was no response."; return }
+    catch { return "SWARM contacted ($Name) but there was no response." }
   
     if (($Pool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        log "SWARM contacted ($Name) but ($Name) the response was empty." 
-        return
+        return "SWARM contacted ($Name) but ($Name) the response was empty." 
     } 
 
     $Algos = @()

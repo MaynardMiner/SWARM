@@ -40,22 +40,22 @@ function Global:Get-Miners {
     $GetMiners = New-Object System.Collections.ArrayList
 
     if ($GPUMiners -eq $true) {
-        if ($NVB -eq $true) {
-            $NVIDIAMiners = Get-ChildItemContent -Path ".\miners\gpu\nvidia" | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
+        if ($NVB -eq $true) {            
+            $NVIDIAMiners = Global:Get-ChildItemContent -Path ".\miners\gpu\nvidia" | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
             Where-Object { $(arg).Type.Count -eq 0 -or (Compare-Object $(arg).Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
             Where-Object { $_.Path -ne "None" } |
             Where-Object { $_.Uri -ne "None" } |
             Where-Object { $_.MinerName -ne "None" }
         }
         if ($AMDB -eq $true) {
-            $AMDMiners = Get-ChildItemContent -Path ".\miners\gpu\amd" | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
+            $AMDMiners = Global:Get-ChildItemContent -Path ".\miners\gpu\amd" | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
             Where-Object { $(arg).Type.Count -eq 0 -or (Compare-Object $(arg).Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
             Where-Object { $_.Path -ne "None" } |
             Where-Object { $_.Uri -ne "None" } |
             Where-Object { $_.MinerName -ne "None" }
         }
         if ($CPUB -eq $true) {
-            $CPUMiners = Get-ChildItemContent -Path ".\miners\cpu" | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
+            $CPUMiners = Global:Get-ChildItemContent -Path ".\miners\cpu" | ForEach-Object { $_.Content | Add-Member @{Name = $_.Name } -PassThru } |
             Where-Object { $(arg).Type.Count -eq 0 -or (Compare-Object $(arg).Type $_.Type -IncludeEqual -ExcludeDifferent | Measure-Object).Count -gt 0 } |
             Where-Object { $_.Path -ne "None" } |
             Where-Object { $_.Uri -ne "None" } |

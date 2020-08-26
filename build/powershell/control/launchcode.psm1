@@ -475,7 +475,11 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 }
                 catch {
                     log "Warning: Miner API Port still listed as TIME_WAIT after 15 seconds, but launching anyway" -ForegroundColor Yellow
-                    Stop-Process $proc
+                    while(!$proc.HasExited) {
+                        Stop-Process $proc
+                        Start-Sleep -S .5
+                        log "Stopping killcx" -Foreground Yellow
+                    }
                 }
             }
 

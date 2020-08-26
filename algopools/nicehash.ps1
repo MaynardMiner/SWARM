@@ -1,4 +1,4 @@
-$Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
+. .\build\powershell\global\modules.ps1
 $nicehash_Request = [PSCustomObject]@{ } 
 
 ## Make a Port map so I don't have to pull from nicehash twice
@@ -27,11 +27,11 @@ if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" }
  
 if ($Name -in $(arg).PoolName) {
     try { $nicehash_Request = Invoke-RestMethod "https://api2.nicehash.com/main/api/v2/public/simplemultialgo/info" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
-    catch { log "SWARM contacted ($Name) but there was no response."; return }
+    catch { return "SWARM contacted ($Name) but there was no response." }
  
     if ($nicehash_Request.miningAlgorithms.Count -le 1) {
-        log "SWARM contacted ($Name) but ($Name) the response was empty." 
-        return 
+        return "SWARM contacted ($Name) but ($Name) the response was empty." 
+         
     } 
   
     Switch ($(arg).Location) {
@@ -88,12 +88,8 @@ if ($Name -in $(arg).PoolName) {
                 ## usually pretty close to actual.
 
                 $StatAlgo = $Nicehash_Algorithm -replace "`_", "`-"
-                if($StatAlgo -ne ""){
-                    $Stat = [Pool_Stat]::New("$($N)_$($StatAlgo)", $value, $hashrate, -1, $false)
-                } else {
-                    log "Warning: SWARM recieved API from nicehash with mining algorithm field empty" -foregroundcolor yellow
-                    break
-                }
+
+                $Stat = [Pool_Stat]::New("$($N)_$($StatAlgo)", $value, $hashrate, -1, $false)
 
                 $previous = $Stat.Day_MA
 

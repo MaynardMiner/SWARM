@@ -1,3 +1,5 @@
+. .\build\powershell\global\miner_stat.ps1;
+. .\build\powershell\global\modules.ps1;
 $(vars).AMDTypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""

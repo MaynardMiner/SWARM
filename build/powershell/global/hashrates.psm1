@@ -42,6 +42,10 @@ function Global:Get-TCP {
         if ($Writer) {$Writer.Close()}
         if ($Stream) {$Stream.Close()}
         if ($Client) {$Client.Close()}
+        if ($Reader) {$Reader.Dispose()}
+        if ($Writer) {$Writer.Dispose()}
+        if ($Stream) {$Stream.Dispose()}
+        if ($Client) {$Client.Dispose()}
     }
 
     $response
@@ -94,6 +98,10 @@ function Global:Get-SWARMTCP {
         if ($Writer) {$Writer.Close()}
         if ($Stream) {$Stream.Close()}
         if ($Client) {$Client.Close()}
+        if ($Reader) {$Reader.Dispose()}
+        if ($Writer) {$Writer.Dispose()}
+        if ($Stream) {$Stream.Dispose()}
+        if ($Client) {$Client.Dispose()}
     }
 
     if($response) {
