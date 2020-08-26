@@ -457,11 +457,11 @@ function Global:Start-Sorting {
         $MinerPool = $Miner.MinerPool | Select-Object -Unique
         $Quote = $Miner.Quote;
         $Miner.Quote = $Miner.Hashrate_Adjusted * $Quote;
-        $IsBestMiner = ($Null -ne $(vars).BestActiveMiners | Where-Object Path -EQ $Miner.Path | Where-Object Arguments -EQ $Miner.Arguments | Where-Object Type -EQ $Miner.Type)
+        $IsBestMiner = ($Null -ne (($(vars).BestActiveMiners | Where-Object Path -EQ $Miner.Path | Where-Object Arguments -EQ $Miner.Arguments | Where-Object Type -EQ $Miner.Type)))
         
         if($(arg).Hashrate_Threshold -gt 0 -and $IsBestMiner) {
             $Miner.Quote = ($Miner.Hashrate_Adjusted * (1 + ( $(arg).Hashrate_Threshold / 100) ) ) * $Quote
-            log "$Miner.Name hashrate was increased by $($($arg).Hashrate_Threshold)% to reduce switching."
+            log "$($Miner.Name) hashrate was increased by $($($arg).Hashrate_Threshold)% to reduce switching."
         }
 
         if ($Miner.Power -gt 0) { $WattCalc3 = (((([Double]$Miner.Power * 24) / 1000) * $(vars).WattEx) * -1)}
