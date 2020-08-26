@@ -75,7 +75,7 @@ function Global:Get-RigData {
         $false {
             ##dmidecode 3.1
             $RigData = @{ }
-            $cpuid = "$(Invoke-Expression "./build/apps/dmidecode/dmidecode -t 4" | Select-Object -String "ID: " | Foreach-Object {$_ -split "ID: " | Select-Object  -Last 1})" -replace " ", ""
+            $cpuid = "$(Invoke-Expression "./build/apps/dmidecode/dmidecode -t 4" | Select-String "ID: " | Foreach-Object {$_ -split "ID: " | Select-Object  -Last 1})" -replace " ", ""
             $uuid = Invoke-Expression "./build/apps/dmidecode/dmidecode -s system-uuid"
             $net = Invoke-Expression "ip -o link | grep -vE `'LOOPBACK|POINTOPOINT|sit0|can0`'"
             $net_interfaces = @()
