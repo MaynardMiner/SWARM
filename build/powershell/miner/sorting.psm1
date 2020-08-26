@@ -460,7 +460,7 @@ function Global:Start-Sorting {
         $IsBestMiner = ($Null -ne $(vars).BestActiveMiners | Where-Object Path -EQ $Miner.Path | Where-Object Arguments -EQ $Miner.Arguments | Where-Object Type -EQ $Miner.Type)
         
         if($(arg).Hashrate_Threshold -gt 0 -and $IsBestMiner) {
-            $Miner.Quote = ($Miner.Hashrate_Adjusted * (1 + ($(arg).Hashrate_Threshold / 100))) * $Quote
+            $Miner.Quote = ($Miner.Hashrate_Adjusted * (1 + ( $(arg).Hashrate_Threshold / 100) ) ) * $Quote
             log "$Miner.Name hashrate was increased by $($($arg).Hashrate_Threshold)% to reduce switching."
         }
 
