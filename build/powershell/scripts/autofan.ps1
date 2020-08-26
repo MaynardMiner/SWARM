@@ -356,7 +356,7 @@ class RIG {
 
                 ## First Check To Make Sure All Values Are There:
                 $Temps = $stats | Foreach-Object { $_.Temperature }
-                $Fans = $stats | Foreach-Object { $_.'Fan Speed Foreach-Object' }
+                $Fans = $stats | Foreach-Object { $_.'Fan Speed %' }
 
                 ## Add New Temperature Readings
                 for ($i = 0; $i -lt $Cards.Count; $i++) {
@@ -389,8 +389,8 @@ class RIG {
             Write-Host "GPU $($_.Rig_Number): " -NoNewLine
             Write-Host "Temp: $($_.cur_temp), " -ForegroundColor Red -NoNewline
             Write-Host "Fan Speed: $($_.FanSpeed), " -ForegroundColor Cyan -NoNewline 
-            Write-Host "Change: $($_.New_Speed - $_.FanSpeed)Foreach-Object, " -ForegroundColor Yellow -NoNewline
-            Write-Host "Actual New Fan Speed Foreach-Object: $($_.New_Speed)" -ForegroundColor Green -NoNewline
+            Write-Host "Change: $($_.New_Speed - $_.FanSpeed)%, " -ForegroundColor Yellow -NoNewline
+            Write-Host "Actual New Fan Speed %: $($_.New_Speed)" -ForegroundColor Green -NoNewline
             Write-Host ""    
         }
         if ("AMD" -in $this.Models -and $this.Config.NO_AMD -ne 1) { Write-Host "AMD GPUS" -ForegroundColor Red }
@@ -406,8 +406,8 @@ class RIG {
                 Write-Host "GPU $($_.Rig_Number): " -NoNewLine
                 Write-Host "Temp: $($_.cur_temp), " -ForegroundColor Red -NoNewline
                 Write-Host "Fan Speed: $($_.FanSpeed), " -ForegroundColor Cyan -NoNewline 
-                Write-Host "Change: $($_.New_Speed - $_.FanSpeed)Foreach-Object, " -ForegroundColor Yellow -NoNewline
-                Write-Host "Actual New Fan Speed Foreach-Object: $($_.New_Speed)" -ForegroundColor Green -NoNewline
+                Write-Host "Change: $($_.New_Speed - $_.FanSpeed)%, " -ForegroundColor Yellow -NoNewline
+                Write-Host "Actual New Fan Speed %: $($_.New_Speed)" -ForegroundColor Green -NoNewline
                 Write-Host ""    
             }
         }
