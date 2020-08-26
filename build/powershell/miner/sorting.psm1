@@ -460,6 +460,7 @@ function Global:Start-Sorting {
 
         ## Reduce hashrate of all miners of the same algorithm and type as the best miners to reduce switching.
         ## This means that miner must be x % better in hashrate/rej ratio to switch. Where x% is -Hashrate_Threshold.
+        ## This does not factor pool- If another pool was more profitable, it was going to switch anyways.
         $IsBestMiner = ($Null -ne (($(vars).BestActiveMiners | Where-Object Path -EQ $Miner.Path | Where-Object Arguments -EQ $Miner.Arguments | Where-Object Type -EQ $Miner.Type)))
         $IsSameAlgoAsBestMiner = ($Null -ne ($(vars)).BestActiveMiners | Where-Object Algo -eq $Miner.Algo | Where-Object Type -eq $Miner.Type)
         
