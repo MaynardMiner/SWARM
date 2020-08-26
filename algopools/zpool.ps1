@@ -1,4 +1,4 @@
-$Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName 
+. .\build\powershell\global\modules.ps1
 $Pool_Request = [PSCustomObject]@{ } 
 
 $X = ""
