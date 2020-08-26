@@ -38,17 +38,17 @@ function Global:Get-RigData {
             $NVIDIACount = ($(vars).BusData | Where-Object  brand -eq "nvidia").Count
             $RigData.Add("gpu_count_amd", "$AMDCount")
             $RigData.Add("gpu_count_nvidia", "$NVIDIACount")
-            $manu = $(Get-CimInstance Win32_BaseBoard | Select-Object -Object Manufacturer).Manufacturer
+            $manu = $(Get-CimInstance Win32_BaseBoard | Select-Object Manufacturer).Manufacturer
             $RigData.Add("mb", @{ })
             $RigData.mb.Add("manufacturer", $manu)
-            $prod = $(Get-CimInstance Win32_BaseBoard | Select-Object -Object Product).Product
+            $prod = $(Get-CimInstance Win32_BaseBoard | Select-Object Product).Product
             $RigData.mb.Add("product", $prod)
             $RigData.mb.Add("system_uuid",$uuid)
             $AES = $(Invoke-Expression ".\build\apps\features-win\features-win.exe" | Select-Object  -Skip 1 | ConvertFrom-StringData)."AES-NI"
             if ($AES -eq "Yes") { $HasAES = 1 }else { $HasAES = 0 }
             $RigData.cpu.Add("aes", $HasAES)
             $disk = $(Get-CimInstance win32_diskdrive).model
-            $diskSpace = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" | Select-Object -Object Size
+            $diskSpace = Get-CimInstance Win32_LogicalDisk -Filter "DeviceID='C:'" | Select-Object Size
             $diskSpace = $diskSpace.Size / [math]::pow( 1024, 3 )
             $diskSpace = [math]::Round($diskSpace)
             $diskSpace = "$($diskSpace)GB"

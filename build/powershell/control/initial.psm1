@@ -102,8 +102,8 @@ function Global:Expand-WebRequest {
 
     $Zip = Split-Path $Uri -Leaf; $BinPath = $($Z = Split-Path $Path -Parent; Split-Path $Z -Leaf);
     $Name = (Split-Path $Path -Leaf); $X64_zip = Join-Path ".\x64" $Zip;
-    $BaseName = $( (Split-Path $Path -Leaf) -split "\.") | Select-Object -Object -First 1
-    $X64_extract = $( (Split-Path $URI -Leaf) -split "\.") | Select-Object -Object -First 1;
+    $BaseName = $( (Split-Path $Path -Leaf) -split "\.") | Select-Object -First 1
+    $X64_extract = $( (Split-Path $URI -Leaf) -split "\.") | Select-Object -First 1;
     $MoveThere = Split-Path $Path; $temp = "$($BaseName)_Temp"
 
     ##First Determine the file type:
