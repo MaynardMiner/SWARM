@@ -1,6 +1,11 @@
 # SWARM 3.2.8
 
-## Improvements:
+## Critical Changes
+* Improved memory concerns over long term/running usage.
+* This is a larger change- Bugs may be present. Please let
+  me know if you experience any.
+
+## Improvements
 * Removed amdmeminfo error output in linux. (it wasn't issue- just annoying).
 * Output warning if HiveOS keys in Windows are corrupted (likely due to bad reconnection). Prevent using corrupted keys to help re-sync with HiveOS.
 * Default OpenCL platform to "0" if auto-detection fails. 90% of the time it is 0 anyways.
