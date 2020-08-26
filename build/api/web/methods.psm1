@@ -97,7 +97,7 @@ function Global:Get-RigData {
             $lan_address = Invoke-Expression "ip -o -f inet addr show | grep eth0 | awk `'/scope global/ {print `$4}`'"
             $lan_gateway = Invoke-Expression "ip route | awk `'/default/ && /eth0/ { print `$3 }`' | head -1"
             $lan_dns = Invoke-Expression "cat /run/systemd/resolve/resolv.conf | grep -m1 `^nameserver | awk '`{print `$2}`'"
-            $get_dhcp = Invoke-Expression "cat /etc/systemd/network/20-ethernet.network" | Select-Object -String "DHCP=yes"
+            $get_dhcp = Invoke-Expression "cat /etc/systemd/network/20-ethernet.network" | Select-String "DHCP=yes"
             if($get_dhcp){$lan_dhcp = 1} else {$lan_dhcp = 0}
             $lan_config = [PSCustomObject]@{ dhcp = $lan_dhcp; address = $lan_address; gateway = $lan_gateway; dns = $lan_dns }
             $RigData.Add("net_interfaces",$net_interfaces)
