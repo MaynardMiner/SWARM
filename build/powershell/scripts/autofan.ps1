@@ -287,7 +287,7 @@ class RIG {
             $Stats = @()
             $nvidiaout | Foreach-Object {
                 $Stats += @{ $($_.'pci.bus_id' -replace '00000000:', '') = @{
-                        fan  = $( $_.'fan.speed [Foreach-Object]' -replace ' \Foreach-Object', '')
+                        fan  = $( $_.'fan.speed [%]' -replace ' \%', '')
                         temp = $($_.'temperature.gpu')
                     }
                 }
