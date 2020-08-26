@@ -108,5 +108,6 @@
     "cpu_priority": 0,
     "Min_Blocks": 1,
     "Hidden": "No",
-    "Throttle": 0
+    "Throttle": 0,
+    "Hashrate_Threshold": 10
 }
