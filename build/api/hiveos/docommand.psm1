@@ -197,11 +197,10 @@ function Global:Start-Webcommand {
                 ## Get Old Wallet
                 $Path = [IO.Path]::Join($($(vars).dir), "debug\get-hive-hello.txt")
                 $Old_Config = Get-Content $Path | ConvertFrom-Json
-
                 $method = "message"
                 $messagetype = "success"
                 $data = "Rig config changed"
-                $parser = [string]$response.result.wallet;
+                $parser = [string]$Command.result.wallet;
                 $new = $parser;
                 $joined = $parser.replace("`n","");
                 $start_joined = $joined.IndexOf("CUSTOM_USER_CONFIG=`'{");
@@ -278,7 +277,7 @@ function Global:Start-Webcommand {
                 $Params | convertto-Json | Out-File ".\config\parameters\newarguments.json"
 
                 ## Check link for update.
-                $arguments = [string]$Command.result.wallet | ConvertFrom-StringData
+                $arguments = $new | ConvertFrom-StringData
                 $New_Url = ($arguments.CUSTOM_INSTALL_URL)
                 if ([string]$New_Url -ne "`"`"") {
                     $New_Url = $New_Url.Replace("`"", "")
