@@ -2487,3 +2487,25 @@ identity. Was related to machine potentially having multiple active MAC addresse
 
 ## Improvements:
 * Changed t-rex miner cuda version to 10.
+
+############################################
+############################################
+
+# SWARM 3.2.8
+
+## Critical Changes
+* Improved memory concerns over long term/running usage.
+* This is a larger change- Bugs may be present. Please let
+  me know if you experience any.
+
+## Improvements
+* Removed amdmeminfo error output in linux. (it wasn't issue- just annoying).
+* Output warning if HiveOS keys in Windows are corrupted (likely due to bad reconnection). Prevent using corrupted keys to help re-sync with HiveOS.
+* Default OpenCL platform to "0" if auto-detection fails. 90% of the time it is 0 anyways.
+* Remove randomx on nanominer. Was using cpu instead of GPU.
+* Fix downloading miners that place their file in a different folder name.
+* Wilrdig- Added parameter to specifiy multiple instances for AMD/NVIDIA hybrid rigs.
+* Windows Autofan- Shortened loop speed, so it will execute fan changes faster.
+
+  ## Updates
+  * xmrigcc updated
