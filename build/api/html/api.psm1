@@ -22,15 +22,15 @@ function Global:Get-APIServer {
         Set-Location $Config.vars.dir
         $listener = New-Object System.Net.HttpListener
         Write-Host "Listening ..."
-        [string]$Prefix = "http://localhost:$($Config.Params.Port)/" 
-        if ($global.config.APIPassword -ne "No") {
-            [string]$Prefix = "http://localhost:$($Config.Params.Port)/$($Config.params.APIPassword)/" 
+        [string]$Prefix = "http://localhost:$($Config.params.Port)/" 
+        if ($config.params.APIPassword -ne "No") {
+            [string]$Prefix = "http://localhost:$($Config.params.Port)/$($Config.params.APIPassword)/" 
         }
         if ($Config.params.Remote -eq "yes") {
-            if ($global.config.APIPassword -ne "No") {
+            if ($Config.params.APIPassword -ne "No") {
                 [string]$Prefix = "http://+:$($Config.params.Port)/$($Config.params.APIPassword)/"
             }
-            else { $Prefix = "http://+:$($Config.Params.Port)/" }
+            else { $Prefix = "http://+:$($Config.params.Port)/" }
         }   
         # Run until you send a GET request to /end
         $listener.Prefixes.Add($Prefix) 
@@ -49,12 +49,10 @@ function Global:Get-APIServer {
             else {
                 # Split request URL to get command and options
                 $requestvars = [String]$request.Url -split "/"
-                if ($Config.params.Port -eq "Yes" -and $config.params.APIPassword -ne "No") { $GET = $requestvars[4] }
-                elseif ($Config.params.Remote -eq "Yes" -and $Config.params.APIPassword -eq "No") { $GET = $requestvars[3] }
-                else { $GET = $requestvars[3] }
-                $requestcom = $GET -split "`&" | Select-Object -First 1
-                $requestargs = $GET -replace "$requestcom", ""
-                $requestargs = $requestargs -replace "`&", " "
+                $GET = $requestvars[3] 
+                if($Config.params.APIPassword -ne "No") { $Get = $requestvars[4] }
+                $requestcom = $GET.split("&")[0] | Select-Object -First 1
+                $requestarg = $requestcom + " " + ($GET.split("&") | Select-Object -skip 1)
                 if ($requestcom) {
                     switch ($requestcom) {
                         "summary" {
@@ -113,35 +111,35 @@ function Global:Get-APIServer {
                         }
                         "get" {
                             $result = @()
-                            Invoke-Expression ".\build\powershell\scripts\get.ps1$requestargs" | Tee-Object -Variable getbest | Out-Null;
+                            $getbest = Invoke-Expression "$requestarg" | Out-String;
                             $getbest | ForEach-Object { $result += "$_`n" };
                             $message = $result | ConvertTo-Json;
                             $response.ContentType = 'application/json';
                         }
                         "version" {
                             $result = @()
-                            Invoke-Expression ".\build\powershell\scripts\version.ps1$requestargs" | Tee-Object -Variable getbest | Out-Null;
+                            $getbest = Invoke-Expression "$requestarg" | Out-String;
                             $getbest | ForEach-Object { $result += "$_`n" };
                             $message = $result | ConvertTo-Json;
                             $response.ContentType = 'application/json';
                         }
                         "clear_profits" {
                             $result = @()
-                            Invoke-Expression ".\build\powershell\scripts\clear_profits.ps1$requestargs" | Tee-Object -Variable getbest | Out-Null;
+                            $getbest = Invoke-Expression "$requestarg" | Out-String;
                             $getbest | ForEach-Object { $result += "$_`n" };
                             $message = $result | ConvertTo-Json;
                             $response.ContentType = 'application/json';
                         }
                         "clear_watts" {
                             $result = @()
-                            Invoke-Expression ".\build\powershell\scripts\clear_watts.ps1$requestargs" | Tee-Object -Variable getbest | Out-Null;
+                            $getbest = Invoke-Expression "$requestarg" | Out-String;
                             $getbest | ForEach-Object { $result += "$_`n" };
                             $message = $result | ConvertTo-Json;
                             $response.ContentType = 'application/json';
                         }
                         "benchmark" {
                             $result = @()
-                            Invoke-Expression ".\build\powershell\scripts\benchmark.ps1$requestargs" | Tee-Object -Variable getbest | Out-Null;
+                            $getbest = Invoke-Expression "$requestarg" | Out-String;
                             $getbest | ForEach-Object { $result += "$_`n" };
                             $message = $result | ConvertTo-Json;
                             $response.ContentType = 'application/json';
