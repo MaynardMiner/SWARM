@@ -192,6 +192,7 @@ function Global:Get-MinerBinary($Miner, $Reason) {
             if ( -not (Test-Path $Miner.Path) ) {
                 log "$($Miner.Name) Not Found- Downloading" -ForegroundColor Yellow
                 Global:Expand-WebRequest $Miner.URI $Miner.Path $Miner.version
+                $(vars).Downloads = $true;
             }
         }
         if ( Test-Path $Miner.Path ) {
@@ -455,6 +456,22 @@ function Global:Start-Sorting {
         $Miner = $_
      
         $MinerPool = $Miner.MinerPool | Select-Object -Unique
+        $Quote = $Miner.Quote;
+        $Miner.Quote = $Miner.Hashrate_Adjusted * $Quote;
+
+        ## Reduce hashrate of all miners of the same algorithm and type as the best miners to reduce switching.
+        ## This means that miner must be x % better in hashrate/rej ratio to switch. Where x% is -Hashrate_Threshold.
+        ## This does not factor pool- If another pool was more profitable, it was going to switch anyways.
+        $IsBestMiner = ($Null -ne (($(vars).BestActiveMiners | Where-Object Path -EQ $Miner.Path | Where-Object Arguments -EQ $Miner.Arguments | Where-Object Type -EQ $Miner.Type)))
+        $IsSameAlgoAsBestMiner = ($Null -ne ($(vars)).BestActiveMiners | Where-Object Algo -eq $Miner.Algo | Where-Object Type -eq $Miner.Type)
+        
+        if($(arg).Hashrate_Threshold -gt 0 -and !$IsSameAlgoAsBestMiner -and $IsBestMiner) {
+            $Miner.Quote = ($Miner.Hashrate_Adjusted * (1 - ( $(arg).Hashrate_Threshold / 100) ) ) * $Quote
+        }
+
+        if($IsBestMiner -and $(arg).Hashrate_Threshold -gt 0) {
+            log "All miners that mine $($Miner.algo) that is not $($miner.name) was reduced by -Hashrate_Threshold $((arg).Hashrate_Threshold) % to reduce switching." -ForeGroundColor Magenta;
+        }
 
         if ($Miner.Power -gt 0) { $WattCalc3 = (((([Double]$Miner.Power * 24) / 1000) * $(vars).WattEx) * -1)}
         else { $WattCalc3 = 0 }

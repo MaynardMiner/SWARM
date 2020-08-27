@@ -85,7 +85,8 @@ $(vars).NVIDIATypes | ForEach-Object {
                     DeviceCall = "progminer"
                     Arguments  = "-P $($tcp)://$($_.$User).$($work)@$($_.Pool_Host):$($_.Port) --cuda --api-bind 127.0.0.1:$Port --noeval --dag-load-mode 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
-                    Quote      = if ($HashStat) { [Convert]::ToDecimal($HashStat * $_.Price) }else { 0 }
+                    HashRate_Adjusted = $Hashstat
+                    Quote      = $_.Price
                     Rejections = $Stat.Rejections
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                     MinerPool  = "$($_.Name)"

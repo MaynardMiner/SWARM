@@ -109,7 +109,8 @@ $(vars).NVIDIATypes | ForEach-Object {
                     DeviceCall = "claymore"
                     Arguments  = "-nvidia -mport $Port -mode 1 -allcoins 1 -allpools 1 $AddArgs-pool $($_.Protocol)://$($_.Pool_Host):$($_.Port) -wal $($_.$User) $MinerWorker-wd 0 -logfile `'$(Split-Path $Log -Leaf)`' -logdir `'$(Split-Path $Log)`' -gser 2 -dbg -1 -eres 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
-                    Quote      = if ($HashStat) { [Convert]::ToDecimal($HashStat * $_.Price) }else { 0 }
+                    HashRate_Adjusted = $Hashstat
+                    Quote      = $_.Price
                     Rejections = $Stat.Rejections
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                     API        = "claymore"

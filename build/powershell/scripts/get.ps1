@@ -98,23 +98,7 @@ screen
 
         platform:
         [miner] [NVIDIA1] [NVIDIA2] [NVIDIA3] [CPU] [AMD1]
-
-###################################################################
-###################################################################
-
-version
-    used to view current version of miner.
-
-    USES:
-
-        get version [name]
-
-    OPTIONS:
  
-        name
-            name of miner, as per the names of .json in config/miners
-            if you are unsure of miner name, choose 'all' to identify.
-
 ###################################################################
 ###################################################################
 
@@ -245,26 +229,50 @@ charts
 
 OTHER USEFUL COMMANDS that are not part of get, but work for SWARM:
 
+###################################################################
+###################################################################
+
 clear_profits
         Clears all stat files for pools
 
+###################################################################
+###################################################################
+        
 clear_watts
         Clears all watt files
         Resets power.json
 
+###################################################################
+###################################################################
+        
 bench
+    Resets a ban or benchmark for a miner, algorithm, miner/algorithm.
+
         USAGE:
-            [miner or algorithm] [name]
+
+            [miner] [name]
+            [miner] [name] [algorithm]
+            [algorithm] [name]
             [timeout]
 
-        bench miner [name] 
-            will clear all benchmarks for that miner
-        bench algorithm [name] 
-            will clear all benchmarks for that algorithm
-        bench bans
-            will clear all bans
+        EXAMPLES:
+
+            bench miner [name] 
+                will clear all benchmarks for that miner
+            bench algorithm [name] 
+                will clear all benchmarks for that algorithm
+            bench miner [name] [algoritm]
+                will clear algorithm benchmark for the miner.
+            bench bans
+                will clear all bans
+
+###################################################################
+###################################################################                
 
 nview
+    Allows the ability to run a command listed here in a loop
+    every -n seconds.
+
         USAGE:
             [-n] [-onchange]
 
@@ -276,7 +284,36 @@ nview
             nview get stats -n 10 -Onchange
                 Will run get stats command every 10 seconds
                 Will only refresh screen if data has changed.
+            
+###################################################################
+###################################################################                
 
+version
+    used to view current version of miner, as well as update miners.
+    
+    USAGE:
+        [query] 
+        [update] [miner] [version] [link]
+            
+        EXAMPLE:
+            version query
+            version update gminer-1 1.2.2 https://github.com/gminerreleases/tag/v.1.2.4/gminer.1.2.2.zip
+            
+        OPTIONS:
+            
+            query:
+                returns a list of all miners and their versions.
+                    
+            update:
+                update a miner. version update is proceeded
+                by miner name, version, and link. Ensure that
+                you specify the groups gminer-1 would be for
+                NVIDIA1, gminer-2 would be for NVIDIA2.
+            
+
+###################################################################
+###################################################################                
+                
 to see all available SWARM commands, go to:
 
 https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
