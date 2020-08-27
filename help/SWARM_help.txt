@@ -279,6 +279,16 @@ Argument          Options           Explanation
                                     specified. Default is 1%. This increase is set on INCOMING
                                     estimates, not its current profit/day.
 
+-Switch_Threshold   0-1000          Expression is in percentage. Hashrate threshold attempts to prevent 
+                                    constant switching from one miner to another when the algorithm is 
+                                    the same. If Hashrate_Threshold is greater than 0, SWARM will reduce
+                                    the hashrate of the algorithm from all other miners capable
+                                    of mining it EXCEPT the miner that is currently mining it.
+                                    This means that a miner must greater than x% faster than 
+                                    the current miner in order to switch. This does factor
+                                    in rejection percentage, if user has specified to do so.
+
+
 -Threshold     [.1 - 100000]	    Expressed in BTC/day. Default is .02. If the total daily profits of a
 				    particular algo/coin exceed the -Threshold argument, it will be removed
 				    from database calculation. This is to prevent mining on a particular
@@ -313,33 +323,33 @@ Argument          Options           Explanation
                                     with an -interval of 300 (5 minutes), there is no real reason
                                     to store nore than 3 periods of data (15 minutes total).
 
--Stat_Algo    [Live,		       This will allow you to factor period average smoothing. 
-        	    Minute_10_MA,    By default everything is day pricing. This will allow you to
-		          Minute_10_EMA,	 smooth out stat fluctuations if you so desired into the period 
-              Minute_15_MA,    specified. Essentially it will allow you choose whether or not 
-		          Minute_15_EMA,   you want to base switching on price averages, or live...And if
-		          Minute_30_MA,    you choose price averages, what average to base it on. Default
-              Minute_30_EMA,   is day. MA is a simple average of the time period specified. EMA
-              Hour_MA,         is a weighted average which favors more recent pricing.
-              Hour_EMA,
-              Hour_4_MA,
-              Hour_4,EMA,
-              Day_MA,
-              Day_EMA]
+-Stat_Algo    [Live,		    This will allow you to factor period average smoothing. 
+               Minute_10_MA,        By default everything is day pricing. This will allow you to
+	       Minute_10_EMA,	    smooth out stat fluctuations if you so desired into the period 
+               Minute_15_MA,        specified. Essentially it will allow you choose whether or not 
+	       Minute_15_EMA,       you want to base switching on price averages, or live...And if
+	       Minute_30_MA,        you choose price averages, what average to base it on. Default
+               Minute_30_EMA,       is day. MA is a simple average of the time period specified. EMA
+               Hour_MA,             is a weighted average which favors more recent pricing.
+               Hour_EMA,
+               Hour_4_MA,
+               Hour_4,EMA,
+               Day_MA,
+               Day_EMA]
 
--Stat_Coin    [Live,		       This will allow you to factor period average smoothing. 
-        	    Minute_10_MA,    By default everything is day pricing. This will allow you to
-		          Minute_10_EMA,	 smooth out stat fluctuations if you so desired into the period 
-              Minute_15_MA,    specified. Essentially it will allow you choose whether or not 
-		          Minute_15_EMA,   you want to base switching on price averages, or live...And if
-		          Minute_30_MA,    you choose price averages, what average to base it on. Default
-              Minute_30_EMA,   is day. MA is a simple average of the time period specified. EMA
-              Hour_MA,         is a weighted average which favors more recent pricing.
-              Hour_EMA,        This value works specifically for coin values (-Auto_Coin Yes).
-              Hour_4_MA,
-              Hour_4,EMA,
-              Day_MA,
-              Day_EMA]
+-Stat_Coin    [Live,		    This will allow you to factor period average smoothing. 
+               Minute_10_MA,        By default everything is day pricing. This will allow you to
+	       Minute_10_EMA,       smooth out stat fluctuations if you so desired into the period 
+               Minute_15_MA,        specified. Essentially it will allow you choose whether or not 
+	       Minute_15_EMA,       you want to base switching on price averages, or live...And if
+	       Minute_30_MA,        you choose price averages, what average to base it on. Default
+               Minute_30_EMA,       is day. MA is a simple average of the time period specified. EMA
+               Hour_MA,             is a weighted average which favors more recent pricing.
+               Hour_EMA,            This value works specifically for coin values (-Auto_Coin Yes).
+               Hour_4_MA,
+               Hour_4,EMA,
+               Day_MA,
+               Day_EMA]
 
 ***********************************************************************************************************
 *************** Miner Control *****************************************************************************
