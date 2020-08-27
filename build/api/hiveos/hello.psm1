@@ -129,24 +129,43 @@ function Global:Start-WebStartup($response, $Site) {
                     $global:Config.$Params | ConvertTo-Json | Set-Content ".\config\parameters\$($Params)_keys.json"
                 }
                 "wallet" {
-                    $arguments = [string]$RigConf.result.wallet | ConvertFrom-StringData
-                    if($arguments.CUSTOM_USER_CONFIG) {
-                        ## Remove the "'" at front and end.
-                        $arguments = $arguments.CUSTOM_USER_CONFIG.TrimStart("'").TrimEnd("'");
-
-                    } else {
+                    $parser = [string]$response.result.wallet;
+                    $new = $parser;
+                    $joined = $parser.replace("`n", "");
+                    $start_joined = $joined.IndexOf("CUSTOM_USER_CONFIG=`'{");
+                    if ($start_joined -ne -1) {
+                        $start = $parser.IndexOf("CUSTOM_USER_CONFIG=");
+                        $end = $parser.Substring($start + 20).IndexOf("`'");
+                        $end_joined = $joined.Substring($start_joined + 20).IndexOf("`'");
+                        $condensed = $joined.Substring(($start_joined + 19), ($end_joined + 2));
+                        $new = $parser.remove($start + 19, $end + 2).Insert($start + 19, $condensed);
+                    }
+                    $Wallet = $new | ConvertFrom-StringData
+                    for ($i = 0; $i -lt $Wallet.keys.Count; $i++) {
+                        $key = $Wallet.Keys | Select-Object -Skip $i -First 1;
+                        $Wallet.$key = $Wallet.$key.TrimStart("`"");
+                        $Wallet.$key = $Wallet.$key.TrimEnd("`"");
+                        $Wallet.$key = $Wallet.$key.TrimStart("`'");
+                        $Wallet.$key = $Wallet.$key.TrimEnd("`'");
+                    }        
+                    if (!$Wallet.CUSTOM_USER_CONFIG) {
                         Write-Log "Warning: No CUSTOM_USER_CONFIG found!" -ForegroundColor Red
                         Write-Log "Make sure you are using a Custom User Config section in HiveOS" -ForegroundColor Red
                     }
+                    $arguments = $Wallet.CUSTOM_USER_CONFIG
                     if ($arguments -like "*-wallet1*" -or $arguments -like "*`"wallet1`"*") {
                         $argjson = @{ }
-                        try { $test = "$arguments" | ConvertFrom-Json; if ($test) { $isjson = $true } } catch { $isjson = $false }
+                        $isjson = $false;
+                        try { 
+                            $test = $arguments | ConvertFrom-Json;
+                            $isjson = $true;
+                        }
+                        catch { }
                         if ($isjson) {
                             $Params = @{ }
                             $test.PSObject.Properties.Name | Foreach-Object { $Params.Add("$($_)", $test.$_) }
                             $Defaults = Get-Content ".\config\parameters\default.json" | ConvertFrom-Json
                             $Defaults.PSObject.Properties.Name | Foreach-Object { if ($_ -notin $Params.keys) { $Params.Add("$($_)", $Defaults.$_) } }
-    
                         }
                         else {
                             $arguments = $arguments -split " -"
@@ -164,7 +183,7 @@ function Global:Start-WebStartup($response, $Site) {
                                 if ($argjson.$_ -ne $Params.$_) {
                                     switch ($_) {
                                         default { $Params.$_ = $argjson.$_ }
-                                        "Bans" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object { $NewParamArray += $_.replace('cnight','cryptonight') }; $Params.$_ = $NewParamArray }
+                                        "Bans" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object { $NewParamArray += $_.replace('cnight', 'cryptonight') }; $Params.$_ = $NewParamArray }
                                         "Coin" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                         "Algorithm" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
                                         "GPUDevices3" { $NewParamArray = @(); $argjson.$_ -split "," | Foreach-Object { $NewParamArray += $_ }; $Params.$_ = $NewParamArray }
@@ -179,12 +198,12 @@ function Global:Start-WebStartup($response, $Site) {
                         }
                         $Params | convertto-Json | Out-File ".\config\parameters\newarguments.json"
 
-                                ## Force Auto-Coin if Coin is specified.
-                        if([string]$params.coin -ne ""){$params.Auto_Coin = "Yes"}
+                        ## Force Auto-Coin if Coin is specified.
+                        if ([string]$params.coin -ne "") { $params.Auto_Coin = "Yes" }
                         ## Change parameters after getting them.
                         ## First change -Type and -Cputhreads if empty
-                        if([string]$Params.Type -eq "") { $params.type = $(vars).types }
-                        if([string]$Params.CpuThreads -eq "") { $params.CpuThreads = $(vars).threads }
+                        if ([string]$Params.Type -eq "") { $params.type = $(vars).types }
+                        if ([string]$Params.CpuThreads -eq "") { $params.CpuThreads = $(vars).threads }
                         $global:Config.params = @{ }
                         $global:Config.user_params = @{ }
                         $params.keys | Foreach-Object {
@@ -193,24 +212,24 @@ function Global:Start-WebStartup($response, $Site) {
                         }
                         $Global:Config.params.Platform = "windows"
                         $global:Config.user_params.Platform = "windows"
+                    }
+                    else { Write-Log "WARNING: User Flight Sheet Arguments Did Not Contain -Wallet1 argument. They were ignored!" -ForegroundColor Yellow; Start-Sleep -S 3 }
                 }
-                else { Write-Log "WARNING: User Flight Sheet Arguments Did Not Contain -Wallet1 argument. They were ignored!" -ForegroundColor Yellow; Start-Sleep -S 3 }
-            }
-            ##If Hive Sent OC Start SWARM OC
-            "nvidia_oc" {
-                Global:Start-NVIDIAOC $RigConf.result.nvidia_oc 
-            }
-            "amd_oc" {
-                Global:Start-AMDOC $RigConf.result.amd_oc
+                ##If Hive Sent OC Start SWARM OC
+                "nvidia_oc" {
+                    Global:Start-NVIDIAOC $RigConf.result.nvidia_oc 
+                }
+                "amd_oc" {
+                    Global:Start-AMDOC $RigConf.result.amd_oc
+                }
             }
         }
+        ## Print Data to output, so it can be recorded in transcript
+        $RigConf.result.config
     }
-    ## Print Data to output, so it can be recorded in transcript
-    $RigConf.result.config
-}
-else {
-    log "No HiveOS Rig.conf- Do you have an account? Did you use your farm hash?"
-    log "Try running Hive_Windows_Reset.bat then try again."
-    Start-Sleep -S 2
-}
+    else {
+        log "No HiveOS Rig.conf- Do you have an account? Did you use your farm hash?"
+        log "Try running Hive_Windows_Reset.bat then try again."
+        Start-Sleep -S 2
+    }
 }

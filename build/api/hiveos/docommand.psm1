@@ -201,17 +201,35 @@ function Global:Start-Webcommand {
                 $method = "message"
                 $messagetype = "success"
                 $data = "Rig config changed"
-                $arguments = [string]$Command.result.wallet | ConvertFrom-StringData
-                if ($arguments.CUSTOM_USER_CONFIG) {
-                    ## Remove the "'" at front and end.
-                    $arguments = $arguments.CUSTOM_USER_CONFIG.TrimStart("'").TrimEnd("'");
-
+                $parser = [string]$response.result.wallet;
+                $new = $parser;
+                $joined = $parser.replace("`n","");
+                $start_joined = $joined.IndexOf("CUSTOM_USER_CONFIG=`'{");
+                if($start_joined -ne -1) {
+                    $start = $parser.IndexOf("CUSTOM_USER_CONFIG=");
+                    $end = $parser.Substring($start + 20).IndexOf("`'");
+                    $end_joined = $joined.Substring($start_joined + 20).IndexOf("`'");
+                    $condensed = $joined.Substring(($start_joined + 19),($end_joined + 2));
+                    $new = $parser.remove($start + 19, $end + 2).Insert($start + 19,$condensed);
                 }
-                else {
+                $Wallet = $new | ConvertFrom-StringData
+                for ($i = 0; $i -lt $Wallet.keys.Count; $i++) {
+                    $key = $Wallet.Keys | Select-Object -Skip $i -First 1;
+                    $Wallet.$key = $Wallet.$key.TrimStart("`"");
+                    $Wallet.$key = $Wallet.$key.TrimEnd("`"");
+                    $Wallet.$key = $Wallet.$key.TrimStart("`'");
+                    $Wallet.$key = $Wallet.$key.TrimEnd("`'");
+                }        
+                if(!$Wallet.CUSTOM_USER_CONFIG) {
                     Write-Log "Warning: No CUSTOM_USER_CONFIG found!" -ForegroundColor Red
                     Write-Log "Make sure you are using a Custom User Config section in HiveOS" -ForegroundColor Red
                 }
-                try { $test = "$arguments" | ConvertFrom-Json; if ($test) { $isjson = $true } } catch { $isjson = $false }
+                $arguments = $Wallet.CUSTOM_USER_CONFIG
+                $isjson = $false
+                try { 
+                    $test = $arguments | ConvertFrom-Json;
+                    $isjson = $true;
+                } catch { }
                 if ($isjson) {
                     $Params = @{ }
                     $test.PSObject.Properties.Name | Foreach-Object { $Params.Add("$($_)", $test.$_) }

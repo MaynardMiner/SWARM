@@ -56,13 +56,13 @@ if ($args) {
     ## defaults not specified.
     else {
         $Start = $true
-        for($i=0; $i -lt $arg.count; $i++) {
-            if ($arg[$i] -is [string]) {
-                $arg[$i] = $arg[$i].replace("cnight", "cryptonight")
+        for($i=0; $i -lt $args.count; $i++) {
+            if ($args[$i] -is [string]) {
+                $args[$i] = $args[$i].replace("cnight", "cryptonight")
             }
             $Command = $false
-            $ListCheck = $arg[$i] -replace "-", ""
-            if ($arg[$i][0] -eq "-") { $Command = $true; $Com = $arg[$i] -replace "-", "" }
+            $ListCheck = $args[$i] -replace "-", ""
+            if ($args[$i][0] -eq "-") { $Command = $true; $Com = $args[$i] -replace "-", "" }
             if ($Command -eq $true) {
                 if ($ListCheck -in $List) {
                     if ($ListCheck -notin $parsed.keys) {
@@ -81,11 +81,11 @@ if ($args) {
                 }            
             }
             else {
-                if ($parsed.$Com -eq "new") { $parsed.$Com = $arg[$i] }
+                if ($parsed.$Com -eq "new") { $parsed.$Com = $args[$i] }
                 else {
                     $NewArray = @()
-                    $Parsed.$Com | Foreach-Object { $NewArray += $arg[$i] }
-                    $NewArray += $arg[$i]
+                    $Parsed.$Com | Foreach-Object { $NewArray += $args[$i] }
+                    $NewArray += $args[$i]
                     $Parsed.$Com = $NewArray
                 }
             }
