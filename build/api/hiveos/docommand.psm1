@@ -229,7 +229,7 @@ function Global:Start-Webcommand {
                 try { 
                     $test = $arguments | ConvertFrom-Json;
                     $isjson = $true;
-                } catch {  }
+                } catch { }
                 if ($isjson) {
                     $Params = @{ }
                     $test.PSObject.Properties.Name | Foreach-Object { $Params.Add("$($_)", $test.$_) }
