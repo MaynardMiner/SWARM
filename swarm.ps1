@@ -344,6 +344,7 @@ $(vars).Add("switch", $true);
 $(vars).Add("ETH_exchange", 0);
 $(vars).Add("Load_Timer", (Get-Date).ToUniversalTime());
 $(vars).Add("Hashtable", @{});
+$(vars).Add("Downloads",$false);
 [GC]::Collect()
 [GC]::WaitForPendingFinalizers()
 [GC]::Collect()    

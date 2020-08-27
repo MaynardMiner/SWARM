@@ -192,6 +192,7 @@ function Global:Get-MinerBinary($Miner, $Reason) {
             if ( -not (Test-Path $Miner.Path) ) {
                 log "$($Miner.Name) Not Found- Downloading" -ForegroundColor Yellow
                 Global:Expand-WebRequest $Miner.URI $Miner.Path $Miner.version
+                $(vars).Downloads = $true;
             }
         }
         if ( Test-Path $Miner.Path ) {
