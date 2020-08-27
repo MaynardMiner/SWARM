@@ -1,21 +1,7 @@
-# SWARM 3.2.9
-
-## What's New?
-* New Parameter -Hashrate_Threshold
-* Set at default 10
-* Will prevent switching from one miner to another
-  on the same algorithm.
-* Example: You are mining ethash with bminer. All
-  other miners that can mine ethash in that device
-  group will have their factored hashrate be reduced
-  by x%, where x is -Hashrate_Threshold. This means
-  a non-active miner must be x% faster than current
-  miner in order for a switch to that miner to occur.
-* This allows accurate hashrate factoring, while preventing
-  constant switching of miners with the same algorithm.
+# SWARM 3.3.0
 
 ## Improvements
-* Fixed small typos created from last release/code cleanup.
-* get help command was updated with proper commands and usages.
-* Updated swarm_help with new parameter.
-* Prevent benchmark right after miner was downloaded.
+* Fixed remote API for HTTP, and updated specs.
+* If -APIPassword is specified, is used both locally and remotely, not just remotely.
+* Fix typo with CPU miners that were causing profit miscalculation with new '-Hashrate_Threshold' parameter.
+
