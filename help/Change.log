@@ -1,6 +1,6 @@
 # SWARM 3.2.9
 
-## What's New
+## What's New?
 * New Parameter -Hashrate_Threshold
 * Set at default 10
 * Will prevent switching from one miner to another
