@@ -54,13 +54,13 @@ function Global:Start-NVIDIAOC($NewOC) {
                     if ($NVOCFAN.Count -eq 1) {
                         for ($i = 0; $i -lt $OCCount.NVIDIA.PSObject.Properties.Value.Count; $i++) {
                             $FansArgs += "-i $i -s $($NVOCFan)"
-                            $ocmessage += "Setting GPU $($OCCount.NVIDIA.$i) Fan Speed To $($NVOCFan)`Foreach-Object "
+                            $ocmessage += "Setting GPU $($OCCount.NVIDIA.$i) Fan Speed To $($NVOCFan)`% "
                         }
                     }
                     else {
                         for ($i = 0; $i -lt $NVOCFAN.Count; $i++) {
                             $FansArgs += "-i $i -s $($NVOCFan[$i])"
-                            $ocmessage += "Setting GPU $i Fan Speed To $($NVOCFan[$i])`Foreach-Object "
+                            $ocmessage += "Setting GPU $i Fan Speed To $($NVOCFan[$i])`% "
                         }
                     }
                 }
