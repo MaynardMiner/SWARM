@@ -157,7 +157,7 @@ function Global:Start-WebStartup($response, $Site) {
                         $argjson = @{ }
                         $isjson = $false;
                         try { 
-                            $test = $arguments.CUSTOM_USER_CONFIG | ConvertFrom-Json; 
+                            $test = $arguments | ConvertFrom-Json; 
                             $isjson = $true;
                         } catch { }
                         if ($isjson) {

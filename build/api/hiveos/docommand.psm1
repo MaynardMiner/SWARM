@@ -227,7 +227,7 @@ function Global:Start-Webcommand {
                 $arguments = $Wallet.CUSTOM_USER_CONFIG
                 $isjson = $false
                 try { 
-                    $test = "$arguments" | ConvertFrom-Json;
+                    $test = $arguments | ConvertFrom-Json;
                     $isjson = $true;
                 } catch {  }
                 if ($isjson) {
