@@ -368,7 +368,7 @@ function Global:Start-Benchmark {
         }
     }
     else {
-        log "SWARM does not benchmark after a miner was downloaded" -Foreground Yellow;
+        log "SWARM does not benchmark right after a miner was downloaded" -Foreground Yellow;
         $(vars).Downloads = $false;
     }
 }
