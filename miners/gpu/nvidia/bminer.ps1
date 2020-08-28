@@ -58,7 +58,7 @@ $(vars).NVIDIATypes | ForEach-Object {
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
             if ($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3) { $HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
             else { $HashStat = $Stat.Hour }
-            $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+            $Pools | Where-Object Algorithm -eq $MinerAlgo | Where-Object {$_.Name -eq "whalesburg" -or $_.Name -eq "nicehash"} | ForEach-Object {
                 $Sel = $_.Algorithm
                 $SelName = $_.Name
                 $Pass = $_.$Pass;
