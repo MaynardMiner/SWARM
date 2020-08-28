@@ -12,8 +12,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function Global:Get-MinerExec($path, $Name){
-    $test = [IO.Path]::GetFullPath($Path);
-    $sub_dirs = [IO.Directory]::GetDirectories(([IO.Path]::GetFullPath($path));
+    if($global:IsLinux){ $path = $path.Replace("\","/") };
+    $sub_dirs = [IO.Directory]::GetDirectories($path);
     $current_files = [IO.Directory]::GetFiles($path);
 
     foreach($file in $current_files) {
