@@ -1,10 +1,11 @@
 . .\build\powershell\global\modules.ps1
-$Pool_Request = [PSCustomObject]@{ } 
-
-$X = ""
-if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" } 
 
 if ($Name -in $(arg).PoolName) {
+    $Pool_Request = [PSCustomObject]@{ } 
+
+    $X = ""
+    if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" } 
+
     try { $Pool_Request = Invoke-RestMethod "https://www.zpool.ca/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
     catch { return "SWARM contacted ($Name) but there was no response." }
  
@@ -75,14 +76,14 @@ if ($Name -in $(arg).PoolName) {
 
         $Stat = [Pool_Stat]::New($StatName, $current, [Convert]::ToDecimal($Hashrate), $actual, $false)
 
-        if(-not $H_Table.$($_.Name)) {
-            $H_Table.Add("$($_.Name)",@{})
+        if (-not $H_Table.$($_.Name)) {
+            $H_Table.Add("$($_.Name)", @{})
         }
         elseif (-not $H_Table.$($_.Name).$P_Name) {
             $H_Table.$($_.Name).Add("$P_Name", @{
-                Hashrate = "$Hashrate"
-                Percent = ""
-             })
+                    Hashrate = "$Hashrate"
+                    Percent  = ""
+                })
         }
 
         $Level = $Stat.$($Params.Stat_Algo)

@@ -75,24 +75,24 @@ $(vars).NVIDIATypes | ForEach-Object {
                 switch ($SelName) {
                     "nicehash" {
                         switch ($SelAlgo) {
-                            "ethash" { $AddArgs = "-proto 4 -stales 0 " }
+                            "ethash" { $AddArgs = " -proto 4 -stales 0 " }
                         }
                     }
                     "whalesburg" {
                         switch ($SelAlgo) {
-                            "ethash" { $AddArgs = "-proto 2 -rate 1 " }
+                            "ethash" { $AddArgs = " -proto 2 -rate 1 " }
                         }
                     }
                     "zergpool" {
                         switch ($SelAlgo) {
-                            "progpow" { $AddArgs = "-coin bci -proto 1 " }
-                            "ethash" { $AddArgs = "-proto 2 -rate 1 " }
+                            "progpow" { $AddArgs = " -coin bci -proto 1 " }
+                            "ethash" { $AddArgs = " -proto 2 -rate 1 " }
                         }
                     }
                 }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
-                if ($_.Worker) { $MinerWorker = "-worker $($_.Worker) " }
-                else { $MinerWorker = "-pass $($_.$Pass)$($Diff) " }
+                if ($_.Worker) { $MinerWorker = " -worker $($_.Worker) " }
+                else { $MinerWorker = " -pass $($_.$Pass)$($Diff) " }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $(vars).Coins
@@ -107,7 +107,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).nvidia.phoenix.version)"
                     DeviceCall = "claymore"
-                    Arguments  = "-nvidia -mport $Port -mode 1 -allcoins 1 -allpools 1 $AddArgs-pool $($_.Protocol)://$($_.Pool_Host):$($_.Port) -wal $($_.$User) $MinerWorker-wd 0 -logfile `'$(Split-Path $Log -Leaf)`' -logdir `'$(Split-Path $Log)`' -gser 2 -dbg -1 -eres 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "-nvidia -mport $Port -pool $($_.Protocol)://$($_.Pool_Host):$($_.Port) -wal $($_.$User)$MinerWorker$AddArgs -wd 0 -logfile `'$(Split-Path $Log -Leaf)`' -logdir `'$(Split-Path $Log)`' -gser 2 -dbg -1 -eres 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     HashRate_Adjusted = $Hashstat
                     Quote      = $_.Price

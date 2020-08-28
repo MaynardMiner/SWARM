@@ -2534,3 +2534,14 @@ identity. Was related to machine potentially having multiple active MAC addresse
 * get help command was updated with proper commands and usages.
 * Updated swarm_help with new parameter.
 * Prevent benchmark right after miner was downloaded.
+
+
+############################################
+############################################
+
+# SWARM 3.3.0
+
+## Improvements
+* Fixed remote API for HTTP, and updated specs.
+* If -APIPassword is specified, is used both locally and remotely, not just remotely.
+* Fix typo with CPU miners that were causing profit miscalculation with new '-Hashrate_Threshold' parameter.

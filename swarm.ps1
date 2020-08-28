@@ -582,9 +582,6 @@ While ($true) {
         Global:Add-Module "$($(vars).miner)\sorting.psm1"
         if ($(arg).Volume -eq "Yes") { Get-Volume }
         Global:Start-MinerDownloads
-        $CutMiners = Global:Start-MinerReduction
-        $CutMiners | ForEach-Object { $(vars).Miners.Remove($_) } | Out-Null;
-        Remove-Variable -Name CutMiners -ErrorAction Ignore
         $(vars).Miners | ForEach-Object { $_.Symbol = $_.Symbol -replace "-Algo", ""; $_.Symbol = $_.Symbol -replace "-Coin", "" }
         Global:Start-Sorting
         Global:Add-SwitchingThreshold
@@ -594,6 +591,12 @@ While ($true) {
         Remove-BadMiners
         create Miners_Combo (Global:Get-BestMiners)
         $(vars).bestminers_combo = Global:Get-Conservative
+
+        ## Trim miners for stats screen
+        $CutMiners = Global:Start-MinerReduction	
+        $CutMiners | ForEach-Object { $(vars).Miners.Remove($_) } | Out-Null;	
+        Remove-Variable -Name CutMiners -ErrorAction Ignore	
+        
         log "Most Ideal Choice Is $($(vars).bestminers_combo.Symbol) on $($(vars).bestminers_combo.MinerPool)" -foregroundcolor green
 
         ## Phase Clean up

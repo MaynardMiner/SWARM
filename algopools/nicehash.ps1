@@ -1,9 +1,12 @@
 . .\build\powershell\global\modules.ps1
-$nicehash_Request = [PSCustomObject]@{ } 
 
-## Make a Port map so I don't have to pull from nicehash twice
-$Nicehash_Ports = 
-'{
+if ($Name -in $(arg).PoolName) {
+
+    $nicehash_Request = [PSCustomObject]@{ } 
+
+    ## Make a Port map so I don't have to pull from nicehash twice
+    $Nicehash_Ports = 
+    '{
 "scrypt":"3333",            "btc":"3334",               "scryptnf":"3335",          "x11":"3336",
 "x13":"3337",               "keccak":"3338",            "x15":"3339",               "nist5":"3340",
 "neoscrypt":"3341",         "lyra2re":"3342",           "whirlpoolx":"3343",        "qubit":"3344",
@@ -20,12 +23,11 @@ $Nicehash_Ports =
 "kawpow": "3385",           "cuckaroo29bfc": "3386",     "beamv3": "3387",          "cuckarooz29": "3388"
 }'    
 
-$Nicehash_Ports = $Nicehash_Ports | ConvertFrom-Json
+    $Nicehash_Ports = $Nicehash_Ports | ConvertFrom-Json
 
-$X = ""
-if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" }
- 
-if ($Name -in $(arg).PoolName) {
+    $X = ""
+    if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" }
+
     try { $nicehash_Request = Invoke-RestMethod "https://api2.nicehash.com/main/api/v2/public/simplemultialgo/info" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
     catch { return "SWARM contacted ($Name) but there was no response." }
  

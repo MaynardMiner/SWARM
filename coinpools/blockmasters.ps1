@@ -1,11 +1,12 @@
 . .\build\powershell\global\modules.ps1
-$Pool_Request = [PSCustomObject]@{ } 
-$NOGLT = "DOESNOTMATTER";
-$X = "";
-if ($(arg).Ban_GLT -eq "Yes") { $NoGLT = "GLT"; }
-if ($(arg).xnsub -eq "Yes") { $X = "#xnsub"; } 
 
 if ($Name -in $(arg).PoolName) {
+
+    $Pool_Request = [PSCustomObject]@{ } 
+    $NOGLT = "DOESNOTMATTER";
+    $X = "";
+    if ($(arg).Ban_GLT -eq "Yes") { $NoGLT = "GLT"; }
+    if ($(arg).xnsub -eq "Yes") { $X = "#xnsub"; } 
 
     try { $Pool_Request = Invoke-RestMethod "http://blockmasters.co/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
     catch {
@@ -134,10 +135,10 @@ if ($Name -in $(arg).PoolName) {
         #######################################
         $To_Add = @()
         $To_Add += $Sorted | 
-            Where-Object Algo -eq $Selected | 
-            Where-Object { [Convert]::ToInt32($_."24h_blocks") -ge $Params.Min_Blocks } |
-            Sort-Object Level -Descending |
-            Select-Object -First 1
+        Where-Object Algo -eq $Selected | 
+        Where-Object { [Convert]::ToInt32($_."24h_blocks") -ge $Params.Min_Blocks } |
+        Sort-Object Level -Descending |
+        Select-Object -First 1
         $To_Add += $Sorted | Where-Object { $_.Sym -in $Active -and $_ -notin $To_Add }
 
         $To_Add | ForEach-Object { 
