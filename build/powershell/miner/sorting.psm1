@@ -12,6 +12,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function Global:Get-MinerExec($path, $Name){
+    if($global:IsLinux){ $path = $path.Replace("\","/") };
     $sub_dirs = [IO.Directory]::GetDirectories($path);
     $current_files = [IO.Directory]::GetFiles($path);
 
@@ -139,7 +140,7 @@ function Global:Expand-WebRequest {
             if ($Stuff) { log "Extraction Succeeded!" -ForegroundColor Green }
             else { log "Extraction Failed!" -ForegroundColor darkred; break }
 
-            $Search = Get-MinerExec ".\x64\$temp" $Name
+            $Search = Get-MinerExec "x64\$temp" $Name
             if (-not $Search) { log "Miner Executable Not Found" -ForegroundColor DarkRed; break }
             $Contents = $Search
             $DirName = Split-Path $Contents -Leaf
