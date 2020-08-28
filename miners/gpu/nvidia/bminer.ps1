@@ -65,7 +65,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                 if ($_.Worker) { $Pass = "$($_.Worker)" }
                 $CanUse = $true;
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = "d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
-                $UserPass = $_.$User + "." + $Pass + $Diff
+                $UserPass = $_.$User + ":" + [System.Web.HttpUtility]::UrlEncode($Pass + $Diff);
                 $PoolPort = $_.Port
                 Switch ($SelName) {
                     "nicehash" {
@@ -85,12 +85,12 @@ $(vars).NVIDIATypes | ForEach-Object {
                     }
                     "zergpool" {
                         switch ($Sel) {
-                            "ethash" { $Pass = ""; $Naming = "ethproxy"; $AddArgs = ""; $CanUse = $true; $UserPass = $_.$User + "." + ":" + $Pass + $Diff }
+                            "ethash" { $Pass = ""; $Naming = "ethproxy"; $AddArgs = ""; $CanUse = $true; $UserPass = $_.$User + "." + ":" + [System.Web.HttpUtility]::UrlEncode($Pass + $Diff) }
                             "equihash_144/5" { $Pass = ""; $Naming = "zhash"; $AddArgs = " -pers auto "; $CanUse = $false }
                             "equihash_150/5" { $Pass = ""; $Naming = "beam"; $AddArgs = " -pers auto " ; $CanUse = $false }
                             "equihash_144/5" { $Pass = ""; $Naming = "zhash"; $AddArgs = " -pers auto "; $CanUse = $false }
-                            "eaglesong" { $Pass = ""; $Naming = "eaglesong"; $AddArgs = " "; $CanUse = $true; $UserPass = $_.$User + "." + ":" + $Pass + $Diff}
-                            "kawpow" { $Pass = ""; $Naming = "raven"; $AddArgs = " "; $CanUse = $true; $UserPass = $_.$User + "." + ":" + $Pass + $Diff }
+                            "eaglesong" { $Pass = ""; $Naming = "eaglesong"; $AddArgs = " "; $CanUse = $true; $UserPass = $_.$User + "." + ":" + [System.Web.HttpUtility]::UrlEncode($Pass + $Diff)}
+                            "kawpow" { $Pass = ""; $Naming = "raven"; $AddArgs = " "; $CanUse = $true; $UserPass = $_.$User + "." + ":" + [System.Web.HttpUtility]::UrlEncode($Pass + $Diff) }
                         }
                     }
                     "whalesburg" {
@@ -104,7 +104,6 @@ $(vars).NVIDIATypes | ForEach-Object {
                         }
                     }
                 }
-                $UserPass = [System.Web.HttpUtility]::UrlEncode($UserPass)
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $(vars).Coins
