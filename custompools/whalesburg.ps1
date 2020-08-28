@@ -10,6 +10,7 @@
 ## to nicehash, but it seems to cause weird bugs in miners.
 
 . .\build\powershell\global\modules.ps1
+. .\build\powershell\global\classes.ps1
 $Whalesburg_Request = [PSCustomObject]@{ } 
  
 if ($(arg).PoolName -eq $Name) {
@@ -21,14 +22,14 @@ if ($(arg).PoolName -eq $Name) {
     }
 
     try { $(vars).ETH_exchange = Invoke-RestMethod "https://min-api.cryptocompare.com/data/pricemulti?fsyms=ETH&tsyms=BTC" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
-    catch { return "SWARM failed to get ETH Pricing for $Name"; return }
+    catch { return "SWARM failed to get ETH Pricing for $Name"; }
 
     $(vars).ETH_exchange = $(vars).ETH_exchange.ETH.BTC
 
     $Whalesburg_Algorithm = "ethash"
   
     if ($(vars).Algorithm -contains $Whalesburg_Algorithm) {
-        $Whalesburg_Port = "7777"
+        $Whalesburg_Port = "8082"
         $Whalesburg_Host = "eu1.whalesburg.com"
         ## add fee to compare to nicehash.
         $Prorate = 2
@@ -50,7 +51,7 @@ if ($(arg).PoolName -eq $Name) {
             ## Level
             $Level,
             ## Stratum
-            "stratum+ssl",
+            "stratum+tcp",
             ## Pool_Host
             $Whalesburg_Host,
             ## Pool_Port
