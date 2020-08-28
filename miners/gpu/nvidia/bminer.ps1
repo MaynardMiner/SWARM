@@ -61,49 +61,51 @@ $(vars).NVIDIATypes | ForEach-Object {
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 $Sel = $_.Algorithm
                 $SelName = $_.Name
+                $Pass = $_.$Pass;
+                if ($_.Worker) { $Pass = "$($_.Worker)" }
                 Switch ($SelName) {
                     "nicehash" {
                         switch ($Sel) {
-                            "ethash" { $Pass = ""; $Naming = "ethstratum"; $AddArgs = "" }
-                            "cuckaroom" { $Pass = ""; $Naming = "cuckaroo29m"; $AddArgs = "-pers auto " }
-                            "cuckaroo29-bfc" { $Pass = ""; $Naming = "bfc"; $AddArgs = "-pers auto " }
-                            "cuckatoo31" { $Pass = ""; $Naming = "cuckatoo31"; $AddArgs = "-pers auto " }
-                            "equihash_150/5" { $Pass = ""; $Naming = "beam"; $AddArgs = "" }
-                            "equihash_144/5" { $Pass = ""; $Naming = "zhash"; $AddArgs = "" }
-                            "beamv2" { $Pass = ""; $Naming = "beamhash2"; $AddArgs = "" }
-                            "beamhashv3" { $Pass = ""; $Naming = "beamhash3"; $AddArgs = "" }
-                            "eaglesong" { $Pass = ""; $Naming = "eaglesong"; $AddArgs = "" }
-                            "kawpow" { $Pass = ""; $Naming = "raven"; $AddArgs = "" }
-                            "cuckarooz29" { $Pass = ""; $Naming = "cuckaroo29z"; $AddArgs = "" }
+                            "ethash" { $Naming = "ethstratum"; $AddArgs = " " }
+                            "cuckaroom" { $Naming = "cuckaroo29m"; $AddArgs = " " }
+                            "cuckaroo29-bfc" { $Naming = "bfc"; $AddArgs = " " }
+                            "cuckatoo31" {$Naming = "cuckatoo31"; $AddArgs = " " }
+                            "equihash_150/5" { $Naming = "beam"; $AddArgs = " -pers auto " }
+                            "equihash_144/5" { $Naming = "zhash"; $AddArgs = " -pers auto " }
+                            "beamv2" { $Naming = "beamhash2"; $AddArgs = " " }
+                            "beamhashv3" { $Naming = "beamhash3"; $AddArgs = " " }
+                            "eaglesong" { $Naming = "eaglesong"; $AddArgs = " " }
+                            "kawpow" { $Naming = "raven"; $AddArgs = " " }
+                            "cuckarooz29" { $Naming = "cuckaroo29z"; $AddArgs = " " }
                         }
                     }
                     "zergpool" {
                         switch ($Sel) {
-                            "ethash" { $Pass = ""; $Naming = "ethproxy"; $AddArgs = "" }
-                            "cuckaroom" { $Pass = ""; $Naming = "cuckaroo29m"; $AddArgs = "-pers auto " }
-                            "cuckaroo29-bfc" { $Pass = ""; $Naming = "bfc"; $AddArgs = "-pers auto " }
-                            "cuckatoo31" { $Pass = ""; $Naming = "cuckatoo31"; $AddArgs = "-pers auto " }
-                            "equihash_150/5" { $Pass = ""; $Naming = "beam"; $AddArgs = "" }
-                            "equihash_144/5" { $Pass = ""; $Naming = "zhash"; $AddArgs = "" }
-                            "beamv2" { $Pass = ""; $Naming = "beamhash2"; $AddArgs = "" }
-                            "beamhashv3" { $Pass = ""; $Naming = "beamhash3"; $AddArgs = "" }
-                            "eaglesong" { $Pass = ""; $Naming = "eaglesong"; $AddArgs = "" }
-                            "kawpow" { $Pass = ""; $Naming = "raven"; $AddArgs = "" }
+                            "ethash" { $Pass = ""; $Naming = "ethproxy"; $AddArgs = " " }
+                            "cuckaroom" { $Pass = ""; $Naming = "cuckaroo29m"; $AddArgs = " " }
+                            "cuckaroo29-bfc" { $Pass = ""; $Naming = "bfc"; $AddArgs = " " }
+                            "cuckatoo31" { $Pass = ""; $Naming = "cuckatoo31"; $AddArgs = " " }
+                            "equihash_150/5" { $Pass = ""; $Naming = "beam"; $AddArgs = " -pers auto " }
+                            "equihash_144/5" { $Pass = ""; $Naming = "zhash"; $AddArgs = " -pers auto " }
+                            "beamv2" { $Pass = ""; $Naming = "beamhash2"; $AddArgs = " " }
+                            "beamhashv3" { $Pass = ""; $Naming = "beamhash3"; $AddArgs = " " }
+                            "eaglesong" { $Pass = ""; $Naming = "eaglesong"; $AddArgs = " " }
+                            "kawpow" { $Pass = ""; $Naming = "raven"; $AddArgs = " " }
                         }
                     }
                     "whalesburg" {
                         switch ($Sel) {
-                            "ethash" { $Pass = ""; $Naming = "ethproxy+ssl"; $AddArgs = "" }
+                            "ethash" { $Naming = "ethproxy+ssl"; $AddArgs = " " }
                         }
                     }
                     default {
                         switch ($Sel) {
-                            "equihash_144/5" { $Pass = ".$($($_.$Pass) -replace ",","%2C")"; $Naming = "equihash1445"; $AddArgs = "-pers auto " }
+                            "equihash_144/5" { $Naming = "equihash1445"; $AddArgs = "-pers auto " }
                         }
                     }
                 }
-                if ($_.Worker) { $Pass = ".$($_.Worker)" }
-                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = "%2Cd=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = "d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                $Uri =  $Naming + '://' + $_.$User + '.' + $Pass + $Diff + '@' + $_.Pool_Host + ':' + $_.Port;
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $(vars).Coins
@@ -118,7 +120,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).nvidia.bminer.version)"
                     DeviceCall = "bminer"
-                    Arguments  = "-uri $($Naming)://$($_.$User)$Pass$Diff@$($_.Pool_Host):$($_.Port) $AddArgs-logfile `'$Log`' -api 127.0.0.1:$Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "-uri $Uri$AddArgs-logfile `'$Log`' -api 127.0.0.1:$Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     HashRate_Adjusted = $Hashstat
                     Quote      = $_.Price
