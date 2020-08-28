@@ -216,9 +216,8 @@ Global:Start-Log -Number $global:log_params.lognum;
 
 ## Initiate Update Check
 Global:Add-Module "$($(vars).startup)\remoteagent.psm1"
-if ($(arg).Platform -eq "Windows" -or $(arg).Update -eq "Yes") {
-    Global:Get-Version
-    Global:Start-Update -Update $Getupdates
+if ($(arg).Update -eq "Yes") {
+    Global:Start-Update
 }
 if ($(arg).Platform -eq "windows") { 
     Global:Add-Module "$($(vars).startup)\getconfigs.psm1"
