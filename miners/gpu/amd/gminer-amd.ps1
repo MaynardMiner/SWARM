@@ -77,9 +77,13 @@ $(vars).AMDTypes | ForEach-Object {
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
             if ($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3) { $HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
             else { $HashStat = $Stat.Hour }
-        
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 $SelAlgo = $_.Algorithm
+                $SelName = $_.Name
+                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
+                $Pass = " --pass $($_.$Pass)$Diff "
+                $GetUser = $_.$User;
+                $Worker = $_.Worker;
                 switch ($SelAlgo) {
                     "equihash_150/5" { $AddArgs = "--algo 150_5 " }
                     "cuckoo_cycle" { $AddArgs = "--algo aeternity " }
@@ -95,8 +99,9 @@ $(vars).AMDTypes | ForEach-Object {
                     "ethash" { 
                         switch ($SelName) {
                             "nicehash" { $AddArgs = "--algo ethash --proto stratum " }
-                            "zergpool" { $AddArgs = "--algo ethash "}
-                            default { $AddArgs = "--algo ethash --proto stratum"}
+                            "zergpool" { $AddArgs = "--algo ethash " }
+                            "whalesburg" { $Pass = " "; $GetUser = "$($Getuser)" + "." + "$($Worker)"; $AddArgs = "--algo ethash " }
+                            default { $AddArgs = "--algo ethash --proto stratum" }
                         }
                     }
                 }
@@ -116,7 +121,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Version    = "$($(vars).amd.$CName.version)"
                     ArgDevices = $ArgDevices
                     DeviceCall = "gminer"
-                    Arguments  = "--api $Port --server $($_.Pool_Host) --port $($_.Port) $AddArgs--user $($_.$User) --logfile `'$Log`' --pass $($_.$Pass)$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "--api $Port --server $($_.Pool_Host) --port $($_.Port) $AddArgs--user $GetUser$Pass --logfile `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     HashRate_Adjusted = $Hashstat
                     Quote      = $_.Price

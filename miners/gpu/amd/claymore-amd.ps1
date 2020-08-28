@@ -69,14 +69,14 @@ $(vars).AMDTypes | ForEach-Object {
             if ($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3) { $HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
             else { $HashStat = $Stat.Hour }
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-                $SelName = $_.Name
+                $SelName = $_.Name;
                 switch ($SelName) {
-                    "nicehash" { $AddArgs = "-esm 3 -estale 0 " }
-                    default { $AddArgs = "" }
+                    "nicehash" { $AddArgs = " -esm 3 -estale 0 " }
+                    default { $AddArgs = " " }
                 }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
-                if ($_.Worker) { $MinerWorker = "-eworker $($_.Worker) " }
-                else { $MinerWorker = "-epsw $($_.$Pass)$($Diff) " }
+                if ($_.Worker) { $MinerWorker = "-eworker $($_.Worker)" }
+                else { $MinerWorker = "-epsw $($_.$Pass)$($Diff)" }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $(vars).Coins
@@ -91,7 +91,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).amd.$CName.version)"
                     DeviceCall = "claymore"
-                    Arguments  = "-platform 1 -mport $Port $AddArgs-mode 1 -allcoins 1 $AddArgs-allpools 1 -epool $($_.Protocol)://$($_.Pool_Host):$($_.Port) -logfile `'$Log`' -ewal $($_.$User) $MinerWorker-wd 0 -gser 2 -dbg -1 -eres 0 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "-platform 1 -mport $Port -epool $($_.Protocol)://$($_.Pool_Host):$($_.Port) -ewal $($_.$User) $MinerWorker -allcoins 1 -allpools 1 -wd 0 -gser 2 -dbg -1$AddArgs-logfile `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     HashRate_Adjusted = $Hashstat
                     Quote      = $_.Price

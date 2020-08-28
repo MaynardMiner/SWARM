@@ -65,7 +65,8 @@ $(vars).AMDTypes | ForEach-Object {
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
             if ($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3) { $HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
             else { $HashStat = $Stat.Hour }
-        
+            $GetUser = $_.$User;
+            if($_.Worker){$GetUser = $_.User + "." + $_.Worker}
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 [PSCustomObject]@{
@@ -82,7 +83,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).amd.teamredminer.version)"
                     DeviceCall = "tdxminer"
-                    Arguments  = "--platform $($(vars).AMDPlatform) -a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no_gpu_monitor --api_listen=0.0.0.0:$Port -o stratum+tcp://$($_.Pool_Host):$($_.Port) -u $($_.$User) --log_file `'$Log`' --bus_reorder -p $($_.$Pass)$($DIff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "--platform $($(vars).AMDPlatform) -a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no_gpu_monitor --api_listen=0.0.0.0:$Port -o stratum+tcp://$($_.Pool_Host):$($_.Port) -u $GetUser --log_file `'$Log`' --bus_reorder -p $($_.$Pass)$($DIff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     HashRate_Adjusted = $Hashstat
                     Quote      = $_.Price
