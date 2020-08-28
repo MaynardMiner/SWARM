@@ -69,7 +69,7 @@ $(vars).AMDTypes | ForEach-Object {
                         Switch ($SelName) {
                             "nicehash" { $Stratum = "nicehash+tcp://"; $A = "ethash" }
                             "zergpool" { $Stratum = "stratum+tcp://"; $A = "ethash" }
-                            "whalesburg" { $Stratum = "stratum+ssl://"; $A = "ethash" }
+                            "whalesburg" { $Stratum = "stratum+tcp://"; $A = "ethash" }
                         }
                     }
                     "cuckaroo29" { $Stratum = "nicehash+tcp://"; $A = "cuckarood" }
