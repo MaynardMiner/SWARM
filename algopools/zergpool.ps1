@@ -1,11 +1,11 @@
-. .\build\powershell\global\modules.ps1
-
-$Pool_Request = [PSCustomObject]@{ } 
-
-$X = ""
-if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" } 
- 
 if ($Name -in $(arg).PoolName) {
+    . .\build\powershell\global\modules.ps1
+
+    $Pool_Request = [PSCustomObject]@{ } 
+
+    $X = ""
+    if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" } 
+ 
     try { $Pool_Request = Invoke-RestMethod "http://api.zergpool.com:8080/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
     catch { return "SWARM contacted ($Name) but there was no response." }
   
@@ -55,7 +55,7 @@ if ($Name -in $(arg).PoolName) {
         $Pool_Host = "$($_.Original_Algo.ToLower()).mine.zergpool.com$sub"
         $StatName = "$($P_Name)_$($StatAlgo)"
         $Get_Path = [IO.File]::Exists(".\stats\pool_$($StatName)_pricing.json")
-        $Hashrate = [math]::Max($_.hashrate_shared,1)
+        $Hashrate = [math]::Max($_.hashrate_shared, 1)
         $Estimate = $_.estimate_last24h
         if ($Get_Path) { $Estimate = $_.estimate_current }
 
@@ -69,14 +69,14 @@ if ($Name -in $(arg).PoolName) {
 
         $Stat = [Pool_Stat]::New($StatName, $current, [Convert]::ToDecimal($Hashrate), $actual, $false)
 
-        if(-not $H_Table.$($_.Name)) {
-            $H_Table.Add("$($_.Name)",@{})
+        if (-not $H_Table.$($_.Name)) {
+            $H_Table.Add("$($_.Name)", @{})
         }
         elseif (-not $H_Table.$($_.Name).$P_Name) {
             $H_Table.$($_.Name).Add("$P_Name", @{
-                Hashrate = "$Hashrate"
-                Percent = ""
-             })
+                    Hashrate = "$Hashrate"
+                    Percent  = ""
+                })
         }
 
         $Level = $Stat.$($Params.Stat_Algo)

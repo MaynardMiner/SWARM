@@ -1,12 +1,12 @@
-. .\build\powershell\global\modules.ps1
-$Pool_Request = [PSCustomObject]@{ }
-$NOGLT = "DOESNOTMATTER"
-$X = ""
-if ($(arg).Ban_GLT -eq "Yes") { $NoGLT = "GLT" }
-if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" } 
-
-## Skip if user didn't specify
 if ($Name -in $(arg).PoolName) {
+    . .\build\powershell\global\modules.ps1
+    $Pool_Request = [PSCustomObject]@{ }
+    $NOGLT = "DOESNOTMATTER"
+    $X = ""
+    if ($(arg).Ban_GLT -eq "Yes") { $NoGLT = "GLT" }
+    if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" } 
+
+    ## Skip if user didn't specify
     try { $Pool_Request = Invoke-RestMethod "http://zergpool.com:8080/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
     catch {
         return "SWARM contacted ($Name) for a failed API check. (Coins)"; 

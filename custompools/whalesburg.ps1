@@ -9,11 +9,12 @@
 ## fine. I don't know the difference this pool causes in comparision
 ## to nicehash, but it seems to cause weird bugs in miners.
 
-. .\build\powershell\global\modules.ps1
-. .\build\powershell\global\classes.ps1
-$Whalesburg_Request = [PSCustomObject]@{ } 
- 
 if ($(arg).PoolName -eq $Name) {
+    
+    . .\build\powershell\global\modules.ps1
+    . .\build\powershell\global\classes.ps1
+    $Whalesburg_Request = [PSCustomObject]@{ } 
+ 
     try { $Whalesburg_Request = Invoke-RestMethod "https://payouts.whalesburg.com/profitabilities/share_price" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
     catch { return "SWARM contacted ($Name) but there was no response." }
   

@@ -1,10 +1,10 @@
-. .\build\powershell\global\modules.ps1
-$Pool_Request = [PSCustomObject]@{ } 
-
-$X = ""
-if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" }
-
 if ($Name -in $(arg).PoolName) {
+    . .\build\powershell\global\modules.ps1
+    $Pool_Request = [PSCustomObject]@{ } 
+
+    $X = ""
+    if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" }
+
     try { $Pool_Request = Invoke-RestMethod "https://fairpool.pro/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
     catch { return "SWARM contacted ($Name) but there was no response." }
  
