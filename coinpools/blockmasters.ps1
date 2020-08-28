@@ -1,6 +1,7 @@
+. .\build\powershell\global\modules.ps1
+
 if ($Name -in $(arg).PoolName) {
 
-    . .\build\powershell\global\modules.ps1
     $Pool_Request = [PSCustomObject]@{ } 
     $NOGLT = "DOESNOTMATTER";
     $X = "";

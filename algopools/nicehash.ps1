@@ -1,6 +1,6 @@
- 
+. .\build\powershell\global\modules.ps1
+
 if ($Name -in $(arg).PoolName) {
-    . .\build\powershell\global\modules.ps1
 
     $nicehash_Request = [PSCustomObject]@{ } 
 
