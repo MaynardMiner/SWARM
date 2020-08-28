@@ -102,13 +102,13 @@ bench all
                 $Get += "Removed all $Name $Arg1 stats."
             }
             else {
-                if (Test-Path ".\stats\*$Name*") { 
+                if (Test-Path ".\stats\$Name*") { 
                     $Get += "Found .\stats\$Name* files"
-                    Remove-Item ".\stats\*$Name*" -Force 
+                    Remove-Item ".\stats\$Name*" -Force 
                 }
-                if (Test-Path ".\backup\*$Name*") { 
+                if (Test-Path ".\backup\$Name*") { 
                     $Get += "Found .\stats\$Name* files"
-                    Remove-Item ".\backup\*$Name*" -Force 
+                    Remove-Item ".\backup\$Name*" -Force 
                 }
                 $Get += "Removed all $Name stats and bans."
             }
