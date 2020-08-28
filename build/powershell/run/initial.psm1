@@ -78,20 +78,20 @@ function Global:Get-Charts {
         $Table = $(vars).Miners | Where-Object TYPE -eq $_;
         $global:index = $Table.Count
     
-        $Table | ForEach-Object { $Power_Levels.Add("$($_.ScreenName)_$($_.Miner)_$($_.MinerPool)_$($_.Type)", @{ }) }
+        $Table | ForEach-Object { $Power_Levels.Add("$($_.ScreenName)_$($_.MinerName)_$($_.MinerPool)_$($_.Type)", @{ }) }
         ##Profit Levels
         $Level = $null
-        $Table | Sort-Object -Property Profit | ForEach-Object { if ($Null -ne $_.Profit) { $Profit = ($_.Profit * $(vars).Rates.$($(arg).Currency)).ToString("N2"); $MinerName = "$($_.ScreenName)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Profit", "$Level $Profit $($(arg).Currency)/Day"); } }
+        $Table | Sort-Object -Property Profit | ForEach-Object { if ($Null -ne $_.Profit) { $Profit = ($_.Profit * $(vars).Rates.$($(arg).Currency)).ToString("N2"); $MinerName = "$($_.ScreenName)_$($_.MinerName)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Profit", "$Level $Profit $($(arg).Currency)/Day"); } }
         $Level = $null
-        if ($(arg).CoinExchange) { $Table | Sort-Object -Property Pool_Estimate | ForEach-Object { if ($_.Pool_Estimate -gt 0) { $Profit = ($_.Pool_Estimate / $(vars).BTCExchangeRate).ToString("N5"); $MinerName = "$($_.ScreenName)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Alt_Profit", "$Level $Profit $Y/Day"); } } }
+        if ($(arg).CoinExchange) { $Table | Sort-Object -Property Pool_Estimate | ForEach-Object { if ($_.Pool_Estimate -gt 0) { $Profit = ($_.Pool_Estimate / $(vars).BTCExchangeRate).ToString("N5"); $MinerName = "$($_.ScreenName)_$($_.MinerName)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Alt_Profit", "$Level $Profit $Y/Day"); } } }
         $Level = $null
-        $Table | Sort-Object -Property Profit | ForEach-Object { if ($Null -ne $_.Profit) { $Profit = ($_.Profit).ToString("N5"); $MinerName = "$($_.ScreenName)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("BTC_Profit", "$Level $Profit BTC/Day"); } }
+        $Table | Sort-Object -Property Profit | ForEach-Object { if ($Null -ne $_.Profit) { $Profit = ($_.Profit).ToString("N5"); $MinerName = "$($_.ScreenName)_$($_.MinerName)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("BTC_Profit", "$Level $Profit BTC/Day"); } }
         $Level = $null
-        $Table | Sort-Object -Property HashRates | ForEach-Object { if ($Null -ne $_.HashRates) { $HashRate = "$($_.HashRates | Global:ConvertTo-Hash)/s"; $MinerName = "$($_.ScreenName)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Hashrate", "$Level $Hashrate"); } }
+        $Table | Sort-Object -Property HashRates | ForEach-Object { if ($Null -ne $_.HashRates) { $HashRate = "$($_.HashRates | Global:ConvertTo-Hash)/s"; $MinerName = "$($_.ScreenName)_$($_.MinerName)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Hashrate", "$Level $Hashrate"); } }
         $Level = $null
-        $Table | Sort-Object -Property Shares | ForEach-Object { if ($Null -ne $_.Shares) { if ($_.Shares -eq "N/A") { $_.Shares = 0 }else { $_.Shares = $($_.Shares -as [Decimal]).ToString("N3") }; $Shares = "$($_.Shares)"; $MinerName = "$($_.ScreenName)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; if ($_.Shares -ne 0) { $Level = $Level + $Power }else { $Level = "|" }; $Power_Levels.$MinerName.Add("Shares", "$Level $Shares %"); } }
+        $Table | Sort-Object -Property Shares | ForEach-Object { if ($Null -ne $_.Shares) { if ($_.Shares -eq "N/A") { $_.Shares = 0 }else { $_.Shares = $($_.Shares -as [Decimal]).ToString("N3") }; $Shares = "$($_.Shares)"; $MinerName = "$($_.ScreenName)_$($_.MinerName)_$($_.MinerPool)_$($_.Type)"; if ($_.Shares -ne 0) { $Level = $Level + $Power }else { $Level = "|" }; $Power_Levels.$MinerName.Add("Shares", "$Level $Shares %"); } }
         $Level = $null
-        if ($WattTable -eq $true) { $Table | Sort-Object -Property Power | ForEach-Object { if ($_.Power_Day -ne 0) { $Pwatts = ($_.Power_Day * $(vars).Rates.$($(arg).Currency)).ToString("N2"); $MinerName = "$($_.ScreenName)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Watts", "$Level $PWatts $($(arg).Currency)/Day"); } } }
+        if ($WattTable -eq $true) { $Table | Sort-Object -Property Power | ForEach-Object { if ($_.Power_Day -ne 0) { $Pwatts = ($_.Power_Day * $(vars).Rates.$($(arg).Currency)).ToString("N2"); $MinerName = "$($_.ScreenName)_$($_.MinerName)_$($_.MinerPool)_$($_.Type)"; $Level = $Level + $Power; $Power_Levels.$MinerName.Add("Watts", "$Level $PWatts $($(arg).Currency)/Day"); } } }
     }
 
     $(arg).Type | ForEach-Object {
@@ -101,12 +101,12 @@ function Global:Get-Charts {
         $Status += ""
     
         $Table | ForEach-Object {
-            $MinerName = "$($_.ScreenName)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"
+            $MinerName = "$($_.ScreenName)_$($_.MinerName)_$($_.MinerPool)_$($_.Type)"
             $Border_Lt += $($Power_Levels.$MinerName.BTC_Profit | Measure-Object -Character).Characters  
         }
         $Border = $($Border_Lt | Measure-Object -Maximum).Maximum + 15
         $Table | Sort-Object -Property Profit -Descending | ForEach-Object {
-            $MinerName = "$($_.ScreenName)_$($_.Miner)_$($_.MinerPool)_$($_.Type)"
+            $MinerName = "$($_.ScreenName)_$($_.MinerName)_$($_.MinerPool)_$($_.Type)"
             $me = [char]27;
             $white = "37";
             $blue = "34";
@@ -132,7 +132,7 @@ function Global:Get-Charts {
                 $WStat = if ($_.Power_Day -ne 0) { "$me[${magenta};1m$($Power_Levels.$MinerName.Watts)${me}[0m" }else { "$me[${magenta};1mBenchmarking${me}[0m" }
             }
             $Table_Item = @();
-            $TableName = "$me[${white};1mName: $($_.Miner)${me}[0m"; 
+            $TableName = "$me[${white};1mName: $($_.MinerName)${me}[0m"; 
             $TableSymbol = "$me[${white};1mCoin: $($_.ScreenName)${me}[0m"; 
             $TablePool = "$me[${white};1mPool: $($_.MinerPool)${me}[0m"; 
             $Table_Item += "$($TableName.PadRight(40," ")) $($TableSymbol.PadRight(40," ")) $TablePool"

@@ -583,9 +583,6 @@ While ($true) {
         Global:Add-Module "$($(vars).miner)\sorting.psm1"
         if ($(arg).Volume -eq "Yes") { Get-Volume }
         Global:Start-MinerDownloads
-        $CutMiners = Global:Start-MinerReduction
-        $CutMiners | ForEach-Object { $(vars).Miners.Remove($_) } | Out-Null;
-        Remove-Variable -Name CutMiners -ErrorAction Ignore
         $(vars).Miners | ForEach-Object { $_.Symbol = $_.Symbol -replace "-Algo", ""; $_.Symbol = $_.Symbol -replace "-Coin", "" }
         Global:Start-Sorting
         Global:Add-SwitchingThreshold
