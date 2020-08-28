@@ -592,6 +592,12 @@ While ($true) {
         Remove-BadMiners
         create Miners_Combo (Global:Get-BestMiners)
         $(vars).bestminers_combo = Global:Get-Conservative
+
+        ## Trim miners for stats screen
+        $CutMiners = Global:Start-MinerReduction	
+        $CutMiners | ForEach-Object { $(vars).Miners.Remove($_) } | Out-Null;	
+        Remove-Variable -Name CutMiners -ErrorAction Ignore	
+        
         log "Most Ideal Choice Is $($(vars).bestminers_combo.Symbol) on $($(vars).bestminers_combo.MinerPool)" -foregroundcolor green
 
         ## Phase Clean up
