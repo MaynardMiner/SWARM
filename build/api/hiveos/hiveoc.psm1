@@ -392,7 +392,7 @@ function Global:Start-AMDOC($NewOC) {
         ## Fan Settings
         if ($FanSpeed) {
             $OCArgs += "Fan_ZeroRPM=0 Fan_P0=25;$($FanSpeed) Fan_P1=25;$($FanSpeed) Fan_P2=25;$($FanSpeed) Fan_P3=25;$($FanSpeed) Fan_P4=25;$($FanSpeed) "
-            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Fan Speed To $($FanSpeed)`Foreach-Object "
+            $ocmessage += "Setting GPU $($OCCount.AMD.$i) Fan Speed To $($FanSpeed)`% "
         }
         
         ## Ref Settings

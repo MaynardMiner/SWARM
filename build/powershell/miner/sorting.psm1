@@ -489,3 +489,31 @@ function Global:Add-SwitchingThreshold {
         }
     }
 }
+
+function Global:Start-MinerReduction {	
+
+    $CutMiners = @()	
+    $(arg).Type | ForEach-Object {	
+        $GetType = $_;	
+        $(vars).Miners.Symbol | Select-Object -Unique | ForEach-Object {	
+            $zero = $(vars).Miners | Where-Object Type -eq $GetType | Where-Object Symbol -eq $_ | Where-Object Quote -EQ 0; 	
+            $nonzero = $(vars).Miners | Where-Object Type -eq $GetType | Where-Object Symbol -eq $_ | Where-Object Quote -NE 0;	
+
+            if ($zero) {	
+                $GetMinersToCut = @()	
+                $GetMinersToCut += $zero	
+                $GetMinersToCut += $nonzero | Sort-Object @{Expression = "Quote"; Descending = $true }	
+                $GetMinersToCut = $GetMinersToCut | Select-Object -Skip 1;	
+                $GetMinersToCut | ForEach-Object { $CutMiners += $_ };	
+            }	
+            else {	
+                $GetMinersToCut = @()	
+                $GetMinersToCut = $nonzero | Sort-Object @{Expression = "Quote"; Descending = $true };	
+                $GetMinersToCut = $GetMinersToCut | Select-Object -Skip 1;	
+                $GetMinersToCut | ForEach-Object { $CutMiners += $_ };	
+            }	
+        }	
+    }	
+
+    $CutMiners	
+}	
