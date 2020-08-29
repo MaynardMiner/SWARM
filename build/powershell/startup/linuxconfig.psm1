@@ -151,7 +151,7 @@ function Global:Get-GPUCount {
     if ($GetBus -like "*NVIDIA*" -and $GetBus -notlike "*nForce*") {
         invoke-expression "nvidia-smi --query-gpu=gpu_bus_id,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit,vbios_version --format=csv" | Tee-Object -Variable NVSMI | Out-Null
         $NVSMI = $NVSMI | ConvertFrom-Csv
-        $NVSMI | % { $_."pci.bus_id" = $_."pci.bus_id" -replace "00000000:", "" }
+        $NVSMI | ForEach-Object { $_."pci.bus_id" = $_."pci.bus_id" -replace "00000000:", "" }
     }
 
     ## AMD Cards
@@ -162,7 +162,7 @@ function Global:Get-GPUCount {
             if ($ROCMSMI -and $ROCMSMI -ne "") {
                 $ROCMSMI = $ROCMSMI | ConvertFrom-Json
                 $GETSMI = @()
-                $ROCMSMI.PSObject.Properties.Name | % { $ROCMSMI.$_."PCI Bus" = $ROCMSMI.$_."PCI Bus".replace("0000:", ""); $GETSMI += [PSCustomObject]@{ "VBIOS version" = $ROCMSMI.$_."VBIOS version"; "PCI Bus" = $ROCMSMI.$_."PCI Bus"; "Card vendor" = $ROCMSMI.$_."Card vendor" } }
+                $ROCMSMI.PSObject.Properties.Name | ForEach-Object { $ROCMSMI.$_."PCI Bus" = $ROCMSMI.$_."PCI Bus".replace("0000:", ""); $GETSMI += [PSCustomObject]@{ "VBIOS version" = $ROCMSMI.$_."VBIOS version"; "PCI Bus" = $ROCMSMI.$_."PCI Bus"; "Card vendor" = $ROCMSMI.$_."Card vendor" } }
                 $ROCMSMI = $GETSMI
             }
         }
@@ -191,7 +191,7 @@ function Global:Get-GPUCount {
     }
 
     ## Add cards based on bus order
-    $GetBus | % {
+    $GetBus | ForEach-Object {
         if ($_ -like "*Advanced Micro Devices*" -or 
             $_ -like "*NVIDIA*" -and
             $_ -notlike "*RS880*" -and 
@@ -202,8 +202,8 @@ function Global:Get-GPUCount {
             $busid = $busid.split(" 3D")[0]
             if ($_ -like "*Advanced Micro Devices*") {
                 $name = ($_.line.Split("[AMD/ATI] ")[1]).split(" (")[0]
-                $SMI = $ROCMSMI | Where { $_."PCI Bus" -eq $busid }
-                $meminfo = $amdmeminfo | Where busid -eq $busid
+                $SMI = $ROCMSMI | Where-Object { $_."PCI Bus" -eq $busid }
+                $meminfo = $amdmeminfo | Where-Object busid -eq $busid
                 ## Mem size
                 $mem = Invoke-Expression "dmesg | grep -oE `"amdgpu 0000`:${busid}`: VRAM:`\s.*`" | sed -n `'s`/.*VRAM:`\s`\([0-9MG]`\+`\).*`/`\1`/p'"
                 $(vars).BusData += [PSCustomObject]@{
@@ -226,8 +226,8 @@ function Global:Get-GPUCount {
                     $name = $_.line.split('controller: ')[1]
                     $name = $name.split(' (')[0]
                 }
-                $subvendor = invoke-expression "lspci -vmms $busid" | Tee-Object -Variable subvendor | % { $_ | Select-String "SVendor" | % { $_ -split "SVendor:\s" | Select -Last 1 } }
-                $smi = $NVSMI | Where "pci.bus_id" -eq $busid
+                $subvendor = invoke-expression "lspci -vmms $busid" | Tee-Object -Variable subvendor | ForEach-Object { $_ | Select-String "SVendor" | ForEach-Object { $_ -split "SVendor:\s" | Select-Object -Last 1 } }
+                $smi = $NVSMI | Where-Object "pci.bus_id" -eq $busid
                 $(vars).BusData += [PSCustomObject]@{
                     busid     = $busid
                     name      = $name
@@ -259,13 +259,13 @@ function Global:Get-GPUCount {
         log "Adding CPU"
         $M_Types = @()
         $M_Types += "CPU"
-        if ($(vars).BusData | Where brand -eq "amd") {
+        if ($(vars).BusData | Where-Object brand -eq "amd") {
             log "AMD Detected: Adding AMD" -ForegroundColor Magenta
             $(arg).type += "AMD1"
             $(vars).Type += "AMD1"
             $M_Types += "AMD1"
         }
-        if ($(vars).BusData | Where brand -eq "NVIDIA") {
+        if ($(vars).BusData | Where-Object brand -eq "NVIDIA") {
             if ("AMD1" -in $(arg).type) {
                 log "NVIDIA Detected: Adding NVIDIA" -ForegroundColor Magenta
                 $(arg).type += "NVIDIA2"
@@ -312,7 +312,7 @@ function Global:Get-GPUCount {
         }
     }
 
-    $(arg).Type | Foreach {
+    $(arg).Type | ForEach-Object {
         if ($_ -like "*CPU*") {
             log "Getting CPU Count"
             for ($i = 0; $i -lt $(arg).CPUThreads; $i++) { 
@@ -390,19 +390,19 @@ function Global:Start-LinuxConfig {
         if ($NotHiveOS -eq $false) {
             if ($(arg).Type -like "*NVIDIA*" -or $(arg).Type -like "*AMD*") {
                 Invoke-Expression ".\build\bash\python.sh" | Tee-Object -Variable liba | Out-Null
-                $liba | % { log $_ }
+                $liba | ForEach-Object { log $_ }
                 Start-Sleep -S 1
                 Invoke-Expression ".\build\bash\libc.sh" | Tee-Object -Variable libb | Out-Null
-                $libb | % { log $_ }
+                $libb | ForEach-Object { log $_ }
                 Start-Sleep -S 1
                 Invoke-Expression ".\build\bash\libv.sh" | Tee-Object -Variable libc | Out-Null
-                $libc | % { log $_ }
+                $libc | ForEach-Object { log $_ }
                 Start-Sleep -S 1
             }
 
             log "Clearing Trash Folder"
             Invoke-Expression "rm -rf .local/share/Trash/files/*" | Tee-Object -Variable trash | Out-Null
-            $Trash | % { log $_ }
+            $Trash | ForEach-Object { log $_ }
         }
     }
     

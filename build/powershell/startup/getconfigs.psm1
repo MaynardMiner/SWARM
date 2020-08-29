@@ -22,7 +22,7 @@ function Global:Start-Background {
     $arguments = "-executionpolicy bypass -Windowstyle $WindowStyle -command `"Set-Location $($(vars).dir); .\build\powershell\scripts\background.ps1`""
     $CommandLine += " " + $arguments
     $New_Miner = $start.New_Miner($filepath,$CommandLine,$(vars).Dir)
-    $Process = Get-Process | Where id -eq $New_Miner.dwProcessId
+    $Process = Get-Process | Where-Object id -eq $New_Miner.dwProcessId
     $Process.ID | Set-Content ".\build\pid\background_pid.txt"
 }
 
@@ -30,22 +30,22 @@ function Global:Start-AgentCheck {
     log "Stopping Previous Agent"
     $ID = ".\build\pid\background_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
-    if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
+    if ($Agent) { $BackGroundID = Get-Process | Where-Object id -eq $Agent }
     if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
     $ID = ".\build\pid\pill_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
-    if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
+    if ($Agent) { $BackGroundID = Get-Process | Where-Object id -eq $Agent }
     if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
     log "Stopping Previous Autofan"
     $ID = ".\build\pid\autofan.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
-    if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
+    if ($Agent) { $BackGroundID = Get-Process | Where-Object id -eq $Agent }
     if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }       
 }
 
 
 function Global:Get-Optional {
-    Get-ChildItem ".\miners\optional_and_old" | Where BaseName -in $(arg).Optional | ForEach-Object {
+    Get-ChildItem ".\miners\optional_and_old" | Where-Object BaseName -in $(arg).Optional | ForEach-Object {
         $Path = $_.FullName
         $FileType = Get-Content $Path
         if ( $FileType[0] -like "*`$(vars).AMDTypes*" ) {
@@ -60,15 +60,15 @@ function Global:Get-Optional {
     ## Move Out Additional Miners
     if ($IsLinux) {
         $AMD = Get-Content ".\config\update\amd-linux.json" | ConvertFrom-Json 
-        $AMD = $AMD | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Where { $AMD.$_.optional -eq "Yes" } | % { $AMD.$_ }
+        $AMD = $AMD | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Where-Object { $AMD.$_.optional -eq "Yes" } | ForEach-Object { $AMD.$_ }
         $NVIDIA = Get-Content ".\config\update\nvidia-linux.json" | ConvertFrom-Json
-        $NVIDIA = $NVIDIA | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Where { $NVIDIA.$_.optional -eq "Yes" } | % { $NVIDIA.$_ }
+        $NVIDIA = $NVIDIA | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Where-Object { $NVIDIA.$_.optional -eq "Yes" } | ForEach-Object { $NVIDIA.$_ }
     }
     else {
         $AMD = Get-Content ".\config\update\amd-win.json" | ConvertFrom-Json
-        $AMD = $AMD | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Where { $AMD.$_.optional -eq "Yes" } | % { $AMD.$_ }
+        $AMD = $AMD | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Where-Object { $AMD.$_.optional -eq "Yes" } | ForEach-Object { $AMD.$_ }
         $NVIDIA = Get-Content ".\config\update\nvidia-win.json" | ConvertFrom-Json
-        $NVIDIA = $NVIDIA | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | Where { $NVIDIA.$_.optional -eq "Yes" } | % { $NVIDIA.$_ }
+        $NVIDIA = $NVIDIA | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | Where-Object { $NVIDIA.$_.optional -eq "Yes" } | ForEach-Object { $NVIDIA.$_ }
     }
     ##AMD
     if ($(arg).Type -like "*AMD*") {
@@ -76,7 +76,7 @@ function Global:Get-Optional {
         $AMD | ForEach-Object {
             if ($_.Name -in $list.basename -and $_.Name -notin $(arg).optional) {
                 Write-Log "Found $($_.Name) in active miner folder, not specified in -optional parameter, moving to optional_and_old" -ForegroundColor Yellow
-                $file = $List | Where BaseName -eq $($_.Name)
+                $file = $List | Where-Object BaseName -eq $($_.Name)
                 Move-Item -path $file -Destination ".\miners\optional_and_old\$($_.Name).ps1" -Force
             }
         }
@@ -87,7 +87,7 @@ function Global:Get-Optional {
         $NVIDIA | ForEach-Object {
             if ($_.Name -in $list.basename -and $_.Name -notin $(arg).optional) {
                 Write-Log "Found $($_.Name) in active miner folder, not specified in -optional parameter, moving to optional_and_old" -ForegroundColor Yellow
-                $file = $List | Where BaseName -eq $($_.Name)
+                $file = $List | Where-Object BaseName -eq $($_.Name)
                 Move-Item -path $file -Destination ".\miners\optional_and_old\$($_.Name).ps1" -Force
             }
         }

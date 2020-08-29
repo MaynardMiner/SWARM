@@ -22,8 +22,10 @@ function Global:Start-CrashReporting {
             New-Item -Path ".\logs" -Name $Report -ItemType "Directory" | Out-Null;
             Get-ChildItem ".\debug" | Copy-Item -Destination ".\logs\$Report";
             $TypeLogs = @("NVIDIA1", "AMD1", "NVIDIA2", "NVIDIA3", "CPU")
-            Get-ChildItem "logs" | Where BaseName -in $TypeLogs | Foreach-Object { Copy-Item -Path $_.FullName -Destination ".\logs\$Report" | Out-Null }
-            Get-ChildItem "logs" | Where BaseName -like "*miner*" | Foreach-Object { Copy-Item -Path $_.FullName -Destination ".\logs\$Report" | Out-Null }
+            Get-ChildItem "logs" | Where-Object BaseName -in $TypeLogs | 
+                Foreach-Object { Copy-Item -Path $_.FullName -Destination ".\logs\$Report" | Out-Null }
+            Get-ChildItem "logs" | Where-Object BaseName -like "*miner*" | 
+                Foreach-Object { Copy-Item -Path $_.FullName -Destination ".\logs\$Report" | Out-Null }
             Start-Sleep -S 3
         }
     }

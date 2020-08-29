@@ -43,14 +43,9 @@ function Global:Clear-Stats {
 }
 
 function Global:Set-NewType {
-    $(arg).Type | ForEach-Object {
-        if ($_ -eq "amd1") { $_ = "AMD1" }
-        if ($_ -eq "nvidia1") { $_ = "NVIDIA1" }
-        if ($_ -eq "nvidia2") { $_ = "NVIDIA2" }
-        if ($_ -eq "nvidia2") { $_ = "NVIDIA3" }
-        if ($_ -eq "cpu") { $_ = "CPU" }
-        if ($_ -eq "asic") { $_ = "ASIC" }
-    }    
+    for($i = 0; $i -lt $(arg).Type.Count; $i++) {
+        $(arg).Type[$i] = $(arg).Type[$i].ToUpper();
+    }
 }
 
 function Global:Add-New_Variables {

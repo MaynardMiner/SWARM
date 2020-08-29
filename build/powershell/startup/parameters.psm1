@@ -21,22 +21,22 @@ function Global:Get-Parameters {
         $arguments = Get-Content ".\config\parameters\newarguments.json" | ConvertFrom-Json
         ## Force Auto-Coin if Coin is specified.
         if([string]$arguments.coin -ne ""){$arguments.Auto_Coin = "Yes"}
-        $arguments.PSObject.Properties.Name | % { $(arg).Add("$($_)", $arguments.$_) }
-        $arguments.PSObject.Properties.Name | % { $Global:Config.user_params.Add("$($_)", $arguments.$_) }
+        $arguments.PSObject.Properties.Name | ForEach-Object { $(arg).Add("$($_)", $arguments.$_) }
+        $arguments.PSObject.Properties.Name | ForEach-Object { $Global:Config.user_params.Add("$($_)", $arguments.$_) }
     }
     ## else use arguments user specified.
     else {
         $arguments = Get-Content ".\config\parameters\commandline.json" | ConvertFrom-Json
         ## Force Auto-Coin if Coin is specified.
         if([string]$arguments.coin -ne ""){$arguments.Auto_Coin = "Yes"}
-        $arguments.PSObject.Properties.Name | % { $(arg).Add("$($_)", $arguments.$_) }
-        $arguments.PSObject.Properties.Name | % { $Global:Config.user_params.Add("$($_)", $arguments.$_) }
+        $arguments.PSObject.Properties.Name | ForEach-Object { $(arg).Add("$($_)", $arguments.$_) }
+        $arguments.PSObject.Properties.Name | ForEach-Object { $Global:Config.user_params.Add("$($_)", $arguments.$_) }
         $arguments = $Null
     }
     if (Test-Path ".\config\parameters\Hive_params_keys.json") {
         try {
             $HiveStuff = Get-Content ".\config\parameters\Hive_params_keys.json" | ConvertFrom-Json
-            $HiveStuff.PSObject.Properties.Name | % { $global:Config.hive_params.Add("$($_)", $HiveStuff.$_) }
+            $HiveStuff.PSObject.Properties.Name | ForEach-Object { $global:Config.hive_params.Add("$($_)", $HiveStuff.$_) }
             $HiveStuff = $null    
         }
         catch {
@@ -63,7 +63,7 @@ function Global:Get-Parameters {
 
     if (Test-Path ".\config\parameters\SWARM_params_keys.json") {
         $SWARMStuff = Get-Content ".\config\parameters\SWARM_params_keys.json" | ConvertFrom-Json
-        $SWARMStuff.PSObject.Properties.Name | % { $global:Config.SWARM_Params.Add("$($_)", $SWARMStuff.$_) }
+        $SWARMStuff.PSObject.Properties.Name | ForEach-Object { $global:Config.SWARM_Params.Add("$($_)", $SWARMStuff.$_) }
         $SWARMStuff = $null
     }
     if (-not $global:Config.SWARM_Params.Id) {
