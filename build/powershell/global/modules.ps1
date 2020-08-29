@@ -31,19 +31,30 @@ function Global:Get-ChildItemContent {
             $PowerShell.runspace = $Runspace
             $Script_Content = [IO.File]::ReadAllText($_.FullName);
             $script = [Scriptblock]::Create($Script_Content);
-            $Runspace.SessionStateProxy.SetVariable("Wallets",$Global:Wallets);
-            $Runspace.SessionStateProxy.SetVariable("Config",$Global:Config);
+            $Runspace.SessionStateProxy.SetVariable("Wallets", $Global:Wallets);
+            $Runspace.SessionStateProxy.SetVariable("Config", $Global:Config);
             $Runspace.SessionStateProxy.SetVariable("Name", $Name)
             $Runspace.SessionStateProxy.Path.SetLocation($($(vars).dir)) | Out-Null;
             $handle = $PowerShell.AddScript($script).BeginInvoke();
-            While(!$handle.IsCompleted) {
+            While (!$handle.IsCompleted) {
                 Start-Sleep -Milliseconds 200
             }
             $Content = $PowerShell.EndInvoke($handle);
+            if ($Powershell.Streams.Error) {
+                foreach ($e in $PowerShell.Streams.Error) {
+                    log "
+$($e.Exception.Message)
+$($e.InvocationInfo.PositionMessage)
+    | Category: $($e.CategoryInfo.Category)     | Activity: $($e.CategoryInfo.Activity)
+    | Reason: $($e.CategoryInfo.Reason)     | Runspace: $FullName
+    | Target Name: $($e.CategoryInfo.TargetName)    | Target Type: $($e.CategoryInfo.TargetType)
+" -ForeGround Red; 
+                }
+            }
             $PowerShell.Dispose();
             $Runspace.Close();
             $Runspace.Dispose();
-            if($Content.GetType() -eq [string]) {
+            if ($Content.GetType() -eq [string]) {
                 log $Content -ForeGroundColor Yellow;
                 $Content = $Null;
             }
@@ -279,3 +290,27 @@ function Global:Remove-Vars([string]$X) {
 Set-Alias -Name remove -Value Global:Remove-Vars -Scope Global
 Set-Alias -Name check -Value Global:Confirm-Vars -Scope Global
 Set-Alias -Name log -Value Global:Write-Log -Scope Global
+
+Class Expression {
+    static [string] Invoke([string]$command, [string]$arguments) {
+        $output = [string]::Empty;
+        $Proc = [System.Diagnostics.Process]::New();
+        $Proc.StartInfo.FileName = $command;
+        $Proc.StartInfo.Arguments = "$arguments";
+        $Proc.StartInfo.CreateNoWindow = $true;
+        $Proc.StartInfo.UseShellExecute = $false;
+        $Proc.StartInfo.RedirectStandardOutput = $true;
+        $Proc.StartInfo.RedirectStandardError = $true;
+        $Proc.Start() | Out-Null;
+        while (-not $Proc.StandardOutput.EndOfStream -or -not $Proc.StandardError.EndOfStream) {
+            if($Proc.StandardOutput.Peek() -gt -1) {
+                $output += "$($Proc.StandardOutput.ReadLine())`n";
+            }
+            if($Proc.StandardError.Peek() -gt -1) {
+                $output += "$($Proc.StandardError.ReadLine())`n";
+            }
+        }    
+        $Proc.WaitForExit();
+        return $output;
+    }
+}

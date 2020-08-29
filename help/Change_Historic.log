@@ -2545,3 +2545,16 @@ identity. Was related to machine potentially having multiple active MAC addresse
 * Fixed remote API for HTTP, and updated specs.
 * If -APIPassword is specified, is used both locally and remotely, not just remotely.
 * Fix typo with CPU miners that were causing profit miscalculation with new '-Hashrate_Threshold' parameter.
+
+############################################
+############################################
+
+# SWARM 3.3.1
+
+## Improvements
+* FIXED updater in linux: Should now transfer old settings and stats back in. Was issue with .NET file attributes.
+* FIXED linux issue with miner downloads: Was .NET path parse error.
+* Optimized sorting process post adding -Hashrate_Threshold.
+* Restored whalesburg pool to working order.
+* Ensured Claymore, Nbminer, Teamredminer, PhoenixMiner, and Bminer was working on whalesburg pool.
+* Small typo fixes found and fixed.

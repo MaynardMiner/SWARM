@@ -41,7 +41,7 @@ Function Global:Get-Bus {
         }
     }
     $Proc.Dispose();            
-    $NewCount = $NewCount | Where { $_ -like "*VGA*" -or $_ -like "*3D controller*" }
+    $NewCount = $NewCount | Where-Object { $_ -like "*VGA*" -or $_ -like "*3D controller*" }
 
     if ([string]$OldCount -ne [string]$NewCount) {
         Write-Log "Current Detected GPU List Is:" -ForegroundColor Yellow
@@ -77,16 +77,16 @@ Function Global:Get-Bus {
     if ("NVIDIA" -in $Data.vendor) {
         invoke-expression ".\build\cmd\nvidia-smi.bat --query-gpu=gpu_bus_id,gpu_name,memory.total,power.min_limit,power.default_limit,power.max_limit,vbios_version --format=csv" | Tee-Object -Variable NVSMI | Out-Null
         $NVSMI = $NVSMI | ConvertFrom-Csv
-        $NVSMI | % { $_."pci.bus_id" = $_."pci.bus_id".split("00000000:") | Select -Last 1 }
+        $NVSMI | ForEach-Object { $_."pci.bus_id" = $_."pci.bus_id".split("00000000:") | Select-Object -Last 1 }
     }
 
     $GPUData = @()
 
-    $Data | % {
+    $Data | ForEach-Object {
         if ($_.vendorid -eq "1002") {
-            $first_hex = [int]($_.location -split ":" | Select -First 1)
-            $second_hex = [int]($_.location -split ":" | Select -Skip 1 -First 1)
-            $third_hex = [int]($_.location -split ":" | Select -Last 1)
+            $first_hex = [int]($_.location -split ":" | Select-Object -First 1)
+            $second_hex = [int]($_.location -split ":" | Select-Object -Skip 1 -First 1)
+            $third_hex = [int]($_.location -split ":" | Select-Object -Last 1)
             $first_hex = "{0:x2}" -f $first_hex
             $second_hex = "{0:x2}" -f $second_hex
             $third_hex = "{0:x1}" -f $third_hex
@@ -102,14 +102,14 @@ Function Global:Get-Bus {
             }
         }
         elseif ($_.vendorid -eq "10DE") {
-            $first_hex = [int]($_.location -split ":" | Select -First 1)
-            $second_hex = [int]($_.location -split ":" | Select -Skip 1 -First 1)
-            $third_hex = [int]($_.location -split ":" | Select -Last 1)
+            $first_hex = [int]($_.location -split ":" | Select-Object -First 1)
+            $second_hex = [int]($_.location -split ":" | Select-Object -Skip 1 -First 1)
+            $third_hex = [int]($_.location -split ":" | Select-Object -Last 1)
             $first_hex = "{0:x2}" -f $first_hex
             $second_hex = "{0:x2}" -f $second_hex
             $third_hex = "{0:x1}" -f $third_hex
             $busid = "$first_hex`:$second_hex`.$third_hex"
-            $SMI = $NVSMI | Where "pci.bus_id" -eq $busid
+            $SMI = $NVSMI | Where-Object "pci.bus_id" -eq $busid
             $GPUData += [PSCustomObject]@{
                 busid     = $busid
                 name      = $_.cardname
@@ -123,9 +123,9 @@ Function Global:Get-Bus {
             }
         }
         else {
-            $first_hex = [int]($_.location -split ":" | Select -First 1)
-            $second_hex = [int]($_.location -split ":" | Select -Skip 1 -First 1)
-            $third_hex = [int]($_.location -split ":" | Select -Last 1)
+            $first_hex = [int]($_.location -split ":" | Select-Object -First 1)
+            $second_hex = [int]($_.location -split ":" | Select-Object -Skip 1 -First 1)
+            $third_hex = [int]($_.location -split ":" | Select-Object -Last 1)
             $first_hex = "{0:x2}" -f $first_hex
             $second_hex = "{0:x2}" -f $second_hex
             $third_hex = "{0:x1}" -f $third_hex
@@ -139,8 +139,8 @@ Function Global:Get-Bus {
     }
 
     ### Sort list so onboard is first
-    $GPUS += $GPUData | Where busid -eq "00:02.0"
-    $GPUs += $GPUData | Where busid -ne "00:02.0" | Sort-Object -Property busid
+    $GPUS += $GPUData | Where-Object busid -eq "00:02.0"
+    $GPUs += $GPUData | Where-Object busid -ne "00:02.0" | Sort-Object -Property busid
 
     $NewCount | Set-Content ".\debug\gpu-count.txt"
 
@@ -162,7 +162,7 @@ function Global:Get-GPUCount {
     $AmdCounter = 0 
     $OnboardCounter = 0
 
-    $Bus | Foreach {
+    $Bus | ForEach-Object {
         $Sel = $_
         if ($Sel.Brand -eq "nvidia") {
             $GN = $true
@@ -384,7 +384,7 @@ function Global:Start-WindowsConfig {
 
     ## Start AutoFan
     if (test-path ".\config\parameters\autofan.json") {
-        $Enabled = $(cat ".\config\parameters\autofan.json" | ConvertFrom-Json | ConvertFrom-StringData).ENABLED
+        $Enabled = $(Get-Content ".\config\parameters\autofan.json" | ConvertFrom-Json | ConvertFrom-StringData).ENABLED
         if ($Enabled -eq 1) {
             log "Starting Autofan" -ForeGroundColor Cyan
             $start = [launchcode]::New()
@@ -397,7 +397,7 @@ function Global:Start-WindowsConfig {
             $arguments = "-executionpolicy bypass -WindowStyle $WindowStyle -command `".\build\powershell\scripts\autofan.ps1`""
             $CommandLine += " " + $arguments
             $New_Miner = $start.New_Miner($filepath, $CommandLine, $global:Dir)
-            $Process = Get-Process | Where id -eq $New_Miner.dwProcessId
+            $Process = Get-Process | Where-Object id -eq $New_Miner.dwProcessId
             $Process.ID | Set-Content ".\build\pid\autofan.txt"
         }
     }

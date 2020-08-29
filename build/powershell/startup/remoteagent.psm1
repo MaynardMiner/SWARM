@@ -18,7 +18,7 @@ function Global:start-update {
     log "Checking $Parent For any Previous Versions"
 
     $PreviousVersions = @();
-    $Folders = [IO.Directory]::GetDirectories($Parent) | Where { $_ -like "*SWARM*" };
+    $Folders = [IO.Directory]::GetDirectories($Parent) | Where-Object { $_ -like "*SWARM*" };
 
     if ([IO.File]::Exists("h-manifest.conf")) {
         [int]$version = [Convert]::ToInt32((Get-Content ".\h-manifest.conf" | `
@@ -34,7 +34,7 @@ function Global:start-update {
         $IsGit = [IO.Directory]::Exists(([IO.Path]::Join($Folder, ".git")));
         $IsCurrent = $Folder -eq $(vars).dir;
 
-        if ($IsGit -and !$IsCurrent) {
+        if ($IsGit -and !$IsCurrent -and $manifest) {
             log "found previous version that was a git repository..Not updating it" -Foreground Yellow;
         }
         if (!$IsGit -and $Manifest -and !$IsCurrent) {
@@ -57,7 +57,7 @@ function Global:start-update {
         $Global:cpu = Get-Content ".\config\update\cpu-win.json" | ConvertFrom-Json
     }
 
-    $PreviousVersions | foreach {
+    $PreviousVersions | ForEach-Object {
         $Path = $_
         $Name = [IO.Path]::GetFileName($Path);
         log "Detected Another SWARM version: $Name" -Foreground Yellow
@@ -80,7 +80,7 @@ function Global:start-update {
         if ($global:IsWindows) {
             log "Stopping Previous Agent"
             if (Test-Path $ID) { $Agent = Get-Content $ID }
-            if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
+            if ($Agent) { $BackGroundID = Get-Process | Where-Object id -eq $Agent }
             if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
         }
 
@@ -130,11 +130,11 @@ Access Denied Error prevented.
 
         $UpdateType = @("CPU", "AMD1", "NVIDIA1", "NVIDIA2", "NVIDIA3")
 
-        $Jsons | foreach {
+        $Jsons | ForEach-Object {
             $OldJson_Path = Join-Path $OldConfig "$($_)";
             $NewJson_Path = Join-Path ".\config" "$($_)";
             $GetOld_Json = (Get-ChildItem $OldJson_Path).Name | Where-Object { $_ -notlike "*md*" };
-            $GetOld_Json | foreach {
+            $GetOld_Json | ForEach-Object {
                 $ChangeFile = $_
                 $OldJson = Join-Path $OldJson_Path "$ChangeFile";
                 $NewJson = Join-Path $NewJson_Path "$ChangeFile";
@@ -145,7 +145,7 @@ Access Denied Error prevented.
                     try { $Data = $JsonData | ConvertFrom-Json -ErrorAction Stop } catch { }
 
                     if ($ChangeFile -eq "lolminer.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
@@ -181,7 +181,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "xmrig-amd.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                         
                                 $Data.$_.commands | Add-Member "randomx" "" -ErrorAction SilentlyContinue
@@ -233,7 +233,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "xmrig-cpu.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
 
                                 $Data.$_.prestart = @();
@@ -292,7 +292,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "nanominer.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "kawpow" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "kawpow" "" -ErrorAction SilentlyContinue 
@@ -308,7 +308,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "xmrigcc-cpu.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "chukwa" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "chukwa" "" -ErrorAction SilentlyContinue 
@@ -319,7 +319,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "xmrig-nv.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
 
                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomv", "randomsfx", cryptonight_gpu
@@ -376,7 +376,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "rplant.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "yespoweritc" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "yespoweritc" "" -ErrorAction SilentlyContinue 
@@ -407,7 +407,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "xmr-stak.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "cryptonight-gpu" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "cryptonight-gpu" "" -ErrorAction SilentlyContinue 
@@ -439,7 +439,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "nbminer.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "eaglesong" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "eaglesong" "" -ErrorAction SilentlyContinue 
@@ -470,7 +470,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "nbminer-amd.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "handshake" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "handshake" "" -ErrorAction SilentlyContinue 
@@ -486,7 +486,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "cryptodredge.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "x16rv2" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "x16rv2" "" -ErrorAction SilentlyContinue 
@@ -533,7 +533,7 @@ Access Denied Error prevented.
 
                                 
                     if ($ChangeFile -eq "z-enemy.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "kawpow" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "kawpow" "" -ErrorAction SilentlyContinue 
@@ -549,7 +549,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "bminer.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "cuckaroom" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "cuckaroom" "" -ErrorAction SilentlyContinue 
@@ -585,7 +585,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "nv-lolminer.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
@@ -606,7 +606,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "wildrig.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
 
                                 $Data.$_.commands | Add-Member "x17r" "" -ErrorAction SilentlyContinue
@@ -659,7 +659,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "miniz.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "equihash_150/5" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "equihash_150/5" "" -ErrorAction SilentlyContinue 
@@ -696,7 +696,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "fancyix.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                             
                                 $Data.$_.commands | Add-Member "x25x" "--gpu-threads 4 --worksize 256 --intensity 22" -ErrorAction SilentlyContinue
@@ -717,7 +717,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "gminer-amd.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach { 
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object { 
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "equihash_96/5" "" -ErrorAction SilentlyContinue 
@@ -748,7 +748,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "gminer.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "kawpow" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "kawpow" "" -ErrorAction SilentlyContinue 
@@ -824,7 +824,7 @@ Access Denied Error prevented.
                         }
                     }
                     if ($ChangeFile -eq "teamredminer.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "x16r" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "x16r" "" -ErrorAction SilentlyContinue 
@@ -905,7 +905,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "t-rex.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "kawpow" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "kawpow" "" -ErrorAction SilentlyContinue 
@@ -931,7 +931,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "sugarchain.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "lyra2z330" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "lyra2z330" "" -ErrorAction SilentlyContinue 
@@ -942,7 +942,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "swarm-miner.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "x12" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "x12" "" -ErrorAction SilentlyContinue 
@@ -968,7 +968,7 @@ Access Denied Error prevented.
                     }
 
                     if ($ChangeFile -eq "jayddee.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "power2b" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "power2b" "" -ErrorAction SilentlyContinue 
@@ -979,7 +979,7 @@ Access Denied Error prevented.
                     }
                                 
                     if ($ChangeFile -eq "tt-miner.json") {
-                        $Data | Get-Member -MemberType NoteProperty | Select -ExpandProperty Name | foreach {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
                                 $Data.$_.commands | Add-Member "eaglesong" "" -ErrorAction SilentlyContinue
                                 $Data.$_.difficulty | Add-Member "eaglesong" "" -ErrorAction SilentlyContinue 
@@ -1048,9 +1048,9 @@ Access Denied Error prevented.
         }
 
         $NameJson_Path = Join-Path ".\config" "miners";
-        $GetOld_Json = Get-ChildItem $NameJson_Path | Where Extension -ne ".md"
+        $GetOld_Json = Get-ChildItem $NameJson_Path | Where-Object Extension -ne ".md"
         $GetOld_Json = $GetOld_Json.Name
-        $GetOld_Json | foreach {
+        $GetOld_Json | ForEach-Object {
             $ChangeFile = $_
             $NewName = $ChangeFile -Replace ".json", "";
             $NameJson = Join-Path ".\config\miners" "$ChangeFile";
@@ -1149,11 +1149,11 @@ function Global:Start-AgentCheck {
     log "Stopping Previous Agent"
     $ID = ".\build\pid\background_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
-    if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
+    if ($Agent) { $BackGroundID = Get-Process | Where-Object id -eq $Agent }
     if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }
     $ID = ".\build\pid\pill_pid.txt"
     if (Test-Path $ID) { $Agent = Get-Content $ID }
-    if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
+    if ($Agent) { $BackGroundID = Get-Process | Where-Object id -eq $Agent }
     if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }    
 }
 
