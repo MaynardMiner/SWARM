@@ -63,7 +63,7 @@ function Global:Start-HiveTune {
                     $OCT.Restart()
                     $CheckFile = ".\debug\ocnvidia.txt"
                     do {
-                        $LastWrite = Get-Item $CheckFile | Where-Object  { $_.LastWriteTime }
+                        $LastWrite = (Get-Item $CheckFile).LastWriteTime
                         $CheckTime = [math]::Round(($CheckDate - $LastWrite).TotalSeconds)
                         $TOtalTime = $OCT.Elapsed.TotalSeconds
                         Start-Sleep -Milliseconds 50
@@ -74,8 +74,6 @@ function Global:Start-HiveTune {
                         log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
                     } else{
                         log "OC Was Changed." -ForegroundColor Cyan
-                        if(test-path ".\debug\ocnvidia.txt"){ $OCSheet += Get-Content ".\debug\ocnvidia.txt" }
-                        $OCSheet += Get-Content ".\debug\ocamd.txt"
                         $Success  = $true
                     }
                 }
@@ -85,7 +83,7 @@ function Global:Start-HiveTune {
                     $OCT.Restart()
                     $CheckFile = ".\debug\ocamd.txt"
                     do {
-                        $LastWrite = Get-Item $CheckFile | Where-Object  { $_.LastWriteTime }
+                        $LastWrite = (Get-Item $CheckFile).LastWriteTime
                         $CheckTime = [math]::Round(($CheckDate - $LastWrite).TotalSeconds)
                         $TOtalTime = $OCT.Elapsed.TotalSeconds
                         Start-Sleep -Milliseconds 50
@@ -96,8 +94,6 @@ function Global:Start-HiveTune {
                         log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
                     } else{
                         log "OC Was Changed." -ForegroundColor Cyan
-                        if(test-path ".\debug\ocamd.txt"){ $OCSheet += Get-Content ".\debug\ocamd.txt" }
-                        $OCSheet += Get-Content ".\debug\ocnvidia.txt"
                         $Success  = $true
                     }
                 }
@@ -110,7 +106,7 @@ function Global:Start-HiveTune {
                     $Checkfile = "/var/log/nvidia-oc.log"
                     do {
                         if(test-path $Checkfile){
-                        $LastWrite = Get-Item $CheckFile | Where-Object  { $_.LastWriteTime }
+                        $LastWrite = (Get-Item $CheckFile).LastWriteTime
                         $CheckTime = [math]::Round(($CheckDate - $LastWrite).TotalSeconds)
                         $TOtalTime = $OCT.Elapsed.TotalSeconds
                         }
@@ -121,8 +117,6 @@ function Global:Start-HiveTune {
                         log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
                     } else{
                         log "OC Was Changed." -ForegroundColor Cyan
-                        if(test-path "/var/log/amd-oc.log"){ $OCSheet += Get-Content "/var/log/amd-oc.log" }
-                        $OCSheet += Get-Content "/var/log/nvidia-oc.log"
                         $Success  = $true
                     }
                 }
@@ -133,7 +127,7 @@ function Global:Start-HiveTune {
                     $Checkfile = "/var/log/amd-oc.log"
                     do {
                         if(test-path $Checkfile){
-                        $LastWrite = Get-Item $CheckFile | Where-Object  { $_.LastWriteTime }
+                        $LastWrite = (Get-Item $CheckFile).LastWriteTime
                         $CheckTime = [math]::Round(($CheckDate - $LastWrite).TotalSeconds)
                         $TOtalTime = $OCT.Elapsed.TotalSeconds
                         Start-Sleep -Milliseconds 50
@@ -145,13 +139,18 @@ function Global:Start-HiveTune {
                         log "WARNING: HiveOS did not set OC." -ForegroundColor Yellow
                     } else{
                         log "OC Was Changed." -ForegroundColor Cyan
-                        if(test-path "/var/log/nvidia-oc.log"){ $OCSheet += Get-Content "/var/log/nvidia-oc.log" }
-                        $OCSheet += Get-Content "/var/log/amd-oc.log"
                         $Success  = $true
                     }
                 }
             }
         }
+    }
+    
+    if($Success) {
+        if(test-path ".\debug\ocamd.txt"){ $OCSheet += Get-Content ".\debug\ocnvidia.txt" }
+        if(test-path ".\debug\ocamd.txt"){ $OCSheet += Get-Content ".\debug\ocnvidia.txt" }
+        if(test-path "/var/log/nvidia-oc.log"){ $OCSheet += Get-Content "/var/log/nvidia-oc.log" }
+        if(test-path "/var/log/amd-oc.log"){ $OCSheet += Get-Content "/var/log/amd-oc.log" }
     }
     
     $OCSheet | Add-Content -Path ".\debug\oc-settings.txt"
