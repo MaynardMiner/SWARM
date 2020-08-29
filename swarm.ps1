@@ -215,147 +215,163 @@ $Global:log_params.Add( "dir", (Split-Path $script:MyInvocation.MyCommand.Path) 
 $Global:log_params.dir = $Global:Config.vars.dir -replace "/var/tmp", "/root"
 Global:Start-Log -Number $global:log_params.lognum;
 
-## Initiate Update Check
-Global:Add-Module "$($(vars).startup)\remoteagent.psm1"
-if ($(arg).Update -eq "Yes") {
-    Global:Start-Update
-}
-if ($(arg).Platform -eq "windows") { 
-    Global:Add-Module "$($(vars).startup)\getconfigs.psm1"
-    Global:Start-AgentCheck 
-}
-
-## create debug/command folder
-if (-not (Test-Path ".\debug")) { New-Item -Path ".\build" -Name "txt" -ItemType "directory" | Out-Null }
-
-##Start Data Collection
-Global:Add-Module "$($(vars).startup)\datafiles.psm1"
-
-[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
-
-Global:Get-DateFiles
-Global:Clear-Stats
-Global:Get-ArgNotice
-Global:Set-NewType
-
-##HiveOS Confirmation
-if ( (Test-Path "/hive/miners") -or $(arg).Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ) { $(arg).HiveOS = "Yes" }
-log "HiveOS = $($(arg).HiveOS)"
-
-#Startings Settings (Non User Arguments):
-Global:Add-New_Variables
-
-##Determine Net Modules
-$WebArg = @("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "")
-if ($(arg).Hive_Hash -notin $WebArg -or (Test-Path "/hive/miners") ) { $(vars).NetModules += ".\build\api\hiveos"; $(vars).WebSites += "HiveOS" }
-else { $(arg).HiveOS = "No" }
-Remove-Variable -Name WebArg -ErrorAction Ignore
-if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $(vars).NetModules += ".\build\api\swarm"; $(vars).WebSites += "SWARM" }
-
-## Initialize
-$(vars).Add("GPU_Count", $Null)
-$(vars).Add("BusData", $Null)
-$(vars).Add("types", @())
-$(vars).Add("threads", $null)
-switch ($(arg).Platform) {
-    "linux" {
-        Global:Add-Module "$($(vars).startup)\linuxconfig.psm1"
-        Global:Add-Module "$($(vars).startup)\sexyunixlogo.psm1"
-        Global:Start-LinuxConfig 
+$start = $true
+While ($start) {
+    $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop;
+    trap { 
+        log "
+$($_.Exception.Message)
+$($_.InvocationInfo.PositionMessage)
+    | Category: $($_.CategoryInfo.Category) | Activity: $($_.CategoryInfo.Activity)
+    | Reason: $($_.CategoryInfo.Reason) 
+    | Target Name: $($_.CategoryInfo.TargetName) | Target Type: $($_.CategoryInfo.TargetType)
+" -ForeGround Red; 
+        continue;
     }
-    "windows" { 
-        Global:Add-Module "$($(vars).startup)\winconfig.psm1"
-        Global:Add-Module "$($(vars).startup)\sexywinlogo.psm1"
-        Global:Start-WindowsConfig 
-    }
-}
 
-## Determine AMD platform
-$(vars).add("AMDPlatform", 0)
-if ($(arg).Type -like "*AMD*") {
-    if ([string]$(arg).CLPlatform) { $(vars).AMDPlatform = [string]$(arg).CLPlatform }
-    else {
-        log "Getting AMD OPENCL Platform. Note: If SWARM doesn't continue, a GPU has crashed on rig." -ForeGroundColor Yellow
-        Global:Add-Module "$($(vars).startup)\cl.psm1"
-        [string]$(vars).AMDPlatform = Global:Get-AMDPlatform
-        log "AMD OpenCL Platform is $($(vars).AMDPlatform)"
-        if ([string]$(vars).AMDPlatform -eq "") {
-            log "Failed to get OpenCL plaform. Use -CLPlatform." -ForegroundColor Red 
-            log "Using default 0 for AMD OpenCL platform"
-            $(vars).AMDPlatform = "0"
+    Get-Content "this is a test of error output"
+
+    ## Initiate Update Check
+    Global:Add-Module "$($(vars).startup)\remoteagent.psm1"
+    if ($(arg).Update -eq "Yes") {
+        Global:Start-Update
+    }
+    if ($(arg).Platform -eq "windows") { 
+        Global:Add-Module "$($(vars).startup)\getconfigs.psm1"
+        Global:Start-AgentCheck 
+    }
+
+    ## create debug/command folder
+    if (-not (Test-Path ".\debug")) { New-Item -Path ".\build" -Name "txt" -ItemType "directory" | Out-Null }
+
+    ##Start Data Collection
+    Global:Add-Module "$($(vars).startup)\datafiles.psm1"
+
+    [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
+
+    Global:Get-DateFiles
+    Global:Clear-Stats
+    Global:Get-ArgNotice
+    Global:Set-NewType
+
+    ##HiveOS Confirmation
+    if ( (Test-Path "/hive/miners") -or $(arg).Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ) { $(arg).HiveOS = "Yes" }
+    log "HiveOS = $($(arg).HiveOS)"
+
+    #Startings Settings (Non User Arguments):
+    Global:Add-New_Variables
+
+    ##Determine Net Modules
+    $WebArg = @("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx", "")
+    if ($(arg).Hive_Hash -notin $WebArg -or (Test-Path "/hive/miners") ) { $(vars).NetModules += ".\build\api\hiveos"; $(vars).WebSites += "HiveOS" }
+    else { $(arg).HiveOS = "No" }
+    Remove-Variable -Name WebArg -ErrorAction Ignore
+    if ($Config.Params.Swarm_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx") { $(vars).NetModules += ".\build\api\swarm"; $(vars).WebSites += "SWARM" }
+
+    ## Initialize
+    $(vars).Add("GPU_Count", $Null)
+    $(vars).Add("BusData", $Null)
+    $(vars).Add("types", @())
+    $(vars).Add("threads", $null)
+    switch ($(arg).Platform) {
+        "linux" {
+            Global:Add-Module "$($(vars).startup)\linuxconfig.psm1"
+            Global:Add-Module "$($(vars).startup)\sexyunixlogo.psm1"
+            Global:Start-LinuxConfig 
+        }
+        "windows" { 
+            Global:Add-Module "$($(vars).startup)\winconfig.psm1"
+            Global:Add-Module "$($(vars).startup)\sexywinlogo.psm1"
+            Global:Start-WindowsConfig 
         }
     }
-}
 
-##GPU-Count- Parse the hashtable between devices.
-if ($(arg).Type -like "*NVIDIA*" -or $(arg).Type -like "*AMD*" -or $(arg).Type -like "*CPU*") {
-    if (Test-Path ".\debug\nvidiapower.txt") { Remove-Item ".\debug\nvidiapower.txt" -Force }
-    if (Test-Path ".\debug\amdpower.txt") { Remove-Item ".\debug\amdpower.txt" -Force }
-    if ($(vars).GPU_Count -eq 0) { $Device_Count = $(arg).CPUThreads }
-    else { $Device_Count = $(vars).GPU_Count }
-    log "Device Count = $Device_Count" -foregroundcolor green
-    Remove-Variable -Name Device_Count -ErrorAction Ignore
-    Start-Sleep -S 2
+    ## Determine AMD platform
+    $(vars).add("AMDPlatform", 0)
+    if ($(arg).Type -like "*AMD*") {
+        if ([string]$(arg).CLPlatform) { $(vars).AMDPlatform = [string]$(arg).CLPlatform }
+        else {
+            log "Getting AMD OPENCL Platform. Note: If SWARM doesn't continue, a GPU has crashed on rig." -ForeGroundColor Yellow
+            Global:Add-Module "$($(vars).startup)\cl.psm1"
+            [string]$(vars).AMDPlatform = Global:Get-AMDPlatform
+            log "AMD OpenCL Platform is $($(vars).AMDPlatform)"
+            if ([string]$(vars).AMDPlatform -eq "") {
+                log "Failed to get OpenCL plaform. Use -CLPlatform." -ForegroundColor Red 
+                log "Using default 0 for AMD OpenCL platform"
+                $(vars).AMDPlatform = "0"
+            }
+        }
+    }
+
+    ##GPU-Count- Parse the hashtable between devices.
+    if ($(arg).Type -like "*NVIDIA*" -or $(arg).Type -like "*AMD*" -or $(arg).Type -like "*CPU*") {
+        if (Test-Path ".\debug\nvidiapower.txt") { Remove-Item ".\debug\nvidiapower.txt" -Force }
+        if (Test-Path ".\debug\amdpower.txt") { Remove-Item ".\debug\amdpower.txt" -Force }
+        if ($(vars).GPU_Count -eq 0) { $Device_Count = $(arg).CPUThreads }
+        else { $Device_Count = $(vars).GPU_Count }
+        log "Device Count = $Device_Count" -foregroundcolor green
+        Remove-Variable -Name Device_Count -ErrorAction Ignore
+        Start-Sleep -S 2
 
    
-    if ([string]$(arg).GPUDevices1) {
-        $(vars).Add("NVIDIADevices1", ([String]$(arg).GPUDevices1 -replace " ", ","))
-        $(vars).Add("AMDDevices1", ([String]$(arg).GPUDevices1 -replace " ", ","))
+        if ([string]$(arg).GPUDevices1) {
+            $(vars).Add("NVIDIADevices1", ([String]$(arg).GPUDevices1 -replace " ", ","))
+            $(vars).Add("AMDDevices1", ([String]$(arg).GPUDevices1 -replace " ", ","))
+        }
+        else { 
+            $(vars).Add("NVIDIADevices1", "none")
+            $(vars).Add("AMDDevices1", "none")
+        }
+        if ([string]$(arg).GPUDevices2) { $(vars).Add("NVIDIADevices2", ([String]$(arg).GPUDevices2 -replace " ", ",")) } else { $(vars).Add("NVIDIADevices2", "none") }
+        if ([string]$(arg).GPUDevices3) { $(vars).Add("NVIDIADevices3", ([String]$(arg).GPUDevices3 -replace " ", ",")) } else { $(vars).Add("NVIDIADevices3", "none") }
+
+        $(vars).Add("GCount", (Get-Content ".\debug\devicelist.txt" | ConvertFrom-Json))
+        $(vars).Add("NVIDIATypes", @()); if ($(arg).Type -like "*NVIDIA*") { $(arg).Type | Where-Object { $_ -like "*NVIDIA*" } | Foreach-Object { $(vars).NVIDIATypes += $_ } }
+        $(vars).Add("CPUTypes", @()); if ($(arg).Type -like "*CPU*") { $(arg).Type | Where-Object { $_ -like "*CPU*" } | Foreach-Object { $(vars).CPUTypes += $_ } }
+        $(vars).Add("AMDTypes", @()); if ($(arg).Type -like "*AMD*") { $(arg).Type | Where-Object { $_ -like "*AMD*" } | Foreach-Object { $(vars).AMDTypes += $_ } }
     }
-    else { 
-        $(vars).Add("NVIDIADevices1", "none")
-        $(vars).Add("AMDDevices1", "none")
+
+
+    ##Start New Agent
+    Global:Add-Module "$($(vars).startup)\getconfigs.psm1"
+    log "Starting New Background Agent" -ForegroundColor Cyan
+    if ($(arg).Platform -eq "windows") { Global:Start-Background }
+    elseif ($(arg).Platform -eq "linux") { $Proc = Start-Process ".\build\bash\background.sh" -ArgumentList "background $($($(vars).dir))" -PassThru; $Proc | Wait-Process }
+
+    ## Parse Wallet Configs
+    Global:Add-Module "$($(vars).build)\wallets.psm1"
+    $(vars).Add("All_AltWallets", $Null)
+    Global:Get-Wallets
+    if ([String]$(arg).Admin_Fee -eq 0) { if (test-Path ".\admin") { Remove-Item ".\admin" -Recurse -Force | Out-Null } }
+
+    ## Stop stray miners from previous run before loop
+    Global:Add-Module "$($(vars).control)\stray.psm1"
+    if ($IsWindows) { Global:Stop-StrayMiners -Startup }
+
+    ##Get Optional Miners
+    Global:Get-Optional
+    Global:Remove-Modules
+    $(vars).Remove("BusData")
+    $(vars).Remove("GPU_Count")
+    $(vars).Add("Check_Interval", (Get-Date).ToUniversalTime());
+    $(vars).Add("switch", $true);
+    $(vars).Add("ETH_exchange", 0);
+    $(vars).Add("Load_Timer", (Get-Date).ToUniversalTime());
+    $(vars).Add("Hashtable", @{});
+    $(vars).Add("Downloads", $false);
+    [GC]::Collect()
+    [GC]::WaitForPendingFinalizers()
+    [GC]::Collect()    
+
+    if ($(arg).Throttle -eq 0) {
+        $(arg).Throttle = ([Environment]::ProcessorCount + 1)
     }
-    if ([string]$(arg).GPUDevices2) { $(vars).Add("NVIDIADevices2", ([String]$(arg).GPUDevices2 -replace " ", ",")) } else { $(vars).Add("NVIDIADevices2", "none") }
-    if ([string]$(arg).GPUDevices3) { $(vars).Add("NVIDIADevices3", ([String]$(arg).GPUDevices3 -replace " ", ",")) } else { $(vars).Add("NVIDIADevices3", "none") }
 
-    $(vars).Add("GCount", (Get-Content ".\debug\devicelist.txt" | ConvertFrom-Json))
-    $(vars).Add("NVIDIATypes", @()); if ($(arg).Type -like "*NVIDIA*") { $(arg).Type | Where-Object { $_ -like "*NVIDIA*" } | Foreach-Object { $(vars).NVIDIATypes += $_ } }
-    $(vars).Add("CPUTypes", @()); if ($(arg).Type -like "*CPU*") { $(arg).Type | Where-Object { $_ -like "*CPU*" } | Foreach-Object { $(vars).CPUTypes += $_ } }
-    $(vars).Add("AMDTypes", @()); if ($(arg).Type -like "*AMD*") { $(arg).Type | Where-Object { $_ -like "*AMD*" } | Foreach-Object { $(vars).AMDTypes += $_ } }
-}
-
-
-##Start New Agent
-Global:Add-Module "$($(vars).startup)\getconfigs.psm1"
-log "Starting New Background Agent" -ForegroundColor Cyan
-if ($(arg).Platform -eq "windows") { Global:Start-Background }
-elseif ($(arg).Platform -eq "linux") { $Proc = Start-Process ".\build\bash\background.sh" -ArgumentList "background $($($(vars).dir))" -PassThru; $Proc | Wait-Process }
-
-## Parse Wallet Configs
-Global:Add-Module "$($(vars).build)\wallets.psm1"
-$(vars).Add("All_AltWallets", $Null)
-Global:Get-Wallets
-if ([String]$(arg).Admin_Fee -eq 0) { if (test-Path ".\admin") { Remove-Item ".\admin" -Recurse -Force | Out-Null } }
-
-## Stop stray miners from previous run before loop
-Global:Add-Module "$($(vars).control)\stray.psm1"
-if ($IsWindows) { Global:Stop-StrayMiners -Startup }
-
-##Get Optional Miners
-Global:Get-Optional
-Global:Add-LogErrors
-Global:Remove-Modules
-
-$(vars).Remove("BusData")
-$(vars).Remove("GPU_Count")
-$(vars).Add("Check_Interval", (Get-Date).ToUniversalTime());
-$(vars).Add("switch", $true);
-$(vars).Add("ETH_exchange", 0);
-$(vars).Add("Load_Timer", (Get-Date).ToUniversalTime());
-$(vars).Add("Hashtable", @{});
-$(vars).Add("Downloads", $false);
-[GC]::Collect()
-[GC]::WaitForPendingFinalizers()
-[GC]::Collect()    
-
-if ($(arg).Throttle -eq 0) {
-    $(arg).Throttle = ([Environment]::ProcessorCount + 1)
-}
-
-## Make stats folder if it doesn't exist
-if (-not (test-path ".\stats")) {
-    new-item "stats" -ItemType Directory | Out-Null
+    ## Make stats folder if it doesn't exist
+    if (-not (test-path ".\stats")) {
+        new-item "stats" -ItemType Directory | Out-Null
+    }
+    $start = $false;
 }
 
 ##############################################################################
