@@ -1,11 +1,10 @@
-# SWARM 3.3.1
+# SWARM 3.3.2
 
 ## Improvements
-* FIXED updater in linux: Should now transfer old settings and stats back in. Was issue with .NET file attributes.
-* FIXED linux issue with miner downloads: Was .NET path parse error.
-* Optimized sorting process post adding -Hashrate_Threshold.
-* Restored whalesburg pool to working order.
-* Ensured Claymore, Nbminer, Teamredminer, PhoenixMiner, and Bminer was working on whalesburg pool.
-* Small typo fixes found and fixed.
+* Self-Update (HiveOS version): Added cuda 11 libs. Should auto-update libs. Other *nix version run ./install_linux;
+* Updated bminer.ps1 miner file.
+* New LOGGING method. Should real-time log errors with time stamps. This is expiremental: Does not affect SWARM, just its logs.
+* Updater Patch: Last version updater would try to update itself (hah). This fixes.
+* Updater Patch: Updater will not try to update a .git repository version of swarm (just pull).
 
 
