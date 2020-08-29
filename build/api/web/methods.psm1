@@ -102,10 +102,21 @@ function Global:Get-RigData {
             $lan_config = [PSCustomObject]@{ dhcp = $lan_dhcp; address = $lan_address; gateway = $lan_gateway; dns = $lan_dns }
             $RigData.Add("net_interfaces",$net_interfaces)
             $RigData.Add("lan_config",$lan_config)
-            $nv_ver = invoke-expression "nvidia-smi --help | head -n 1 | awk `'{print `$NF}`' | sed `'s/v//`'"
-            $amd_ver = Invoke-Expression "dpkg -s amdgpu-pro 2`>`&1 | grep `'`^Version`: `' | sed `'s/Version: `/`/`' | awk -F`'-`' `'{print `$1}`'"
-            if(-not $amd_ver){$amd_ver = Invoke-Expression "dpkg -s amdgpu 2`>`&1 | grep `'`^Version`: `' | sed `'s/Version: `/`/' | awk -F`'-`' `'{print `$1}`'"}
-            if(-not $amd_ver){$amd_ver = "OpenCL" }
+            $nv_ver = [Expression]::Invoke("nvidia-smi", "--help").Split("`n")[0]
+            $nv_ver = invoke-expression "`"$nv_ver`" | awk `'{print `$NF}`' | sed `'s/v//`'"
+            $amd_ver = [Expression]::Invoke("dpkg","-s amdgpu-pro");
+            $amd_ver = Invoke-Expression "`"$amd_ver`" | grep `'`^Version`: `' | sed `'s/Version: `/`/`' | awk -F`'-`' `'{print `$1}`'"
+            if(-not $amd_ver) {
+                $amd_ver = [Expression]::Invoke("dpkg","-s amdgpu");
+                $amd_ver = Invoke-Expression "`"$amd_ver`" | grep `'`^Version`: `' | sed `'s/Version: `/`/' | awk -F`'-`' `'{print `$1}`'"
+            }
+            if(-not $amd_ver){
+                $amd_ver = [Expression]::Invoke("dpkg","-s opencl-amdgpu-pro-icd");
+                $amd_ver = Invoke-Expression "`"$amd_ver`" | grep `'`^Version`: `' | sed `'s/Version: `/`/' | awk -F`'-`' `'{print `$1}`'"            
+            }
+            if(-not $amd_ver){
+                $amd_ver = "none";
+            }
             $RigData.Add("nvidia_version",$nv_ver)
             $RigData.Add("amd_version",$amd_ver)
             $mb_manufacturer = Invoke-Expression "./build/apps/dmidecode/dmidecode | grep -A4 `'`^Base Board Information`' | grep `"Manufacturer:`" | sed -E `'s`/`\sManufacturer:`\`s`+(`.`*)`/`\1`/`'"
