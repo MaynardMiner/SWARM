@@ -11,6 +11,23 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
+function Global:Expand-Lib {
+    ## HiveOS is messing with ownership of SWARM folder through custom miners.
+    ## I believe this is causing an issue with miners accessing libs contained in SWARM.
+    ## Testing has shown if libs are placed anywhere else, they work fine.
+    ## Therefor I have decided to place libs in a more proper location: /usr/local/swarm/lib64 
+    $check = [IO.Directory]::Exists("/usr/local/swarm")
+    if (!$check) {
+        Start-Process "mkdir" -ArgumentList "/usr/local/swarm"
+    }
+    $check = [IO.Directory]::Exists("/usr/local/swarm/lib64")
+    if (!$check) {
+        Start-Process "mkdir" -ArgumentList "/usr/local/swarm/lib64"
+    }
+    $Proc = Start-Process "tar" -ArgumentList "-xzvf build/lib64.tar.gz -C /usr/local/swarm" -PassThru; 
+    $Proc | Wait-Process;
+}
+
 function Global:Get-Data {
 
     "export SWARM_DIR=$($(vars).dir)" | Set-Content "/etc/profile.d/SWARM.sh"
@@ -35,7 +52,7 @@ function Global:Get-Data {
     $Execs += "clear_watts"
     $Execs += "swarm_help"
     $Execs += "send-config"
-
+    $ExtractDone = $false;
 
     foreach ($exec in $Execs) {
         if (Test-Path ".\build\bash\$exec") {
@@ -49,21 +66,9 @@ function Global:Get-Data {
 
     ## Extract export folder.
     if (-not (test-path "/usr/local/swarm/lib64")) {
-        ## HiveOS is messing with ownership of SWARM folder through custom miners.
-        ## I believe this is causing an issue with miners accessing libs contained in SWARM.
-        ## Testing has shown if libs are placed anywhere else, they work fine.
-        ## Therefor I have decided to place libs in a more proper location: /usr/local/swarm/lib64 
         log "library folder not found (/usr/local/swarm/lib64). Exracting export.tar.gz" -ForegroundColor Yellow;
-        $check = [IO.Directory]::Exists("/usr/local/swarm")
-        if(!$check){
-         Start-Process "mkdir" -ArgumentList "/usr/local/swarm"
-        }
-        $check = [IO.Directory]::Exists("/usr/local/swarm/lib64")
-        if(!$check){
-            Start-Process "mkdir" -ArgumentList "/usr/local/swarm/lib64"
-        }
-        $Proc = Start-Process "tar" -ArgumentList "-xzvf build/lib64.tar.gz -C /usr/local/swarm" -PassThru; 
-        $Proc | Wait-Process;
+        Global:Expand-Lib
+        $ExtractDone = $true;
     }    
 
     $Libs = @()
@@ -74,21 +79,23 @@ function Global:Get-Data {
     $Libs += [PSCustomObject]@{ link = "libhwloc.so.5"; path = "/usr/local/swarm/lib64/libhwloc.so.5.6.8" }
     $Libs += [PSCustomObject]@{ link = "libstdc++.so.6"; path = "/usr/local/swarm/lib64/libstdc++.so.6.0.25" }
 
+    $Libs += [PSCustomObject]@{ link = "libcudart.so.11.0"; path = "/usr/local/swarm/lib64/libcudart.so.11.0.221" }
     $Libs += [PSCustomObject]@{ link = "libcudart.so.10.0"; path = "/usr/local/swarm/lib64/libcudart.so.10.0.130" }
     $Libs += [PSCustomObject]@{ link = "libcudart.so.10.1"; path = "/usr/local/swarm/lib64/libcudart.so.10.1.105" }
     $Libs += [PSCustomObject]@{ link = "libcudart.so.10.2"; path = "/usr/local/swarm/lib64/libcudart.so.10.2.89" }
-    $Libs += [PSCustomObject]@{ link = "libcudart.so.8.0"; path = "/usr/local/swarm/lib64/libcudart.so.8.0.61" }
     $Libs += [PSCustomObject]@{ link = "libcudart.so.9.0"; path = "/usr/local/swarm/lib64/libcudart.so.9.0.176" }
     $Libs += [PSCustomObject]@{ link = "libcudart.so.9.1"; path = "/usr/local/swarm/lib64/libcudart.so.9.1.85" }
     $Libs += [PSCustomObject]@{ link = "libcudart.so.9.2"; path = "/usr/local/swarm/lib64/libcudart.so.9.2.148" }
     $Libs += [PSCustomObject]@{ link = "libcudart.so"; path = "/usr/local/swarm/lib64/libcudart.so.10.2.89" }
 
+    $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.11.0"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.11.0.221" }
     $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.0"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.10.0.130" }
     $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.1"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.10.1.105" }
     $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.10.2"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.10.2.89" }
     $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.9.2"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.9.2.148" }
     $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.10.2.89" }
 
+    $Libs += [PSCustomObject]@{ link = "libnvrtc.so.11.0"; path = "/usr/local/swarm/lib64/libnvrtc.so.11.0.221" }
     $Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.0"; path = "/usr/local/swarm/lib64/libnvrtc.so.10.0.130" }
     $Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.1"; path = "/usr/local/swarm/lib64/libnvrtc.so.10.1.105" }
     $Libs += [PSCustomObject]@{ link = "libnvrtc.so.10.2"; path = "/usr/local/swarm/lib64/libnvrtc.so.10.2.89" }
@@ -96,6 +103,20 @@ function Global:Get-Data {
     $Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.1"; path = "/usr/local/swarm/lib64/libnvrtc.so.9.1.xxx" }
     $Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.2"; path = "/usr/local/swarm/lib64/libnvrtc.so.9.2.148" }
     $Libs += [PSCustomObject]@{ link = "libnvrtc.so"; path = "/usr/local/swarm/lib64/libnvrtc.so.10.2.89" }
+
+
+    if (!$ExtractDone) {
+        foreach ($lib in $Libs) {
+            if (-not (Test-Path $lib.path)) {
+                log "There is a library update. Exracting export.tar.gz" -ForegroundColor Yellow;
+                if (Test-Path "/usr/local/swarm/lib64") {
+                    Start-Process "rm" -ArgumentList "-rf /usr/local/swarm/lib64";
+                }
+                Global:Expand-Lib;
+                break;
+            }
+        }
+    }
 
     Set-Location "/usr/local/swarm/lib64/"
 
@@ -105,6 +126,7 @@ function Global:Get-Data {
         $Proc = Start-Process "ln" -ArgumentList "-sf $path $link" -PassThru; 
         $Proc | Wait-Process
     }
+
     Set-Location "/"
     Set-Location $($(vars).dir)     
 }
@@ -145,27 +167,27 @@ function Global:Get-GPUCount {
             }
         }
         Write-Host "SWARM is Attempting to Get Card Information- If SWARM doesn't continue, a card is not responding." -ForegroundColor Yellow
-       ## invoke-expression ".\build\apps\amdmeminfo\amdmeminfo" | Tee-Object  -Variable amdmeminfo | Out-Null
-       ## $amdmeminfo = $amdmeminfo | where { $_ -notlike "*AMDMemInfo by Zuikkis `<zuikkis`@gmail.com`>*" } | where { $_ -notlike "*Updated by Yann St.Arnaud `<ystarnaud@gmail.com`>*" }
-       ## $amdmeminfo = $amdmeminfo | Select -skip 1
-       ## $amdmeminfo = $amdmeminfo.replace("Found Card: ", "Found Card=")
-       ## $amdmeminfo = $amdmeminfo.replace("Chip Type: ", "Chip Type=")
-       ## $amdmeminfo = $amdmeminfo.replace("BIOS Version: ", "BIOS Version=")
-       ## $amdmeminfo = $amdmeminfo.replace("PCI: ", "PCI=")
-       ## $amdmeminfo = $amdmeminfo.replace("OpenCL Platform: ", "OpenCL Platform=")
-       ## $amdmeminfo = $amdmeminfo.replace("OpenCL ID: ", "OpenCL ID=")
-       ## $amdmeminfo = $amdmeminfo.replace("Subvendor: ", "Subvendor=")
-       ## $amdmeminfo = $amdmeminfo.replace("Subdevice: ", "Subdevice=")
-       ## $amdmeminfo = $amdmeminfo.replace("Sysfs Path: ", "Sysfs Path=")
-       ## $amdmeminfo = $amdmeminfo.replace("Memory Type: ", "Memory Type=")
-       ## $amdmeminfo = $amdmeminfo.replace("Memory Model: ", "Memory Model=")
-       ## for ($i = 0; $i -lt $amdmeminfo.count; $i++) { $amdmeminfo[$i] = "$($amdmeminfo[$i]);" }
-       ## $amdmeminfo | % { $_ = $_ + ";" }
-       ## $amdmeminfo = [string]$amdmeminfo
-       ## $amdmeminfo = $amdmeminfo.split("-----------------------------------;")
-       ## $memarray = @()
-       ## for ($i = 0; $i -lt $amdmeminfo.count; $i++) { $item = $amdmeminfo[$i].split(";"); $data = $item | ConvertFrom-StringData; $memarray += [PSCustomObject]@{"busid" = $data."PCI"; "mem_type" = $data."Memory Model"; "bios" = $data."BIOS Version" } }
-       ## $amdmeminfo = $memarray
+        ## invoke-expression ".\build\apps\amdmeminfo\amdmeminfo" | Tee-Object  -Variable amdmeminfo | Out-Null
+        ## $amdmeminfo = $amdmeminfo | where { $_ -notlike "*AMDMemInfo by Zuikkis `<zuikkis`@gmail.com`>*" } | where { $_ -notlike "*Updated by Yann St.Arnaud `<ystarnaud@gmail.com`>*" }
+        ## $amdmeminfo = $amdmeminfo | Select -skip 1
+        ## $amdmeminfo = $amdmeminfo.replace("Found Card: ", "Found Card=")
+        ## $amdmeminfo = $amdmeminfo.replace("Chip Type: ", "Chip Type=")
+        ## $amdmeminfo = $amdmeminfo.replace("BIOS Version: ", "BIOS Version=")
+        ## $amdmeminfo = $amdmeminfo.replace("PCI: ", "PCI=")
+        ## $amdmeminfo = $amdmeminfo.replace("OpenCL Platform: ", "OpenCL Platform=")
+        ## $amdmeminfo = $amdmeminfo.replace("OpenCL ID: ", "OpenCL ID=")
+        ## $amdmeminfo = $amdmeminfo.replace("Subvendor: ", "Subvendor=")
+        ## $amdmeminfo = $amdmeminfo.replace("Subdevice: ", "Subdevice=")
+        ## $amdmeminfo = $amdmeminfo.replace("Sysfs Path: ", "Sysfs Path=")
+        ## $amdmeminfo = $amdmeminfo.replace("Memory Type: ", "Memory Type=")
+        ## $amdmeminfo = $amdmeminfo.replace("Memory Model: ", "Memory Model=")
+        ## for ($i = 0; $i -lt $amdmeminfo.count; $i++) { $amdmeminfo[$i] = "$($amdmeminfo[$i]);" }
+        ## $amdmeminfo | % { $_ = $_ + ";" }
+        ## $amdmeminfo = [string]$amdmeminfo
+        ## $amdmeminfo = $amdmeminfo.split("-----------------------------------;")
+        ## $memarray = @()
+        ## for ($i = 0; $i -lt $amdmeminfo.count; $i++) { $item = $amdmeminfo[$i].split(";"); $data = $item | ConvertFrom-StringData; $memarray += [PSCustomObject]@{"busid" = $data."PCI"; "mem_type" = $data."Memory Model"; "bios" = $data."BIOS Version" } }
+        ## $amdmeminfo = $memarray
     }
 
     ## Add cards based on bus order
