@@ -31,19 +31,30 @@ function Global:Get-ChildItemContent {
             $PowerShell.runspace = $Runspace
             $Script_Content = [IO.File]::ReadAllText($_.FullName);
             $script = [Scriptblock]::Create($Script_Content);
-            $Runspace.SessionStateProxy.SetVariable("Wallets",$Global:Wallets);
-            $Runspace.SessionStateProxy.SetVariable("Config",$Global:Config);
+            $Runspace.SessionStateProxy.SetVariable("Wallets", $Global:Wallets);
+            $Runspace.SessionStateProxy.SetVariable("Config", $Global:Config);
             $Runspace.SessionStateProxy.SetVariable("Name", $Name)
             $Runspace.SessionStateProxy.Path.SetLocation($($(vars).dir)) | Out-Null;
             $handle = $PowerShell.AddScript($script).BeginInvoke();
-            While(!$handle.IsCompleted) {
+            While (!$handle.IsCompleted) {
                 Start-Sleep -Milliseconds 200
             }
             $Content = $PowerShell.EndInvoke($handle);
+            if ($Powershell.Streams.Error) {
+                foreach ($e in $PowerShell.Streams.Error) {
+                    log "
+$($e.Exception.Message)
+$($e.InvocationInfo.PositionMessage)
+    | Category: $($e.CategoryInfo.Category)     | Activity: $($e.CategoryInfo.Activity)
+    | Reason: $($e.CategoryInfo.Reason)     | Runspace: $FullName
+    | Target Name: $($e.CategoryInfo.TargetName)    | Target Type: $($e.CategoryInfo.TargetType)
+" -ForeGround Red; 
+                }
+            }
             $PowerShell.Dispose();
             $Runspace.Close();
             $Runspace.Dispose();
-            if($Content.GetType() -eq [string]) {
+            if ($Content.GetType() -eq [string]) {
                 log $Content -ForeGroundColor Yellow;
                 $Content = $Null;
             }

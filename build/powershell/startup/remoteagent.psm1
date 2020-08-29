@@ -34,7 +34,7 @@ function Global:start-update {
         $IsGit = [IO.Directory]::Exists(([IO.Path]::Join($Folder, ".git")));
         $IsCurrent = $Folder -eq $(vars).dir;
 
-        if ($IsGit -and !$IsCurrent) {
+        if ($IsGit -and !$IsCurrent -and $manifest) {
             log "found previous version that was a git repository..Not updating it" -Foreground Yellow;
         }
         if (!$IsGit -and $Manifest -and !$IsCurrent) {
