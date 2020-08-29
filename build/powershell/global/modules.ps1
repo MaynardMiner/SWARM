@@ -290,3 +290,27 @@ function Global:Remove-Vars([string]$X) {
 Set-Alias -Name remove -Value Global:Remove-Vars -Scope Global
 Set-Alias -Name check -Value Global:Confirm-Vars -Scope Global
 Set-Alias -Name log -Value Global:Write-Log -Scope Global
+
+Class Expression {
+    static [string] Invoke([string]$command, [string]$arguments) {
+        $output = [string]::Empty;
+        $Proc = [System.Diagnostics.Process]::New();
+        $Proc.StartInfo.FileName = $command;
+        $Proc.StartInfo.Arguments = "$arguments";
+        $Proc.StartInfo.CreateNoWindow = $true;
+        $Proc.StartInfo.UseShellExecute = $false;
+        $Proc.StartInfo.RedirectStandardOutput = $true;
+        $Proc.StartInfo.RedirectStandardError = $true;
+        $Proc.Start() | Out-Null;
+        while (-not $Proc.StandardOutput.EndOfStream -or -not $Proc.StandardError.EndOfStream) {
+            if($Proc.StandardOutput.Peek() -gt -1) {
+                $output += "$($Proc.StandardOutput.ReadLine())`n";
+            }
+            if($Proc.StandardError.Peek() -gt -1) {
+                $output += "$($Proc.StandardError.ReadLine())`n";
+            }
+        }    
+        $Proc.WaitForExit();
+        return $output;
+    }
+}
