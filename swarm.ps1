@@ -228,9 +228,7 @@ $($_.InvocationInfo.PositionMessage)
 " -ForeGround Red; 
         continue;
     }
-
-    Get-Content "this is a test of error output"
-
+    
     ## Initiate Update Check
     Global:Add-Module "$($(vars).startup)\remoteagent.psm1"
     if ($(arg).Update -eq "Yes") {
