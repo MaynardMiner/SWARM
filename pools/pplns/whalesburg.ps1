@@ -1,14 +1,16 @@
-## Note on whalesburg.
-## This pool is supposed to be a profit switching pool.
-## I have never seen it switch.
-## SWARM does not perform the switching, the pool does.
-## Also,
+<#
+SWARM is open-source software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+SWARM is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#>
 
-## Miners are really weird with this pool. Some miners work
-## Some do not. Some work in linux fine, other work in windows
-## fine. I don't know the difference this pool causes in comparision
-## to nicehash, but it seems to cause weird bugs in miners.
-    
 . .\build\powershell\global\modules.ps1
 . .\build\powershell\global\classes.ps1
 
