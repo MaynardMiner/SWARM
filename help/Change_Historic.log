@@ -2558,3 +2558,15 @@ identity. Was related to machine potentially having multiple active MAC addresse
 * Restored whalesburg pool to working order.
 * Ensured Claymore, Nbminer, Teamredminer, PhoenixMiner, and Bminer was working on whalesburg pool.
 * Small typo fixes found and fixed.
+
+############################################
+############################################
+
+# SWARM 3.3.2
+
+## Improvements
+* Self-Update (HiveOS version): Added cuda 11 libs. Should auto-update libs. Other *nix version run ./install_linux;
+* Updated bminer.ps1 miner file.
+* New LOGGING method. Should real-time log errors with time stamps. This is expiremental: Does not affect SWARM, just its logs.
+* Updater Patch: Last version updater would try to update itself (hah). This fixes.
+* Updater Patch: Updater will not try to update a .git repository version of swarm (just pull).

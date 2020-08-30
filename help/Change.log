@@ -1,10 +1,15 @@
 # SWARM 3.3.2
 
 ## Improvements
-* Self-Update (HiveOS version): Added cuda 11 libs. Should auto-update libs. Other *nix version run ./install_linux;
-* Updated bminer.ps1 miner file.
-* New LOGGING method. Should real-time log errors with time stamps. This is expiremental: Does not affect SWARM, just its logs.
-* Updater Patch: Last version updater would try to update itself (hah). This fixes.
-* Updater Patch: Updater will not try to update a .git repository version of swarm (just pull).
+* Fix ALL issues happening with -Auto_Coin.
+* Add hashrate factoring + more with whalesburg pool.
+* Fix powershell bug that was dupliclating ActiveMiners. Didn't cause issue, just avoiding potential.
+* Fix char[] evaluation error of -Type
+* Restructured pool folders to pools. Added README
+* Fixed return of warning from pool file gathering.
+* Fix HiveOS OCtune: Wait for finish, error output.
+* Added [Expression]::Invoke, will prevent output of expected errors.
 
-
+## Updates
+* Cryptodredge updated
+* Gminer updated
