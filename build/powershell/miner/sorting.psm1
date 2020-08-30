@@ -436,9 +436,9 @@ function Global:Start-Sorting {
         ## This means that miner must be x % better in hashrate/rej ratio to switch. Where x% is -Hashrate_Threshold.
         ## This does not factor pool- If another pool was more profitable, it was going to switch anyways.
         $IsBestMiner = ($Null -ne (($(vars).BestActiveMiners | Where-Object Path -EQ $Miner.Path | Where-Object Symbol -Eq $Miner.Symbol | Where-Object Arguments -EQ $Miner.Arguments | Where-Object Type -EQ $Miner.Type)))
-        $IsSameAlgoAsBestMiner = ($Null -ne (($(vars)).BestActiveMiners | Where-Object Algo -eq $Miner.Algo | Where-Object Type -eq $Miner.Type))
+        $IsSameSymbolsAsBestMiner = ($Null -ne (($(vars)).BestActiveMiners | Where-Object Symbol -eq $Miner.Symbol | Where-Object Type -eq $Miner.Type))
         
-        if($(arg).Hashrate_Threshold -gt 0 -and !$IsSameAlgoAsBestMiner -and $IsBestMiner) {
+        if($(arg).Hashrate_Threshold -gt 0 -and !$IsSameSymbolsAsBestMiner -and $IsBestMiner) {
             $Miner.Quote = ($Miner.Hashrate_Adjusted * (1 - ( $(arg).Hashrate_Threshold / 100) ) ) * $Quote
         }
 
