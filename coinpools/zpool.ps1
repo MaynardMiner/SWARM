@@ -151,8 +151,7 @@ if ($Name -in $(arg).PoolName) {
             Write-Host "Symbol is $($_.Symbol)"
             if($_.Algo -eq $Selected -and $_.Symbol -notin $To_Add.Sym) {
                 $Add_Stat = $Sorted | Where-Object sym -eq $_.Symbol | 
-                Where-Object { [Convert]::ToInt32($_."24h_blocks_shared") -ge $Params.Min_Blocks } | 
-                Where-Object { $_.noautotrade -eq 0 } 
+                Where-Object { [Convert]::ToInt32($_."24h_blocks_shared") -ge $Params.Min_Blocks }
                 if($Add_Stat) {
                     $To_Add += $Add_Stat
                 }
