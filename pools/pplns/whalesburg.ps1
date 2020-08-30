@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 if ($(arg).PoolName -eq $Name) {
     $Whalesburg_Request = [PSCustomObject]@{ } 
  
-    try { $Whalesburg_Request = Invoke-RestMethod "https://payouts.whalesburg.com/profitabilities/share_pric" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
+    try { $Whalesburg_Request = Invoke-RestMethod "https://payouts.whalesburg.com/profitabilities/share_price" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
     catch { 
         return "WARNING: SWARM contact $($Name) but there was no response"
     }
