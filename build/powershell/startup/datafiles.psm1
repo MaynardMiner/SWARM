@@ -42,12 +42,6 @@ function Global:Clear-Stats {
     $FileClear | ForEach-Object { if (Test-Path $_) { Remove-Item $_ -Force } }
 }
 
-function Global:Set-NewType {
-    for($i = 0; $i -lt $(arg).Type.Count; $i++) {
-        $(arg).Type[$i] = $(arg).Type[$i].ToUpper();
-    }
-}
-
 function Global:Add-New_Variables {
 $(vars).Add("No_Miner",0)
 $(vars).Add("Instance",1)

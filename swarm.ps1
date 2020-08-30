@@ -250,7 +250,8 @@ $($_.InvocationInfo.PositionMessage)
     Global:Get-DateFiles
     Global:Clear-Stats
     Global:Get-ArgNotice
-    Global:Set-NewType
+    ## Make sure all -TYPE values are upper case.
+    $(arg).Type = $(arg).Type.ToUpper()
 
     ##HiveOS Confirmation
     if ( (Test-Path "/hive/miners") -or $(arg).Hive_Hash -ne "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" ) { $(arg).HiveOS = "Yes" }
