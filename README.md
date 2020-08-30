@@ -66,6 +66,14 @@ Would give you a list of all powershell core processes.
 
 I am a sole developer, and this is a large project. I prioritize workload by requests and activity, if you would like me to develop/improve a particular version Just notify me. Currently, the most popular, most used, and most user supported feature of SWARM is utilizing it as a custom miner in HiveOS. This was not an easy task, and also not easy to continue to maintain. This is why the fee of 1.5% is applied.
 
+## Why Are More Pools Not Added?
+
+PPS and Prop pools are the only pools worthwhile to mine in a switching setting. PPLNS pools, which are the majority of mining pools, have a payment scheme in which promotes loyalty to their pools: You get penalized when you mine on another pool. All the pools listed in SWARM are either PPS (Pay Per Share) or Prop (Proportional Share Pay). There are a couple of PPLNS+ pools, which do not penalize you for switching, but rather give you a bonus for loyalty.
+
+So in essence, it is a diservice to my users to provide more pools based on the format/intention of the software.
+
+If you know of more PROP or PPS pools, please let me know: I will add immediately.
+
 ## Simple Install Instructions 
 
 ### Windows
