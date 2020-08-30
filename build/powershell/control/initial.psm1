@@ -3,7 +3,7 @@ function Global:Get-ActiveMiners {
     $(vars).bestminers_combo | ForEach-Object {
         $Sel = $_
 
-        if (-not ($(vars).ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Arguments -eq $_.Arguments )) {
+        if (-not ($(vars).ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Symbol -eq $_.Symbol | Where-Object Arguments -eq $_.Arguments )) {
 
             $(vars).ActiveMinerPrograms += [PSCustomObject]@{
                 Delay        = $_.Delay
@@ -44,7 +44,7 @@ function Global:Get-ActiveMiners {
                 Rejections   = 0
             }
 
-            $(vars).ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Arguments -eq $_.Arguments | ForEach-Object {
+            $(vars).ActiveMinerPrograms | Where-Object Path -eq $_.Path | Where-Object Type -eq $_.Type | Where-Object Symbol -eq $_.Symbol | Where-Object Arguments -eq $_.Arguments | ForEach-Object {
                 if ($Sel.ArgDevices) { $_ | Add-Member "ArgDevices" $Sel.ArgDevices }
                 if ($Sel.UserName) { $_ | Add-Member "UserName" $Sel.Username }
                 if ($Sel.Connection) { $_ | Add-Member "Connection" $Sel.Connection }
@@ -64,7 +64,7 @@ function Global:Get-BestActiveMiners {
     ## Create Best Miners For Tracking
     $(vars).BestActiveMiners = @()
     $(vars).ActiveMinerPrograms | ForEach-Object {
-        if ($(vars).bestminers_combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments) { $_.BestMiner = $true; $(vars).BestActiveMiners += $_ }
+        if ($(vars).bestminers_combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Symbol -eq $_.Symbol | Where-Object Arguments -EQ $_.Arguments) { $_.BestMiner = $true; $(vars).BestActiveMiners += $_ }
         else { $_.BestMiner = $false }
     }
 }
@@ -432,7 +432,7 @@ function Global:Stop-AllMiners {
 
 function Global:Get-ActivePricing {
     $(vars).BestActiveMIners | ForEach-Object {
-        $SelectedMiner = $(vars).bestminers_combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments
+        $SelectedMiner = $(vars).bestminers_combo | Where-Object Type -EQ $_.Type | Where-Object Path -EQ $_.Path | Where-Object Symbol -eq $_.Symbol | Where-Object Arguments -EQ $_.Arguments
         $_.Profit = if ($SelectedMiner.Profit) { $SelectedMiner.Profit -as [decimal] }else { "bench" }
         $_.Power = $($([Decimal]$SelectedMiner.Power * 24) / 1000 * $(vars).WattEx)
         $_.Fiat_Day = if ($SelectedMiner.Pool_Estimate) { ( ($SelectedMiner.Pool_Estimate * $(vars).Rates.$($(arg).Currency)) -as [decimal] ).ToString("N2") }else { "bench" }

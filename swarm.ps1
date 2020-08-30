@@ -607,7 +607,7 @@ $($_.InvocationInfo.PositionMessage)
     Global:Add-Module "$($(vars).miner)\sorting.psm1"
     if ($(arg).Volume -eq "Yes") { Get-Volume }
     Global:Start-MinerDownloads
-    $(vars).Miners | ForEach-Object { $_.Symbol = $_.Symbol -replace "-Algo", ""; $_.Symbol = $_.Symbol -replace "-Coin", "" }
+    $(vars).Miners | ForEach-Object { $_.Symbol = $_.Symbol -replace "-Algo", ""; $_.Symbol = $_.Symbol -replace "-Coins", "" }
     Global:Start-Sorting
     Global:Add-SwitchingThreshold
 

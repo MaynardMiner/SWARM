@@ -11,7 +11,7 @@ function Global:Invoke-MinerCheck {
 
     ##Handle New Miners
     if ($global:GetMiners -and $global:GETSWARM.HasExited -eq $false) {
-        $global:GetMiners | ForEach-Object { if (-not ($global:CurrentMiners | Where-Object Path -eq $_.Path | Where-Object Arguments -eq $_.Arguments )) { $Switched = $true } }
+        $global:GetMiners | ForEach-Object { if (-not ($global:CurrentMiners | Where-Object Path -eq $_.Path | Where-Object Symbol -ne $_.Symbol | Where-Object Arguments -eq $_.Arguments )) { $Switched = $true } }
         if ($Switched -eq $True) {
             Write-Host "Miners Have Switched `n" -ForegroundColor Cyan
             $global:CurrentMiners = $global:GetMiners;

@@ -111,7 +111,7 @@ function Global:Start-WattOMeter {
 function Global:Start-Benchmark {
     if (!$(vars).Downloads -and !$(vars).FirstRun) {
         $(vars).Previous_Miners = @()
-        $(vars).BestActiveMIners | Where-Object { $_.BestMiner -eq $true } | ForEach-Object {
+        $(vars).BestActiveMiners | ForEach-Object {
             $(vars).Previous_Miners += $_
             ## Bools for bans
             $MinerPoolBan = $false
@@ -120,9 +120,6 @@ function Global:Start-Benchmark {
             $TypeBan = $False
             $Global:Strike = $false
             $global:WasBenchmarked = $false
-
-            ## Symbol for switching threshold
-            $(vars).ActiveSymbol += $($_.Symbol)
 
             ## Reset Bans if last one occurred an hour ago.
             if ( [string]$(vars).Warnings."$($_.Name)".bad -ne "" ) {

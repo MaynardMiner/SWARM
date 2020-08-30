@@ -35,7 +35,7 @@ function Global:Get-BestMiners {
         $MinerCombo = @()
 
         $TypeMiners = $(vars).Miners | Where-Object Type -EQ $SelType
-        $(vars).BestActiveMiners | Foreach-Object { $(vars).Miners | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments | Where-Object Type -EQ $SelType | Foreach-Object { $OldMiners += $_ } }
+        $(vars).BestActiveMiners | Foreach-Object { $(vars).Miners | Where-Object Path -EQ $_.Path | Where-Object Arguments -EQ $_.Arguments | Where-Object Symbol -eq $_.Symbol | Where-Object Type -EQ $SelType | Foreach-Object { $OldMiners += $_ } }
         if ($OldMiners) {
             $OldTypeMiners += $OldMiners | Where-Object Profit -gt 0 | Sort-Object @{Expression = "Profit"; Descending = $true } | Select-Object -First 1
             $OldTypeMiners += $OldMiners | Where-Object Profit -lt 0 | Sort-Object @{Expression = "Profit"; Descending = $false } | Select-Object -First 1

@@ -435,7 +435,7 @@ function Global:Start-Sorting {
         ## Reduce hashrate of all miners of the same algorithm and type as the best miners to reduce switching.
         ## This means that miner must be x % better in hashrate/rej ratio to switch. Where x% is -Hashrate_Threshold.
         ## This does not factor pool- If another pool was more profitable, it was going to switch anyways.
-        $IsBestMiner = ($Null -ne (($(vars).BestActiveMiners | Where-Object Path -EQ $Miner.Path | Where-Object Arguments -EQ $Miner.Arguments | Where-Object Type -EQ $Miner.Type)))
+        $IsBestMiner = ($Null -ne (($(vars).BestActiveMiners | Where-Object Path -EQ $Miner.Path | Where-Object Symbol -Eq $Miner.Symbol | Where-Object Arguments -EQ $Miner.Arguments | Where-Object Type -EQ $Miner.Type)))
         $IsSameAlgoAsBestMiner = ($Null -ne (($(vars)).BestActiveMiners | Where-Object Algo -eq $Miner.Algo | Where-Object Type -eq $Miner.Type))
         
         if($(arg).Hashrate_Threshold -gt 0 -and !$IsSameAlgoAsBestMiner -and $IsBestMiner) {
@@ -474,15 +474,15 @@ function Global:Start-Sorting {
 function Global:Add-SwitchingThreshold {
     $(vars).BestActiveMiners | ForEach-Object {
         $Sel = $_
-        $SWMiner = $(vars).Miners | Where-Object Path -EQ $Sel.path | Where-Object Arguments -EQ $Sel.Arguments | Where-Object Type -EQ $Sel.Type 
+        $SWMiner = $(vars).Miners | Where-Object Path -EQ $Sel.path | Where-Object Symbol -eq $Sel.Symbol | Where-Object Arguments -EQ $Sel.Arguments | Where-Object Type -EQ $Sel.Type 
         if ($SWMiner -and $NULL -ne $SWMiner.Profit -and $SWMiner.Profit -ne "bench") {
             if ($(arg).Switch_Threshold) {
                 log "Switching_Threshold changes $($SWMiner.Name) $($SWMiner.Algo) base factored price from $(($SWMiner.Profit * $(vars).Rates.$($(arg).Currency)).ToString("N2"))" -ForegroundColor Cyan -NoNewLine -Start; 
                 if ($SWMiner.Profit -GT 0) {
-                    $($(vars).Miners | Where-Object Path -eq $SWMiner.path | Where-Object Arguments -eq $SWMiner.Arguments | Where-Object Type -eq $SWMINer.Type).Profit = [Decimal]$SWMiner.Profit * (1 + ($(arg).Switch_Threshold / 100)) 
+                    $($(vars).Miners | Where-Object Path -eq $SWMiner.path | Where-Object Arguments -eq $SWMiner.Arguments | Where-Object Symbol -eq $SWMiner.Symbol | Where-Object Type -eq $SWMINer.Type).Profit = [Decimal]$SWMiner.Profit * (1 + ($(arg).Switch_Threshold / 100)) 
                 }
                 else {
-                    $($(vars).Miners | Where-Object Path -eq $SWMiner.path | Where-Object Arguments -eq $SWMiner.Arguments | Where-Object Type -eq $SWMINer.Type).Profit = [Decimal]$SWMiner.Profit * (1 + ($(arg).Switch_Threshold / -100))
+                    $($(vars).Miners | Where-Object Path -eq $SWMiner.path | Where-Object Arguments -eq $SWMiner.Arguments | Where-Object Symbol -eq $SWMiner.Symbol | Where-Object Type -eq $SWMINer.Type).Profit = [Decimal]$SWMiner.Profit * (1 + ($(arg).Switch_Threshold / -100))
                 }  
                 log " to $(($SWMiner.Profit * $(vars).Rates.$($(arg).Currency)).ToString("N2"))" -ForegroundColor Cyan -End
             }
