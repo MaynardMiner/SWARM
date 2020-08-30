@@ -54,9 +54,13 @@ $($e.InvocationInfo.PositionMessage)
             $PowerShell.Dispose();
             $Runspace.Close();
             $Runspace.Dispose();
-            if ($Content.GetType() -eq [string]) {
-                log $Content -ForeGroundColor Yellow;
-                $Content = $Null;
+            if ($Content.Count -gt 0) {
+                if ($Content[0].GetType() -eq [string]) {
+                    foreach($item in $Content) {
+                        log $item -ForeGroundColor Yellow;
+                    }
+                    $Content.Clear();
+                }
             }
         }
         else {
@@ -303,10 +307,10 @@ Class Expression {
         $Proc.StartInfo.RedirectStandardError = $true;
         $Proc.Start() | Out-Null;
         while (-not $Proc.StandardOutput.EndOfStream -or -not $Proc.StandardError.EndOfStream) {
-            if($Proc.StandardOutput.Peek() -gt -1) {
+            if ($Proc.StandardOutput.Peek() -gt -1) {
                 $output += "$($Proc.StandardOutput.ReadLine())`n";
             }
-            if($Proc.StandardError.Peek() -gt -1) {
+            if ($Proc.StandardError.Peek() -gt -1) {
                 $output += "$($Proc.StandardError.ReadLine())`n";
             }
         }    

@@ -1,33 +1,32 @@
 . .\build\powershell\global\modules.ps1
 
 if ($Name -in $(arg).PoolName) {
+    $Pool_Request = [PSCustomObject]@{ }
+    $NOGLT = "DOESNOTMATTER"
+    $X = ""
+    if ($(arg).Ban_GLT -eq "Yes") { $NoGLT = "GLT" }
+    if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" } 
 
-    $Pool_Request = [PSCustomObject]@{ } 
-    $NOGLT = "DOESNOTMATTER";
-    $X = "";
-    if ($(arg).Ban_GLT -eq "Yes") { $NoGLT = "GLT"; }
-    if ($(arg).xnsub -eq "Yes") { $X = "#xnsub"; } 
-
-    try { $Pool_Request = Invoke-RestMethod "http://blockmasters.co/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
+    ## Skip if user didn't specify
+    try { $Pool_Request = Invoke-RestMethod "http://zergpool.com:8080/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
     catch {
-        return "SWARM contacted ($Name) for a failed API check. (Coins)"; 
+        return "WARNING: SWARM contacted ($Name) for a failed API check. (Coins)"; 
     }
-
     if (($Pool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        return "SWARM contacted ($Name) but ($Name) the response was empty." 
+        return "WARNING: SWARM contacted ($Name) but ($Name) the response was empty." 
     }
 
     # Make an algo list, include asic algorithms not usually in SWARM
     ## Remove algos that users/SWARM have banned.
-    $Algos = @();
-    $Algos += $(vars).Algorithm;
-    $Algos += $(arg).ASIC_ALGO;
-
+    $Algos = @()
+    $Algos += $(vars).Algorithm
+    $Algos += $(arg).ASIC_ALGO
+   
     ## Only get algos we need & convert name to universal schema
     $Pool_Algos = $global:Config.Pool_Algos;
     $Ban_Hammer = $global:Config.vars.BanHammer;
-    $Fee_Table = $(vars).FeeTable.blockmasters;
-    $Divisor_Table = $(vars).divisortable.blockmasters;
+    $Fee_Table = $(vars).FeeTable.zergpool;
+    $Divisor_Table = $(vars).divisortable.zergpool;
     $Active_Symbols = $(vars).ActiveSymbol;
 
     ## Change to universal naming schema and only items we need to add
@@ -68,11 +67,6 @@ if ($Name -in $(arg).PoolName) {
     [GC]::WaitForPendingFinalizers()
     [GC]::Collect()    
 
-    Switch ($(arg).Location) {
-        "us" { $Region = $null }
-        default { $Region = "eu." }
-    }
-    
     $Get_Params = $Global:Config.params
     $Pool_Sorted | ForEach-Object -Parallel {
         . .\build\powershell\global\classes.ps1
@@ -84,11 +78,11 @@ if ($Name -in $(arg).PoolName) {
         ## switch coin name if same
         if ($_.sym -eq $_.algo) { $coin_name = "$($_.sym)-COIN" }
         $StatName = "$($P_Name)_$($coin_name)"
-        $Hashrate = [math]::Max($_.hashrate, 1)
+        $Hashrate = [math]::Max($_.hashrate_shared, 1)
         $Divisor = 1000000 * [Convert]::ToDouble($D_Table.$($_.algo))
         $Fee = [Convert]::ToDouble($F_Table.$($_.algo))
         $Estimate = [Convert]::ToDecimal($_.estimate) * 0.001
-        $actual = [Convert]::ToDecimal($_.'24h_btc')
+        $actual = [Convert]::ToDecimal($_.'24h_btc_shared')
         $current = [Convert]::ToDecimal($Estimate / $Divisor * (1 - ($Fee / 100)))
 
         $Stat = [Pool_Stat]::New($StatName, $current, [Convert]::ToDecimal($Hashrate), $actual, $true)
@@ -129,8 +123,6 @@ if ($Name -in $(arg).PoolName) {
         $A_Wallets = $using:Get_Wallets
         $AltWallets = $using:Get_AltWallets
         $Params = $using:Get_Params
-        $reg = $using:Region
-        $Active = $using:Active_Symbols;
         $Miners = $using:Previous_Miners;
         #######################################
 
@@ -139,10 +131,10 @@ if ($Name -in $(arg).PoolName) {
         $To_Add = @()
         $To_Add += $Sorted | 
         Where-Object Algo -eq $Selected | 
-        Where-Object { [Convert]::ToInt32($_."24h_blocks") -ge $Params.Min_Blocks } |
+        Where-Object { [Convert]::ToInt32($_."24h_blocks_shared") -ge $Params.Min_Blocks } |
+        Where-Object { $_.noautotrade -eq 0 } |
         Sort-Object Level -Descending |
         Select-Object -First 1
-        $To_Add += $Sorted | Where-Object { $_.Sym -in $Active -and $_ -notin $To_Add }
 
         ## Add back in stats for running miners.
         ## Only add if it meets arguments min_blocks and autotrade
@@ -150,7 +142,8 @@ if ($Name -in $(arg).PoolName) {
             Write-Host "Symbol is $($_.Symbol)"
             if($_.Algo -eq $Selected -and $_.Symbol -notin $To_Add.Sym) {
                 $Add_Stat = $Sorted | Where-Object sym -eq $_.Symbol | 
-                Where-Object { [Convert]::ToInt32($_."24h_blocks_shared") -ge $Params.Min_Blocks }
+                Where-Object { [Convert]::ToInt32($_."24h_blocks_shared") -ge $Params.Min_Blocks } | 
+                Where-Object { $_.noautotrade -eq 0 } 
                 if($Add_Stat) {
                     $To_Add += $Add_Stat
                 }
@@ -159,7 +152,7 @@ if ($Name -in $(arg).PoolName) {
 
         $To_Add | ForEach-Object { 
             $Pool_Port = $_.port
-            $Pool_Host = "${reg}blockmasters.co${sub}"
+            $Pool_Host = "$($_.Original_Algo.ToLower()).mine.zergpool.com$sub"
             $Pool_Algo = $_.algo.ToLower()
             $Pool_Symbol = $_.sym.ToUpper()
             $mc = "mc=$Pool_Symbol,"
@@ -200,8 +193,8 @@ if ($Name -in $(arg).PoolName) {
             if ($AltWallets) {
                 $AltWallets.keys | ForEach-Object {
                     $Sym = $_
-                    $Pool_sym = $Pool_Symbol -split "-" | Select -First 1
-                    if ($Sym -eq $Pool_sym -or $Sym -eq $Pool_Symbol) {
+                    $Pool_Sym = $Pool_Symbol -split "-" | Select -First 1
+                    if ($Sym -eq $Pool_Sym -or $Sym -eq $Pool_Symbol) {
                         if ($AltWallets.$Sym.exchange -ne "Yes") {
                             $Pass1 = $Sym
                             $Pass2 = $Sym
@@ -215,8 +208,8 @@ if ($Name -in $(arg).PoolName) {
                         }
                         if ($AltWallets.$Sym.params -ne "enter additional params here, such as 'm=solo' or m=party.partypassword") {
                             $mc += "m=$($AltWallets.$Sym.params),"
-                            $mc = $mc.replace("solo", "SOLO")
-                            $mc = $mc.replace("party", "PARTY")
+                            $mc = $mc.replace("SOLO", "solo")
+                            $mc = $mc.replace("PARTY", "party")
                         }    
                     }   
                 }
@@ -258,4 +251,3 @@ if ($Name -in $(arg).PoolName) {
     [GC]::Collect()    
     $Pool_Data
 }
-

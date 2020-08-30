@@ -28,43 +28,36 @@ function Global:Get-Pools {
     $GetPools
   
 }
+
 function Global:Get-AlgoPools {
     $start_time = (Get-Date).ToUniversalTime()
-    $Files = Get-ChildItem "algopools" | Where-Object BaseName -in $(arg).poolname
     log "Checking Algo Pools." -Foregroundcolor yellow;
-    $AllAlgoPools = Global:Get-Pools -PoolType "Algo" -Items $Files
-    ##Get Custom Pools
-    log "Adding Custom Pools. ." -ForegroundColor Yellow;
-    $Files = Get-ChildItem "custompools" | Where-Object BaseName -in $(arg).poolname
+    $Files = @()
     $(vars).AlgoPools = New-Object System.Collections.ArrayList
-    $AllCustomPools = Global:Get-Pools -PoolType "Custom" -Items $Files
+    Get-ChildItem "pools\prop" | Where-Object BaseName -in $(arg).poolname | ForEach-Object { $Files += $_ }
+    Get-ChildItem "pools\pplns" | Where-Object BaseName -in $(arg).poolname | ForEach-Object { $Files += $_ }
+    Get-ChildItem "pools\pps" | Where-Object BaseName -in $(arg).poolname | ForEach-Object { $Files += $_ }
+    $AllAlgoPools = Global:Get-Pools -PoolType "Algo" -Items $Files
 
     if ($(arg).Auto_Algo -eq "Yes") {
-
         ## Select the best 3 of each algorithm
         $AllAlgoPools.Symbol | Select-Object -Unique | ForEach-Object { 
             $AllAlgoPools | 
                 Where-Object Symbol -EQ $_ | 
                 Sort-Object Price -Descending | 
                 Select-Object -First 3 |
-                ForEach-Object { $(vars).AlgoPools.Add($_) | Out-Null }
+                ForEach-Object { $null = $(vars).AlgoPools.Add($_) }
         };
-        $AllCustomPools.Symbol | Select-Object -Unique | ForEach-Object { 
-            $AllCustomPools | 
-                Where-Object Symbol -EQ $_ | 
-                Sort-Object Price -Descending | 
-                Select-Object -First 3 |
-                ForEach-Object { $(vars).AlgoPools.Add($_) | Out-Null }
-        }
         $time = [math]::Round(((Get-Date).ToUniversalTime() - $start_time).TotalSeconds)      
         log "Algo Pools Loading Time: $time seconds" -Foreground Green
     }
 }
+
 function Global:Get-CoinPools {
     ##Optional: Load Coin Database
     if ($(arg).Auto_Coin -eq "Yes") {
         $start_time = (Get-Date).ToUniversalTime()
-        $coin_files = Get-ChildItem "coinpools" | Where-Object BaseName -in $(arg).poolname
+        $coin_files = Get-ChildItem "pools\coin" | Where-Object BaseName -in $(arg).poolname
         log "Adding Coin Pools. . ." -ForegroundColor Yellow
         $AllCoinPools = Global:Get-Pools -PoolType "Coin" -Items $coin_files        
         $(vars).CoinPools = New-Object System.Collections.ArrayList

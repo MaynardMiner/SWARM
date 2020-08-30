@@ -1,16 +1,16 @@
 . .\build\powershell\global\modules.ps1
-
+ 
 if ($Name -in $(arg).PoolName) {
     $Pool_Request = [PSCustomObject]@{ } 
 
     $X = ""
     if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" }
-
-    try { $Pool_Request = Invoke-RestMethod "http://api.blazepool.com/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
-    catch { return "SWARM contacted ($Name) but there was no response." }
+ 
+    try { $Pool_Request = Invoke-RestMethod "http://blockmasters.co/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
+    catch { return "WARNING: SWARM contacted ($Name) but there was no response." }
  
     if (($Pool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        return "SWARM contacted ($Name) but ($Name) the response was empty."  
+        return "WARNING: SWARM contacted ($Name) but ($Name) the response was empty." 
     }
 
     $Algos = @()
@@ -38,7 +38,11 @@ if ($Name -in $(arg).PoolName) {
     $Hashrate_Table = $Global:Config.vars.Pool_HashRates
     $Get_Params = $Global:Config.params
     $Get_Wallets = $Global:Wallets
-
+      
+    Switch ($(arg).Location) {
+        "US" { $Region = $null }
+        default { $Region = "eu." }
+    }
 
     $Pool_Data = $Pool_Sorted | ForEach-Object -Parallel {
         . .\build\powershell\global\classes.ps1
@@ -47,17 +51,21 @@ if ($Name -in $(arg).PoolName) {
         $H_Table = $using:Hashrate_Table
         $P_Name = $using:Name
         $sub = $using:X
+        $reg = $using:region
         $Params = $using:Get_Params
         $A_Wallets = $using:Get_Wallets
         $StatAlgo = $_.Name -replace "`_", "`-"
         $Divisor = 1000000 * $_.mbtc_mh_factor
         $Pool_Port = $_.port
-        $Pool_Host = "$($_.Original_Algo).mine.blazepool.com${sub}"
+        $Pool_Host = "${reg}blockmasters.co${sub}"
         $StatName = "$($P_Name)_$($StatAlgo)"
         $Get_Path = [IO.File]::Exists(".\stats\pool_$($StatName)_pricing.json")
         $Hashrate = $_.hashrate
         $Estimate = $_.estimate_last24h
         if ($Get_Path) { $Estimate = $_.estimate_current }
+
+        $D_Table.blockmasters.Add($_.Name, $_.mbtc_mh_factor)
+        $F_Table.blockmasters.Add($_.Name, $_.Fees)
 
         $new_estimate = [Convert]::ToDecimal($Estimate)
         $current = [Convert]::ToDecimal($new_estimate / $Divisor * (1 - ($_.fees / 100)))
@@ -101,6 +109,31 @@ if ($Name -in $(arg).PoolName) {
         $User2 = $A_Wallets.Wallet2.$($Params.Passwordcurrency2).address
         $Pass3 = $A_Wallets.Wallet3.Keys
         $User3 = $A_Wallets.Wallet3.$($Params.Passwordcurrency3).address
+                
+        if ($A_Wallets.AltWallet1.keys) {
+            $A_Wallets.AltWallet1.Keys | ForEach-Object {
+                if ($A_Wallets.AltWallet1.$_.Pools -contains $P_Name) {
+                    $Pass1 = $_;
+                    $User1 = $A_Wallets.AltWallet1.$_.address;
+                }
+            }
+        }
+        if ($A_Wallets.AltWallet2.keys) {
+            $A_Wallets.AltWallet2.Keys | ForEach-Object {
+                if ($A_Wallets.AltWallet2.$_.Pools -contains $P_Name) {
+                    $Pass2 = $_;
+                    $User2 = $A_Wallets.AltWallet2.$_.address;
+                }
+            }
+        }
+        if ($A_Wallets.AltWallet3.keys) {
+            $A_Wallets.AltWallet3.Keys | ForEach-Object {
+                if ($A_Wallets.AltWallet3.$_.Pools -contains $P_Name) {
+                    $Pass3 = $_;
+                    $User3 = $A_Wallets.AltWallet3.$_.address;
+                }
+            }
+        }
 
         [Pool]::New(
             ## Symbol
@@ -130,7 +163,7 @@ if ($Name -in $(arg).PoolName) {
             ## Previous
             $actual
         )
-    }  -ThrottleLimit $(arg).Throttle
+    } -ThrottleLimit $(arg).Throttle
 
     $Global:Config.vars.DivisorTable = $DivisorTable
     $Global:Config.vars.FeeTable = $FeeTable

@@ -1,21 +1,21 @@
 . .\build\powershell\global\modules.ps1
 
 if ($Name -in $(arg).PoolName) {
+
     $Pool_Request = [PSCustomObject]@{ } 
     $NOGLT = "DOESNOTMATTER";
     $X = "";
     if ($(arg).Ban_GLT -eq "Yes") { $NoGLT = "GLT"; }
     if ($(arg).xnsub -eq "Yes") { $X = "#xnsub"; } 
-    
+
     try { $Pool_Request = Invoke-RestMethod "http://blockmasters.co/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
     catch {
-        return "SWARM contacted ($Name) for a failed API check. (Coins)"; 
+        return "WARNING: SWARM contacted ($Name) for a failed API check. (Coins)"; 
     }
 
     if (($Pool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 
-        return "SWARM contacted ($Name) but ($Name) the response was empty." 
+        return "WARNING: SWARM contacted ($Name) but ($Name) the response was empty." 
     }
-
 
     # Make an algo list, include asic algorithms not usually in SWARM
     ## Remove algos that users/SWARM have banned.
@@ -69,12 +69,10 @@ if ($Name -in $(arg).PoolName) {
     [GC]::Collect()    
 
     Switch ($(arg).Location) {
-        "US" { $region = "na" }
-        "EUROPE" { $region = "eu" }
-        "ASIA" { $region = "sea" }
-        "JAPAN" { $region = "jp" }
-    }    
-
+        "us" { $Region = $null }
+        default { $Region = "eu." }
+    }
+    
     $Get_Params = $Global:Config.params
     $Pool_Sorted | ForEach-Object -Parallel {
         . .\build\powershell\global\classes.ps1
@@ -144,6 +142,7 @@ if ($Name -in $(arg).PoolName) {
         Where-Object { [Convert]::ToInt32($_."24h_blocks") -ge $Params.Min_Blocks } |
         Sort-Object Level -Descending |
         Select-Object -First 1
+        $To_Add += $Sorted | Where-Object { $_.Sym -in $Active -and $_ -notin $To_Add }
 
         ## Add back in stats for running miners.
         ## Only add if it meets arguments min_blocks and autotrade
@@ -160,10 +159,10 @@ if ($Name -in $(arg).PoolName) {
 
         $To_Add | ForEach-Object { 
             $Pool_Port = $_.port
-            $Pool_Host = "$($_.Original_Algo).$($reg).mine.zpool.ca$sub"
+            $Pool_Host = "${reg}blockmasters.co${sub}"
             $Pool_Algo = $_.algo.ToLower()
             $Pool_Symbol = $_.sym.ToUpper()
-            $mc = "zap=$Pool_Symbol,"
+            $mc = "mc=$Pool_Symbol,"
 
             ## Wallet Swapping/Solo mining
             $Pass1 = $A_Wallets.Wallet1.Keys
@@ -207,7 +206,7 @@ if ($Name -in $(arg).PoolName) {
                             $Pass1 = $Sym
                             $Pass2 = $Sym
                             $Pass3 = $Sym
-                            $mc = "zap=$Sym,"
+                            $mc = "mc=$Sym,"
                             if ($AltWallets.$Sym.address -ne "add address of coin if you wish to mine to that address, or leave alone." -and $AltWallets.$_.address -ne "") {
                                 $User1 = $AltWallets.$Sym.address
                                 $User2 = $AltWallets.$Sym.address
@@ -225,7 +224,7 @@ if ($Name -in $(arg).PoolName) {
 
             [Pool]::New(
                 ## Symbol
-                "$Pool_Symbol-Coin",
+                "$Pool_Symbol-Coins",
                 ## Algorithm
                 $Pool_Algo,
                 ## Level
