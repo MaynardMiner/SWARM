@@ -116,10 +116,11 @@ if ($Name -in $(arg).PoolName) {
 
         $_ | Add-Member "Level" $Level 
         $_ | Add-Member "Previous" $stat.Actual
-    }
+    } -ThrottleLimit $(arg).Throttle
 
     $Get_Wallets = $Global:Wallets
     $Get_AltWallets = $(vars).All_AltWallets
+    $Previous_Miners = $(vars).Previous_Miners
     ## Break the algos to groups to sort it down.
     $Pool_Data = $Algos | ForEach-Object -Parallel {
         . .\build\powershell\global\classes.ps1
@@ -132,14 +133,31 @@ if ($Name -in $(arg).PoolName) {
         $Params = $using:Get_Params
         $reg = $using:Region
         $Active = $using:Active_Symbols;
+        $Miners = $using:Previous_Miners;
         #######################################
+
+        ## Get the current most profitable coin that meets
+        ## arguments min_blocks and autotrade
         $To_Add = @()
         $To_Add += $Sorted | 
         Where-Object Algo -eq $Selected | 
         Where-Object { [Convert]::ToInt32($_."24h_blocks") -ge $Params.Min_Blocks } |
         Sort-Object Level -Descending |
         Select-Object -First 1
-        $To_Add += $Sorted | Where-Object { $_.Sym -in $Active -and $_ -notin $To_Add }
+
+        ## Add back in stats for running miners.
+        ## Only add if it meets arguments min_blocks and autotrade
+        $Miners | Foreach-Object {
+            Write-Host "Symbol is $($_.Symbol)"
+            if($_.Algo -eq $Selected -and $_.Symbol -notin $To_Add.Sym) {
+                $Add_Stat = $Sorted | Where-Object sym -eq $_.Symbol | 
+                Where-Object { [Convert]::ToInt32($_."24h_blocks_shared") -ge $Params.Min_Blocks } | 
+                Where-Object { $_.noautotrade -eq 0 } 
+                if($Add_Stat) {
+                    $To_Add += $Add_Stat
+                }
+            }
+        }
 
         $To_Add | ForEach-Object { 
             $Pool_Port = $_.port
