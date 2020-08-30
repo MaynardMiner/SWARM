@@ -443,7 +443,7 @@ function Global:Start-Sorting {
         }
 
         if($IsBestMiner -and $(arg).Hashrate_Threshold -gt 0) {
-            log "All miners that mine $($Miner.algo) that is not $($miner.name) was reduced by -Hashrate_Threshold $((arg).Hashrate_Threshold) % to reduce switching." -ForeGroundColor Magenta;
+            log "All miners that mine $($Miner.Symbol) that is not $($miner.name) was reduced by -Hashrate_Threshold $((arg).Hashrate_Threshold) % to reduce switching." -ForeGroundColor Magenta;
         }
 
         if ($Miner.Power -gt 0) { $WattCalc3 = (((([Double]$Miner.Power * 24) / 1000) * $(vars).WattEx) * -1)}
