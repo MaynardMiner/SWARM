@@ -81,7 +81,7 @@ $(vars).AMDTypes | ForEach-Object {
                 $SelAlgo = $_.Algorithm
                 $SelName = $_.Name
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
-                $Pass = " --pass $($_.$Pass)$Diff "
+                $UserPass = " --pass $($_.$Pass)$Diff "
                 $GetUser = $_.$User;
                 $Worker = $_.Worker;
                 switch ($SelAlgo) {
@@ -101,7 +101,7 @@ $(vars).AMDTypes | ForEach-Object {
                         switch ($SelName) {
                             "nicehash" { $AddArgs = "--algo ethash --proto stratum " }
                             "zergpool" { $AddArgs = "--algo ethash " }
-                            "whalesburg" { $Pass = " "; $GetUser = "$($Getuser)" + "." + "$($Worker)"; $AddArgs = "--algo ethash " }
+                            "whalesburg" { $UserPass = " "; $GetUser = "$($Getuser)" + "." + "$($Worker)"; $AddArgs = "--algo ethash " }
                             default { $AddArgs = "--algo ethash --proto stratum" }
                         }
                     }
@@ -122,7 +122,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Version    = "$($(vars).amd.$CName.version)"
                     ArgDevices = $ArgDevices
                     DeviceCall = "gminer"
-                    Arguments  = "--api $Port --server $($_.Pool_Host) --port $($_.Port) $AddArgs--user $GetUser$Pass --logfile `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "--api $Port --server $($_.Pool_Host) --port $($_.Port) $AddArgs--user $GetUser$UserPass --logfile `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     HashRate_Adjusted = $Hashstat
                     Quote      = $_.Price
