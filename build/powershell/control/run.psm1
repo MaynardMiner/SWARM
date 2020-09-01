@@ -217,7 +217,8 @@ function Global:Start-NewMiners {
                                     ## If this is a different group- User is screwed for other groups.
 
                                     if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU" -and $Miner.Type -like "*1*") {
-                                        $OC_Success = Global:Start-HiveTune $Miner.Algo
+                                        $Hive_Miner_Name = $Miner.Name.replace("-1","");
+                                        $OC_Success = Global:Start-HiveTune $Miner.Algo $Hive_Miner_Name
 
                                         ## If it succeeded- SWARM will add to the oc_groups, which
                                         ## is a list of what OC has been done. If not, then it will
