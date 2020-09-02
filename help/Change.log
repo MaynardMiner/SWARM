@@ -1,15 +1,15 @@
-# SWARM 3.3.3
+# SWARM 3.3.4
+
+## What's New?
+* Using -API_Key argument, SWARM will display what miner and pool it is using via HiveOS interface. This is done as a tag. If you don't see the tags after miner start, reload the HiveOS web page.
+* -API_Key is an account API access token, which you can generate in the "account" section of your farm.
 
 ## Improvements
-* Fix ALL issues happening with -Auto_Coin.
-* Add hashrate factoring + more with whalesburg pool.
-* Fix powershell bug that was dupliclating ActiveMiners. Didn't cause issue, just avoiding potential.
-* Fix char[] evaluation error of -Type
-* Restructured pool folders to pools. Added README
-* Fixed return of warning from pool file gathering.
-* Fix HiveOS OCtune: Wait for finish, error output.
-* Added [Expression]::Invoke, will prevent output of expected errors.
+* Fix -Password argument issues with gminer and teamredminer.
+* Fix cuckarooz29 issues with gminer.
 
 ## Updates
 * Cryptodredge updated
 * Gminer updated
+* Nanominer updated
+* Lolmimer updated

@@ -106,9 +106,9 @@
     "AMD2": ".\\bin\\lolMiner-AMD-2\\lolMiner",
     "AMD3": ".\\bin\\lolMiner-AMD-3\\lolMiner",
     "minername": "lolMiner",
-    "version": "1.06",
+    "version": "1.07",
     "optional": "No",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.06/lolMiner_v1.06_Lin64.tar.gz"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.07/lolMiner_v1.07_Lin64.tar.gz"
   },
   "avermore": {
     "name": "avermore",
@@ -260,9 +260,9 @@
     "AMD2": ".\\bin\\nanominer-2\\nanominer",
     "AMD3": ".\\bin\\nanominer-3\\nanominer",
     "minername": "nanominer",
-    "version": "1.10.0",
+    "version": "1.10.1",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.10.0/nanominer-linux-1.10.0.tar.gz"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.10.1/nanominer-linux-1.10.1.tar.gz"
   },
   "nbminer-amd": {
     "name": "nbminer-amd",

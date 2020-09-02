@@ -106,9 +106,9 @@
     "AMD2": ".\\bin\\lolMiner-AMD-2\\lolMiner.exe",
     "AMD3": ".\\bin\\lolMiner-AMD-3\\lolMiner.exe",
     "minername": "lolMiner.exe",
-    "version": "1.06",
+    "version": "1.07",
     "optional": "No",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.06/lolMiner_v1.06_Win64.zip"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.07/lolMiner_v1.07_Win64.zip"
   },
   "teamredminer": {
     "name": "teamredminer",
@@ -227,9 +227,9 @@
     "AMD2": ".\\bin\\nanominer-2\\nanominer.exe",
     "AMD3": ".\\bin\\nanominer-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "1.10.0",
+    "version": "1.10.1",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.10.0/nanominer-windows-1.10.0.zip"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.10.1/nanominer-windows-1.10.1.zip"
   },
   "nbminer-amd": {
     "name": "nbminer-amd",
