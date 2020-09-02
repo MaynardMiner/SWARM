@@ -18,7 +18,9 @@ function Global:Start-HiveTune {
         [Parameter(Position = 1, Mandatory = $false)]
         [string]$Miner_Name,
         [Parameter(Position = 2, Mandatory = $false)]
-        [string]$Miner_Pool
+        [string]$Miner_Pool,
+        [Parameter(Position = 3, Mandatory = $false)]
+        [string]$Profit_Day
     )
 
     $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
@@ -178,16 +180,39 @@ function Global:Start-HiveTune {
     if ($Miner_Name) {
         $miner_tagid = $null
         $pool_tagid = $null
-        $Color = 17;
         $T = @{Authorization = "Bearer $($(arg).API_Key)" }
         $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags";
         $Splat = @{ Method = "GET"; Uri = $Url; Headers = $T; ContentType = 'application/json'; }    
         try { $Tags = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { log "WARNING: Failed to Contact HiveOS for OC" -ForegroundColor Yellow; return }
 
+        ## Delete old profit tag
+        $Profit_Tag = ($Tags.data | Where name -like "*$($Global:Config.hive_params.Worker) Profit:*").id
+        if ($Profit_Tag) {
+            $T = @{Authorization = "Bearer $($(arg).API_Key)" }
+            $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/$Profit_Tag";
+            $Splat = @{ Method = "Delete"; Uri = $Url; Headers = $T; ContentType = 'application/json'; }    
+            try { $Set_Tag = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { log "WARNING: Failed to Delete Profit Tag" -ForegroundColor Yellow; return }    
+        }
+
+        ## Create new profit tag
+        if($Profit_Day -ne "bench") {
+            $Profit_Day = [math]::Round($Profit_Day,6)
+        }
+        $Profit_Tag = "$($Global:Config.hive_params.Worker) Profit: $Profit_Day BTC\USD Day"
+        $Tag = @{
+            name  = $Profit_Tag;
+            color = 11;
+        } | ConvertTo-Json -Compress;
+        $T = @{Authorization = "Bearer $($(arg).API_Key)" }
+        $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags";
+        $Splat = @{ Body = $tag; Method = "Post"; Uri = $Url; Headers = $T; ContentType = 'application/json'; }    
+        try { $Set_Tag = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { log "WARNING: Failed to Contact HiveOS for OC" -ForegroundColor Yellow; return }    
+        $new_profit_tag = $Set_Tag.id;
+
         ## Create the tag if it does not exist
-        if ($Miner_Name -notin $Tags.data.name) {
+        if ($Miner_Name -notin $Tags.data.name) {            
             $Tag = @{
-                name = $Miner_Name;
+                name  = $Miner_Name;
                 color = 17;
             } | ConvertTo-Json -Compress;
             $T = @{Authorization = "Bearer $($(arg).API_Key)" }
@@ -198,7 +223,7 @@ function Global:Start-HiveTune {
         }
         if ($Miner_Pool -notin $Tags.data.name) {
             $Tag = @{
-                name = $Miner_Pool;
+                name  = $Miner_Pool;
                 color = 8;
             } | ConvertTo-Json -Compress;
             $T = @{Authorization = "Bearer $($(arg).API_Key)" }
@@ -214,21 +239,22 @@ function Global:Start-HiveTune {
         $tag_list += (Get-ChildItem "pools\pplns" | Where-Object name -like "*ps1*").BaseName
         $tag_list += (Get-ChildItem "pools\pps" | Where-Object name -like "*ps1*").BaseName
         $tag_list += (Get-ChildItem "pools\prop" | Where-Object name -like "*ps1*").BaseName
-        $set_tags = $Tags.data | Where-Object {$_.name -in $tag_list}
+        $set_tags = $Tags.data | Where-Object { $_.name -in $tag_list }
         $worker_tagids = @();
-        foreach($worker_tag in $Worker.tag_ids) {
-            if($worker_tag -notin $set_tags.id) {
+        foreach ($worker_tag in $Worker.tag_ids) {
+            if ($worker_tag -notin $set_tags.id) {
                 $worker_tagids += $worker_tag;
             }
         }
-        if(!$miner_tagid) {
-            $miner_tagid = ($Tags.data | Where-Object {$_.name -eq $Miner_Name }).id
+        if (!$miner_tagid) {
+            $miner_tagid = ($Tags.data | Where-Object { $_.name -eq $Miner_Name }).id
         }
-        if(!$pool_tagid) {
-            $pool_tagid = ($Tags.data | Where-Object {$_.name -eq $Miner_Pool }).id
+        if (!$pool_tagid) {
+            $pool_tagid = ($Tags.data | Where-Object { $_.name -eq $Miner_Pool }).id
         }
         $worker_tagids += $miner_tagid;
         $worker_tagids += $pool_tagid;
+        $worker_tagids += $new_profit_tag;
         $Command = @{tag_ids = $worker_tagids } | ConvertTo-Json
         $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/workers/$($Global:Config.hive_params.Id)"
         $T = @{Authorization = "Bearer $($(arg).API_Key)" }
