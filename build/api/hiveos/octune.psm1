@@ -195,10 +195,11 @@ function Global:Start-HiveTune {
         }
 
         ## Create new profit tag
+        $Profit_Tag = "$($Global:Config.hive_params.Worker) Profit: BENCHMARKING"
         if($Profit_Day -ne "bench") {
             $Profit_Day = [math]::Round($Profit_Day,6)
+            $Profit_Tag = "$($Global:Config.hive_params.Worker) Profit: $Profit_Day BTC Day"
         }
-        $Profit_Tag = "$($Global:Config.hive_params.Worker) Profit: $Profit_Day BTC\USD Day"
         $Tag = @{
             name  = $Profit_Tag;
             color = 11;
