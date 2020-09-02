@@ -16,7 +16,9 @@ function Global:Start-HiveTune {
         [Parameter(Position = 0, Mandatory = $true)]
         [string]$Algo,
         [Parameter(Position = 1, Mandatory = $false)]
-        [string]$Miner_Name
+        [string]$Miner_Name,
+        [Parameter(Position = 2, Mandatory = $false)]
+        [string]$Miner_Pool
     )
 
     $AllProtocols = [System.Net.SecurityProtocolType]'Tls,Tls11,Tls12' 
@@ -175,6 +177,7 @@ function Global:Start-HiveTune {
 
     if ($Miner_Name) {
         $miner_tagid = $null
+        $pool_tagid = $null
         $Color = 17;
         $T = @{Authorization = "Bearer $($(arg).API_Key)" }
         $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags";
@@ -193,11 +196,24 @@ function Global:Start-HiveTune {
             try { $Set_Tag = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { log "WARNING: Failed to Contact HiveOS for OC" -ForegroundColor Yellow; return }    
             $miner_tagid = $Set_Tag.id
         }
-
+        if ($Miner_Pool -notin $Tags.data.name) {
+            $Tag = @{
+                name = $Miner_Pool;
+                color = 8;
+            } | ConvertTo-Json -Compress;
+            $T = @{Authorization = "Bearer $($(arg).API_Key)" }
+            $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags";
+            $Splat = @{ Body = $tag; Method = "Post"; Uri = $Url; Headers = $T; ContentType = 'application/json'; }    
+            try { $Set_Tag = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { log "WARNING: Failed to Contact HiveOS for OC" -ForegroundColor Yellow; return }    
+            $pool_tagid = $Set_Tag.id
+        }
         $tag_list = @()
         $tag_list += (Get-ChildItem "miners\gpu\amd" | Where-Object name -like "*ps1*").BaseName
         $tag_list += (Get-ChildItem "miners\gpu\nvidia" | Where-Object name -like "*ps1*").BaseName
         $tag_list += (Get-ChildItem "miners\optional_and_old" | Where-Object name -like "*ps1*").BaseName
+        $tag_list += (Get-ChildItem "pools\pplns" | Where-Object name -like "*ps1*").BaseName
+        $tag_list += (Get-ChildItem "pools\pps" | Where-Object name -like "*ps1*").BaseName
+        $tag_list += (Get-ChildItem "pools\prop" | Where-Object name -like "*ps1*").BaseName
         $set_tags = $Tags.data | Where-Object {$_.name -in $tag_list}
         $worker_tagids = @();
         foreach($worker_tag in $Worker.tag_ids) {
@@ -208,7 +224,11 @@ function Global:Start-HiveTune {
         if(!$miner_tagid) {
             $miner_tagid = ($Tags.data | Where-Object {$_.name -eq $Miner_Name }).id
         }
+        if(!$pool_tagid) {
+            $pool_tagid = ($Tags.data | Where-Object {$_.name -eq $Miner_Pool }).id
+        }
         $worker_tagids += $miner_tagid;
+        $worker_tagids += $pool_tagid;
         $Command = @{tag_ids = $worker_tagids } | ConvertTo-Json
         $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/workers/$($Global:Config.hive_params.Id)"
         $T = @{Authorization = "Bearer $($(arg).API_Key)" }

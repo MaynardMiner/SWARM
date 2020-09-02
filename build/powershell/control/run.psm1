@@ -218,7 +218,7 @@ function Global:Start-NewMiners {
 
                                     if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU" -and $Miner.Type -like "*1*") {
                                         $Hive_Miner_Name = $Miner.Name.replace("-1","");
-                                        $OC_Success = Global:Start-HiveTune $Miner.Algo $Hive_Miner_Name
+                                        $OC_Success = Global:Start-HiveTune $Miner.Algo $Hive_Miner_Name $Miner.MinerPool
 
                                         ## If it succeeded- SWARM will add to the oc_groups, which
                                         ## is a list of what OC has been done. If not, then it will
