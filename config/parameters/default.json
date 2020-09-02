@@ -87,7 +87,7 @@
     "TCP": "No",
     "TCP_IP": "127.0.0.1",
     "TCP_Port": 6099,
-    "Threshold": 0.02,
+    "Threshold": 0.0042,
     "Timeout": 24,
     "Time_Wait": 10,
     "Track_Shares": "Yes",
