@@ -243,7 +243,7 @@ function Global:Start-HiveTune {
         $set_tags = $Tags.data | Where-Object { $_.name -in $tag_list }
         $worker_tagids = @();
         foreach ($worker_tag in $Worker.tag_ids) {
-            if ($worker_tag -notin $set_tags.id -and $worker_tag -ne $Old_Profit_Tag) {
+            if ($worker_tag -notin $set_tags.id -and $worker_tag -notin $Old_Profit_Tag) {
                 $worker_tagids += $worker_tag;
             }
         }
