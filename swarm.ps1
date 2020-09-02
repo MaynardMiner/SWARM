@@ -162,6 +162,7 @@ $(vars).Add("miner", "$($(vars).dir)\build\powershell\miner")
 $(vars).Add("control", "$($(vars).dir)\build\powershell\control")
 $(vars).Add("run", "$($(vars).dir)\build\powershell\run")
 $(vars).Add("benchmark", "$($(vars).dir)\build\powershell\benchmark")
+$(vars).Add("api", "$($(vars).dir)\build\api")
 
 $p = [Environment]::GetEnvironmentVariable("PSModulePath")
 if ($P -notlike "*$($(vars).dir)\build\powershell*") {
@@ -174,6 +175,7 @@ if ($P -notlike "*$($(vars).dir)\build\powershell*") {
     $P += ";$($(vars).control)";
     $P += ";$($(vars).run)";
     $P += ";$($(vars).benchmark)";
+    $P += ";$($(vars).api)"
     [Environment]::SetEnvironmentVariable("PSModulePath", $p)
     Write-Host "Modules Are Loaded" -ForegroundColor Green
 }
@@ -694,6 +696,11 @@ $($_.InvocationInfo.PositionMessage)
     Global:Add-Module "$($(vars).control)\notify.psm1"
     Global:Get-LaunchNotification
     Global:Get-Interval
+
+    ## Update Tagging
+    Global:Add-Module "$($(vars).api)\hiveos\tagging.psm1"
+    Global:Update-HiveTagging
+
     ## Get Shares
     log "Getting Coin Tracking From Pool" -foregroundColor Cyan
     if ($glbal:Config.params.Track_Shares -eq "Yes") { Global:Get-CoinShares }
