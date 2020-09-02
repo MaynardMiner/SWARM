@@ -2610,3 +2610,16 @@ identity. Was related to machine potentially having multiple active MAC addresse
 * Nanominer updated
 * Lolmimer updated
 * trex updated
+
+############################################
+############################################
+
+# SWARM 3.3.5
+
+## What's New?
+* Using -API_Key argument, SWARM will now display Profit/Day as a tag along with pool and miner.
+* -API_Key is an account API access token, which you can generate in the "account" section of your farm.
+* VERY IMPORTANT: IF USING -API_Key, MAKE SURE ALL WORKERS IN FARM HAVE DIFFERENT WORKER NAME!
+
+## Improvements
+* Fix Miner uptime issue.
