@@ -183,22 +183,21 @@ function Global:Start-HiveTune {
         $T = @{Authorization = "Bearer $($(arg).API_Key)" }
         $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags";
         $Splat = @{ Method = "GET"; Uri = $Url; Headers = $T; ContentType = 'application/json'; }    
-        try { $Tags = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { log "WARNING: Failed to Contact HiveOS for OC" -ForegroundColor Yellow; return }
+        try { $Tags = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { log "WARNING: Failed to Get Tags From HiveOS" -ForegroundColor Yellow; return }
 
         ## Delete old profit tag
-        $Profit_Tag = ($Tags.data | Where name -like "*$($Global:Config.hive_params.Worker) Profit:*").id
-        if ($Profit_Tag) {
+        $Old_Profit_Tag = ($Tags.data | Where name -like "*$($Global:Config.hive_params.Worker) Profit:*").id
+        if ($Old_Profit_Tag) {
             $T = @{Authorization = "Bearer $($(arg).API_Key)" }
-            $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/$Profit_Tag";
+            $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/$Old_Profit_Tag";
             $Splat = @{ Method = "Delete"; Uri = $Url; Headers = $T; ContentType = 'application/json'; }    
-            try { $Set_Tag = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { log "WARNING: Failed to Delete Profit Tag" -ForegroundColor Yellow; return }    
+            try { $Set_Tag = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { log "WARNING: Failed to Delete Profit Tag From HiveOS" -ForegroundColor Yellow; return }    
         }
-
         ## Create new profit tag
         $Profit_Tag = "$($Global:Config.hive_params.Worker) Profit: BENCHMARKING"
         if($Profit_Day -ne "bench") {
             $Profit_Day = [math]::Round($Profit_Day,6)
-            $Profit_Tag = "$($Global:Config.hive_params.Worker) Profit: $Profit_Day BTC Day"
+            $Profit_Tag = "$($Global:Config.hive_params.Worker) Profit: $Profit_Day BTC\Day"
         }
         $Tag = @{
             name  = $Profit_Tag;
@@ -207,7 +206,7 @@ function Global:Start-HiveTune {
         $T = @{Authorization = "Bearer $($(arg).API_Key)" }
         $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags";
         $Splat = @{ Body = $tag; Method = "Post"; Uri = $Url; Headers = $T; ContentType = 'application/json'; }    
-        try { $Set_Tag = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { log "WARNING: Failed to Contact HiveOS for OC" -ForegroundColor Yellow; return }    
+        try { $Set_Tag = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { log "WARNING: Failed To Update Profit Tag From HiveOS" -ForegroundColor Yellow; return }    
         $new_profit_tag = $Set_Tag.id;
 
         ## Create the tag if it does not exist
@@ -219,7 +218,7 @@ function Global:Start-HiveTune {
             $T = @{Authorization = "Bearer $($(arg).API_Key)" }
             $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags";
             $Splat = @{ Body = $tag; Method = "Post"; Uri = $Url; Headers = $T; ContentType = 'application/json'; }    
-            try { $Set_Tag = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { log "WARNING: Failed to Contact HiveOS for OC" -ForegroundColor Yellow; return }    
+            try { $Set_Tag = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { log "WARNING: Failed To Set Miner Tag From HiveOS" -ForegroundColor Yellow; return }    
             $miner_tagid = $Set_Tag.id
         }
         if ($Miner_Pool -notin $Tags.data.name) {
@@ -230,9 +229,10 @@ function Global:Start-HiveTune {
             $T = @{Authorization = "Bearer $($(arg).API_Key)" }
             $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags";
             $Splat = @{ Body = $tag; Method = "Post"; Uri = $Url; Headers = $T; ContentType = 'application/json'; }    
-            try { $Set_Tag = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { log "WARNING: Failed to Contact HiveOS for OC" -ForegroundColor Yellow; return }    
+            try { $Set_Tag = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { log "WARNING: Failed to Set Pool Tag From HiveOS" -ForegroundColor Yellow; return }    
             $pool_tagid = $Set_Tag.id
         }
+
         $tag_list = @()
         $tag_list += (Get-ChildItem "miners\gpu\amd" | Where-Object name -like "*ps1*").BaseName
         $tag_list += (Get-ChildItem "miners\gpu\nvidia" | Where-Object name -like "*ps1*").BaseName
@@ -243,7 +243,7 @@ function Global:Start-HiveTune {
         $set_tags = $Tags.data | Where-Object { $_.name -in $tag_list }
         $worker_tagids = @();
         foreach ($worker_tag in $Worker.tag_ids) {
-            if ($worker_tag -notin $set_tags.id) {
+            if ($worker_tag -notin $set_tags.id -or $worker_tag -ne $Old_Profit_Tag) {
                 $worker_tagids += $worker_tag;
             }
         }
