@@ -1,17 +1,9 @@
-# SWARM 3.3.4
+# SWARM 3.3.5
 
 ## What's New?
-* Using -API_Key argument, SWARM will display what miner and pool it is using via HiveOS interface. This is done as a tag. If you don't see the tags after miner start, reload the HiveOS web page.
+* Using -API_Key argument, SWARM will now display Profit/Day as a tag along with pool and miner.
 * -API_Key is an account API access token, which you can generate in the "account" section of your farm.
+* VERY IMPORTANT: IF USING -API_Key, MAKE SURE ALL WORKERS IN FARM HAVE DIFFERENT WORKER NAME!
 
 ## Improvements
-* Fix -Password argument issues with gminer and teamredminer.
-* Fix cuckarooz29 issues with gminer.
-* Default threshold lowered to 0.0042 BTC ($50.00 usd).
-
-## Updates
-* Cryptodredge updated
-* Gminer updated
-* Nanominer updated
-* Lolmimer updated
-* trex updated
+* Fix Miner uptime issue.

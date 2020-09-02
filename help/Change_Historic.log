@@ -2589,3 +2589,24 @@ identity. Was related to machine potentially having multiple active MAC addresse
 ## Updates
 * Cryptodredge updated
 * Gminer updated
+
+############################################
+############################################
+
+# SWARM 3.3.4
+
+## What's New?
+* Using -API_Key argument, SWARM will display what miner and pool it is using via HiveOS interface. This is done as a tag. If you don't see the tags after miner start, reload the HiveOS web page.
+* -API_Key is an account API access token, which you can generate in the "account" section of your farm.
+
+## Improvements
+* Fix -Password argument issues with gminer and teamredminer.
+* Fix cuckarooz29 issues with gminer.
+* Default threshold lowered to 0.0042 BTC ($50.00 usd).
+
+## Updates
+* Cryptodredge updated
+* Gminer updated
+* Nanominer updated
+* Lolmimer updated
+* trex updated
