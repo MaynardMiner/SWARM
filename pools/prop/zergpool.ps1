@@ -45,6 +45,13 @@ if ($Name -in $(arg).PoolName) {
         if ($_.Name) { if ($_.Name -in $Algo_List -and $Pipe_Name -notin $Pipe_Algos.$($_.Name).exclusions -and $_.Name -notin $Pipe_Hammer) { return $_ } }
     } -ThrottleLimit $(arg).Throttle
 
+    Switch ($(arg).Location) {
+        "US" { $region = "na" }
+        "EUROPE" { $region = "eu" }
+        "ASIA" { $region = "asia" }
+        "JAPAN" { $region = "asia" }
+    }    
+
     ## These are modified, then returned back to the original
     ## value below. This is so that threading can be done.
     $DivisorTable = $Global:Config.vars.DivisorTable
@@ -62,11 +69,13 @@ if ($Name -in $(arg).PoolName) {
         $sub = $using:X
         $Params = $using:Get_Params
         $A_Wallets = $using:Get_Wallets
+        $reg = $using:region
+
         ##
         $StatAlgo = $_.Name -replace "`_", "`-"
         $Divisor = 1000000 * $_.mbtc_mh_factor
         $Pool_Port = $_.port
-        $Pool_Host = "$($_.Original_Algo.ToLower()).mine.zergpool.com$sub"
+        $Pool_Host = "$($_.Original_Algo.ToLower()).$reg.mine.zergpool.com$sub"
         $StatName = "$($P_Name)_$($StatAlgo)"
         $Get_Path = [IO.File]::Exists(".\stats\pool_$($StatName)_pricing.json")
         $Hashrate = [math]::Max($_.hashrate_shared, 1)

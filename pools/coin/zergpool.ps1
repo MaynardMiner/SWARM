@@ -80,6 +80,13 @@ if ($Name -in $(arg).PoolName) {
     [GC]::WaitForPendingFinalizers()
     [GC]::Collect()    
 
+    Switch ($(arg).Location) {
+        "US" { $region = "na" }
+        "EUROPE" { $region = "eu" }
+        "ASIA" { $region = "asia" }
+        "JAPAN" { $region = "asia" }
+    }    
+
     $Get_Params = $Global:Config.params
     $Pool_Sorted | ForEach-Object -Parallel {
         . .\build\powershell\global\classes.ps1
@@ -87,7 +94,7 @@ if ($Name -in $(arg).PoolName) {
         $D_Table = $using:Divisor_Table;
         $P_Name = $using:Name
         $Params = $using:Get_Params
-        $coin_name = $_.sym
+        $reg = $using:Region
         ## switch coin name if same
         if ($_.sym -eq $_.algo) { $coin_name = "$($_.sym)-COIN" }
         $StatName = "$($P_Name)_$($coin_name)"
@@ -136,6 +143,7 @@ if ($Name -in $(arg).PoolName) {
         $A_Wallets = $using:Get_Wallets
         $AltWallets = $using:Get_AltWallets
         $Params = $using:Get_Params
+        $reg = $using:region
         $Miners = $using:Previous_Miners;
         #######################################
 
@@ -165,7 +173,7 @@ if ($Name -in $(arg).PoolName) {
 
         $To_Add | ForEach-Object { 
             $Pool_Port = $_.port
-            $Pool_Host = "$($_.Original_Algo.ToLower()).mine.zergpool.com$sub"
+            $Pool_Host = "$($_.Original_Algo.ToLower()).$reg.mine.zergpool.com$sub"
             $Pool_Algo = $_.algo.ToLower()
             $Pool_Symbol = $_.sym.ToUpper()
             $mc = "mc=$Pool_Symbol,"

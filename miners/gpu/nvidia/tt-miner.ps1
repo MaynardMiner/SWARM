@@ -71,6 +71,10 @@ $(vars).NVIDIATypes | ForEach-Object {
                 } |
                 ForEach-Object {
                 if ($_.Worker) { $Worker = "-worker $($_.Worker) " }else { $Worker = $Null }
+                $Url = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
+                if($_.Name -eq "zergpool") {
+                    $Url = "$($_.Pool_Host):$($_.Port)"
+                }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $(vars).Coins
@@ -85,7 +89,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).nvidia.$CName.version)"
                     DeviceCall = "ttminer"
-                    Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --nvidia -o $($_.Pool_Host):$($_.Port) $Worker-b localhost:$Port -u $($_.$User) -p $($_.$Pass) -log `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --nvidia -o $Url $Worker-b localhost:$Port -u $($_.$User) -p $($_.$Pass) -log `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     HashRate_Adjusted = $Hashstat
                     Quote      = $_.Price
