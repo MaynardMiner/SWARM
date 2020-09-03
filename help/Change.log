@@ -1,12 +1,4 @@
-# SWARM 3.3.6
+# SWARM 3.3.7
 
-## Note
-* If you are using new tagging feature, and tags are missing on HiveOS display, reload page. It's not bug, just how tagging works.
-
-## What's New?
-* User suggested to updated BTC\Day each time database loads, not just when miners switch. This was implemented.
-* -API_Key will allow users to view current miner, profit, and pool through HiveOS tagging system.
-* -API_Key should be an account API access token, which you can generate in the "account" section of your farm.
-* tagging.psm1 was created.
-* Seperated HiveOS tagging and octune features of SWARM- Tagging happen after all miners launch now, not before.
-* Cleaned up codebase around tagging to make easier to read/debug.
+## Improvements
+* Fix new reason 1 error on update. You can update directly to this.
