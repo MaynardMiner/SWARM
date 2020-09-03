@@ -2639,3 +2639,11 @@ identity. Was related to machine potentially having multiple active MAC addresse
 * tagging.psm1 was created.
 * Seperated HiveOS tagging and octune features of SWARM- Tagging happen after all miners launch now, not before.
 * Cleaned up codebase around tagging to make easier to read/debug.
+
+############################################
+############################################
+
+# SWARM 3.3.7
+
+## Improvements
+* Fix new reason 1 error on update. You can update directly to this.

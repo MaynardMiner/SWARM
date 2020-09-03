@@ -1,4 +1,6 @@
-# SWARM 3.3.7
+# SWARM 3.3.8
 
 ## Improvements
-* Fix new reason 1 error on update. You can update directly to this.
+* tt-miner: Force stratum for nicehash, auto-detect for zergpool.
+* bminer: Fixes more issues with urls on zergpool for ethash, progpow.
+* add zergpool regions (algo.region.zergpool.mine.com)
