@@ -86,7 +86,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     }
                     "zergpool" {
                         switch ($Sel) {
-                            "ethash" { $Naming = "ethproxy"; $AddArgs = " "; $UserPass = $GetUser + "." + ":" + [System.Web.HttpUtility]::UrlEncode($GetPass + $Diff) }
+                            "ethash" { $Naming = "ethstratum"; $AddArgs = " "; $UserPass = $GetUser + "." + ":" + [System.Web.HttpUtility]::UrlEncode($GetPass + $Diff) }
                             "equihash_144/5" { $Naming = "zhash"; $AddArgs = " -pers auto "; $CanUse = $false }
                             "equihash_150/5" { $Naming = "beam"; $AddArgs = " -pers auto " ; $CanUse = $false }
                             "equihash_144/5" { $Naming = "zhash"; $AddArgs = " -pers auto "; $CanUse = $false }
