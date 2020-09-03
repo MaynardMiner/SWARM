@@ -95,6 +95,7 @@ if ($Name -in $(arg).PoolName) {
         $P_Name = $using:Name
         $Params = $using:Get_Params
         $reg = $using:Region
+        $coin_name = $_.sym;
         ## switch coin name if same
         if ($_.sym -eq $_.algo) { $coin_name = "$($_.sym)-COIN" }
         $StatName = "$($P_Name)_$($coin_name)"
