@@ -1,4 +1,4 @@
-# SWARM 3.3.8
+# SWARM 3.3.9
 
 ## Improvements
 * tt-miner: Force stratum for nicehash, auto-detect for zergpool.
