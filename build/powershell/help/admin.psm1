@@ -87,7 +87,10 @@ Number"
                     $Num = 1
                     $table = [ordered]@{ }
                     $Get = @()
-                    $Get += Get-ChildItem ".\algopools" | ForEach-Object {
+                    $Get += Get-ChildItem ".\pools\pplns" | Where-Object extension -eq ".ps1"
+                    $Get += Get-ChildItem ".\pools\prop"| Where-Object extension -eq ".ps1"
+                    $Get += Get-ChildItem ".\pools\pps"| Where-Object extension -eq ".ps1"
+                    $Get | ForEach-Object {
                         "$Num $($_.BaseName)";
                         $table.Add("$Num", "$($_.BaseName)")
                         $Num++;
