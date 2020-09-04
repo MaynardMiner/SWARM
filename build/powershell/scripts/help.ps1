@@ -575,8 +575,9 @@ Answer"
         if ($IsWindows) { Clear-Host } elseif ($IsLinux) { $Host.UI.Write("`e[3;J`e[H`e[2J") }
         $PoolList = [ordered]@{ }
         $Num = 0
-        Get-ChildItem ".\algopools" | ForEach-Object { $PoolList.Add("$($_.BaseName)", $Num); $Num++ }
-        Get-ChildItem ".\custompools" | ForEach-Object { $PoolList.Add("$($_.BaseName)", $Num); $Num++ }
+        Get-ChildItem ".\pools\pplns" | Where-Object Extension -eq ".ps1" | ForEach-Object { $PoolList.Add("$($_.BaseName)", $Num); $Num++ }
+        Get-ChildItem ".\pools\pps" | Where-Object Extension -eq ".ps1" | ForEach-Object { $PoolList.Add("$($_.BaseName)", $Num); $Num++ }
+        Get-ChildItem ".\pools\prop" | Where-Object Extension -eq ".ps1" | ForEach-Object { $PoolList.Add("$($_.BaseName)", $Num); $Num++ }
         $Message = @()
         $PoolList.keys | % { $Message += "$($PoolList.$_) $($_)" }
         $ans = Read-Host -Prompt "Now We Must Decide Pools. 
