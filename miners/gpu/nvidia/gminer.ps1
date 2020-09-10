@@ -83,8 +83,8 @@ $(vars).NVIDIATypes | ForEach-Object {
                 $SelAlgo = $_.Algorithm
                 $SelName = $_.Name
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
-                $UserPass = " --pass $($_.$Pass)$Diff "
-                $GetUser = $_.$User;
+                $UserPass = "--pass $($_.$Pass)$Diff "
+                $GetUser = "$($_.$User) ";
                 $Worker = $_.Worker;
                 switch ($SelAlgo) {
                     "equihash_150/5" { $AddArgs = "--algo 150_5 " }
@@ -106,7 +106,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         switch ($SelName) {
                             "nicehash" { $AddArgs = "--algo ethash --proto stratum " }
                             "zergpool" { $AddArgs = "--algo ethash " }
-                            "whalesburg" { $Pass = " "; $GetUser = "$($Getuser)" + "." + "$($Worker)"; $AddArgs = "--algo ethash " }
+                            "whalesburg" { $UserPass = " "; $GetUser = "$($Getuser)" + "." + "$($Worker)"; $AddArgs = "--algo ethash " }
                             default { $AddArgs = "--algo ethash --proto stratum" }
                         }
                     }
@@ -128,7 +128,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).nvidia.gminer.version)"
                     DeviceCall = "gminer"
-                    Arguments  = "--api $Port --server $($_.Pool_Host) --nvml 0 --port $($_.Port) $AddArgs--user $GetUser$UserPass --logfile `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "--api $Port --server $($_.Pool_Host) --nvml 0 --port $($_.Port) $AddArgs--user $GetUser$UserPass--logfile `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     HashRate_Adjusted = $Hashstat
                     Quote      = $_.Price
