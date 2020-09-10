@@ -162,6 +162,7 @@ class STAT_METHODS {
          $old.Minute_30_MA = $old.Day_MA
          $old.Hour_MA = $old.Day_MA
          $old.Hour_4_MA = $old.Day_MA
+         $old.Pulls = 288
       }
       elseif ($last_Pull -gt 3600) {
          $old.Live_Values = @(([Convert]::ToDecimal($old.Hour_4_MA)), ($old.Live_Values | Select-Object -Last 1))
@@ -173,6 +174,7 @@ class STAT_METHODS {
          $old.Minute_15_MA = $old.Hour_4_MA
          $old.Minute_30_MA = $old.Hour_4_MA
          $old.Hour_MA = $old.Hour_4_MA
+         $old.Pulls = 48
       }
       elseif ($last_Pull -gt 1800) {
          $old.Live_Values = @(([Convert]::ToDecimal($old.Hour_MA)), ($old.Live_Values | Select-Object -Last 1))
@@ -182,6 +184,7 @@ class STAT_METHODS {
          $old.Minute_10_MA = $old.Hour_MA
          $old.Minute_15_MA = $old.Hour_MA
          $old.Minute_30_MA = $old.Hour_MA
+         $old.Pulls = 12
       }
       elseif ($last_Pull -gt 900) {
          $old.Live_Values = @(([Convert]::ToDecimal($old.Minute_30_MA)), ($old.Live_Values | Select-Object -Last 1))
@@ -194,6 +197,7 @@ class STAT_METHODS {
          $old.Live_Values = @(([Convert]::ToDecimal($old.Minute_15_MA)), ($old.Live_Values | Select-Object -Last 1))
          $old.Minute_10_EMA = $old.Minute_15_EMA
          $old.Minute_10_MA = $old.Minute_15_MA
+         $old.Pulls = 3
       }
       return $old
    }
