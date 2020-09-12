@@ -319,6 +319,16 @@ function Global:Start-WindowsConfig {
         try { [IO.File]::Copy($nvml, $dest, $true) | Out-Null } catch { }
     }
 
+    ## TDR delay fix for Windows.
+    log "Patching TDR delay if required..." -ForegroundColor Yellow
+    $Registry = [Microsoft.Win32.RegistryKey]::OpenBaseKey([Microsoft.Win32.RegistryHive]::LocalMachine, [Microsoft.Win32.RegistryView]::Default).OpenSubKey("SYSTEM\CurrentControlSet\Control\GraphicsDrivers",$True)
+    if("TdrDelay" -notin $Registry.GetValueNames()) {
+        $Registry.SetValue("TdrDelay",20,[Microsoft.Win32.RegistryValueKind]::DWord);
+        $Registry.SetValue("TdrDdiDelay",10,[Microsoft.Win32.RegistryValueKind]::DWord);
+        log "TDR BSOD delay has been set, but restart of PC suggested. Continuing in a few seconds..." -ForegroundColor Magenta
+        Start-Sleep -Seconds 10;
+    }
+
     
     ## Fetch Ram Size, Write It To File (For Commands)
     $TotalMemory = [math]::Round((Get-CimInstance -ClassName CIM_ComputerSystem).TotalPhysicalMemory / 1mb, 2) 
