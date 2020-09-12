@@ -1,5 +1,8 @@
 # SWARM: Profit Switching AI For HiveOS, Linux, & Windows
 
+[![Watch the video]()](https://www.youtube.com/watch?v=HaENG55FMt0&t=5s)
+
+
 **IMPORTANT** : SWARM attempts to provide miners that work for as many cards as possible. Some miners may work for your cards, some may not. All miners are set with default settings provided from developers themselves (with logging enabled, if available). There is a ``-Bans`` argument that lets you remotely remove miners from the list. SWARM should support, if not all late model cards.
 
 Windows Version Does Not Require HiveOS Windows. SWARM is built with all HiveOS API methods, and its own utilities like autofan, and overclocking. However, the overclocking for AMD requires prior registry modifications and compute mode activated to fully manipulate power play tables. If you are unsure how to do this- Run Win_Optimize.bat as an administrator. This will make an attempt to edit/make the registry entries for you, and set cards in compute mode. Reboot afterwards.
