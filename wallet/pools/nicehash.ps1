@@ -10,8 +10,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
+using module .\build\powershell\global\stats.psm1
 
-$Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
+$Name = "nicehash"
 $PoolQuery = "https://api2.nicehash.com/main/api/v2/mining/external/"
 
 $Query = @()

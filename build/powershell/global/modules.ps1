@@ -33,8 +33,9 @@ function Global:Get-ChildItemContent {
             $script = [Scriptblock]::Create($Script_Content);
             $Runspace.SessionStateProxy.SetVariable("Wallets", $Global:Wallets);
             $Runspace.SessionStateProxy.SetVariable("Config", $Global:Config);
-            $Runspace.SessionStateProxy.SetVariable("Name", $Name)
-            $Runspace.SessionStateProxy.Path.SetLocation($($(vars).dir)) | Out-Null;
+            $Runspace.SessionStateProxy.SetVariable("Name", $Name);
+            $Runspace.SessionStateProxy.SetVariable("WalletKeys",$Global:WalletKeys);
+            $Runspace.SessionStateProxy.Path.SetLocation($env:SWARM_DIR) | Out-Null;
             $handle = $PowerShell.AddScript($script).BeginInvoke();
             While (!$handle.IsCompleted) {
                 Start-Sleep -Milliseconds 200

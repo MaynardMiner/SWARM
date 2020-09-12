@@ -30,7 +30,7 @@ Function Global:Get-WalletTable {
     Global:Get-ChildItemContent -Path ".\wallet\pools"
 
     $WalletTable = @()
-    if (-not $GetWStats) { $GetWStats = get-wstats }
+    if (-not $GetWStats) { $GetWStats = Global:get-wstats }
 
     $Sym = @()
 

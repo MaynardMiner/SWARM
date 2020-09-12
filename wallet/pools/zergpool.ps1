@@ -10,11 +10,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
+using module .\build\powershell\global\stats.psm1
 
-$Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
+$Name = "zergpool"
 $PoolQuery = "http://api.zergpool.com:8080/api/wallet?address="
 
 $Query = @()
+
+Write-Host "Key = $($Global:WalletKeys.Wallet1.BTC.address)"
 
 $Global:WalletKeys.AltWallet1.PSObject.Properties.Name | ForEach-Object {
     if ($Global:WalletKeys.AltWallet1.$_.address -ne "" -and $Global:WalletKeys.AltWallet1.$_.Pools -contains $Name) {
@@ -69,6 +72,6 @@ $Query | % {
 
 $Query | % {
     if ($_.Response.unpaid -gt 0) {
-        Set-WStat -Name $_.Name -Symbol $_.symbol -address $_.address -balance $_.response.balance -unpaid $_.response.unpaid
+        Global:Set-WStat -Name $_.Name -Symbol $_.symbol -address $_.address -balance $_.response.balance -unpaid $_.response.unpaid
     }
 }

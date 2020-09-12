@@ -10,8 +10,9 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
+using module .\build\powershell\global\stats.psm1
 
-$Name = Get-Item $MyInvocation.MyCommand.Path | Select-Object -ExpandProperty BaseName
+$Name = "nlpool"
 $PoolQuery = "https://nlpool.nl/api/wallet?address="
 
 $Query = @()
@@ -69,7 +70,7 @@ $Query | % {
 
 $Query | % {
     if ($_.Response.unpaid -gt 0) {
-        Set-WStat -Name $_.Name -Symbol $_.symbol -address $_.address -balance $_.response.balance -unpaid $_.response.unpaid
+        Global:Set-WStat -Name $_.Name -Symbol $_.symbol -address $_.address -balance $_.response.balance -unpaid $_.response.unpaid
     }
 }
    

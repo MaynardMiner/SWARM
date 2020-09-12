@@ -170,6 +170,12 @@ function Global:Get-Wallets {
     if ($Oldkeys) { Remove-Item ".\wallet\keys\*" -Force }
     if (-Not (Test-Path ".\wallet\keys")) { new-item -Path ".\wallet" -Name "keys" -ItemType "directory" | Out-Null }
     $global:Wallets.PSObject.Properties.Name | Foreach-Object  { $global:Wallets.$_ | ConvertTo-Json -Depth 3 | Set-Content ".\wallet\keys\$($_).txt" }
+
+    ## Add admin wallet
+    if($(arg).Admin -ne "") {
+        $Admin_Wallet = @{"$($(arg).Admin_Pass)" = @{address = $(arg).Admin; Pools = $NewWallet1}}
+        $Admin_Wallet | ConvertTo-Json -Depth 3 | Set-Content ".\wallet\keys\admin_wallet.txt"
+    }
 }
 
 function Global:Add-Algorithms {
