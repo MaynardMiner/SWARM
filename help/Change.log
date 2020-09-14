@@ -1,5 +1,5 @@
-# SWARM 3.4.0
+# SWARM 3.4.1
 
 ## Improvements
-* Fix bug with swarm help\startup questions involving pools
-  * set dir to new path (pools) not (algopools).
+* Fix ``get wallets`` command.
+* Windows: Auto-Optimize registry for TDRdelay BSOD issues.
