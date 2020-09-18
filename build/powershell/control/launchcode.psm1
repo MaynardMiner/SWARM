@@ -345,7 +345,9 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                         }
                     }
                 }
-                else { $start += "Invoke-Expression "".\$($MinerCurrent.MinerName) $MinerArguments""" }
+                else { 
+                    $start = "Invoke-Expression `'.\$($MinerCurrent.MinerName) $MinerArguments`'"
+                }
 
                 $script = @()
                 $script +=
