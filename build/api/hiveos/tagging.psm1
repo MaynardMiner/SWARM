@@ -31,9 +31,6 @@ function Global:Update-HiveTagging {
         $Tag_List += (Get-ChildItem "pools\pps" | Where-Object name -like "*ps1*").BaseName;
         $Tag_List += (Get-ChildItem "pools\prop" | Where-Object name -like "*ps1*").BaseName;
 
-        $Miner_Pool = $_.MinerPool;
-        $Profit_Day = $_.Profit_Day;
-        $Miner_Name = $_.Name.Replace("-1", "");
         $miner_tagid = $null;
         $pool_tagid = $null;
         $Worker_TagIDs = @();
