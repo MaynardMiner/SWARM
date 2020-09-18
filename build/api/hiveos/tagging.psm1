@@ -9,8 +9,16 @@ function Global:Update-HiveTagging {
             $Miner_Name = $_.Name.Replace("-1", "");
         }
 
-        $(vars).BestActiveMiners | ForEach-Object {
-            $Profit_Day += $_.Profit_Day
+        $IsBenchmarking = $null -ne $(vars).BestActiveMiners | Where-Object {$_.Profit_Day -eq "bench"}
+
+        if(!$IsBenchmarking) {
+            $(vars).BestActiveMiners | ForEach-Object {
+                $Profit_Day = [math]::Round($Profit_Day, 6)
+                $Profit_Day += $_.Profit_Day
+            }    
+        }
+        else {
+            $Profit_Day = "bench"
         }
 
         log "SWARM Is Tagging Worker With Information" -ForeGroundColor Cyan;
@@ -75,7 +83,6 @@ function Global:Update-HiveTagging {
         ## Create new profit tag
         $New_Profit_Day = "$($Global:Config.hive_params.Worker) Profit: BENCHMARKING"
         if ($Profit_Day -ne "bench") {
-            $Profit_Day = [math]::Round($Profit_Day, 6)
             $New_Profit_Day = "$($Global:Config.hive_params.Worker) Profit: $Profit_Day BTC\Day"
         }
         $New_Profit_Tag = @{ name = $New_Profit_Day; color = 11; }
