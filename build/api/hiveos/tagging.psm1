@@ -9,7 +9,7 @@ function Global:Update-HiveTagging {
             $Miner_Name = $_.Name.Replace("-1", "");
         }
 
-        $IsBenchmarking = $null -ne $(vars).BestActiveMiners | Where-Object {$_.Profit_Day -eq "bench"}
+        $IsBenchmarking = $null -ne ($(vars).BestActiveMiners | Where-Object {$_.Profit_Day -eq "bench"})
 
         if(!$IsBenchmarking) {
             $(vars).BestActiveMiners | ForEach-Object {
