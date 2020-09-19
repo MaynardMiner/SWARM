@@ -69,7 +69,11 @@ $(vars).AMDTypes | ForEach-Object {
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 $GetUser = $_.$User;
                 $UserPass = " -p $($_.$Pass)$($Diff) "
-                if($_.Worker){ $GetUser = $GetUser + "." + $_.Worker; $UserPass = " " }    
+                if($_.Worker){ $GetUser = $GetUser + "." + $_.Worker; $UserPass = " " }
+                if($_.Name -eq "hashrent") {
+                    $GetUser = $GetUser + "." + $GetUser.split("/")[1];
+                    $UserPass = " -p x "
+                }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $(vars).Coins
