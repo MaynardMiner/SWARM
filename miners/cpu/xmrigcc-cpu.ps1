@@ -74,8 +74,8 @@ $(vars).CPUTypes | ForEach-Object {
                     Version    = "$($(vars).cpu.$CName.version)"
                     DeviceCall = "xmrig-opt"
                     Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --cpu-priority $($(arg).cpu_priority) --http-enabled --http-port=10002 -o stratum+tcp://$($_.Pool_Host):$($_.Port) -u $($_.User1) -p $($_.Pass1)$($Diff) --donate-level=1 --nicehash --log-file=`'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                    HashRates  = $Stat.Hour
-                    HashRate_Adjusted = $Hashstat
+                    HashRates  = [Decimal]$Stat.Hour
+                    HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
                     Worker     = $(arg).Rigname1
                     Rejections = $Stat.Rejections

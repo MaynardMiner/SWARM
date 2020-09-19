@@ -101,8 +101,8 @@ $(vars).AMDTypes | ForEach-Object {
                     Version    = "$($(vars).AMD.$CName.version)"
                     DeviceCall = "ccminer"
                     Arguments  = "-a $A --api 0.0.0.0:$Port --no-nvml --platform 2 --log-file `'$log`' --url $Stratum$($_.Pool_Host):$($_.Port) --user $UserValue$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                    HashRates  = $Stat.Hour
-                    HashRate_Adjusted = $Hashstat
+                    HashRates  = [Decimal]$Stat.Hour
+                    HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
                     Rejections = $Stat.Rejections
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 

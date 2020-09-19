@@ -80,8 +80,8 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Version    = "$($(vars).nvidia.$CName.version)"
                     DeviceCall = "xmrstak"
                     Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --http-enabled --http-port=$Port -o stratum+tcp://$($_.Pool_Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) --donate-level 1 --no-cpu --cuda --nicehash --log-file=`'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"    
-                    HashRates  = $Stat.Hour
-                    HashRate_Adjusted = $Hashstat
+                    HashRates  = [Decimal]$Stat.Hour
+                    HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
                     Rejections = $Stat.Rejections
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 

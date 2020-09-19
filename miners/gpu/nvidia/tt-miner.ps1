@@ -94,8 +94,8 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Version    = "$($(vars).nvidia.$CName.version)"
                     DeviceCall = "ttminer"
                     Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --nvidia -o $Url $Worker-b localhost:$Port -u $($_.$User) -p $($_.$Pass) -log `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                    HashRates  = $Stat.Hour
-                    HashRate_Adjusted = $Hashstat
+                    HashRates  = [Decimal]$Stat.Hour
+                    HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
                     Rejections = $Stat.Rejections
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
