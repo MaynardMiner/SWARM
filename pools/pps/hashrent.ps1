@@ -32,7 +32,7 @@ if ($Name -in $(arg).PoolName) {
         $GH = [convert]::ToDecimal([regex]::match($request.content, '<span class="GH_Revenue">([^/)]+?)</span>').Value.Replace('<span class="GH_Revenue">', '').Replace('</span>', ''));
         $Estimate = [Convert]::ToDecimal(($GH / 1000000000));    
         $Value = [convert]::ToDecimal($Estimate * (1 - ($Fee / 100)));
-        $Stat = [Pool_Stat]::New("$($Name)_$($Whalesburg_Algorithm)", $Value, 0, -1, $false)
+        $Stat = [Pool_Stat]::New("$($Name)_Ethash", $Value, 0, -1, $false)
         $Level = $Stat.$($(arg).Stat_Algo)
         $previous = $Stat.Day_MA
 
