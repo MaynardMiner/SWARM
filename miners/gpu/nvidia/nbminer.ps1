@@ -63,12 +63,16 @@ $(vars).NVIDIATypes | ForEach-Object {
             else { $HashStat = $Stat.Hour }
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 $SelName = $_.Name
+                $GetUser = $_.$User;
+                $GetPass = $_.$Pass;
+                $GetWorker = $_.Worker;
                 switch ($MinerAlgo) {
                     "ethash" {
                         Switch ($SelName) {
-                            "nicehash" { $Stratum = "nicehash+tcp://"; $A = "ethash" }
-                            "zergpool" { $Stratum = "stratum+tcp://"; $A = "ethash" }
-                            "whalesburg" { $Stratum = "stratum+tcp://"; $A = "ethash" }
+                            "nicehash" { $Stratum = "nicehash+tcp://"; $A = "ethash"; $UserValue = $GetUser + ":" + $GetPass }
+                            "zergpool" { $Stratum = "stratum+tcp://"; $A = "ethash"; $UserValue = $GetUser + ":" + $GetPass }
+                            "whalesburg" { $Stratum = "ethproxy+tcp://"; $A = "ethash"; $UserValue = $GetUser + "." + $GetWorker + ":" + "x" }
+                            "hashrent" { $Stratum = "ethproxy+tcp://"; $A = "ethash"; $UserValue = $GetUser + "." + $GetUser.Split("/")[1] + ":" + $GetPass }
                         }
                     }
                     "cuckaroo29" { $Stratum = "nicehash+tcp://"; $A = "cuckarood" }
@@ -95,7 +99,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).nvidia.nbminer.version)"
                     DeviceCall = "ccminer"
-                    Arguments  = "-a $A --api 0.0.0.0:$Port --no-nvml --platform 1 --log-file `'$log`' --url $Stratum$($_.Pool_Host):$($_.Port) --user $($_.$User):$($_.$Pass)$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "-a $A --api 0.0.0.0:$Port --no-nvml --platform 1 --log-file `'$log`' --url $Stratum$($_.Pool_Host):$($_.Port) --user $UserValue$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     HashRate_Adjusted = $Hashstat
                     Quote      = $_.Price

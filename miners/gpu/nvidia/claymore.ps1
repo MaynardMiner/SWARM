@@ -68,8 +68,13 @@ $(vars).NVIDIATypes | ForEach-Object {
             else { $HashStat = $Stat.Hour }
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 $SelName = $_.Name;
+                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                if ($_.Worker) { $MinerWorker = "-eworker $($_.Worker)" }
+                else { $MinerWorker = "-epsw $($_.$Pass)$($Diff)" }
+                $GetUser = $_.$User
                 switch ($SelName) {
                     "nicehash" { $AddArgs = " -esm 3 -estale 0 " }
+                    "hashrent" { $AddArgs = " -eworker $($GetUser.Split("/")[1]) -estale 0 "}
                     default { $AddArgs = " " }
                 }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
@@ -89,7 +94,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).nvidia.claymore.version)"
                     DeviceCall = "claymore"
-                    Arguments  = "-platform 2 -mport $Port -epool $($_.Protocol)://$($_.Pool_Host):$($_.Port) -ewal $($_.$User) $MinerWorker -allcoins 1 -allpools 1 -wd 0 -gser 2 -dbg -1$AddArgs-logfile `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "-platform 2 -mport $Port -epool $($_.Protocol)://$($_.Pool_Host):$($_.Port) -ewal $GetUser $MinerWorker -allcoins 1 -allpools 1 -wd 0 -gser 2 -dbg -1$AddArgs-logfile `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     HashRate_Adjusted = $Hashstat
                     Quote      = $_.Price

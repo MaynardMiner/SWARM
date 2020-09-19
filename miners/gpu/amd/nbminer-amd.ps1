@@ -64,21 +64,26 @@ $(vars).AMDTypes | ForEach-Object {
             else { $HashStat = $Stat.Hour }
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 $SelName = $_.Name
+                $GetUser = $_.$User;
+                $GetPass = $_.$Pass;
+                $GetWorker = $_.Worker;
                 switch ($MinerAlgo) {
                     "ethash" {
                         Switch ($SelName) {
-                            "nicehash" { $Stratum = "nicehash+tcp://"; $A = "ethash" }
-                            "zergpool" { $Stratum = "stratum+tcp://"; $A = "ethash" }
-                            "whalesburg" { $Stratum = "stratum+tcp://"; $A = "ethash" }
+                            "nicehash" { $Stratum = "nicehash+tcp://"; $A = "ethash"; $UserValue = $GetUser + ":" + $GetPass }
+                            "zergpool" { $Stratum = "stratum+tcp://"; $A = "ethash"; $UserValue = $GetUser + ":" + $GetPass }
+                            "whalesburg" { $Stratum = "ethproxy+tcp://"; $A = "ethash"; $UserValue = $GetUser + "." + $GetWorker + ":" + "x" }
+                            "hashrent" { $Stratum = "ethproxy+tcp://"; $A = "ethash"; $UserValue = $GetUser + "." + $GetUser.Split("/")[1] + ":" + $GetPass }
                         }
                     }
-                    "cuckaroo29" { $Stratum = "nicehash+tcp://"; $A = "cuckarood" }
-                    "cuckaroo29-bfc" { $Stratum = "nicehash+tcp://"; $A = "bfc" }
-                    "cuckaroo29d" { $Stratum = "nicehash+tcp://"; $A = "cuckarood" }
-                    "cuckatoo31" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo" }
-                    "handshake" { $Stratum = "stratum+tcp://"; $A = "hns" }
-                    "kawpow" { $Stratum = "stratum+tcp://"; $A = "kawpow" }
-                    default { $Stratum = "stratum+tcp://"; $A = "$($MinerConfig.$ConfigType.naming.$MinerAlgo)" }
+                    "cuckaroo29" { $Stratum = "nicehash+tcp://"; $A = "cuckarood"; $UserValue = $GetUser }
+                    "cuckaroo29-bfc" { $Stratum = "nicehash+tcp://"; $A = "bfc"; $UserValue = $GetUser }
+                    "cuckaroo29d" { $Stratum = "nicehash+tcp://"; $A = "cuckarood"; $UserValue = $GetUser }
+                    "cuckatoo31" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo"; $UserValue = $GetUser }
+                    "cuckatoo32" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo32"; $UserValue = $GetUser }
+                    "handshake" { $Stratum = "stratum+tcp://"; $A = "hns"; $UserValue = $GetUser }
+                    "kawpow" { $Stratum = "stratum+tcp://"; $A = "kawpow"; $UserValue = $GetUser }
+                    default { $Stratum = "stratum+tcp://"; $A = "$($MinerConfig.$ConfigType.naming.$MinerAlgo)"; $UserValue = $GetUser }
                 }        
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                 [PSCustomObject]@{
@@ -95,7 +100,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).AMD.$CName.version)"
                     DeviceCall = "ccminer"
-                    Arguments  = "-a $A --api 0.0.0.0:$Port --no-nvml --platform 2 --log-file `'$log`' --url $Stratum$($_.Pool_Host):$($_.Port) --user $($_.$User):$($_.$Pass)$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "-a $A --api 0.0.0.0:$Port --no-nvml --platform 2 --log-file `'$log`' --url $Stratum$($_.Pool_Host):$($_.Port) --user $UserValue$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = $Stat.Hour
                     HashRate_Adjusted = $Hashstat
                     Quote      = $_.Price

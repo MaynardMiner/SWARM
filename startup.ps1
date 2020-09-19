@@ -94,7 +94,14 @@ if ($args) {
                 }            
             }
             else {
-                if ($parsed.$Com -eq "new") { $parsed.$Com = $args[$i] }
+                if ($parsed.$Com -eq "new") { 
+                    if($Com -eq "WorkerInstance") {
+                        $parsed.$Com = $ListCheck
+                    }
+                    else {
+                        $parsed.$Com = $args[$i] 
+                    }
+                }
                 else {
                     $NewArray = @()
                     $Parsed.$Com | Foreach-Object { $NewArray += $args[$i] }

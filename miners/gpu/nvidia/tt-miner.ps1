@@ -75,6 +75,10 @@ $(vars).NVIDIATypes | ForEach-Object {
                 if($_.Name -eq "zergpool") {
                     $Url = "$($_.Pool_Host):$($_.Port)"
                 }
+                if($_.Name -eq "hashrent") {
+                    $Url = "$($_.Pool_Host):$($_.Port)"
+                    $Worker = "-worker $($_.$User.Split("/")[1]) "
+                }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $(vars).Coins

@@ -72,6 +72,10 @@ $(vars).NVIDIATypes | ForEach-Object {
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 $SelName = $_.Name
                 $SelAlgo = $_.Algorithm
+                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                if ($_.Worker) { $MinerWorker = " -worker $($_.Worker) " }
+                else { $MinerWorker = " -pass $($_.$Pass)$($Diff) " }
+                $GetUser = $_.$User;
                 switch ($SelName) {
                     "nicehash" {
                         switch ($SelAlgo) {
@@ -89,10 +93,12 @@ $(vars).NVIDIATypes | ForEach-Object {
                             "ethash" { $AddArgs = " -proto 2 -rate 1 " }
                         }
                     }
+                    "hashrent" {
+                        switch ($SelAlgo) {
+                            "ethash" { $AddArgs = " -proto 2 -rate 1 -stales 0 "; $MinerWorker = " -worker $($GetUser.Split("/")[1] ) -pass x" }
+                        }
+                    }
                 }
-                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
-                if ($_.Worker) { $MinerWorker = " -worker $($_.Worker) " }
-                else { $MinerWorker = " -pass $($_.$Pass)$($Diff) " }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $(vars).Coins

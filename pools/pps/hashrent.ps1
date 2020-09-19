@@ -25,16 +25,9 @@ if ($Name -in $(arg).PoolName) {
         return "WARNING: SWARM contacted ($Name) but ($Name) the response was empty."        
     } 
     
-    $Hashrent_Port = "8008"
-    Switch ($(arg).Location) {
-        "US" { $Region = "eu"; $Hashrent_Port = "62054" }
-        "ASIA" { $Region = "ru" }
-        "EUROPE" { $Region = "eu"; $Hashrent_Port = "62054" }
-        "JAPAN" { $Region = "ru" }
-    }
-
     if ($(vars).Algorithm -contains "ethash") {
-        $Hashrent_Host = $Region + ".hashrent.pro";
+        $Hashrent_Port = "7007"
+        $Hashrent_Host = $Region + "ru.hashrent.pro";
         $Fee = 0.5;
         $GH = [convert]::ToDecimal([regex]::match($request.content, '<span class="GH_Revenue">([^/)]+?)</span>').Value.Replace('<span class="GH_Revenue">', '').Replace('</span>', ''));
         $Estimate = [Convert]::ToDecimal(($GH / 1000000000));    
@@ -43,11 +36,11 @@ if ($Name -in $(arg).PoolName) {
         $Level = $Stat.$($(arg).Stat_Algo)
         $previous = $Stat.Day_MA
 
-        $User1 = $(arg).SuperWallet + ".$($(arg).WorkerInstance)"
+        $User1 = $(arg).SuperWallet + "/$($(arg).WorkerInstance)"
         ## User2
-        $User2 = $(arg).SuperWallet + ".$($(arg).WorkerInstance)"
+        $User2 = $(arg).SuperWallet + "/$($(arg).WorkerInstance)"
         ## User3
-        $User3 = $(arg).SuperWallet + ".$($(arg).WorkerInstance)"
+        $User3 = $(arg).SuperWallet + "/$($(arg).WorkerInstance)"
 
         [Pool]::New(
             ## Symbol
