@@ -2676,3 +2676,12 @@ identity. Was related to machine potentially having multiple active MAC addresse
 ## Improvements
 * Fix bug with swarm help\startup questions involving pools
   * set dir to new path (pools) not (algopools).
+
+#############################################
+#############################################
+
+# SWARM 3.4.1
+
+## Improvements
+* Fix ``get wallets`` command.
+* Windows: Auto-Optimize registry for TDRdelay BSOD issues.

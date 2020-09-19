@@ -1,5 +1,24 @@
-# SWARM 3.4.1
+# SWARM 3.4.2
+
+## Note
+* This is a pre-release for users to test new added pool. I have will have a full update with miners in near future.
+
+## What's New?
+* New PPS Pool: Hashrent.pro added.
+* Hashrent is a Ethash Pay-Per-Share pool in which testing seems competitive against nicehash.
+* Hashrent is a PPS, meaning great for switching between pools. Hashrent pays in BTC (Auto-Exchange).
+* Hashrent is beta/expiremental.
+* Hashrent requires a user account made.
+* Hashrent requires -SuperWallet argument. This is supplied by their site, and is the Pegas Superprofit wallet.
+* Hashrent requires -HashrentInstance instance argument. When you create a farm, this is instance number of farm.
+* An example of -HashrentInstance would be: -HashrentInstance 001 for first farm.
+* New argument for hashrent: -SuperWallet created
+* New argument for hashrent: -HashrentInstance created
+* hashrent not added to initial swarm_help- Will add after confirmed no issues. Must add manually.
 
 ## Improvements
-* Fix ``get wallets`` command.
-* Windows: Auto-Optimize registry for TDRdelay BSOD issues.
+* Move fancyIX to optional miners- Old, and no longer developed. Fails on most recent cards.
+* Hashrate from miners.ps1 forced as decimal & 0 value instead of null (was causing minor errors occasionally).
+* Fix issue with miners not launching when ran through debugging software.
+* Tagging now updates with profit/day from total rig, not just group1 i.e. (NVIDIA1 + CPU) or (AMD1 + NVIDIA2). Still shows only miner and pool from group 1 though.
+* BCD removed from cryptodredge- Missed it is was no longer supported.
