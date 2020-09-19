@@ -473,6 +473,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                                     "hasrefinery" { "$me[${magenta}m$($Pool)${me}[0m" }
                                     "zpool" { "$me[${gray}m$($Pool)${me}[0m" }
                                     "whalesburg" { "$me[${pink}m$($Pool)${me}[0m" }
+                                    "hashrent" { "$me[${white}m$($Pool)${me}[0m" }
                                 })"
                                 }; 
                                 Align = 'center'
@@ -500,6 +501,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                                 "hasrefinery" { "$me[${magenta}m$($Pool)${me}[0m" }
                                 "zpool" { "$me[${gray}m$($Pool)${me}[0m" }
                                 "whalesburg" { "$me[${pink}m$($Pool)${me}[0m" }
+                                "hashrent" { "$me[${white}m$($Pool)${me}[0m" }
                             })"
                                 }; 
                                 Align = 'center'
@@ -526,6 +528,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                                 "hasrefinery" { "$me[${magenta}m$($Pool)${me}[0m" }
                                 "zpool" { "$me[${gray}m$($Pool)${me}[0m" }
                                 "whalesburg" { "$me[${pink}m$($Pool)${me}[0m" }
+                                "hashrent" { "$me[${white}m$($Pool)${me}[0m" }
                             })"
                                 }; 
                                 Align = 'center'
@@ -552,6 +555,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                                 "hasrefinery" { "$me[${magenta}m$($Pool)${me}[0m" }
                                 "zpool" { "$me[${gray}m$($Pool)${me}[0m" }
                                 "whalesburg" { "$me[${pink}m$($Pool)${me}[0m" }
+                                "hashrent" { "$me[${white}m$($Pool)${me}[0m" }
                             })"
                                 }; 
                                 Align = 'center'
@@ -577,6 +581,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                                 "hasrefinery" { "$me[${magenta}m$($Pool)${me}[0m" }
                                 "zpool" { "$me[${gray}m$($Pool)${me}[0m" }
                                 "whalesburg" { "$me[${pink}m$($Pool)${me}[0m" }
+                                "hashrent" { "$me[${white}m$($Pool)${me}[0m" }
                             })"
                                 }; 
                                 Align = 'center'
@@ -604,6 +609,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                                 "hasrefinery" { "$me[${magenta}m$($Pool)${me}[0m" }
                                 "zpool" { "$me[${gray}m$($Pool)${me}[0m" }
                                 "whalesburg" { "$me[${pink}m$($Pool)${me}[0m" }
+                                "hashrent" { "$me[${white}m$($Pool)${me}[0m" }
                             })"
                                 }; 
                                 Align = 'center'
@@ -630,6 +636,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                                 "hasrefinery" { "$me[${magenta}m$($Pool)${me}[0m" }
                                 "zpool" { "$me[${gray}m$($Pool)${me}[0m" }
                                 "whalesburg" { "$me[${pink}m$($Pool)${me}[0m" }
+                                "hashrent" { "$me[${white}m$($Pool)${me}[0m" }
                             })"
                                 }; 
                                 Align = 'center'
@@ -656,6 +663,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
                                 "hasrefinery" { "$me[${magenta}m$($Pool)${me}[0m" }
                                 "zpool" { "$me[${gray}m$($Pool)${me}[0m" }
                                 "whalesburg" { "$me[${pink}m$($Pool)${me}[0m" }
+                                "hashrent" { "$me[${white}m$($Pool)${me}[0m" }
                             })"
                                 }; 
                                 Align = 'center'

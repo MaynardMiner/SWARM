@@ -99,9 +99,14 @@ $(vars).NVIDIATypes | ForEach-Object {
                             "ethash" { $Naming = "ethproxy+ssl"; $AddArgs = " "; $PoolPort = "7777" }
                         }
                     }
+                    "hashrent" {
+                        switch($Sel) {
+                            "ethash" {$Naming = "ethproxy"; $UserPass = $GetUser.replace("/","%2F") + "." + $GetUser.Split("/")[1] + ":$GetPass"; $AddArgs = " ";}
+                        }
+                    }
                     default {
                         switch ($Sel) {
-                            "equihash_144/5" { $Naming = "equihash1445"; $AddArgs = "-pers auto " }
+                            "equihash_144/5" { $Naming = "equihash1445"; $AddArgs = " -pers auto " }
                         }
                     }
                 }
@@ -120,9 +125,9 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                         Version           = "$($(vars).nvidia.bminer.version)"
                         DeviceCall        = "bminer"
-                        Arguments         = "-uri $($Naming)://$UserPass@$($_.Pool_Host):$($PoolPort) $AddArgs-logfile `'$Log`' -api 127.0.0.1:$Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                        HashRates         = $Stat.Hour
-                        HashRate_Adjusted = $Hashstat
+                        Arguments         = "-uri $($Naming)://$UserPass@$($_.Pool_Host):$($PoolPort)$AddArgs-logfile `'$Log`' -api 127.0.0.1:$Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        HashRates         = [Decimal]$Stat.Hour
+                        HashRate_Adjusted = [Decimal]$Hashstat
                         Quote             = $_.Price
                         Rejections        = $Stat.Rejections
                         Power             = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 

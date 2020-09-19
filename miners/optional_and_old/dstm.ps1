@@ -83,8 +83,8 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Version    = "$($(vars).nvidia.dstm.version)"
                     DeviceCall = "dstm"
                     Arguments  = "--server $($_.Pool_Host) --port $($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) --telemetry=0.0.0.0:$Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                    HashRates  = $Stat.Hour
-                    HashRate_Adjusted = $Hashstat
+                    HashRates  = [Decimal]$Stat.Hour
+                    HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
                     Rejections = $Stat.Rejections
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 

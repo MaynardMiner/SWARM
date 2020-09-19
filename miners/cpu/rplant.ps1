@@ -71,8 +71,8 @@ $(vars).CPUTypes | ForEach-Object {
                     Version    = "$($(vars).cpu.rplant.version)"
                     DeviceCall = "cpuminer-opt"
                     Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --cpu-priority $($(arg).cpu_priority) -o stratum+tcp://$($_.Pool_Host):$($_.Port) -b 0.0.0.0:10001 -u $($_.User1) -p $($_.Pass1)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                    HashRates  = $Stat.Hour
-                    HashRate_Adjusted = $Hashstat
+                    HashRates  = [Decimal]$Stat.Hour
+                    HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
                     Worker     = $(arg).Rigname1
                     Rejections = $Stat.Rejections

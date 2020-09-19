@@ -79,8 +79,8 @@ $(vars).AMDTypes | ForEach-Object {
                     Host       = "$($_.Pool_Host):$($_.Port)"
                     User       = "$($_.$User)"
                     Arguments  = "$($_.Pool_Host):$($_.Port) $($_.$User) $($_.Algorithm)"
-                    HashRates  = $Stat.Hour
-                    HashRate_Adjusted = $Hashstat
+                    HashRates  = [Decimal]$Stat.Hour
+                    HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
                     Rejections = $Stat.Rejections
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 

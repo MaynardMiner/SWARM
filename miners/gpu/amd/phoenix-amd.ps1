@@ -71,6 +71,10 @@ $(vars).AMDTypes | ForEach-Object {
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 $SelName = $_.Name
                 $SelAlgo = $_.Algorithm
+                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                if ($_.Worker) { $MinerWorker = " -worker $($_.Worker) " }
+                else { $MinerWorker = " -pass $($_.$Pass)$($Diff) " }
+                $GetUser = $_.$User;
                 switch ($SelName) {
                     "nicehash" {
                         switch ($SelAlgo) {
@@ -88,10 +92,12 @@ $(vars).AMDTypes | ForEach-Object {
                             "ethash" { $AddArgs = " -proto 2 -rate 1 " }
                         }
                     }
+                    "hashrent" {
+                        switch ($SelAlgo) {
+                            "ethash" { $AddArgs = " -proto 2 -rate 1 -stales 0 "; $MinerWorker = " -worker $($GetUser.Split("/")[1] ) -pass x" }
+                        }
+                    }
                 }
-                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
-                if ($_.Worker) { $MinerWorker = " -worker $($_.Worker) " }
-                else { $MinerWorker = " -pass $($_.$Pass)$($Diff) " }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $(vars).Coins
@@ -107,8 +113,8 @@ $(vars).AMDTypes | ForEach-Object {
                     Version    = "$($(vars).amd.$CName.version)"
                     DeviceCall = "claymore"
                     Arguments  = "-amd -mport $Port -pool $($_.Protocol)://$($_.Pool_Host):$($_.Port) -wal $($_.$User)$MinerWorker$AddArgs -wd 0 -logfile `'$(Split-Path $Log -Leaf)`' -logdir `'$(Split-Path $Log)`' -gser 2 -dbg -1 -eres 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                    HashRates  = $Stat.Hour
-                    HashRate_Adjusted = $Hashstat
+                    HashRates  = [Decimal]$Stat.Hour
+                    HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
                     Rejections = $Stat.Rejections
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
