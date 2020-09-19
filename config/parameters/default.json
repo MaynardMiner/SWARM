@@ -111,5 +111,5 @@
     "Throttle": 0,
     "Hashrate_Threshold": 10,
     "SuperWallet": "",
-    "WorkerInstance": ""
+    "HashrentInstance": ""
 }

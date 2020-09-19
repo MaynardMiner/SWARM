@@ -95,7 +95,7 @@ if ($args) {
             }
             else {
                 if ($parsed.$Com -eq "new") { 
-                    if($Com -eq "WorkerInstance") {
+                    if($Com -eq "HashrentInstance") {
                         $parsed.$Com = $ListCheck
                     }
                     else {

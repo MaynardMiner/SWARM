@@ -36,11 +36,11 @@ if ($Name -in $(arg).PoolName) {
         $Level = $Stat.$($(arg).Stat_Algo)
         $previous = $Stat.Day_MA
 
-        $User1 = $(arg).SuperWallet + "/$($(arg).WorkerInstance)"
+        $User1 = $(arg).SuperWallet + "/$($(arg).HashrentInstance)"
         ## User2
-        $User2 = $(arg).SuperWallet + "/$($(arg).WorkerInstance)"
+        $User2 = $(arg).SuperWallet + "/$($(arg).HashrentInstance)"
         ## User3
-        $User3 = $(arg).SuperWallet + "/$($(arg).WorkerInstance)"
+        $User3 = $(arg).SuperWallet + "/$($(arg).HashrentInstance)"
 
         [Pool]::New(
             ## Symbol
