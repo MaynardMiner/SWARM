@@ -140,7 +140,7 @@ function Global:Expand-WebRequest {
             if ($Stuff) { log "Extraction Succeeded!" -ForegroundColor Green }
             else { log "Extraction Failed!" -ForegroundColor darkred; break }
 
-            $Search = Get-MinerExec "x64\$temp" $Name
+            $Search = Global:Get-MinerExec "x64\$temp" $Name
             if (-not $Search) { log "Miner Executable Not Found" -ForegroundColor DarkRed; break }
             $Contents = $Search
             $DirName = Split-Path $Contents -Leaf

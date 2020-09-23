@@ -187,7 +187,7 @@ function Global:Expand-WebRequest {
             else { log "Extraction Failed!" -ForegroundColor darkred; break }
 
             ##Now the fun part find the dir that the exec is in.
-            $Search = Get-MinerExec ".\x64\$temp" $Name
+            $Search = Global:Get-MinerExec ".\x64\$temp" $Name
             if (-not $Search) { log "Miner Executable Not Found" -ForegroundColor DarkRed; break }
             $Contents = $Search
             $DirName = Split-Path $Contents -Leaf
