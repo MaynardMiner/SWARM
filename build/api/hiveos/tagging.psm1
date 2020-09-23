@@ -3,15 +3,16 @@ function Global:Update-HiveTagging {
         $Miner_Pool = "";
         $Profit_Day = 0;
         $Miner_Name = "";
+        $AddTags = @();
 
         $(vars).BestActiveMiners | Where-Object { $_.Type -notlike "*ASIC*" -and $_.Type -ne "CPU" -and $_.Type -like "*1*" } | ForEach-Object {
             $Miner_Pool = $_.MinerPool;
             $Miner_Name = $_.Name.Replace("-1", "");
         }
 
-        $IsBenchmarking = $null -ne ($(vars).BestActiveMiners | Where-Object {$_.Profit_Day -eq "bench"})
+        $IsBenchmarking = $null -ne ($(vars).BestActiveMiners | Where-Object { $_.Profit_Day -eq "bench" })
 
-        if(!$IsBenchmarking) {
+        if (!$IsBenchmarking) {
             $(vars).BestActiveMiners | ForEach-Object {
                 $Profit_Day += $_.Profit_Day
             }    
@@ -66,26 +67,29 @@ function Global:Update-HiveTagging {
             log "WARNING: Failed to Contact HiveOS for Worker Information" -ForegroundColor Yellow; return 
         }
 
-        ## Delete old profit tag
-        $Old_Profit_Tag = ($Tags.data | Where-Object name -like "*$($Global:Config.hive_params.Worker) Profit:*").id
-        if ($Old_Profit_Tag) {
-            $API.Method = "DELETE";
-            $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/$Old_Profit_Tag"
-            try { 
-                $Set_Tag = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
-            }
-            catch { 
-                log "WARNING: Failed to Delete Profit Tag From HiveOS" -ForegroundColor Yellow; return 
-            }    
-        }
-
         ## Create new profit tag
         $New_Profit_Day = "$($Global:Config.hive_params.Worker) Profit: BENCHMARKING"
         if ($Profit_Day -ne "bench") {
             $Profit_Day = [math]::Round($Profit_Day, 6)
             $New_Profit_Day = "$($Global:Config.hive_params.Worker) Profit: $Profit_Day BTC\Day"
         }
-        $New_Profit_Tag = @{ name = $New_Profit_Day; color = 11; }
+        ## Patch old profit tag or add to list of tags to create
+        $Old_Profit_Tag = ($Tags.data | Where-Object name -like "*$($Global:Config.hive_params.Worker) Profit:*").id
+        if ($Old_Profit_Tag) {
+            $API.Method = "PATCH";
+            $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/$Old_Profit_Tag"
+            $API.Body = $Null
+            try { 
+                $Set_Tag = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
+            }
+            catch { 
+                log "WARNING: Failed to Update Profit Tag From HiveOS" -ForegroundColor Yellow; return 
+            }    
+            $Profit_Tag = $Old_Profit_Tag;
+        } 
+        else {
+            $AddTags += @{ name = $New_Profit_Day; color = 11; };
+        }
 
         ## Assign an ID to already created Tags.
         $set_tags = $Tags.data | Where-Object { $_.name -in $Tag_List }
@@ -97,42 +101,40 @@ function Global:Update-HiveTagging {
 
         ## If miner and pool tags don't exist, create
         ## Add New Profit Tag
-        $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags";
-        $API.Method = "POST";
+        if(!$Miner_Tag) {
+            $AddTags += @{ name = $Miner_Name; color = 17 };
+        }
+        if(!$Pool_Tag) {
+            $AddTags += @{ name = $Miner_Pool; color = 8 };
+        }
 
-        if (!$Miner_Tag) {
-            $API.Body = @{ name = $Miner_Name; color = 17 } | ConvertTo-Json -Compress;
+        ## Add tags that don't exit- Get their id
+        if($AddTags.Count -gt 0) {
+            $API.Body = @{ data = $AddTags }
+            $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/multi";
+            $API.Method = "POST";
             try { 
-                $Set_Tag = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
+                $Set_Tags = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
             }
             catch { 
                 log "WARNING: Failed To Update New Tags From HiveOS" -ForegroundColor Yellow; 
                 return 
             }    
-            $Miner_Tag = $Set_Tag.Id;
-        }
-        if (!$Pool_Tag) {
-            $API.Body = @{ name = $Miner_Pool; color = 8 } | ConvertTo-Json -Compress;
-            try { 
-                $Set_Tag = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
-            }
-            catch { 
-                log "WARNING: Failed To Update New Tags From HiveOS" -ForegroundColor Yellow; 
-                return 
-            }    
-            $Pool_Tag = $Set_Tag.Id;
-        }
 
-        ## Set the new Profit Tag
-        $API.Body = $New_Profit_Tag | ConvertTo-Json -Compress;
-        try { 
-            $Set_Tag = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
+            $New_Miner_Tag = $Set_Tags.data | Where-Object name -eq $Miner_Name;
+            $New_Pool_Tag = $Set_Tags.data | Where-Object name -eq $Pool_Tag;
+            $New_Profit_Tag = $Set_Tags.data | Where-Object name -eq $New_Profit_Day;
+
+            if($New_Miner_Tag) {
+                $Miner_Tag = $New_Miner_Tag.Id;
+            }
+            if($New_Pool_Tag) {
+                $Pool_Tag = $New_Pool_Tag.Id;
+            }
+            if($New_Profit_Tag) {
+                $Profit_Tag = $New_Profit_Tag.Id;
+            }
         }
-        catch { 
-            log "WARNING: Failed To Update New Tags From HiveOS" -ForegroundColor Yellow; 
-            return 
-        }    
-        $Profit_Tag = $Set_Tag.id;
 
         ## Remove Old Tags, But only SWARM tags.
         foreach ($tag in $Worker.tag_ids) {
