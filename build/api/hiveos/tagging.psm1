@@ -101,15 +101,15 @@ function Global:Update-HiveTagging {
 
         ## If miner and pool tags don't exist, create
         ## Add New Profit Tag
-        if(!$Miner_Tag) {
+        if (!$Miner_Tag) {
             $AddTags += @{ name = $Miner_Name; color = 17 };
         }
-        if(!$Pool_Tag) {
+        if (!$Pool_Tag) {
             $AddTags += @{ name = $Miner_Pool; color = 8 };
         }
 
         ## Add tags that don't exit- Get their id
-        if($AddTags.Count -gt 0) {
+        if ($AddTags.Count -gt 0) {
             $API.Body = @{ data = $AddTags }
             $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/multi";
             $API.Method = "POST";
@@ -125,13 +125,13 @@ function Global:Update-HiveTagging {
             $New_Pool_Tag = $Set_Tags.data | Where-Object name -eq $Pool_Tag;
             $New_Profit_Tag = $Set_Tags.data | Where-Object name -eq $New_Profit_Day;
 
-            if($New_Miner_Tag) {
+            if ($New_Miner_Tag) {
                 $Miner_Tag = $New_Miner_Tag.Id;
             }
-            if($New_Pool_Tag) {
+            if ($New_Pool_Tag) {
                 $Pool_Tag = $New_Pool_Tag.Id;
             }
-            if($New_Profit_Tag) {
+            if ($New_Profit_Tag) {
                 $Profit_Tag = $New_Profit_Tag.Id;
             }
         }
