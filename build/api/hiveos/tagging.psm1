@@ -78,7 +78,7 @@ function Global:Update-HiveTagging {
         if ($Old_Profit_Tag) {
             $API.Method = "PATCH";
             $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/$Old_Profit_Tag"
-            $API.Body = @{ name = $New_Profit_Day; color = 11; }
+            $API.Body = @{ name = $New_Profit_Day; color = 11; } | ConvertTo-Json -Compress;
             try { 
                 $Set_Tag = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
             }
@@ -110,7 +110,7 @@ function Global:Update-HiveTagging {
 
         ## Add tags that don't exit- Get their id
         if ($AddTags.Count -gt 0) {
-            $API.Body = @{ data = $AddTags }
+            $API.Body = @{ data = $AddTags } | ConvertTo-Json -Compress
             $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/multi";
             $API.Method = "POST";
             try { 
