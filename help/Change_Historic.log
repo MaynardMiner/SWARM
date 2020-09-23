@@ -2709,3 +2709,20 @@ identity. Was related to machine potentially having multiple active MAC addresse
 * Hashrate from miners.ps1 forced as decimal & 0 value instead of null (was causing minor errors occasionally).
 * Fix issue with miners not launching when ran through debugging software.
 * HiveOS Tagging now updates with profit/day from total rig, not just group1 i.e. (NVIDIA1 + CPU)
+
+#############################################
+#############################################
+
+# SWARM 3.4.3
+
+## Improvements
+* srbmulti- new api methods added.
+* srbmulti- many new algorithms added.
+* xmrigcc- Change exec name causing download in linux to fail.
+
+## Updates
+* t-rex updated (did not add ethash yet- still testing...Many pools and different methods).
+* teamredminer updated
+* wildrig updated
+* bminer updated
+* srbmulti updated and fixed

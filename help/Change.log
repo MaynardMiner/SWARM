@@ -1,13 +1,7 @@
-# SWARM 3.4.3
+# SWARM 3.4.4
 
 ## Improvements
-* srbmulti- new api methods added.
-* srbmulti- many new algorithms added.
-* xmrigcc- Change exec name causing download in linux to fail.
+* Update tagging api - Reduce number of calls to HiveOS server, which reduces chances of errors.
 
 ## Updates
-* t-rex updated (did not add ethash yet- still testing...Many pools and different methods).
-* teamredminer updated
-* wildrig updated
-* bminer updated
-* srbmulti updated and fixed
+* miniz updated
