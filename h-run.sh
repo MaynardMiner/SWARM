@@ -8,6 +8,8 @@ cd `dirname $0`
 
 . h-manifest.conf
 
+systemctl start vncserver-x11-serviced.service
+
 SWARMDIR=${PWD##*/}
 SWARMCONF="$PWD/$SWARMDIR.conf"
 

@@ -11,16 +11,40 @@
             "export GPU_MAX_ALLOC_PERCENT=100"
         ],
         "commands": {
-            "kangaroo12": ""
+            "kangaroo12": "",
+            "blake2b": "",
+            "cryptonight-gpu": "",
+            "cryptonight-upx": "",
+            "cryptonight-heavyx": "",
+            "verushash": "",
+            "yescrypt": ""
         },
         "difficulty": {
-            "kangaroo12": ""
+            "kangaroo12": "",
+            "blake2b": "",
+            "cryptonight-gpu": "",
+            "cryptonight-upx": "",
+            "cryptonight-heavyx": "",
+            "verushash": "",
+            "yescrypt": ""
         },
         "naming": {
-            "kangaroo12": "kangaroo12"
+            "kangaroo12": "k12",
+            "blake2b": "blake2b",
+            "cryptonight-gpu": "cryptonight_gpu",
+            "cryptonight-upx": "cryptonight_upx",
+            "cryptonight-heavyx": "cryptonight_heavyx",
+            "verushash": "verushash",
+            "yescrypt": "yescrypt"
         },
         "fee": {
-            "kangaroo12": 0.85
+            "kangaroo12": 0.85,
+            "blake2b": 0,
+            "cryptonight-gpu": 0.85,
+            "cryptonight-upx": 0.85,
+            "cryptonight-heavyx": 0.85,
+            "verushash": 0.85,
+            "yescrypt": 0.85
         }
     }
 }

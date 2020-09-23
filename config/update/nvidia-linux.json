@@ -183,9 +183,9 @@
     "NVIDIA2": ".\\bin\\t-rex-2\\t-rex",
     "NVIDIA3": ".\\bin\\t-rex-3\\t-rex",
     "minername": "t-rex",
-    "version": "0.16.2",
+    "version": "0.17.2",
     "optional": "No",
-    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.16.2/t-rex-0.16.2-linux-cuda10.0.tar.gz"
+    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.17.2/t-rex-0.17.2-linux-cuda10.0.tar.gz"
   },
   "zjazz": {
     "name": "zjazz",
@@ -238,9 +238,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "16.2.12",
+    "version": "16.3.1",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-v16.2.12-53338be-amd64.tar.xz"
+    "uri": "https://www.bminercontent.com/releases/bminer-v16.3.1-135666e-amd64.tar.xz"
   },
   "miniz": {
     "name": "miniz",
@@ -348,8 +348,8 @@
     "NVIDIA2": ".\\bin\\wildrig-nv-2\\wildrig-multi",
     "NVIDIA3": ".\\bin\\wildrig-nv-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.25.2",
+    "version": "0.27.2",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.25.2/wildrig-multi-linux-0.25.2.tar.gz"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.27.2/wildrig-multi-linux-0.27.2.tar.gz"
   }        
 }

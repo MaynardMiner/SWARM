@@ -84,9 +84,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
     "minername": "bminer.exe",
-    "version": "16.2.12",
+    "version": "16.3.1",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.2.12-53338be-amd64.zip"
+    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.3.1-135666e-amd64.zip"
   },
   "ehssand": {
     "name": "ehssand",
@@ -238,9 +238,9 @@
     "NVIDIA2": ".\\bin\\trex-2\\t-rex.exe",
     "NVIDIA3": ".\\bin\\trex-3\\t-rex.exe",
     "minername": "t-rex.exe",
-    "version": "0.16.2",
+    "version": "0.17.2",
     "optional": "No",
-    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.16.2/t-rex-0.16.2-win-cuda10.0.zip"
+    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.17.2/t-rex-0.17.2-win-cuda10.0.zip"
   },
   "zjazz": {
     "name": "zjazz",
@@ -315,8 +315,8 @@
     "NVIDIA2": ".\\bin\\wildrig-nv-2\\wildrig.exe",
     "NVIDIA3": ".\\bin\\wildrig-nv-3\\wildrig.exe",
     "minername": "wildrig.exe",
-    "version": "0.25.2",
+    "version": "0.27.2",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.25.2/wildrig-multi-windows-0.25.2.7z"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.27.2/wildrig-multi-windows-0.27.2.7z"
   }
 }

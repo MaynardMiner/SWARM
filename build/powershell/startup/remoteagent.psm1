@@ -180,6 +180,37 @@ Access Denied Error prevented.
                         }
                     }
 
+                    if ($ChangeFile -eq "srbmulti.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "cryptonight-gpu" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "cryptonight-gpu" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "cryptonight-gpu" "cryptonight_gpu" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "cryptonight-gpu" 0.85 -ErrorAction SilentlyContinue
+
+                                $Data.$_.commands | Add-Member "cryptonight-upx" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "cryptonight-upx" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "cryptonight-upx" "cryptonight_upx" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "cryptonight-upx" 0.85 -ErrorAction SilentlyContinue
+
+                                $Data.$_.commands | Add-Member "cryptonight-heavyx" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "cryptonight-heavyx" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "cryptonight-heavyx" "cryptonight_heavyx" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "cryptonight-heavyx" 0.85 -ErrorAction SilentlyContinue
+
+                                $Data.$_.commands | Add-Member "verushash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "verushash" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "verushash" "verushash" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "verushash" 0.85 -ErrorAction SilentlyContinue
+
+                                $Data.$_.commands | Add-Member "yescrypt" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "yescrypt" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "yescrypt" "yescrypt" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "yescrypt" 0.85 -ErrorAction SilentlyContinue
+                            }
+                        }
+                    }
+
                     if ($ChangeFile -eq "xmrig-amd.json") {
                         $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
@@ -1039,6 +1070,7 @@ Access Denied Error prevented.
                         $Data | add-Member "beamhashv3" @{alt_names = @("beamhashv3", "beamv3"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
                         $Data | add-Member "cuckaroo29-bfc" @{alt_names = @("cuckaroo29-bfc", "cuckaroo29bfc"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
                         $Data | add-Member "cuckarooz29" @{alt_names = @("cuckarooz29"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
+                        $Data | add-Member "blake2b" @{alt_names = @("blake2b"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
                     }
 
                     $Data | ConvertTo-Json -Depth 10 | Set-Content $NewJson;

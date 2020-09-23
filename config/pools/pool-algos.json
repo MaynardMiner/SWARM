@@ -82,6 +82,15 @@
       "comma seperated"
     ]
   },
+  "blake2b": {
+    "alt_names": [
+      "blake2b"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "bmw512": {
     "alt_names": [
       "bmw512"
@@ -583,7 +592,7 @@
   },
   "kangaroo12": {
     "alt_names": [
-      "kangaroo12",
+      "k12",
       "k12"
     ],
     "exclusions": [

@@ -7,9 +7,9 @@
     "AMD2": ".\\bin\\srbmulti-2\\SRBMiner-MULTI",
     "AMD3": ".\\bin\\srbmulti-3\\SRBMiner-MULTI",
     "minername": "SRBMiner-MULTI",
-    "version": "0.4.3",
+    "version": "0.5.2",
     "optional": "No",
-    "uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.4.3/SRBMiner-Multi-0-4-3-Linux.tar.xz"
+    "uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.5.2/SRBMiner-Multi-0-5-2-Linux.tar.xz"
   },
   "claymore-amd": {
     "name": "claymore-amd",
@@ -161,9 +161,9 @@
     "AMD2": ".\\bin\\teamredminer-2\\teamredminer",
     "AMD3": ".\\bin\\teamredminer-3\\teamredminer",
     "minername": "teamredminer",
-    "version": "0.7.9",
+    "version": "0.7.10",
     "optional": "No",
-    "uri": "https://github.com/todxx/teamredminer/releases/download/0.7.9/teamredminer-v0.7.9-linux.tgz"
+    "uri": "https://github.com/todxx/teamredminer/releases/download/0.7.10/teamredminer-v0.7.10-linux.tgz"
   },
   "xmr-stak": {
     "name": "xmr-stak",
@@ -194,9 +194,9 @@
     "AMD2": ".\\bin\\wildrig-2\\wildrig-multi",
     "AMD3": ".\\bin\\wildrig-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.25.2",
+    "version": "0.27.2",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.25.2/wildrig-multi-linux-0.25.2.tar.gz"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.27.2/wildrig-multi-linux-0.27.2.tar.gz"
   },
   "fancyix": {
     "name": "fancyix",
@@ -223,9 +223,9 @@
   "xmrigcc-amd": {
     "name": "xmrigcc-amd",
     "type": "amd",
-    "AMD1": ".\\bin\\xmrigcc-amd-1\\xmrigDaemon-amd",
-    "AMD2": ".\\bin\\xmrigcc-amd-2\\xmrigDaemon-amd",
-    "AMD3": ".\\bin\\xmrigcc-amd-3\\xmrigDaemon-amd",
+    "AMD1": ".\\bin\\xmrigcc-amd-1\\xmrigDaemon",
+    "AMD2": ".\\bin\\xmrigcc-amd-2\\xmrigDaemon",
+    "AMD3": ".\\bin\\xmrigcc-amd-3\\xmrigDaemon",
     "minername": "xmrigDaemon",
     "version": "2.8.0",
     "optional": "No",
