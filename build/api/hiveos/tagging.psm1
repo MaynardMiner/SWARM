@@ -78,7 +78,7 @@ function Global:Update-HiveTagging {
         if ($Old_Profit_Tag) {
             $API.Method = "PATCH";
             $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/$Old_Profit_Tag"
-            $API.Body = $Null
+            $API.Body = @{ name = $New_Profit_Day; color = 11; }
             try { 
                 $Set_Tag = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
             }
