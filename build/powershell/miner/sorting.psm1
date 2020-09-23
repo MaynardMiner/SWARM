@@ -474,7 +474,7 @@ function Global:Start-Sorting {
 function Global:Add-SwitchingThreshold {
     $(vars).BestActiveMiners | ForEach-Object {
         $Sel = $_
-        $SWMiner = $(vars).Miners | Where-Object Path -EQ $Sel.path | Where-Object Symbol -eq $Sel.Symbol | Where-Object Arguments -EQ $Sel.Arguments | Where-Object Type -EQ $Sel.Type 
+        $SWMiner = $(vars).Miners | Where-Object Path -EQ $sel.Path | Where-Object Arguments -EQ $sel.Arguments | Where-Object Symbol -eq $sel.Symbol | Where-Object Type -EQ $sel.Type  
         if ($SWMiner -and $NULL -ne $SWMiner.Profit -and $SWMiner.Profit -ne "bench") {
             if ($(arg).Switch_Threshold) {
                 log "Switching_Threshold changes $($SWMiner.Name) $($SWMiner.Algo) base factored price from $(($SWMiner.Profit * $(vars).Rates.$($(arg).Currency)).ToString("N2"))" -ForegroundColor Cyan -NoNewLine -Start; 
