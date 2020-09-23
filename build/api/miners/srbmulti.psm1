@@ -28,9 +28,9 @@ function Global:Get-StatsSrbmulti {
                 }
             }
             catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };
-            $global:MinerACC = $Data.shares.accepted; $global:ALLACC += $Data.shares.accepted 
-            $global:MinerREJ = $Data.shares.rejected; $global:ALLREG += $Data.shares.accepted
-            $Hash | ForEach-Object { $global:GPUKHS += [Double]$_ / 1000000 }
+            $global:MinerACC = $Data.algorithms.shares.accepted; $global:ALLACC += $Data.algorithms.shares.accepted 
+            $global:MinerREJ = $Data.algorithms.shares.rejected; $global:ALLREG += $Data.algorithms.shares.rejected
+            $Hash | ForEach-Object { $global:GPUKHS += [Double]$_ / 1000 }
         }
     }
     else { Global:Set-APIFailure }

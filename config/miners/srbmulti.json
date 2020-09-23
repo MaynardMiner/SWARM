@@ -12,45 +12,39 @@
         ],
         "commands": {
             "kangaroo12": "",
-            "handshake": "",
-            "keccak": "",
             "blake2b": "",
-            "cryptonight_gpu": "",
-            "cryptonight_upx": "",
-            "cryptonight_heavyx": "",
+            "cryptonight-gpu": "",
+            "cryptonight-upx": "",
+            "cryptonight-heavyx": "",
             "verushash": "",
             "yescrypt": ""
         },
         "difficulty": {
             "kangaroo12": "",
-            "handshake": "",
             "blake2b": "",
-            "cryptonight_gpu": "",
-            "cryptonight_upx": "",
-            "cryptonight_heavyx": "",
+            "cryptonight-gpu": "",
+            "cryptonight-upx": "",
+            "cryptonight-heavyx": "",
             "verushash": "",
             "yescrypt": ""
         },
         "naming": {
             "kangaroo12": "k12",
-            "handshake": "handshake",
-            "blake2b": "blake2s",
-            "cryptonight_gpu": "cryptonight_gpu",
-            "cryptonight_upx": "cryptonight_upx",
-            "cryptonight_heavyx": "cryptonight_heavyx",
+            "blake2b": "blake2b",
+            "cryptonight-gpu": "cryptonight_gpu",
+            "cryptonight-upx": "cryptonight_upx",
+            "cryptonight-heavyx": "cryptonight_heavyx",
             "verushash": "verushash",
-            "yescrypt": ""
+            "yescrypt": "yescrypt"
         },
         "fee": {
             "kangaroo12": 0.85,
-            "handshake": 0.85,
-            "keccak": 0,
             "blake2b": 0,
-            "cryptonight_gpu": 0.85,
-            "cryptonight_upx": 0.85,
-            "cryptonight_heavyx": 0.85,
+            "cryptonight-gpu": 0.85,
+            "cryptonight-upx": 0.85,
+            "cryptonight-heavyx": 0.85,
             "verushash": 0.85,
-            "yescrypt": ""
+            "yescrypt": 0.85
         }
     }
 }
