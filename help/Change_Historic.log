@@ -2345,7 +2345,7 @@ you wish to edit/modify it.
 
 ## Improvments
 * Fixed issues with updater causing problems
-  with Kangaroo12, cuckaroo29-bfc, beamhashv3
+  with k12, cuckaroo29-bfc, beamhashv3
   other other algos when adding them to configs.
   
 ############################################
@@ -2685,3 +2685,27 @@ identity. Was related to machine potentially having multiple active MAC addresse
 ## Improvements
 * Fix ``get wallets`` command.
 * Windows: Auto-Optimize registry for TDRdelay BSOD issues.
+
+#############################################
+#############################################
+
+# SWARM 3.4.2
+
+## Note
+* This is a pre-release for users to test new added pool. I have will have a full update with miners in near future.
+
+## What's New?
+* New PPS Pool: Hashrent.pro added.
+* Hashrent is a Ethash Pay-Per-Share pool in which testing seems competitive against nicehash.
+* Hashrent is a PPS, meaning great for switching between pools. Hashrent pays in BTC (Auto-Exchange).
+* Hashrent requires a user account made.
+* New argument for hashrent: -SuperWallet created *required if used*
+* New argument for hashrent: -HashrentInstance created *required if used*
+* An example of -HashrentInstance would be: -HashrentInstance 001 for first farm.
+* hashrent not added to initial swarm_help- Will add after confirmed no issues. Must add manually.
+
+## Improvements
+* Move fancyIX to optional miners- Old, and no longer developed. Fails on most recent cards.
+* Hashrate from miners.ps1 forced as decimal & 0 value instead of null (was causing minor errors occasionally).
+* Fix issue with miners not launching when ran through debugging software.
+* HiveOS Tagging now updates with profit/day from total rig, not just group1 i.e. (NVIDIA1 + CPU)
