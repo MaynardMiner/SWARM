@@ -1,3 +1,32 @@
+function Global:Using-Object
+{
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [AllowEmptyString()]
+        [AllowEmptyCollection()]
+        [AllowNull()]
+        [Object]
+        $InputObject,
+
+        [Parameter(Mandatory = $true)]
+        [scriptblock]
+        $ScriptBlock
+    )
+
+    try
+    {
+        . $ScriptBlock
+    }
+    finally
+    {
+        if ($null -ne $InputObject -and $InputObject -is [System.IDisposable])
+        {
+            $InputObject.Dispose()
+        }
+    }
+}
+
 function Global:Add-LogErrors {
     if ($Error.Count -gt 0) {
         $TimeStamp = (Get-Date)

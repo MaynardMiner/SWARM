@@ -145,6 +145,8 @@ if ($IsWindows) {
     Add-Type -Path ".\build\apps\launchcode.dll"
 }
 
+Add-Type -Path ".\build\apps\device\MegaApiClient.dll"
+
 ## Debug Mode- Allow you to run with last known arguments or commandline.json.
 $(vars).Add("debug", $false)
 if ($global:config.vars.debug -eq $True) {

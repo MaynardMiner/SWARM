@@ -99,6 +99,26 @@ function Global:Get-MinerExec($path, $Name){
     return $null;
 }
 
+function Global:Get-MegaDownload($link) {
+    $id = [IO.Path]::GetFileName($link);
+    $client = [CG.Web.MegaApiClient.MegaApiClient]::New();
+    $client.LoginAnonymous();
+    [uri]$uri = [uri]::New($link);
+    [System.Collections.Generic.IEnumerable[CG.Web.MegaApiClient.INode]]$nodes = $client.GetNodesFromLink($uri);
+    $node = $nodes | Where-Object id -eq $id;
+    $Path = [IO.Path]::Combine([IO.Path]::Combine($Env:SWARM_DIR, "x64"), $node.Name);
+    if ([IO.File]::Exists($Path)) {
+        Remove-Item -Path $Path -Force
+    }
+    Global:Using-Object ($stream = $client.Download($node)) {
+        Global:Using-Object ($filestream = [System.IO.FileStream]::New($Path, [System.IO.FileMode]::CreateNew)) {
+            $stream.CopyTo($filestream);
+        }
+    }
+    $client.Logout();
+    return $Path;
+}
+
 function Global:Expand-WebRequest {
     param(
         [Parameter(Mandatory = $true, Position = 0)]
@@ -170,8 +190,14 @@ function Global:Expand-WebRequest {
             log "Download URI is $URI"
             log "Miner Exec is $Name"
             log "Miner Dir is $MoveThere"
-            try { Invoke-WebRequest "$Uri" -OutFile "$X64_zip" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 10 }catch { log "WARNING: Failed to contact $URI for miner binary" -ForeGroundColor Yellow }
-
+            $IsMega = $URI -like "*mega.nz*"
+            if ($IsMega) {
+                $X64_zip = Global:Get-MegaDownload $URI;     
+                $X64_extract = [IO.Path]::GetFileNameWithoutExtension($X64_zip);
+            }
+            else {
+                try { Invoke-WebRequest "$Uri" -OutFile "$X64_zip" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 10 }catch { log "WARNING: Failed to contact $URI for miner binary" -ForeGroundColor Yellow }
+            }
             if (Test-Path "$X64_zip") { log "Download Succeeded!" -ForegroundColor Green }
             else { log "Download Failed!" -ForegroundColor DarkRed; break }
 
@@ -199,6 +225,14 @@ function Global:Expand-WebRequest {
             log "Download URI is $URI"
             log "Miner Exec is $Name"
             log "Miner Dir is $MoveThere"
+            $IsMega = $URI -like "*mega.nz*"
+            if ($IsMega) {
+                $X64_zip = Global:Get-MegaDownload $URI;     
+                $X64_extract = [IO.Path]::GetFileNameWithoutExtension($X64_zip);
+            }
+            else {
+                try { Invoke-WebRequest "$Uri" -OutFile "$X64_zip" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 10 }catch { log "WARNING: Failed to contact $URI for miner binary" -ForeGroundColor Yellow }
+            }
             try { Invoke-WebRequest "$Uri" -OutFile "$X64_zip" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 10 }catch { log "WARNING: Failed to contact $URI for miner binary" -ForeGroundColor Yellow }
             if (Test-Path "$X64_zip") { log "Download Succeeded!" -ForegroundColor Green }
             else { log "Download Failed!" -ForegroundColor DarkRed; break }
