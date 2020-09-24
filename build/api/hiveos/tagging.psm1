@@ -138,7 +138,7 @@ function Global:Update-HiveTagging {
 
         ## Remove Old Tags, But only SWARM tags.
         foreach ($tag in $Worker.tag_ids) {
-            if ($tag -notin $set_tags.id -and $tag -notin $Old_Profit_Tag) {
+            if ($tag -notin $Set_Tags.data.id -and $tag -notin $Old_Profit_Tag) {
                 $Worker_TagIDs += $tag;
             }
         }
