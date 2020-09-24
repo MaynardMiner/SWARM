@@ -114,16 +114,16 @@ function Global:Update-HiveTagging {
             $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/multi";
             $API.Method = "POST";
             try { 
-                $Set_Tags = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
+                $New_tags = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
             }
             catch { 
                 log "WARNING: Failed To Update New Tags From HiveOS" -ForegroundColor Yellow; 
                 return 
             }    
 
-            $New_Miner_Tag = $Set_Tags.data | Where-Object name -eq $Miner_Name;
-            $New_Pool_Tag = $Set_Tags.data | Where-Object name -eq $Pool_Tag;
-            $New_Profit_Tag = $Set_Tags.data | Where-Object name -eq $New_Profit_Day;
+            $New_Miner_Tag = $New_tags.data | Where-Object name -eq $Miner_Name;
+            $New_Pool_Tag = $New_tags.data | Where-Object name -eq $Pool_Tag;
+            $New_Profit_Tag = $New_tags.data | Where-Object name -eq $New_Profit_Day;
 
             if ($New_Miner_Tag) {
                 $Miner_Tag = $New_Miner_Tag.Id;
