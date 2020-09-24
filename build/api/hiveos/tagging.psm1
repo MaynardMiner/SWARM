@@ -138,7 +138,7 @@ function Global:Update-HiveTagging {
 
         ## Remove Old Tags, But only SWARM tags.
         foreach ($tag in $Worker.tag_ids) {
-            if ($tag -notin $Set_Tags.data.id -and $tag -notin $Old_Profit_Tag) {
+            if ($tag -notin $Set_Tags.id -and $tag -notin $Old_Profit_Tag) {
                 $Worker_TagIDs += $tag;
             }
         }
@@ -154,7 +154,7 @@ function Global:Update-HiveTagging {
             $Worker_Post = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
         }
         catch { 
-            log "WARNING: Failed To update miner name" -ForegroundColor Yellow; 
+            log "WARNING: Failed To update tags" -ForegroundColor Yellow; 
             return;
         }
     }
