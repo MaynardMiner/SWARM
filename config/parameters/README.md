@@ -12,8 +12,8 @@ There can be up to three different files here, each has a specific purpose.
 ## commandline.json
 * Created when launched.
 * Contains starting arguments for user.
-* If user did not specify a parameter- SWARM will use from default.json.
-* All parameters must be listed here.
+* If user did not specify a parameter- SWARM will use from default.json. May throw error, no big deal.
+* All parameters must be listed here
 
 ## newarguments.json
 * Created from remote configuration/configuration help-me
