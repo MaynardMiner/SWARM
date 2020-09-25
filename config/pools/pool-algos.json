@@ -704,6 +704,33 @@
       "comma seperated"
     ]
   },
+  "megabtx": {
+    "alt_names": [
+      "megabtx"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "megamec": {
+    "alt_names": [
+      "megamec"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "minotaur": {
+    "alt_names": [
+      "minotaur"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "mtp": {
     "alt_names": [
       "mtp"
@@ -972,6 +999,15 @@
       "comma seperated"
     ]
   },
+  "x11k": {
+    "alt_names": [
+      "x11k"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "x11evo": {
     "alt_names": [
       "x11evo"
@@ -1083,6 +1119,15 @@
   "x25x": {
     "alt_names": [
       "x25x"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "x33": {
+    "alt_names": [
+      "x33"
     ],
     "exclusions": [
       "add pool or miner here",

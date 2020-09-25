@@ -47,7 +47,12 @@
             "x25x": "",
             "skein2": "",
             "x17r": "",
-            "kawpow": ""
+            "kawpow": "",
+            "megabtx": "",
+            "megamec": "",
+            "minotaur": "",
+            "x11k": "",
+            "x33": ""
         },
         "difficulty": {
             "anime": "",
@@ -92,7 +97,12 @@
             "x25x": "",
             "skein2": "",
             "x17r": "",
-            "kawpow": ""
+            "kawpow": "",
+            "megabtx": "",
+            "megamec": "",
+            "minotaur": "",
+            "x11k": "",
+            "x33": ""
         },
         "naming": {
             "anime": "anime",
@@ -137,7 +147,12 @@
             "x25x": "x25x",
             "skein2": "skein2",
             "x17r": "x17r",
-            "kawpow": "kawpow"
+            "kawpow": "kawpow",
+            "megabtx": "megabtx",
+            "megamec": "megamec",
+            "minotaur": "minotaur",
+            "x11k": "x11k",
+            "x33": "x33"
         },
         "fee": {
             "anime": 1,
@@ -182,7 +197,12 @@
             "x25x": 1,
             "skein2": 1,
             "x17r": 1,
-            "kawpow": 1
+            "kawpow": 1,
+            "megabtx": 1,
+            "megamec": 1,
+            "minotaur": 1,
+            "x11k": 1,
+            "x33": 1
         }
     }
 }

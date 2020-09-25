@@ -685,6 +685,30 @@ Access Denied Error prevented.
                                 $Data.$_.naming | Add-Member "kawpow" "kawpow" -ErrorAction SilentlyContinue
                                 $Data.$_.fee | Add-Member "kawpow" 1 -ErrorAction SilentlyContinue
 
+                                $Data.$_.commands | Add-Member "megabtx" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "megabtx" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "megabtx" "megabtx" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "megabtx" 1 -ErrorAction SilentlyContinue
+
+                                $Data.$_.commands | Add-Member "megamec" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "megamec" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "megamec" "megamec" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "megamec" 1 -ErrorAction SilentlyContinue
+
+                                $Data.$_.commands | Add-Member "minotaur" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "minotaur" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "minotaur" "minotaur" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "minotaur" 1 -ErrorAction SilentlyContinue
+
+                                $Data.$_.commands | Add-Member "x11k" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "x11k" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "x11k" "x11k" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "x11k" 1 -ErrorAction SilentlyContinue
+
+                                $Data.$_.commands | Add-Member "x33" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "x33" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "x33" "x33" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "x33" 1 -ErrorAction SilentlyContinue
                             }
                         }
                     }
@@ -1071,6 +1095,12 @@ Access Denied Error prevented.
                         $Data | add-Member "cuckaroo29-bfc" @{alt_names = @("cuckaroo29-bfc", "cuckaroo29bfc"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
                         $Data | add-Member "cuckarooz29" @{alt_names = @("cuckarooz29"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
                         $Data | add-Member "blake2b" @{alt_names = @("blake2b"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
+                        $Data | add-Member "megabtx" @{alt_names = @("megabtx"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
+                        $Data | add-Member "megamec" @{alt_names = @("megamec"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
+                        $Data | add-Member "minotaur" @{alt_names = @("minotaur"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
+                        $Data | add-Member "x11k" @{alt_names = @("x11k"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
+                        $Data | add-Member "x33" @{alt_names = @("x33"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
+
                     }
 
                     $Data | ConvertTo-Json -Depth 10 | Set-Content $NewJson;
