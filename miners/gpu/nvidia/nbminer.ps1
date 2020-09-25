@@ -75,14 +75,14 @@ $(vars).NVIDIATypes | ForEach-Object {
                             "hashrent" { $Stratum = "ethproxy+tcp://"; $A = "ethash"; $UserValue = $GetUser + "." + $GetUser.Split("/")[1] + ":" + $GetPass }
                         }
                     }
-                    "cuckaroo29" { $Stratum = "nicehash+tcp://"; $A = "cuckarood" }
-                    "cuckaroo29-bfc" { $Stratum = "nicehash+tcp://"; $A = "bfc" }
-                    "cuckaroo29d" { $Stratum = "nicehash+tcp://"; $A = "cuckarood" }
-                    "cuckatoo31" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo" }
-                    "cuckatoo32" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo32" }
-                    "handshake" { $Stratum = "stratum+tcp://"; $A = "hns" }
-                    "kawpow" { $Stratum = "stratum+tcp://"; $A = "kawpow" }
-                    default { $Stratum = "stratum+tcp://"; $A = "$($MinerConfig.$ConfigType.naming.$MinerAlgo)" }
+                    "cuckaroo29" { $Stratum = "nicehash+tcp://"; $A = "cuckarood"; $UserValue = $GetUser }
+                    "cuckaroo29-bfc" { $Stratum = "nicehash+tcp://"; $A = "bfc"; $UserValue = $GetUser }
+                    "cuckaroo29d" { $Stratum = "nicehash+tcp://"; $A = "cuckarood"; $UserValue = $GetUser }
+                    "cuckatoo31" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo"; $UserValue = $GetUser }
+                    "cuckatoo32" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo32"; $UserValue = $GetUser }
+                    "handshake" { $Stratum = "stratum+tcp://"; $A = "hns"; $UserValue = $GetUser }
+                    "kawpow" { $Stratum = "stratum+tcp://"; $A = "kawpow"; $UserValue = $GetUser }
+                    default { $Stratum = "stratum+tcp://"; $A = "$($MinerConfig.$ConfigType.naming.$MinerAlgo)"; $UserValue = $GetUser }
                 }        
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                 [PSCustomObject]@{
