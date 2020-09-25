@@ -81,30 +81,35 @@ $(vars).AMDTypes | ForEach-Object {
                 $SelAlgo = $_.Algorithm
                 $SelName = $_.Name
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
-                $UserPass = " --pass $($_.$Pass)$Diff "
-                $GetUser = $_.$User;
+                $UserPass = "--pass $($_.$Pass)$Diff "
+                $GetUser = "$($_.$User)";
                 $Worker = $_.Worker;
                 switch ($SelAlgo) {
                     "equihash_150/5" { $AddArgs = "--algo 150_5 " }
                     "cuckoo_cycle" { $AddArgs = "--algo aeternity " }
-                    "beamv2" { $AddArgs = "--algo 150_5 " }
-                    "cuckaroo29-bfc" { $AddArgs = "--algo bfc " }
+                    "cuckaroom" { $AddArgs = "--algo grin29 " }
                     "cuckarooz29" { $AddArgs = "--algo grin29 " }
-                    "equihash_125/4" { $AddArgs = "--algo 125_4 --pers auto " }
+                    "cuckaroo29-bfc" { $AddArgs = "--algo bfc " }
+                    "cuckatoo31" { $AddArgs = "--algo grin31 " }
+                    "cuckatoo32" { $AddArgs = "--algo grin32 " }
+                    "beamv2" { $AddArgs = "--algo 150_5 " }
                     "equihash_96/5" { $AddArgs = "--algo 96_5 --pers auto " }
+                    "equihash_125/4" { $AddArgs = "--algo 125_4 --pers auto " }
                     "equihash_192/7" { $AddArgs = "--algo 192_7 --pers auto " }
                     "equihash_144/5" { $AddArgs = "--algo 144_5 --pers auto " }
                     "equihash_210/9" { $AddArgs = "--algo 210_9 --pers auto " }
                     "equihash_200/9" { $AddArgs = "--algo 200_9 --pers auto " }
-                    "eaglesong" { $AddArgs = "--algo eaglesong " }
+                    "kawpow" { $AddArgs = "--algo kawpow " }
                     "ethash" { 
                         switch ($SelName) {
                             "nicehash" { $AddArgs = "--algo ethash --proto stratum " }
                             "zergpool" { $AddArgs = "--algo ethash " }
-                            "whalesburg" { $UserPass = " "; $GetUser = "$($Getuser)" + "." + "$($Worker)"; $AddArgs = "--algo ethash " }
+                            "whalesburg" { $UserPass = ""; $GetUser = "$($Getuser)" + "." + "$($Worker)"; $AddArgs = "--algo ethash " }
                             default { $AddArgs = "--algo ethash --proto stratum" }
                         }
                     }
+                    "eaglesong" { $AddArgs = "--algo eaglesong " }
+                    "beamhashv3" { $AddArgs = "--algo beamhash " }
                 }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                 [PSCustomObject]@{
@@ -122,7 +127,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Version    = "$($(vars).amd.$CName.version)"
                     ArgDevices = $ArgDevices
                     DeviceCall = "gminer"
-                    Arguments  = "--api $Port --server $($_.Pool_Host) --port $($_.Port) $AddArgs--user $GetUser$UserPass --logfile `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "--api $Port --server $($_.Pool_Host) --port $($_.Port) $AddArgs--user $GetUser $UserPass--logfile `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
