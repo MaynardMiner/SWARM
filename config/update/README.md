@@ -52,5 +52,4 @@ See ``-Optional`` argument.
 ### Miner : uri [string]
 This is the download link. Note the following:
 * Miner must be contained in a folder when unzipped.
-* Must use direct downloads (mega will not work).
 * Recommended to use tar.gz for linux, .zip for windows.
