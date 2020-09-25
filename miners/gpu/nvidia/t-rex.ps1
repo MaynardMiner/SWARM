@@ -63,45 +63,37 @@ $(vars).NVIDIATypes | ForEach-Object {
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
             if ($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3) { $HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
             else { $HashStat = $Stat.Hour }
-            $Pools | Where-Object Algorithm -eq $MinerAlgo | Where-Object Name -ne "hashrent" | ForEach-Object {
+            $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
-                $GetUser = "$($_.$User) ";
-                $Worker = $_.Worker;
-                $SelName = $_.Name
-                if ($MinerAlgo -eq "ethash") {
-                    switch ($SelName) {
-                        "whalesburg" { $GetUser = "$($Getuser)" + "." + "$($Worker)"; }
-                    }
-                }
                 [PSCustomObject]@{
-                    MName             = $Name
-                    Coin              = $(vars).Coins
-                    Delay             = $MinerConfig.$ConfigType.delay
-                    Fees              = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
-                    Symbol            = "$($_.Symbol)"
-                    MinerName         = $MinerName
-                    Prestart          = $PreStart
-                    Type              = $ConfigType
-                    Path              = $Path
-                    Devices           = $Devices
-                    Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
-                    Version           = "$($(vars).nvidia.$CName.version)"
-                    DeviceCall        = "trex"
-                    Arguments         = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no-watchdog --no-nvml -o stratum+tcp://$($_.Pool_Host):$($_.Port) --api-bind-telnet 0.0.0.0:$Port2 -l `'$Log`' --api-bind-http 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                    HashRates         = [Decimal]$Stat.Hour
+                    MName      = $Name
+                    Coin       = $(vars).Coins
+                    Delay      = $MinerConfig.$ConfigType.delay
+                    Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
+                    Symbol     = "$($_.Symbol)"
+                    MinerName  = $MinerName
+                    Prestart   = $PreStart
+                    Type       = $ConfigType
+                    Path       = $Path
+                    Devices    = $Devices
+                    Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
+                    Version    = "$($(vars).nvidia.$CName.version)"
+                    DeviceCall = "trex"
+                    Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no-watchdog --no-nvml -o stratum+tcp://$($_.Pool_Host):$($_.Port) --api-bind-telnet 0.0.0.0:$Port2 -l `'$Log`' --api-bind-http 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
-                    Quote             = $_.Price
-                    Rejections        = $Stat.Rejections
-                    Power             = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
-                    MinerPool         = "$($_.Name)"
-                    Port              = $Port
-                    Worker            = $Rig
-                    API               = "trex"
-                    Wallet            = "$($_.$User)"
-                    URI               = $Uri
-                    Server            = "localhost"
-                    Algo              = "$($_.Algorithm)"
-                    Log               = "miner_generated"                                     
+                    Quote      = $_.Price
+                    Rejections = $Stat.Rejections
+                    Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                    MinerPool  = "$($_.Name)"
+                    Port       = $Port
+                    Worker     = $Rig
+                    API        = "trex"
+                    Wallet     = "$($_.$User)"
+                    URI        = $Uri
+                    Server     = "localhost"
+                    Algo       = "$($_.Algorithm)"
+                    Log        = "miner_generated"                                     
                 }            
             }
         }
