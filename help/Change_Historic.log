@@ -2726,3 +2726,14 @@ identity. Was related to machine potentially having multiple active MAC addresse
 * wildrig updated
 * bminer updated
 * srbmulti updated and fixed
+
+#############################################
+#############################################
+
+# SWARM 3.4.4
+
+## Improvements
+* Update tagging api - Reduce number of calls to HiveOS server, which reduces chances of errors.
+
+## Updates
+* miniz updated
