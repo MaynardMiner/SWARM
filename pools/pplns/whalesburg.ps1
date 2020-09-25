@@ -17,11 +17,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 if ($(arg).PoolName -eq $Name) {
     $Whalesburg_Request = [PSCustomObject]@{ } 
  
-    try { $Whalesburg_Request = Invoke-RestMethod "https://payouts.whalesburg.com/profitabilities/share_price" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
+    try { $Whalesburg_Request = Invoke-RestMethod "https://payouts.whalesburg.com/profitabilities/share_price" -UseBasicParsing -TimeoutSec 30 -ErrorAction Stop } 
     catch { 
         return "WARNING: SWARM contact $($Name) but there was no response"
     }
-    try { $Whalesburg_Stats = Invoke-RestMethod "https://stats.whalesburg.com/current_stats" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
+    try { $Whalesburg_Stats = Invoke-RestMethod "https://stats.whalesburg.com/current_stats" -UseBasicParsing -TimeoutSec 30 -ErrorAction Stop } 
     catch { 
         return "WARNING: SWARM contacted ($Name) but there was no response." 
     }

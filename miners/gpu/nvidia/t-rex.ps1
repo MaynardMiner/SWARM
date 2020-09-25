@@ -68,8 +68,8 @@ $(vars).NVIDIATypes | ForEach-Object {
                 $SelAlgo = $_.Algorithm
                 $SelName = $_.Name
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
-                $UserPass = " -p $($_.$Pass)$Diff "
-                $GetUser = "$($_.$User) ";
+                $UserPass = "-p $($_.$Pass)$Diff "
+                $GetUser = "$($_.$User)";
                 $Worker = $_.Worker;
                 $stratum = "stratum+tcp://"
                 switch ($SelAlgo) {
@@ -94,7 +94,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version           = "$($(vars).nvidia.$CName.version)"
                     DeviceCall        = "trex"
-                    Arguments         = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no-watchdog --no-nvml -o $stratum$($_.Pool_Host):$($_.Port) --api-bind-telnet 0.0.0.0:$Port2 -l `'$Log`' --api-bind-http 0.0.0.0:$Port$UserPass-u $($GetUser)$($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments         = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no-watchdog --no-nvml -o $stratum$($_.Pool_Host):$($_.Port) --api-bind-telnet 0.0.0.0:$Port2 -u $($GetUser) $UserPass-l `'$Log`' --api-bind-http 0.0.0.0:$Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates         = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
