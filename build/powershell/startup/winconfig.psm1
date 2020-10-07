@@ -309,6 +309,10 @@ function Global:Start-WindowsConfig {
         try { [IO.File]::Copy($smi, $dest, $true) | Out-Null } catch { }
         $dest = [IO.Path]::Join($x86_NVSMI, "nvml.dll")
         try { [IO.File]::Copy($nvml, $dest, $true) | Out-Null } catch { }
+        ## Output issue for user if transfer failed
+        if(-not ([IO.File]::Exists($dest))) {
+            log "nvidia-smi and nvml.dll does not exist in $x86_NVSMI. SWARM failed to transfer. Miners and gpu stats will not work correctly." -ForegroundColor Red
+        }
     }
 
     if ( [IO.Directory]::Exists($x64_driver) ) {
@@ -317,6 +321,9 @@ function Global:Start-WindowsConfig {
         try { [IO.File]::Copy($smi, $dest, $true) | Out-Null } catch { }
         $dest = [IO.Path]::Join($x64_NVSMI, "nvml.dll")
         try { [IO.File]::Copy($nvml, $dest, $true) | Out-Null } catch { }
+        if(-not ([IO.File]::Exists($dest))) {
+            log "nvidia-smi and nvml.dll does not exist in $x64_NVSMI. SWARM failed to transfer. Miners and gpu stats will not work correctly." -ForegroundColor Red
+        }
     }
 
     ## TDR delay fix for Windows.
