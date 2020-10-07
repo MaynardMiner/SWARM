@@ -207,6 +207,11 @@ Access Denied Error prevented.
                                 $Data.$_.difficulty | Add-Member "yescrypt" "" -ErrorAction SilentlyContinue 
                                 $Data.$_.naming | Add-Member "yescrypt" "yescrypt" -ErrorAction SilentlyContinue
                                 $Data.$_.fee | Add-Member "yescrypt" 0.85 -ErrorAction SilentlyContinue
+
+                                $Data.$_.commands | Add-Member "argon2d-dyn" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "argon2d-dyn" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "argon2d-dyn" "argon2d_dynamic" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "argon2d-dyn" 0.85 -ErrorAction SilentlyContinue
                             }
                         }
                     }
