@@ -65,19 +65,19 @@ $(vars).NVIDIATypes | ForEach-Object {
             else { $HashStat = $Stat.Hour }
             $Pools | 
                 Where-Object Algorithm -eq $MinerAlgo | 
-                Where-Object {
-                    if($_.Name -eq "zergpool" -and $_.Algorithm -ne "ethash"){$_}
-                    elseif($_.Name -ne "whalesburg"){$_}
-                } |
+                Where-Object { if($_.Name -ne "whalesburg"){$_}} |
                 ForEach-Object {
-                if ($_.Worker) { $Worker = "-worker $($_.Worker) " }else { $Worker = $Null }
-                $Url = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
-                if($_.Name -eq "zergpool") {
-                    $Url = "$($_.Pool_Host):$($_.Port)"
-                }
-                if($_.Name -eq "hashrent") {
-                    $Url = "$($_.Pool_Host):$($_.Port)"
-                    $Worker = "-worker $($_.$User.Split("/")[1]) "
+                $SelName = $_.Name;
+                $GetUser = $_.$User;
+                $GetPass = $_.$Pass;
+                $GetWorker = $_.Worker;
+                $GetHost = $_.Pool_Host;
+                $GetPort = $_.Port;
+                switch($SelName) {
+                    "nicehash" { $PArg = "-P $($GetUser):$($GetPass)@$($GetHost):$($GetPort) "; }
+                    "zergpool" { $PArg = "-P $($GetUser).x:$($GetPass)@$($GetHost):$($GetPort) ";}
+                    "hashrent" { $PArg = "-o $($GetHost):$($GetPort) -u $GetUser -worker $($GetUser.Split("/")[1]) "}
+                    "whalesburt" {$PArg = "-P $($GetUser).$($GetWorker):x@$($GetHost):$($GetPort) "}
                 }
                 [PSCustomObject]@{
                     MName      = $Name
@@ -93,7 +93,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).nvidia.$CName.version)"
                     DeviceCall = "ttminer"
-                    Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --nvidia -o $Url $Worker-b localhost:$Port -u $($_.$User) -p $($_.$Pass) -log `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) $PArg -b localhost:$Port -log `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
