@@ -130,6 +130,7 @@ function Global:set-minerconfig($ConfigMiner, $Logs) {
             $ConfigFile += "pool1=$($ConfigMiner.Host.Pool)"
             $ConfigFile += "rigPassword=$($ConfigMiner.Host.Password)"
             $ConfigFile += "devices=$($ConfigMiner.Host.Devices)"
+            $ConfigFile += "memTweak=$($ConfigMiner.Host.memTweak)"
         }
     }
     $Config = Join-Path $ConfigPathDir $ConfigPath
