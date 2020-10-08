@@ -279,7 +279,7 @@ Argument          Options           Explanation
                                     specified. Default is 1%. This increase is set on INCOMING
                                     estimates, not its current profit/day.
 
--Switch_Threshold   0-1000          Expression is in percentage. Hashrate threshold attempts to prevent 
+-Hashrate_Threshold   0-1000         Expression is in percentage. Hashrate threshold attempts to prevent 
                                     constant switching from one miner to another when the algorithm is 
                                     the same. If Hashrate_Threshold is greater than 0, SWARM will reduce
                                     the hashrate of the algorithm from all other miners capable
