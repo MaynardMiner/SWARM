@@ -71,7 +71,7 @@ $(vars).AMDTypes | ForEach-Object {
                     "ethash" {
                         Switch ($SelName) {
                             "nicehash" { $Stratum = "nicehash+tcp://"; $A = "ethash"; $UserValue = $GetUser + ":" + $GetPass }
-                            "zergpool" { $Stratum = "stratum+tcp://"; $A = "ethash"; $UserValue = $GetUser + "." + $GetPass }
+                            "zergpool" { $Stratum = "stratum+tcp://"; $A = "ethash"; $UserValue = $GetUser + "." + "x" + ":" + $GetPass }
                             "whalesburg" { $Stratum = "ethproxy+tcp://"; $A = "ethash"; $UserValue = $GetUser + "." + $GetWorker + ":" + "x" }
                             "hashrent" { $Stratum = "ethproxy+tcp://"; $A = "ethash"; $UserValue = $GetUser + "." + $GetUser.Split("/")[1] + ":" + $GetPass }
                         }
@@ -81,11 +81,11 @@ $(vars).AMDTypes | ForEach-Object {
                     "cuckaroo29d" { $Stratum = "nicehash+tcp://"; $A = "cuckarood"; $UserValue = $GetUser + ":" + $GetPass }
                     "cuckatoo31" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo"; $UserValue = $GetUser + ":" + $GetPass }
                     "cuckatoo32" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo32"; $UserValue = $GetUser + ":" + $GetPass }
-                    "handshake" { $Stratum = "stratum+tcp://"; $A = "hns"; $UserValue = $GetUser + ":" + $GetPass }
+                    "handshake" { $Stratum = "nicehash+tcp://"; $A = "hns"; $UserValue = $GetUser + ":" + $GetPass }
                     "kawpow" { 
                         switch ($SelName) {
                             "nicehash" { $Stratum = "nicehash+tcp://"; $A = "kawpow"; $UserValue = $GetUser + ":" + $GetPass }
-                            default { $Stratum = "stratum+tcp://"; $A = "kawpow"; $UserValue = $GetUser + "." + $GetPass }
+                            default { $Stratum = "stratum+tcp://"; $A = "kawpow"; $UserValue = $GetUser + "." + "x" + ":" + $GetPass }
                         }
                     }
                     default { $Stratum = "stratum+tcp://"; $A = "$($MinerConfig.$ConfigType.naming.$MinerAlgo)"; $UserValue = $GetUser + "." + $GetPass }
