@@ -212,6 +212,11 @@ Access Denied Error prevented.
                                 $Data.$_.difficulty | Add-Member "argon2d-dyn" "" -ErrorAction SilentlyContinue 
                                 $Data.$_.naming | Add-Member "argon2d-dyn" "argon2d_dynamic" -ErrorAction SilentlyContinue
                                 $Data.$_.fee | Add-Member "argon2d-dyn" 0.85 -ErrorAction SilentlyContinue
+
+                                $Data.$_.commands | Add-Member "ubqhash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "ubqhash" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "ubqhash" "ubqhash" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "ubqhash" 0.85 -ErrorAction SilentlyContinue
                             }
                         }
                     }
@@ -334,6 +339,11 @@ Access Denied Error prevented.
                                 $Data.$_.difficulty | Add-Member "kawpow" "" -ErrorAction SilentlyContinue 
                                 $Data.$_.naming | Add-Member "kawpow" "kawpow" -ErrorAction SilentlyContinue
                                 $Data.$_.fee | Add-Member "kawpow" 2 -ErrorAction SilentlyContinue
+
+                                $Data.$_.commands | Add-Member "ubqhash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "ubqhash" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "ubqhash" "ubqhash" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "ubqhash" 2 -ErrorAction SilentlyContinue
 
                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomx"
                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "randomx"
@@ -1105,7 +1115,7 @@ Access Denied Error prevented.
                         $Data | add-Member "minotaur" @{alt_names = @("minotaur"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
                         $Data | add-Member "x11k" @{alt_names = @("x11k"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
                         $Data | add-Member "x33" @{alt_names = @("x33"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
-
+                        $Data | add-Member "ubqhash" @{alt_names = @("ubqhash"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
                     }
 
                     $Data | ConvertTo-Json -Depth 10 | Set-Content $NewJson;

@@ -972,6 +972,15 @@
       "comma seperated"
     ]
   },
+  "ubqhash": {
+    "alt_names": [
+      "ubqhash"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "veil": {
     "alt_names": [
       "veil"
