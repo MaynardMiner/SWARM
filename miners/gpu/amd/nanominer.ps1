@@ -28,7 +28,14 @@ $(vars).AMDTypes | ForEach-Object {
     if ($Get_Devices -ne "none") {
         $GPUDevices1 = $Get_Devices
     }
-    else { $(vars).GCount.AMD.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($(vars).GCount.AMD.$_)," }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
+    else {
+        $(vars).GCount.AMD.PSObject.Properties.Name | ForEach-Object { 
+            $ArgTweak += "0,";
+            $ArgDevices += "$($(vars).GCount.AMD.$_),"
+        }
+        $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1);
+        $ArgTweak = $ArgTweak.Substring(0, $ArgTweak.Length - 1);
+    }
 
     ##Get Configuration File
     ##This is located in config\miners
@@ -68,43 +75,44 @@ $(vars).AMDTypes | ForEach-Object {
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 [PSCustomObject]@{
-                    MName      = $Name
-                    Coin       = $(vars).Coins
-                    Delay      = $MinerConfig.$ConfigType.delay
-                    Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
-                    Symbol     = "$($_.Symbol)"                    
-                    MinerName  = $MinerName                    
-                    Prestart   = $PreStart
-                    Type       = $ConfigType
-                    Path       = $Path
-                    Devices    = $Devices
-                    Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
-                    Version    = "$($(vars).amd.nanominer.version)"
-                    DeviceCall = "nanominer"
+                    MName             = $Name
+                    Coin              = $(vars).Coins
+                    Delay             = $MinerConfig.$ConfigType.delay
+                    Fees              = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
+                    Symbol            = "$($_.Symbol)"                    
+                    MinerName         = $MinerName                    
+                    Prestart          = $PreStart
+                    Type              = $ConfigType
+                    Path              = $Path
+                    Devices           = $Devices
+                    Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
+                    Version           = "$($(vars).amd.nanominer.version)"
+                    DeviceCall        = "nanominer"
                     ## Use Host because there is already an object set
-                    Host       = @{
+                    Host              = @{
                         algorithm = "$($($MinerConfig.$ConfigType.naming.$($_.Algorithm)))"
                         wallet    = "$($_.$User)";
                         password  = "$($_.$Pass)$($Diff)";
                         pool      = "$($_.Pool_Host):$($_.Port)";
                         port      = $Port;
-                        devices   = $ArgDevices
+                        devices   = $ArgDevices;
+                        memTweak  = $ArgTweak;
                     }
-                    Arguments  = "`[$($($MinerConfig.$ConfigType.naming.$($_.Algorithm)))`] wallet=$($_.$User) rigPassword=$($_.$Pass)$($Diff) pool1=$($_.Pool_Host):$($_.Port) webport=$Port logPath=$Log"
-                    HashRates  = [Decimal]$Stat.Hour
+                    Arguments         = "`[$($($MinerConfig.$ConfigType.naming.$($_.Algorithm)))`] wallet=$($_.$User) rigPassword=$($_.$Pass)$($Diff) pool1=$($_.Pool_Host):$($_.Port) webport=$Port logPath=$Log"
+                    HashRates         = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
-                    Quote      = $_.Price
-                    Rejections = $Stat.Rejections
-                    Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
-                    MinerPool  = "$($_.Name)"
-                    Port       = $Port
-                    Worker     = $Rig
-                    API        = "Nanominer"
-                    Wallet     = "$($_.$User)"
-                    URI        = $Uri
-                    Server     = "localhost"
-                    Algo       = "$($_.Algorithm)"                         
-                    Log        = "miner_generated" 
+                    Quote             = $_.Price
+                    Rejections        = $Stat.Rejections
+                    Power             = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                    MinerPool         = "$($_.Name)"
+                    Port              = $Port
+                    Worker            = $Rig
+                    API               = "Nanominer"
+                    Wallet            = "$($_.$User)"
+                    URI               = $Uri
+                    Server            = "localhost"
+                    Algo              = "$($_.Algorithm)"                         
+                    Log               = "miner_generated" 
                 }            
             }
         }

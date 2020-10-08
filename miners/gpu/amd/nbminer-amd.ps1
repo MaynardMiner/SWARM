@@ -71,50 +71,55 @@ $(vars).AMDTypes | ForEach-Object {
                     "ethash" {
                         Switch ($SelName) {
                             "nicehash" { $Stratum = "nicehash+tcp://"; $A = "ethash"; $UserValue = $GetUser + ":" + $GetPass }
-                            "zergpool" { $Stratum = "stratum+tcp://"; $A = "ethash"; $UserValue = $GetUser + ":" + $GetPass }
+                            "zergpool" { $Stratum = "stratum+tcp://"; $A = "ethash"; $UserValue = $GetUser + "." + "x" + ":" + $GetPass }
                             "whalesburg" { $Stratum = "ethproxy+tcp://"; $A = "ethash"; $UserValue = $GetUser + "." + $GetWorker + ":" + "x" }
                             "hashrent" { $Stratum = "ethproxy+tcp://"; $A = "ethash"; $UserValue = $GetUser + "." + $GetUser.Split("/")[1] + ":" + $GetPass }
                         }
                     }
-                    "cuckaroo29" { $Stratum = "nicehash+tcp://"; $A = "cuckarood"; $UserValue = $GetUser }
-                    "cuckaroo29-bfc" { $Stratum = "nicehash+tcp://"; $A = "bfc"; $UserValue = $GetUser }
-                    "cuckaroo29d" { $Stratum = "nicehash+tcp://"; $A = "cuckarood"; $UserValue = $GetUser }
-                    "cuckatoo31" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo"; $UserValue = $GetUser }
-                    "cuckatoo32" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo32"; $UserValue = $GetUser }
-                    "handshake" { $Stratum = "stratum+tcp://"; $A = "hns"; $UserValue = $GetUser }
-                    "kawpow" { $Stratum = "stratum+tcp://"; $A = "kawpow"; $UserValue = $GetUser }
-                    default { $Stratum = "stratum+tcp://"; $A = "$($MinerConfig.$ConfigType.naming.$MinerAlgo)"; $UserValue = $GetUser }
+                    "cuckaroo29" { $Stratum = "nicehash+tcp://"; $A = "cuckarood"; $UserValue = $GetUser + ":" + $GetPass }
+                    "cuckaroo29-bfc" { $Stratum = "nicehash+tcp://"; $A = "bfc"; $UserValue = $GetUser + ":" + $GetPass }
+                    "cuckaroo29d" { $Stratum = "nicehash+tcp://"; $A = "cuckarood"; $UserValue = $GetUser + ":" + $GetPass }
+                    "cuckatoo31" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo"; $UserValue = $GetUser + ":" + $GetPass }
+                    "cuckatoo32" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo32"; $UserValue = $GetUser + ":" + $GetPass }
+                    "handshake" { $Stratum = "nicehash+tcp://"; $A = "hns"; $UserValue = $GetUser + ":" + $GetPass }
+                    "kawpow" { 
+                        switch ($SelName) {
+                            "nicehash" { $Stratum = "nicehash+tcp://"; $A = "kawpow"; $UserValue = $GetUser + ":" + $GetPass }
+                            default { $Stratum = "stratum+tcp://"; $A = "kawpow"; $UserValue = $GetUser + "." + "x" + ":" + $GetPass }
+                        }
+                    }
+                    default { $Stratum = "stratum+tcp://"; $A = "$($MinerConfig.$ConfigType.naming.$MinerAlgo)"; $UserValue = $GetUser + "." + $GetPass }
                 }        
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                 [PSCustomObject]@{
-                    MName      = $Name
-                    Coin       = $(vars).Coins
-                    Delay      = $MinerConfig.$ConfigType.delay
-                    Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
-                    Symbol     = "$($_.Symbol)"
-                    MinerName  = $MinerName
-                    Prestart   = $PreStart
-                    Type       = $ConfigType
-                    Path       = $Path
-                    Devices    = $Devices
-                    Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
-                    Version    = "$($(vars).AMD.$CName.version)"
-                    DeviceCall = "ccminer"
-                    Arguments  = "-a $A --api 0.0.0.0:$Port --no-nvml --platform 2 --log-file `'$log`' --url $Stratum$($_.Pool_Host):$($_.Port) --user $UserValue$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                    HashRates  = [Decimal]$Stat.Hour
+                    MName             = $Name
+                    Coin              = $(vars).Coins
+                    Delay             = $MinerConfig.$ConfigType.delay
+                    Fees              = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
+                    Symbol            = "$($_.Symbol)"
+                    MinerName         = $MinerName
+                    Prestart          = $PreStart
+                    Type              = $ConfigType
+                    Path              = $Path
+                    Devices           = $Devices
+                    Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
+                    Version           = "$($(vars).AMD.$CName.version)"
+                    DeviceCall        = "ccminer"
+                    Arguments         = "-a $A --api 0.0.0.0:$Port --no-nvml --platform 2 --log-file `'$log`' --url $Stratum$($_.Pool_Host):$($_.Port) --user $UserValue$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    HashRates         = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
-                    Quote      = $_.Price
-                    Rejections = $Stat.Rejections
-                    Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
-                    MinerPool  = "$($_.Name)"
-                    API        = "nebutech"
-                    Port       = $Port
-                    Worker     = $Rig
-                    Wallet     = "$($_.$User)"
-                    URI        = $Uri
-                    Server     = "localhost"
-                    Algo       = "$($_.Algorithm)"                         
-                    Log        = "miner_generated"
+                    Quote             = $_.Price
+                    Rejections        = $Stat.Rejections
+                    Power             = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                    MinerPool         = "$($_.Name)"
+                    API               = "nebutech"
+                    Port              = $Port
+                    Worker            = $Rig
+                    Wallet            = "$($_.$User)"
+                    URI               = $Uri
+                    Server            = "localhost"
+                    Algo              = "$($_.Algorithm)"                         
+                    Log               = "miner_generated"
                 }            
             }
         }

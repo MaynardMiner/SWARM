@@ -6,22 +6,26 @@
         "commands": {
             "cuckaroo29": "",
             "cuckaroo29d": "",
-            "kawpow": ""
+            "kawpow": "",
+            "ubqhash": ""
         },
         "difficulty": {
             "cuckaroo29": "",
             "cuckaroo29d": "",
-            "kawpow": ""
+            "kawpow": "",
+            "ubqhash": ""
         },
         "naming": {
             "cuckaroo29": "cuckaroo29",
             "cuckaroo29d": "cuckaroo29d",
-            "kawpow": "kawpow"
+            "kawpow": "kawpow",
+            "ubqhash": "ubqhash"
         },
         "fee": {
             "cuckaroo29": 2,
             "cuckaroo29d": 2,
-            "kawpow": 1
+            "kawpow": 1,
+            "ubqhash": 1
         }
     },
     "name": "nanominer"

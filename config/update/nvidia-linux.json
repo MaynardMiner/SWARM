@@ -18,9 +18,9 @@
     "NVIDIA2": ".\\bin\\nbminer-2\\nbminer",
     "NVIDIA3": ".\\bin\\nbminer-3\\nbminer",
     "minername": "nbminer",
-    "version": "31.1",
+    "version": "32.1",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v31.1/NBMiner_31.1_Linux.tgz"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v32.1/NBMiner_32.1_Linux.tgz"
   },
   "multiminer": {
     "name": "multiminer",
@@ -216,9 +216,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner",
     "NVIDIA3": ".\\bin\\gminer-3\\miner",
     "minername": "miner",
-    "version": "2.23",
+    "version": "2.27",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.23/gminer_2_23_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.27/gminer_2_27_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",
@@ -348,8 +348,8 @@
     "NVIDIA2": ".\\bin\\wildrig-nv-2\\wildrig-multi",
     "NVIDIA3": ".\\bin\\wildrig-nv-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.27.2",
+    "version": "0.28.0",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.27.2/wildrig-multi-linux-0.27.2.tar.gz"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.28.0/wildrig-multi-linux-0.28.0.tar.gz"
   }        
 }

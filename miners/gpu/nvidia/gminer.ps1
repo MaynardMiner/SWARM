@@ -85,7 +85,11 @@ $(vars).NVIDIATypes | ForEach-Object {
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                 $UserPass = "--pass $($_.$Pass)$Diff "
                 $GetUser = "$($_.$User)";
-                $Worker = $_.Worker;
+                $GetWorker = $_.Worker;
+                switch ($SelName) {
+                    "zergpool" { $GetUser = "$($GetUser).x" };
+                    "whalesburg" {$GetUser = $GetUser + "." + $GetWorker};
+                }
                 switch ($SelAlgo) {
                     "equihash_150/5" { $AddArgs = "--algo 150_5 " }
                     "cuckoo_cycle" { $AddArgs = "--algo aeternity " }
@@ -105,9 +109,9 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "ethash" { 
                         switch ($SelName) {
                             "nicehash" { $AddArgs = "--algo ethash --proto stratum " }
-                            "zergpool" { $AddArgs = "--algo ethash " }
-                            "whalesburg" { $UserPass = ""; $GetUser = "$($Getuser)" + "." + "$($Worker)"; $AddArgs = "--algo ethash " }
-                            default { $AddArgs = "--algo ethash --proto stratum" }
+                            "zergpool" { $AddArgs = "--algo ethash "; }
+                            "whalesburg" { $UserPass = ""; $AddArgs = "--algo ethash " }
+                            default { $AddArgs = "--algo ethash --proto stratum " }
                         }
                     }
                     "eaglesong" { $AddArgs = "--algo eaglesong " }

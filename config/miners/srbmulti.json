@@ -17,7 +17,9 @@
             "cryptonight-upx": "",
             "cryptonight-heavyx": "",
             "verushash": "",
-            "yescrypt": ""
+            "yescrypt": "",
+            "argon2d-dyn": "",
+            "ubqhash": ""
         },
         "difficulty": {
             "kangaroo12": "",
@@ -26,7 +28,9 @@
             "cryptonight-upx": "",
             "cryptonight-heavyx": "",
             "verushash": "",
-            "yescrypt": ""
+            "yescrypt": "",
+            "argon2d-dyn": "",
+            "ubqhash": ""
         },
         "naming": {
             "kangaroo12": "k12",
@@ -35,7 +39,9 @@
             "cryptonight-upx": "cryptonight_upx",
             "cryptonight-heavyx": "cryptonight_heavyx",
             "verushash": "verushash",
-            "yescrypt": "yescrypt"
+            "yescrypt": "yescrypt",
+            "argon2d-dyn": "argon2d_dynamic",
+            "ubqhash": "ubqhash"
         },
         "fee": {
             "kangaroo12": 0.85,
@@ -44,7 +50,9 @@
             "cryptonight-upx": 0.85,
             "cryptonight-heavyx": 0.85,
             "verushash": 0.85,
-            "yescrypt": 0.85
+            "yescrypt": 0.85,
+            "argon2d-dyn": 0.85,
+            "ubqhash": 0.85
         }
     }
 }
