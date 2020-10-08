@@ -115,34 +115,36 @@ if ($Name -in $(arg).PoolName) {
         $Pass3 = $A_Wallets.Wallet3.Keys
         $User3 = $A_Wallets.Wallet3.$($Params.Passwordcurrency3).address
 
-        [Pool]::New(
-            ## Symbol
-            "$($_.Name)-Algo",
-            ## Algorithm
-            "$($_.Name)",
-            ## Level
-            $Level,
-            ## Stratum
-            "stratum+tcp",
-            ## Pool_Host
-            $Pool_Host,
-            ## Pool_Port
-            $Pool_Port,
-            ## User1
-            $User1,
-            ## User2
-            $User2,
-            ## User3
-            $User3,
-            ## Pass1
-            "c=$Pass1,id=$($Params.RigName1)",
-            ## Pass2
-            "c=$Pass2,id=$($Params.RigName2)",
-            ## Pass3
-            "c=$Pass3,id=$($Params.RigName3)",
-            ## Previous
-            $actual
-        )
+        if ($Hashrate -gt 0) {
+            [Pool]::New(
+                ## Symbol
+                "$($_.Name)-Algo",
+                ## Algorithm
+                "$($_.Name)",
+                ## Level
+                $Level,
+                ## Stratum
+                "stratum+tcp",
+                ## Pool_Host
+                $Pool_Host,
+                ## Pool_Port
+                $Pool_Port,
+                ## User1
+                $User1,
+                ## User2
+                $User2,
+                ## User3
+                $User3,
+                ## Pass1
+                "c=$Pass1,id=$($Params.RigName1)",
+                ## Pass2
+                "c=$Pass2,id=$($Params.RigName2)",
+                ## Pass3
+                "c=$Pass3,id=$($Params.RigName3)",
+                ## Previous
+                $actual
+            )
+        }
     }  -ThrottleLimit $(arg).Throttle
 
     $Global:Config.vars.DivisorTable = $DivisorTable
