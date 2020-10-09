@@ -84,7 +84,7 @@ $(vars).AMDTypes | ForEach-Object {
                     "handshake" { $Stratum = "stratum+tcp://"; $A = "hns"; $UserValue = $GetUser + ":" + $GetPass }
                     "kawpow" { 
                         switch ($SelName) {
-                            "nicehash" { $Stratum = "nicehash+tcp://"; $A = "kawpow"; $UserValue = $GetUser + ":" + $GetPass }
+                            "nicehash" { $Stratum = "stratum+tcp://"; $A = "kawpow"; $UserValue = $GetUser + ":" + $GetPass }
                             default { $Stratum = "stratum+tcp://"; $A = "kawpow"; $UserValue = $GetUser + "." + "x" + ":" + $GetPass }
                         }
                     }
