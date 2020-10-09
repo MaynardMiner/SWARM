@@ -80,7 +80,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "cuckaroo29d" { $Stratum = "nicehash+tcp://"; $A = "cuckarood"; $UserValue = $GetUser + ":" + $GetPass }
                     "cuckatoo31" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo"; $UserValue = $GetUser + ":" + $GetPass }
                     "cuckatoo32" { $Stratum = "nicehash+tcp://"; $A = "cuckatoo32"; $UserValue = $GetUser + ":" + $GetPass }
-                    "handshake" { $Stratum = "nicehash+tcp://"; $A = "hns"; $UserValue = $GetUser + ":" + $GetPass }
+                    "handshake" { $Stratum = "stratum+tcp://"; $A = "hns"; $UserValue = $GetUser + ":" + $GetPass }
                     "kawpow" { 
                         switch ($SelName) {
                             "nicehash" { $Stratum = "nicehash+tcp://"; $A = "kawpow"; $UserValue = $GetUser + ":" + $GetPass }
