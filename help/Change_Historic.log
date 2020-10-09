@@ -2737,3 +2737,23 @@ identity. Was related to machine potentially having multiple active MAC addresse
 
 ## Updates
 * miniz updated
+
+#############################################
+#############################################
+
+# SWARM 3.4.5
+
+## Improvements
+* teamredminer arguments fixed.
+* more fixes to new tagging system.
+* added all new algorithms to wildrig.
+* moved progminer to optional.
+* add ethash to t-rex.
+* increased timeout for whalesburg- API is slow.
+* fixed gminer arguments.
+* fixed nbminer arguments.
+* links from mega.nz can now be used for miner download links.
+
+## Updates
+* gminer updated.
+* xmrig updated.

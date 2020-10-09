@@ -1,16 +1,20 @@
-# SWARM 3.4.5
+# SWARM 3.4.6
+
+## What's New?
+  * Ubqhash added (zergpool)
+  * (Auto_Algo) SWARM will NOT add algorithms with 0 current hashrate on pool to list. Will still add for Auto_Coin
 
 ## Improvements
-* teamredminer arguments fixed.
-* more fixes to new tagging system.
-* added all new algorithms to wildrig.
-* moved progminer to optional.
-* add ethash to t-rex.
-* increased timeout for whalesburg- API is slow.
-* fixed gminer arguments.
-* fixed nbminer arguments.
-* links from mega.nz can now be used for miner download links.
+  * Better opencl detection. If it doesn't detect your platform number correctly- use -CLPlatform. SWARM uses clinfo to determine platform.
+  * (Windows) Output warning if NVSMI folder creation fails.
+  * Srbmulti: Remove AMDmemTweak auto settings. Potential to cause issues with modded bioses.
+  * Fixed a lot of issues with zergpool ethash/equihash/kawpow and miners that were not settting extra parameters correctly. This mainly affected Auto_Coin.
 
 ## Updates
-* gminer updated.
-* xmrig updated.
+* xmrig updated
+* lolminer updated (still testing ethash for all pools/settings/arguments).
+* t-rex updated
+* wildrig updated
+* nanominer updated
+* srbmulti updated
+* gminer updated
