@@ -181,7 +181,7 @@ function Global:Start-NewMiners {
     $OC_Success = $false
     $New_OC_File = $false
 
-    $(vars).BestActiveMIners | ForEach-Object {
+    $(vars).BestActiveMiners | ForEach-Object {
         $Miner = $_
 
         if ($null -eq $Miner.XProcess -or $Miner.XProcess.HasExited -and $(arg).Lite -eq "No") {
