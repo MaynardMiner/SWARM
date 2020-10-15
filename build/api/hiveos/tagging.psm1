@@ -9,7 +9,7 @@ function Global:Update-HiveTagging {
         $(vars).BestActiveMiners | Where-Object { $_.Type -notlike "*ASIC*" -and $_.Type -ne "CPU" -and $_.Type -like "*1*" } | ForEach-Object {
             $Miner_Pool = $_.MinerPool;
             $Miner_Name = $_.Name.Replace("-1", "");
-            if ($(arg).Auto_Coin -eq "Yes") {
+            if ($(arg).Auto_Coin -eq "Yes" -and $_.Coin) {
                 $Coin_Name = $_.Symbol;
             }
         }
