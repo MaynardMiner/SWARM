@@ -105,7 +105,7 @@ function Global:Update-HiveTagging {
             if($Old_Coin_Tag) {
                 $API.Method = "PATCH";
                 $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/$Old_Coin_Tag"
-                $API.Body = @{ name = $Coin_Name; color = 17; } | ConvertTo-Json -Compress;
+                $API.Body = @{ name = $Coin_Name; color = 6; } | ConvertTo-Json -Compress;
                 try { 
                     $Set_Tag = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
                 }
@@ -115,7 +115,7 @@ function Global:Update-HiveTagging {
                 $Coin_Tag = $Old_Coin_Tag;    
             }
             else {
-                $AddTags += @{ name = $Coin_Name; color = 17; };
+                $AddTags += @{ name = $Coin_Name; color = 6; };
             }    
         }
         elseif($Old_Coin_Tag) {
