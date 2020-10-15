@@ -98,14 +98,14 @@ function Global:Update-HiveTagging {
         }
 
         ## Create new coin tag
-        $Old_Coin_Tag = ($Tags.data | Where-Object name -like "*Coin: *").id
+        $Old_Coin_Tag = ($Tags.data | Where-Object name -like "*$($Global:Config.hive_params.Worker) Coin: *").id
         if ($Coin_Name) {
-            $Coin_Name = "Coin: " + $Coin_Name;
+            $New_Coin_Name = "$($Global:Config.hive_params.Worker) Coin: " + $Coin_Name;
             ## Patch old coin tag or add to list of tags to create
             if($Old_Coin_Tag) {
                 $API.Method = "PATCH";
                 $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/$Old_Coin_Tag"
-                $API.Body = @{ name = $Coin_Name; color = 6; } | ConvertTo-Json -Compress;
+                $API.Body = @{ name = $New_Coin_Name; color = 6; } | ConvertTo-Json -Compress;
                 try { 
                     $Set_Tag = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
                 }
@@ -115,7 +115,7 @@ function Global:Update-HiveTagging {
                 $Coin_Tag = $Old_Coin_Tag;    
             }
             else {
-                $AddTags += @{ name = $Coin_Name; color = 6; };
+                $AddTags += @{ name = $New_Coin_Name; color = 6; };
             }    
         }
         elseif($Old_Coin_Tag) {
@@ -155,7 +155,7 @@ function Global:Update-HiveTagging {
             $New_Miner_Tag = $New_tags.data | Where-Object name -eq $Miner_Name;
             $New_Pool_Tag = $New_tags.data | Where-Object name -eq $Pool_Tag;
             $New_Profit_Tag = $New_tags.data | Where-Object name -eq $New_Profit_Day;
-            $New_Coin_Tag = $New_tags.data | Where-Object name -eq $Coin_Name;
+            $New_Coin_Tag = $New_tags.data | Where-Object name -eq $New_Coin_Name;
 
             if ($New_Miner_Tag) {
                 $Miner_Tag = $New_Miner_Tag.Id;
