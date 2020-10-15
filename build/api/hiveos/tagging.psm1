@@ -59,6 +59,7 @@ function Global:Update-HiveTagging {
         }
         catch { 
             log "WARNING: Failed to Get Tags From HiveOS" -ForegroundColor Yellow; 
+            log "Message from HiveOS: $($_.Exception.Message)" -ForeGround Yellow;
             return;
         }
 
@@ -70,7 +71,9 @@ function Global:Update-HiveTagging {
             $Worker = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
         }
         catch { 
-            log "WARNING: Failed to Contact HiveOS for Worker Information" -ForegroundColor Yellow; return 
+            log "WARNING: Failed to Contact HiveOS for Worker Information" -ForegroundColor Yellow; 
+            log "Message from HiveOS: $($_.Exception.Message)" -ForeGround Yellow;
+            return;
         }
 
         ## Create new profit tag
@@ -89,7 +92,9 @@ function Global:Update-HiveTagging {
                 $Set_Tag = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
             }
             catch { 
-                log "WARNING: Failed to Update Profit Tag From HiveOS" -ForegroundColor Yellow; return 
+                log "WARNING: Failed to Update Profit Tag From HiveOS" -ForegroundColor Yellow; 
+                log "Message from HiveOS: $($_.Exception.Message)" -ForeGround Yellow;
+                return;
             }    
             $Profit_Tag = $Old_Profit_Tag;
         } 
@@ -110,7 +115,9 @@ function Global:Update-HiveTagging {
                     $Set_Tag = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
                 }
                 catch { 
-                    log "WARNING: Failed to Update Profit Tag From HiveOS" -ForegroundColor Yellow; return 
+                    log "WARNING: Failed to Update Coin Tag From HiveOS" -ForegroundColor Yellow; 
+                    log "Message from HiveOS: $($_.Exception.Message)" -ForeGround Yellow;
+                    return;
                 }    
                 $Coin_Tag = $Old_Coin_Tag;    
             }
@@ -149,7 +156,8 @@ function Global:Update-HiveTagging {
             }
             catch { 
                 log "WARNING: Failed To Update New Tags From HiveOS" -ForegroundColor Yellow; 
-                return 
+                log "Message from HiveOS: $($_.Exception.Message)" -ForeGround Yellow;
+                return;
             }    
 
             $New_Miner_Tag = $New_tags.data | Where-Object name -eq $Miner_Name;
@@ -191,6 +199,7 @@ function Global:Update-HiveTagging {
         }
         catch { 
             log "WARNING: Failed To update tags" -ForegroundColor Yellow; 
+            log "Message from HiveOS: $($_.Exception.Message)" -ForeGround Yellow;
             return;
         }
     }
