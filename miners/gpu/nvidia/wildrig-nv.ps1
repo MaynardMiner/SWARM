@@ -41,7 +41,8 @@ $(vars).NVIDIATypes | ForEach-Object {
         $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1)
     }
     else { 
-        $(vars).GCount.NVIDIA.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($(vars).GCount.NVIDIA.$_)," }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) }
+        $(vars).GCount.NVIDIA.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($_)," }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) 
+    }
 
     ##Get Configuration File
     ##This is located in config\miners

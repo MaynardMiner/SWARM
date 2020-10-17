@@ -3,11 +3,15 @@ function Global:Update-HiveTagging {
         $Miner_Pool = "";
         $Profit_Day = 0;
         $Miner_Name = "";
+        $Coin_Name = $null;
         $AddTags = @();
 
         $(vars).BestActiveMiners | Where-Object { $_.Type -notlike "*ASIC*" -and $_.Type -ne "CPU" -and $_.Type -like "*1*" } | ForEach-Object {
             $Miner_Pool = $_.MinerPool;
             $Miner_Name = $_.Name.Replace("-1", "");
+            if ($(arg).Auto_Coin -eq "Yes" -and $_.Coin) {
+                $Coin_Name = $_.Symbol;
+            }
         }
 
         $IsBenchmarking = $null -ne ($(vars).BestActiveMiners | Where-Object { $_.Profit_Day -eq "bench" })
@@ -41,6 +45,8 @@ function Global:Update-HiveTagging {
 
         $miner_tagid = $null;
         $pool_tagid = $null;
+        $coin_tagid = $null;
+        $remove_coin = $null;
         $Worker_TagIDs = @();
         $Tag_Ids = @{};
 
@@ -53,6 +59,7 @@ function Global:Update-HiveTagging {
         }
         catch { 
             log "WARNING: Failed to Get Tags From HiveOS" -ForegroundColor Yellow; 
+            log "Message from HiveOS: $($_.Exception.Message)" -ForeGround Yellow;
             return;
         }
 
@@ -64,7 +71,9 @@ function Global:Update-HiveTagging {
             $Worker = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
         }
         catch { 
-            log "WARNING: Failed to Contact HiveOS for Worker Information" -ForegroundColor Yellow; return 
+            log "WARNING: Failed to Contact HiveOS for Worker Information" -ForegroundColor Yellow; 
+            log "Message from HiveOS: $($_.Exception.Message)" -ForeGround Yellow;
+            return;
         }
 
         ## Create new profit tag
@@ -83,12 +92,41 @@ function Global:Update-HiveTagging {
                 $Set_Tag = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
             }
             catch { 
-                log "WARNING: Failed to Update Profit Tag From HiveOS" -ForegroundColor Yellow; return 
+                log "WARNING: Failed to Update Profit Tag From HiveOS" -ForegroundColor Yellow; 
+                log "Message from HiveOS: $($_.Exception.Message)" -ForeGround Yellow;
+                return;
             }    
             $Profit_Tag = $Old_Profit_Tag;
         } 
         else {
             $AddTags += @{ name = $New_Profit_Day; color = 11; };
+        }
+
+        ## Create new coin tag
+        $Old_Coin_Tag = ($Tags.data | Where-Object name -like "*$($Global:Config.hive_params.Worker) Coin: *").id
+        if ($Coin_Name) {
+            $New_Coin_Name = "$($Global:Config.hive_params.Worker) Coin: " + $Coin_Name;
+            ## Patch old coin tag or add to list of tags to create
+            if($Old_Coin_Tag) {
+                $API.Method = "PATCH";
+                $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/$Old_Coin_Tag"
+                $API.Body = @{ name = $New_Coin_Name; color = 6; } | ConvertTo-Json -Compress;
+                try { 
+                    $Set_Tag = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
+                }
+                catch { 
+                    log "WARNING: Failed to Update Coin Tag From HiveOS" -ForegroundColor Yellow; 
+                    log "Message from HiveOS: $($_.Exception.Message)" -ForeGround Yellow;
+                    return;
+                }    
+                $Coin_Tag = $Old_Coin_Tag;    
+            }
+            else {
+                $AddTags += @{ name = $New_Coin_Name; color = 6; };
+            }    
+        }
+        elseif($Old_Coin_Tag) {
+            $remove_coin = $Old_Coin_Tag
         }
 
         ## Assign an ID to already created Tags.
@@ -108,7 +146,7 @@ function Global:Update-HiveTagging {
             $AddTags += @{ name = $Miner_Pool; color = 8 };
         }
 
-        ## Add tags that don't exit- Get their id
+        ## Add tags- Get their id
         if ($AddTags.Count -gt 0) {
             $API.Body = @{ data = $AddTags } | ConvertTo-Json -Compress
             $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/multi";
@@ -118,12 +156,14 @@ function Global:Update-HiveTagging {
             }
             catch { 
                 log "WARNING: Failed To Update New Tags From HiveOS" -ForegroundColor Yellow; 
-                return 
+                log "Message from HiveOS: $($_.Exception.Message)" -ForeGround Yellow;
+                return;
             }    
 
             $New_Miner_Tag = $New_tags.data | Where-Object name -eq $Miner_Name;
             $New_Pool_Tag = $New_tags.data | Where-Object name -eq $Pool_Tag;
             $New_Profit_Tag = $New_tags.data | Where-Object name -eq $New_Profit_Day;
+            $New_Coin_Tag = $New_tags.data | Where-Object name -eq $New_Coin_Name;
 
             if ($New_Miner_Tag) {
                 $Miner_Tag = $New_Miner_Tag.Id;
@@ -134,19 +174,23 @@ function Global:Update-HiveTagging {
             if ($New_Profit_Tag) {
                 $Profit_Tag = $New_Profit_Tag.Id;
             }
+            if ($New_Coin_Tag) {
+                $Coin_Tag = $New_Coin_Tag.Id;
+            }
         }
 
         ## Remove Old Tags, But only SWARM tags.
         foreach ($tag in $Worker.tag_ids) {
-            if ($tag -notin $Set_Tags.id -and $tag -notin $Old_Profit_Tag) {
+            if ($tag -notin $Set_Tags.id -and $tag -notin $Old_Profit_Tag -and $tag -notin $remove_coin) {
                 $Worker_TagIDs += $tag;
             }
         }
 
         ## Add New Tags
-        $Worker_TagIDs += $Profit_Tag;
-        $Worker_TagIDs += $Pool_Tag;
-        $Worker_TagIDs += $Miner_Tag;
+        if($Profit_Tag) { $Worker_TagIDs += $Profit_Tag; }
+        if($Pool_Tag) { $Worker_TagIDs += $Pool_Tag; }
+        if($Miner_Tag) { $Worker_TagIDs += $Miner_Tag; }
+        if($Coin_Tag) { $Worker_TagIDs += $Coin_Tag;}
         $API.Method = "PATCH"
         $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/workers/$($Global:Config.hive_params.Id)"
         $API.Body = @{ tag_ids = $Worker_TagIDs } | ConvertTo-Json -Compress;
@@ -155,6 +199,7 @@ function Global:Update-HiveTagging {
         }
         catch { 
             log "WARNING: Failed To update tags" -ForegroundColor Yellow; 
+            log "Message from HiveOS: $($_.Exception.Message)" -ForeGround Yellow;
             return;
         }
     }
