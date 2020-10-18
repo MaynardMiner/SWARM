@@ -238,9 +238,9 @@
     "NVIDIA2": ".\\bin\\trex-2\\t-rex.exe",
     "NVIDIA3": ".\\bin\\trex-3\\t-rex.exe",
     "minername": "t-rex.exe",
-    "version": "0.17.3",
+    "version": "0.18.2",
     "optional": "No",
-    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.17.3/t-rex-0.17.3-win-cuda10.0.zip"
+    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.18.2/t-rex-0.18.2-win-cuda10.0.zip"
   },
   "zjazz": {
     "name": "zjazz",
