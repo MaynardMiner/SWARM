@@ -405,23 +405,15 @@ function Global:Start-OC($Miner) {
             }
 
             if ($(arg).Platform -eq "windows") {
-                Invoke-Expression ".\build\apps\odvii\odvii.exe s" | Tee-Object -Variable stats | OUt-Null
-                $stats = $stats | ConvertFrom-StringData
-                $Model = $stats.keys | Foreach-Object  { if ($_ -like "*Model*") { $stats.$_ } }
-                $Default_Core_Clock = @{ }
-                $Default_Core_Voltage = @{ }
-                $Default_Mem_Clock = @{ }
-                $Default_Mem_Voltage = @{ }
-                $stats.keys | Foreach-Object  { if ($_ -like "*Core Clock*") { $Default_Core_Clock.Add($_, $stats.$_) } }
-                $stats.keys | Foreach-Object  { if ($_ -like "*Core Voltage*") { $Default_Core_Voltage.Add($_, $stats.$_) } }
-                $stats.keys | Foreach-Object  { if ($_ -like "*Mem Clock*") { $Default_Mem_Clock.Add($_, $stats.$_) } }
-                $stats.keys | Foreach-Object  { if ($_ -like "*Mem Voltage*") { $Default_Mem_Voltage.Add($_, $stats.$_) } }
-                                    
+                if ([Environment]::Is64BitOperatingSystem) {
+                    $odvii = ".\build\apps\odvii\odvii_x64.exe"
+                }
+                else {
+                    $odvii = ".\build\apps\odvii\odvii_x86.exe"
+                }
+                Invoke-Expression "$odvii s" | Tee-Object -Variable GpuStats | OUt-Null
+                $GpuStats = $GpuStats | ConvertFrom-Json -AsHashtable
                 $Ascript += "`$host.ui.RawUI.WindowTitle = `'OC-Start`';"
-                Invoke-Expression ".\build\apps\odvii\odvii.exe s" | Tee-Object -Variable Model | OUt-Null
-                $Model = $Model | ConvertFrom-StringData
-                $Model = $Model.keys | Foreach-Object  { if ($_ -like "*Model*") { $Model.$_ } }
-    
                 for ($i = 0; $i -lt $(vars).GCount.AMD.PSObject.Properties.Name.Count; $i++) {
                     $OCArgs += "-ac$($(vars).GCount.AMD.$i) "
                     $Select = $(vars).GCount.AMD.PSOBject.Properties.Name
@@ -430,18 +422,17 @@ function Global:Start-OC($Miner) {
 
                     if ($MemClock -or $MDPM) {
                         $DOAmdOC = $true
-                        $MPStates = 3
-                        if ($Model[$Select] -like "*Vega*") { $MPStates = 4 }
+                        $MPStates = [int]$GpuStats[$i]["Memory P_States"]
                         if ($MemClock.Count -eq 1) { $Memory_Clock = $MemClock }else { $Memory_Clock = $MemClock[$Select] }
                         if ($MDPM.Count -eq 1) { $Mem_State = $MDPM }else { $Mem_State = $MDPM[$Select] }
-                        $DefaultMemClock = $Default_Mem_Clock."Gpu $Select P$($PStates-1) Mem Clock"
-                        $DefaultMemVolt = $Default_Mem_Voltage."Gpu $Select P$($PStates-1) Mem Voltage"
+                        $DefaultMemClock = $GpuStats[$i]["Memory Defaults"]["Clock P_State $($MPStates-1)"]
+                        $DefaultMemVolt = $GpuStats[$i]["Memory Defaults"]["Vddc P_State $($MPStates-1)"]
                         if ($Memory_Clock) { $Mem = $Memory_Clock }else { $Mem = $DefaultMemClock }
                         if ($Mem -like '*;*') {
                             $OCArgs += "Mem_P$($MPStates-1)=$($Mem) "
                         }
                         else {
-                            if ($Mem_State) { $MV = $Default_Mem_Voltage."Gpu $Select P$($Mem_State) Mem Voltage" }else { $MV = $DefaultMemVolt }
+                            if ($Mem_State) { $MV = $GpuStats[$i]["Vddc P_State $($Mem_State-1)"] }else { $MV = $DefaultMemVolt }
                             $OCArgs += "Mem_P$($MPStates-1)=$($Mem);$MV "
                         }
                         $AScreenMem = "$($Miner.Type) MEM is $($MemClock) "
@@ -450,12 +441,12 @@ function Global:Start-OC($Miner) {
 
                     if ($CoreClock -or $Voltage) {
                         $DOAmdOC = $true
-                        $PStates = 8
+                        $PStates = [int]$GpuStats[$i]["Core P_States"]
                         for ($j = 1; $j -lt $PStates; $j++) {
                             if ($CoreClock.Count -eq 1) { $Core_Clock = $CoreClock }else { $Core_Clock = $CoreClock[$Select] }
                             if ($Voltage.Count -eq 1) { $Core_Volt = $Voltage }else { $Core_Volt = $Voltage[$Select] }
-                            $DefaultCoreClock = $Default_Core_Clock."Gpu $Select P$j Core Clock"
-                            $DefaultCoreVolt = $Default_Core_Voltage."Gpu $Select P$j Core Voltage"
+                            $DefaultCoreClock = $GpuStats[$i]["Clock Defaults"]["Clock P_State $($MPStates-1)"]
+                            $DefaultCoreVolt = $GpuStats[$i]["Clock Defaults"]["Vddc P_State $($MPStates-1)"]
                             if ($Core_Clock) { $CClock = $Core_Clock }else { $CClock = $DefaultCoreClock }
                             if ($Core_Volt) { $CVolt = $Core_Volt }else { $CVolt = $DefaultCoreVolt }
                             $OCArgs += "GPU_P$j=$CClock;$CVolt "
