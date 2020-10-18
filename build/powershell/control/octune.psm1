@@ -178,6 +178,15 @@ function Global:Start-OC($Miner) {
                         "P104-100" { $X = 1 }
                         "P102-100" { $X = 1 }
                     }
+                    if($Card[$GPU] -like "*RTX*") {
+                        $X = 4
+                    }
+                    if($Card[$GPU] -like "*1660SUPER*") {
+                        $X = 4
+                    }
+                    if($Card[$GPU] -like "*1650SUPER*") {
+                        $X = 4
+                    }
                     if ($(arg).Platform -eq "linux") { $NSettings += " -a [gpu:$GPU]/GPUGraphicsClockOffset[$X]=$($Cores)" }
                     if ($(arg).Platform -eq "windows") { $NVIDIAOCArgs += "-setBaseClockOffset:$GPU,0,$($Cores) " }
                 }
