@@ -126,7 +126,7 @@ $(vars).AMDTypes | ForEach-Object {
                     URI        = $Uri
                     Server     = "localhost"
                     Algo       = "$($_.Algorithm)"                         
-                    Log        = "none"
+                    Log        = $Log
                 }            
             }
         }
