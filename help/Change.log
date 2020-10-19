@@ -1,20 +1,4 @@
-# SWARM 3.4.6
-
-## What's New?
-  * Ubqhash added (zergpool)
-  * (Auto_Algo) SWARM will NOT add algorithms with 0 current hashrate on pool to list. Will still add for Auto_Coin
+# SWARM 3.4.8
 
 ## Improvements
-  * Better opencl detection. If it doesn't detect your platform number correctly- use -CLPlatform. SWARM uses clinfo to determine platform.
-  * (Windows) Output warning if NVSMI folder creation fails.
-  * Srbmulti: Remove AMDmemTweak auto settings. Potential to cause issues with modded bioses.
-  * Fixed a lot of issues with zergpool ethash/equihash/kawpow and miners that were not settting extra parameters correctly. This mainly affected Auto_Coin.
-
-## Updates
-* xmrig updated
-* lolminer updated (still testing ethash for all pools/settings/arguments).
-* t-rex updated
-* wildrig updated
-* nanominer updated
-* srbmulti updated
-* gminer updated
+* It was brought to my attention that some of the cuda 11.0 libs were missing. This is for linux users trying to use drivers associated with cuda 11.0 libs.

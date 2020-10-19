@@ -2757,3 +2757,51 @@ identity. Was related to machine potentially having multiple active MAC addresse
 ## Updates
 * gminer updated.
 * xmrig updated.
+
+#############################################
+#############################################
+
+# SWARM 3.4.6
+
+## What's New?
+  * Ubqhash added (zergpool)
+  * (Auto_Algo) SWARM will NOT add algorithms with 0 current hashrate on pool to list. Will still add for Auto_Coin
+
+## Improvements
+  * Better opencl detection. If it doesn't detect your platform number correctly- use -CLPlatform. SWARM uses clinfo to determine platform.
+  * (Windows) Output warning if NVSMI folder creation fails.
+  * Srbmulti: Remove AMDmemTweak auto settings. Potential to cause issues with modded bioses.
+  * Fixed a lot of issues with zergpool ethash/equihash/kawpow and miners that were not settting extra parameters correctly. This mainly affected Auto_Coin.
+
+## Updates
+* xmrig updated
+* lolminer updated (still testing ethash for all pools/settings/arguments).
+* t-rex updated
+* wildrig updated
+* nanominer updated
+* srbmulti updated
+* gminer updated
+
+#############################################
+#############################################
+
+# SWARM 3.4.7
+
+## What's New
+* Tagging now includes Coin being mined if using -Auto_Coin Yes.
+
+
+## Improvements
+* Argon2d-dyn (Argon2d500) added back into cryptodredge.
+* Cuda 11.1 libs added.
+* Fix logging for phoenix miner.
+* Fix device usage for wildrig for rigs with AMD & NVIDIA.
+* Edit SRBMulti arguments for issues with modded bioses (No tweaking or clock changes).
+* Fix nbminer kawpow on nicehash.
+* Local oc (not hiveos) P4 power state added for RTX/1650SUPER/1660SUPER (warning: Not supported)
+
+## Upates
+* t-rex updated
+* lolminer updated.
+* teamredminer updated.
+* gminer updated.
