@@ -119,6 +119,12 @@ if ($Name -in $(arg).PoolName) {
             ## Penalize
             if ($Stat.Historical_Bias -lt 0) {
                 $Deviation = [Math]::Max($Stat.Historical_Bias, ($Max_Penalty * -0.01))
+                ### Make SWARM remove any coin that did not have any 24 hour returns
+                ### Deviation -1 = -100%
+                if ($Stat.Historical_Bias -eq -1) {
+                    ## (estimate * -100) + estimate = 0
+                    $Deviation = -1
+                }
             }
             ## Bonus
             else {
@@ -162,10 +168,10 @@ if ($Name -in $(arg).PoolName) {
         ## Only add if it meets arguments min_blocks and autotrade
         $Miners | Foreach-Object {
             Write-Host "Symbol is $($_.Symbol)"
-            if($_.Algo -eq $Selected -and $_.Symbol -notin $To_Add.Sym) {
+            if ($_.Algo -eq $Selected -and $_.Symbol -notin $To_Add.Sym) {
                 $Add_Stat = $Sorted | Where-Object sym -eq $_.Symbol | 
                 Where-Object { [Convert]::ToInt32($_."24h_blocks_shared") -ge $Params.Min_Blocks }
-                if($Add_Stat) {
+                if ($Add_Stat) {
                     $To_Add += $Add_Stat
                 }
             }
