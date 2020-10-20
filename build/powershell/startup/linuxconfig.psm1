@@ -107,6 +107,8 @@ function Global:Get-Data {
     $Libs += [PSCustomObject]@{ link = "libnvrtc.so.9.2"; path = "/usr/local/swarm/lib64/libnvrtc.so.9.2.148" }
     $Libs += [PSCustomObject]@{ link = "libnvrtc.so"; path = "/usr/local/swarm/lib64/libnvrtc.so.10.2.89" }
 
+    $Libs += [PSCustomObject]@{ link = "libOpenCL.so.1"; path = "/usr/local/swarm/lib64/libOpenCL.so.1.2" }
+    $Libs += [PSCustomObject]@{ link = "libOpenCL.so"; path = "/usr/local/swarm/lib64/libOpenCL.so.1" }
 
     if (!$ExtractDone) {
         foreach ($lib in $Libs) {
