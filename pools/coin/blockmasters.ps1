@@ -120,7 +120,7 @@ if ($Name -in $(arg).PoolName) {
                 ### Make SWARM remove any coin that did not have any 24 hour returns
                 ### Deviation -1 = -100%
                 if($Stat.Historical_Bias -eq -1) {
-                    ## (estimate * -100) + estimate = 0
+                    ## (estimate * -1) + estimate = 0
                     $Deviation = -1
                 }
             }
