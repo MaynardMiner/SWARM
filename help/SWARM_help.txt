@@ -224,6 +224,22 @@ Argument          Options           Explanation
 *****************************************************************************************************
 
     These Parameters Are Used To Adjust Profit Switching.
+    
+-Min_Blocks        [Integer]       Used with -Auto_Coin Yes. Daily minimum block finds required for
+				   SWARM to consider coin viable. Useful for smaller setups, and avoiding
+				   coins that take a long time to find rewards. -Min_Blocks 3 would mean
+				   that the pool requires 3 blocks a day found for that coin, or SWARM
+				   will not use that coin. Quick math can be used here to calculate a
+				   Time-To-Find (TTF).
+				   
+				   24 / Minimum Blocks = hourly time to find.
+				   86400 / Minimum Blocks = TTF rate (in seconds).
+				   
+				   So if you wanted a TTF of an hour, -Min_Blocks 24 means if the coin
+				   historically took 24 hours to find a block, SWARM will not use it.
+
+				   -Min_Blocks is based on previous 24 hours. Hashrate jumps
+				   everywhere on pools rapidly to define an accurate Live TTF rate.
 
 -Currency          [Any]            Fiat Currency Of Your Choice. This is used to calculated your 
                                     profit/day. Only currencies on cryptocompare will work. Default
