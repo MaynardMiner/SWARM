@@ -1,4 +1,5 @@
-# SWARM 3.4.8
+# SWARM 3.4.9
 
 ## Improvements
-* It was brought to my attention that some of the cuda 11.0 libs were missing. This is for linux users trying to use drivers associated with cuda 11.0 libs.
+* Created opencl compatiblitly between old version and new by adding libs to SWARM. Not relevant if using newer/up to date version of opencl. 
+* Made more cuda lib fixes for new/first time users.

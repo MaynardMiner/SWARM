@@ -2805,3 +2805,12 @@ identity. Was related to machine potentially having multiple active MAC addresse
 * lolminer updated.
 * teamredminer updated.
 * gminer updated.
+
+
+#####################################################
+#####################################################
+
+# SWARM 3.4.8
+
+## Improvements
+* It was brought to my attention that some of the cuda 11.0 libs were missing. This is for linux users trying to use drivers associated with cuda 11.0 libs.
