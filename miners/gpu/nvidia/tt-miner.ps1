@@ -74,10 +74,15 @@ $(vars).NVIDIATypes | ForEach-Object {
                 $GetHost = $_.Pool_Host;
                 $GetPort = $_.Port;
                 switch($SelName) {
-                    "nicehash" { $PArg = "-P $($GetUser):$($GetPass)@$($GetHost):$($GetPort) "; }
-                    "zergpool" { $PArg = "-P $($GetUser).x:$($GetPass)@$($GetHost):$($GetPort) ";}
+                    "nicehash" { $PArg = "-P stratum+tcp://$($GetUser):$($GetPass)@$($GetHost):$($GetPort) "; }
+                    "zergpool" { 
+                        switch($MinerAlgo) {
+                            "ethash" { $PArg = "-P $($GetUser).x:$($GetPass)@$($GetHost):$($GetPort) ";}
+                            default {$PArg = "-P stratum+tcp://$($GetUser).x:$($GetPass)@$($GetHost):$($GetPort) ";}
+                        }
+                    }
                     "hashrent" { $PArg = "-o $($GetHost):$($GetPort) -u $GetUser -worker $($GetUser.Split("/")[1]) "}
-                    "whalesburt" {$PArg = "-P $($GetUser).$($GetWorker):x@$($GetHost):$($GetPort) "}
+                    "whalesburg" {$PArg = "-P $($GetUser).$($GetWorker):x@$($GetHost):$($GetPort) "}
                 }
                 [PSCustomObject]@{
                     MName      = $Name
