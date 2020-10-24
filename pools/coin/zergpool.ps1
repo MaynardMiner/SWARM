@@ -104,8 +104,9 @@ if ($Name -in $(arg).PoolName) {
         $Divisor = 1000000 * [Convert]::ToDouble($D_Table.$($_.algo))
         $Fee = [Convert]::ToDouble($F_Table.$($_.algo))
         $Estimate = [Convert]::ToDecimal($_.estimate) * 0.001
-        $actual = [Convert]::ToDecimal($_.'24h_btc_shared')
+        $24h_actual = [Convert]::ToDecimal($_.actual_last24h_shared) * 0.001
         $current = [Convert]::ToDecimal($Estimate / $Divisor * (1 - ($Fee / 100)))
+        $actual = [Convert]::ToDecimal($24h_actual / $Divisor * (1 - ($Fee / 100)))
 
         $Stat = [Pool_Stat]::New($StatName, $current, [Convert]::ToDecimal($Hashrate), $actual, $true)
 
@@ -165,7 +166,7 @@ if ($Name -in $(arg).PoolName) {
         Where-Object { $_.noautotrade -eq 0 } |
         Where-Object {
             if($max_ttf -ne 0) {
-                if($_.pool_ttf -le $max_ttf) { $_ }
+                if($_.real_ttf -le $max_ttf) { $_ }
             } else { $_ }
         } |
         Sort-Object Level -Descending |

@@ -227,91 +227,41 @@ class STAT_METHODS {
    }
 
    ## Calculate Historical Earnings.
-   static [void]Algo_Bias($item, $Actual) {
-      $Actual = [convert]::ToDecimal($Actual)  
-      <# If SWARM hasn't been running long enough to gather daily
-         stats, we will use the Daily MA.
-         If SWARM has recorded daily averages, then will will use
-         a weekly simple moving average.
-      #>
+   static [void]Bias($item) {
+      ## Some pools have no actual 24_hour values
+      ## We have four scenarios:
+      ## 1.) actual / day_ma - 1 = % bias (positive means it did better predicted, done if no daily values)
+      ## 2.) daily_actual_avg / daily_ma_average  = % bias (positive means it did better than predicted)
+      ## 3.) live / daily_ma = % bias (positive means it has generally been higher, done if no daily values)
+      ## 4.) daily / daily_ma_average = % bias (positive means it has generally been higher)
 
-      ## PPS Pools (Nicehash and Whalesburg) have no actual 24_hour values
-      ## Based on how they operate- Live vs. 24 hours or week vs. day
-      ## will work fine. It will still build a trend.
+      $HasDailyValues = $item.Daily_Values.Count -gt 0;
+      $NoActual = $item.Actual -eq -1;
 
-      if ($item.Daily_Values.Count -eq 0) {
-         $constant = $item.Day_MA
-         if ($Actual -eq -1) {
-            $Actual = $item.Live
+      if($NoActual) {
+         ## Scenario 3
+         $x = $item.Live;
+         $y = $item.Day_MA;
+         ## Check for Scenario 4
+         if($HasDailyValues) {
+            $x = $item.Day_MA;
+            $theta = [STAT_METHODS]::Theta(7, $item.Daily_Values)
+            $y = $theta.sum / $theta.count
          }
       }
       else {
-         $theta = [STAT_METHODS]::Theta(7, $item.Daily_Values)
-         $constant = $theta.sum / $theta.count
-         $theta = [STAT_METHODS]::Theta(7, $item.Daily_Actual_Values)
-         $actual = $theta.sum / $theta.count
-         if ($Actual -eq -1) {
-            $Actual = $item.Day_MA  
+         ## Scenario 1
+         $x = $item.Actual;
+         $y = $item.Day_MA;
+         ## Scenario 2
+         if($HasDailyValues) {
+            $theta = [STAT_METHODS]::Theta(7, $item.Daily_Actual_Values)
+            $x = $theta.sum / $theta.count
+            $theta = [STAT_METHODS]::Theta(7, $item.Daily_Values)
+            $y = $theta.sum / $theta.count
          }
       }
-      if ($constant -ne 0 -and $Actual -ne 0) {
-         $item.Historical_Bias = [math]::Round(($actual - $constant) / $constant , 4)
-      }
-      else {
-         $item.Historical_Bias = -1
-      }
-      if ($item.Historical_Bias -lt -1) {
-         $item.Historical_Bias -eq -1
-      }
-   }
-
-   ## Calculate Historical Earnings For Coin
-   static [void]Coin_Bias($item, $Actual) {
-      $Actual = [convert]::ToDecimal($Actual)
-
-      <# If SWARM hasn't been running long enough to gather daily
-         stats, we will use the Daily MA.
-         If SWARM has recorded daily averages, then will will use
-         a weekly simple moving average.
-
-         Coin prices we need to to format to actual 24 hours.
-      #>
-
-      if ($item.Daily_Values.Count -eq 0) {
-         $constant = $item.Day_MA
-         if ($actual -ne 0 -and $item.Avg_Hashrate -gt 1) {
-            $actual = $actual / $item.Avg_Hashrate
-         }
-         else {
-            $actual = 0
-         }
-      }
-      else {
-         $theta = [STAT_METHODS]::Theta(7, $item.Daily_Values)
-         $constant = $theta.sum / $theta.count
-
-         $theta = [STAT_METHODS]::Theta(7, $item.Daily_Actual_Values)
-         $actual_MA = $theta.sum / $theta.count
-
-         $theta = [STAT_METHODS]::Theta(7, $item.Daily_Hashrate_Values)
-         $hashrate_MA = $theta.sum / $theta.count
-
-         if ($actual_MA -ne 0 -and $hashrate_MA -gt 1) {
-            $actual = $actual_MA / $hashrate_MA
-         }
-         else {
-            $actual = 0
-         }
-      }
-      if ($constant -ne 0 -and $Actual -ne 0) {
-         $item.Historical_Bias = [math]::Round(($actual - $constant) / $constant , 4)
-      }
-      else {
-         $item.Historical_Bias = -1
-      }
-      if ($item.Historical_Bias -lt -1) {
-         $item.Historical_Bias -eq -1
-      }
+      $item.Historical_Bias = [math]::Round($x / $y - 1, 4)
    }
 }
 
@@ -388,12 +338,7 @@ class Pool_Stat : Stat {
             $this.Pulls = $old.Pulls
 
             ## Calculate Bias
-            if ($coin) {
-               [STAT_METHODS]::Coin_Bias($old, $Actual)
-            }
-            else {
-               [STAT_METHODS]::Algo_Bias($old, $Actual)
-            }         
+            [STAT_METHODS]::Bias($old)
 
             ## If it is a new day - Add to weekly stat values.
             [STAT_METHODS]::Check_Weekly($old, $this, $Actual)
@@ -428,12 +373,8 @@ class Pool_Stat : Stat {
             $this.Locked = $false
             $this.Actual = $Actual
             $this.Start_Of_Day = (Get-Date).ToUniversalTime().ToString("o")
-            if ($coin) {
-               [STAT_METHODS]::Coin_Bias($this, $Actual)
-            }
-            else {
-               [STAT_METHODS]::Algo_Bias($this, $Actual)
-            }
+               [STAT_METHODS]::Bias($this)
+               [STAT_METHODS]::Bias($this)
          }
 
          [string]$this.Updated = (Get-Date).ToUniversalTime().ToString("o")
