@@ -53,9 +53,25 @@ class pool {
    }
 }
 
-class STAT_METHODS {
+## Basic Stat Class
+class Stat {
+   [Decimal]$Live
+   [Decimal]$Minute_10_EMA
+   [Decimal]$Minute_10_MA
+   [Decimal]$Minute_15_EMA
+   [Decimal]$Minute_15_MA
+   [Decimal]$Minute_30_EMA
+   [Decimal]$Minute_30_MA
+   [Decimal]$Hour_EMA
+   [Decimal]$Hour_MA
+   [Decimal]$Actual
+   [Decimal[]]$Live_Values
+   [Int]$Pulls = 0
+   [bool]$Locked ## Lock the stat
+   [string]$Updated
+
    ## Get the stat file
-   static [PSCustomObject]Get([string]$name) {
+   hidden static [PSCustomObject]Get([string]$name) {
       [PSCustomObject]$Get = $null
       if (Test-Path ".\stats\$name.json") {
          try {
@@ -70,7 +86,7 @@ class STAT_METHODS {
    }
 
    ## Sets the stat file
-   static [void]Set([string]$name, [object]$stat) {
+   hidden static [void]Set([string]$name, [object]$stat) {
       try {
          $stat | ConvertTo-Json -ErrorAction Stop | Set-Content ".\stats\$name.json"
       }
@@ -78,25 +94,25 @@ class STAT_METHODS {
          Write-Host "Warning: Write Error with .\stats\$name.json" -Foreground Red
       }
    }
-
+   
    ## Calculate Weight
-   static [Decimal]Alpha([Decimal]$X) {
+   hidden static [Decimal]Alpha([Decimal]$X) {
       return (2 / ($X + 1) )
    }
-
+   
    ## Get Sum of values
-   static [Microsoft.PowerShell.Commands.GenericMeasureInfo]Theta([Int]$Period, [Decimal[]]$Values) {
+   hidden static [Microsoft.PowerShell.Commands.GenericMeasureInfo]Theta([Int]$Period, [Decimal[]]$Values) {
       return $Values | Select-Object -Last $Period | Measure-Object -Sum 
    }
-
+   
    ## Checks if a day has passed, and whether or not
    ## stat should add new daily values.
-   static [void]Check_Weekly([object]$old, [object]$new, $Actual) {
+   hidden static [void]Check_Weekly([object]$old, [object]$new, $Actual) {
       $new.Daily_Values = $old.Daily_values
       $new.Daily_Actual_Values = $old.Daily_Actual_Values
       $new.Daily_Hashrate_Values = $old.Daily_Hashrate_Values
       $new.Start_Of_Day = $old.Start_Of_Day
-
+   
       $Total_Stat_Time = [math]::Round(((Get-Date).ToUniversalTime() - [DateTime]$Old.Start_Of_Day).TotalSeconds)
       if ($Total_Stat_Time -ge 86400) {
          $new.Daily_Values += $old.Day_MA
@@ -110,26 +126,26 @@ class STAT_METHODS {
          $new.Start_Of_Day = (Get-Date).ToUniversalTime().ToString("o")
       }
    }
-
+   
    ## Resets particular stats if SWARM was shut off
    ## TODO Actually grab good values rather than use EMA.
-   static [PSCustomObject]Update_Time([PSCustomObject]$old, [decimal]$Value) {
+   hidden static [PSCustomObject]Update_Time([PSCustomObject]$old, [decimal]$Value) {
       ## Determine last time stat was pulled
       $Last_Pull = [math]::Round(((Get-Date).ToUniversalTime() - [DateTime]$Old.Updated).TotalSeconds)
       <# Now we need to see how much of the stats is still valid.
-         If user shut off SWARM for 10 minutes for example, then
-         technically, the minute_15 stat is still viable. So 
-         we remove all values and make the minute_15 the first value
-         in value dataset.
-
-         The same if it has been 3 hours, the 4 hour would be
-         a viable stat. All values are removed, and 4 hour is used
-         as the last stat
-
-         If its greater than 4 hours, we use the day stat to continue.
-
-         If longer than a day- Then we reset entirely.
-      #>
+            If user shut off SWARM for 10 minutes for example, then
+            technically, the minute_15 stat is still viable. So 
+            we remove all values and make the minute_15 the first value
+            in value dataset.
+   
+            The same if it has been 3 hours, the 4 hour would be
+            a viable stat. All values are removed, and 4 hour is used
+            as the last stat
+   
+            If its greater than 4 hours, we use the day stat to continue.
+   
+            If longer than a day- Then we reset entirely.
+         #>
       if ($Last_Pull -gt 86400) {
          $old.Live_Values = $old.Live_Values | Select-Object -Last 1
          $old.Minute_10_EMA = $value
@@ -201,22 +217,21 @@ class STAT_METHODS {
       }
       return $old
    }
-
+   
    ## Simply Moving Average
-   static [void]MA($item, $stat, $old_value, $incoming) {
+   hidden static [void]MA($item, $stat, $old_value, $incoming) {
       $item.$stat = [Convert]::ToDecimal([Math]::Round( ( ($item.$stat * $item.Pulls) + $incoming ) / ($item.Pulls + 1), 0 ))
    }
-
+   
    ## Weighted Moving Average
-   static [void]EMA([Object]$old_stat, [Object]$New_stat, [hashtable]$Calcs) {
-      $SmallestValue = 1E-20
+   hidden static [void]EMA([Object]$old_stat, [Object]$New_stat, [hashtable]$Calcs) {
       $Calcs.keys | ForEach-Object {
          ## Price
          $Price = $old_stat.Live_Values | Select-Object -Last 1
          ## Select-Object Only Values For Moving Period
-         $theta = [STAT_METHODS]::Theta($Calcs.$_, $old_stat.Live_Values)
+         $theta = [Pool_Stat]::Theta($Calcs.$_, $old_stat.Live_Values)
          ## Smoothing For Period
-         $alpha = [Double][STAT_METHODS]::Alpha($theta.Count)
+         $alpha = [Double][Pool_Stat]::Alpha($theta.Count)
          ## Simple Moving Average For The Select-Object Periods
          $zeta = [Convert]::ToDecimal($Theta.Sum / $Theta.Count)
          ## Add MA
@@ -225,27 +240,27 @@ class STAT_METHODS {
          $New_stat."$($_)_EMA" = [convert]::ToDecimal($Price * $alpha + $zeta * (1 - $alpha))
       }
    }
-
+   
    ## Calculate Historical Earnings.
-   static [void]Bias($item) {
+   hidden static [void]Bias($item) {
       ## Some pools have no actual 24_hour values
       ## We have four scenarios:
       ## 1.) actual / day_ma - 1 = % bias (positive means it did better predicted, done if no daily values)
       ## 2.) daily_actual_avg / daily_ma_average  = % bias (positive means it did better than predicted)
       ## 3.) live / daily_ma = % bias (positive means it has generally been higher, done if no daily values)
       ## 4.) daily / daily_ma_average = % bias (positive means it has generally been higher)
-
+   
       $HasDailyValues = $item.Daily_Values.Count -gt 0;
       $NoActual = $item.Actual -eq -1;
-
-      if($NoActual) {
+   
+      if ($NoActual) {
          ## Scenario 3
          $x = $item.Live;
          $y = $item.Day_MA;
          ## Check for Scenario 4
-         if($HasDailyValues) {
+         if ($HasDailyValues) {
             $x = $item.Day_MA;
-            $theta = [STAT_METHODS]::Theta(7, $item.Daily_Values)
+            $theta = [Pool_Stat]::Theta(7, $item.Daily_Values)
             $y = $theta.sum / $theta.count
          }
       }
@@ -254,33 +269,16 @@ class STAT_METHODS {
          $x = $item.Actual;
          $y = $item.Day_MA;
          ## Scenario 2
-         if($HasDailyValues) {
-            $theta = [STAT_METHODS]::Theta(7, $item.Daily_Actual_Values)
+         if ($HasDailyValues) {
+            $theta = [Pool_Stat]::Theta(7, $item.Daily_Actual_Values)
             $x = $theta.sum / $theta.count
-            $theta = [STAT_METHODS]::Theta(7, $item.Daily_Values)
+            $theta = [Pool_Stat]::Theta(7, $item.Daily_Values)
             $y = $theta.sum / $theta.count
          }
       }
       $item.Historical_Bias = [math]::Round($x / $y - 1, 4)
-   }
-}
-
-## Basic Stat Class
-class Stat {
-   [Decimal]$Live
-   [Decimal]$Minute_10_EMA
-   [Decimal]$Minute_10_MA
-   [Decimal]$Minute_15_EMA
-   [Decimal]$Minute_15_MA
-   [Decimal]$Minute_30_EMA
-   [Decimal]$Minute_30_MA
-   [Decimal]$Hour_EMA
-   [Decimal]$Hour_MA
-   [Decimal]$Actual
-   [Decimal[]]$Live_Values
-   [Int]$Pulls = 0
-   [bool]$Locked ## Lock the stat
-   [string]$Updated
+   }   
+   
 }
 
 ## A Pool Stat
@@ -299,7 +297,7 @@ class Pool_Stat : Stat {
    Pool_Stat([string]$name, [decimal]$Estimate, [Decimal]$Hashrate, [decimal]$Actual, [bool]$coin) {
       $name = $name -replace "`/", "`-"
       $name = "pool_$($name)_pricing"
-      $old = [STAT_METHODS]::Get($name)
+      $old = [Pool_Stat]::Get($name)
       if (-not $old.locked) {
          ## Minimum decimal value
          ## Convert Value to Decimal
@@ -321,7 +319,7 @@ class Pool_Stat : Stat {
             $old.Live_Values += $Value
 
             ## Find Gaps
-            $old = [STAT_METHODS]::Update_Time($old, $Value)
+            $old = [Pool_Stat]::Update_Time($old, $Value)
 
             ## Keep only 24hrs worth of values.
             if ($old.Live_Values.Count -gt 288) {
@@ -330,18 +328,18 @@ class Pool_Stat : Stat {
 
             ## Add live values and make EMA
             $old.Live = $value
-            [STAT_METHODS]::EMA($old, $this, $Calcs)
+            [Pool_Stat]::EMA($old, $this, $Calcs)
 
             ## Do MA for stats that need it
-            [STAT_METHODS]::MA($this, "Avg_Hashrate", $old.Avg_Hashrate, $Hashrate)
+            [Pool_Stat]::MA($this, "Avg_Hashrate", $old.Avg_Hashrate, $Hashrate)
             if ($old.Pulls -lt 288) { $old.Pulls++ }
             $this.Pulls = $old.Pulls
 
             ## Calculate Bias
-            [STAT_METHODS]::Bias($old)
+            [Pool_Stat]::Bias($old)
 
             ## If it is a new day - Add to weekly stat values.
-            [STAT_METHODS]::Check_Weekly($old, $this, $Actual)
+            [Pool_Stat]::Check_Weekly($old, $this, $Actual)
 
 
             $this.Live_Values = $old.Live_Values
@@ -373,8 +371,8 @@ class Pool_Stat : Stat {
             $this.Locked = $false
             $this.Actual = $Actual
             $this.Start_Of_Day = (Get-Date).ToUniversalTime().ToString("o")
-               [STAT_METHODS]::Bias($this)
-               [STAT_METHODS]::Bias($this)
+            [Pool_Stat]::Bias($this)
+            [Pool_Stat]::Bias($this)
          }
 
          [string]$this.Updated = (Get-Date).ToUniversalTime().ToString("o")
@@ -406,7 +404,7 @@ class Pool_Stat : Stat {
             Live_Values           = $this.Live_Values
          }
 
-         [STAT_METHODS]::Set($name, $stat)
+         [Pool_Stat]::Set($name, $stat)
       }
    }
 }
