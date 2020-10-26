@@ -30,7 +30,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     else { $Devices = $Get_Devices }
 
     if ($Get_Devices -ne "none") {
-        $GPUDevices1 = $Get_Devices
+        $ArgDevices = $Get_Devices
     }
     else {
         $(vars).GCount.NVIDIA.PSObject.Properties.Name | ForEach-Object { 
