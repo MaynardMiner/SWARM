@@ -24,7 +24,7 @@ param (
 [cultureinfo]::CurrentCulture = 'en-US'
 
 $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
-$dir = $dir -replace "/var/tmp","/root"
+$dir = $dir -replace "/var/tmp", "/root"
 Set-Location $dir
 
 if (-not $Launch) { $Launch = "command" }
@@ -34,7 +34,9 @@ if (Test-Path $BanDir) { $BanJson = Get-Content $BanDir | ConvertFrom-Json }
 
 $Screen = @()
 $JsonBanHammer = @()
-$BanJson | Foreach-Object { $(vars).BanHammer += $_ }
+if ($Launch -eq "Process") {
+    $BanJson | Foreach-Object { $(vars).BanHammer += $_ }
+}
 $BanJson | Foreach-Object { $JsonBanHammer += $_ }
 
 $BanChange = $false
@@ -53,6 +55,7 @@ switch ($Action) {
                             if ($Arg -notin $(vars).BanHammer) { $(vars).BanHammer += $Arg }
                         }
                         "Command" {
+                            $Arg = $Arg.replace("cnight", "cryptonight");
                             if ($Arg -notin $JsonBanHammer) { $JsonBanHammer += $Arg }
                             $BanChange = $true
                             $Screen += "Adding $Arg to bans.json"
@@ -60,19 +63,19 @@ switch ($Action) {
                     }
                 }
                 else {
-                    $Item = $_ -split "`:" | Select-Object -First 1
-                    $Value = $_ -split "`:" | Select-Object -Last 1
+                    $Item = ($_.split("`:") | Select-Object -First 1).replace("cnight", "cryptonight");
+                    $Value = ($_.split("`:") | Select-Object -Last 1).replace("cnight", "cryptonight");
                     switch ($Launch) {
                         "command" {
-                            if($Item -in $PoolJson.keys) {
+                            if ($Item -in $PoolJson.keys) {
                                 if ($Value -notin $PoolJson.$Item.exclusions) {
                                     $PoolJson.$Item.exclusions += $Value
                                     $PoolChange = $true
                                     $Screen += "Adding $Value in $Item exclusions in pool-algos.json"
                                 }
                             }
-                            else{
-                                $PoolJson | Add-Member $Item @{exclusions = @("add pool or miner here","comma seperated")} -ErrorAction SilentlyContinue
+                            else {
+                                $PoolJson | Add-Member $Item @{exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue
                                 if ($Value -notin $PoolJson.$Item.exclusions) {
                                     $PoolJson.$Item.exclusions += $Value
                                     $PoolChange = $true
@@ -82,11 +85,11 @@ switch ($Action) {
                         }
                         "process" {
                             if ($global:Config.Pool_Algos.$Item) {
-                                if($Value -notin $global:Config.Pool_Algos.$Item.exclusions) {
+                                if ($Value -notin $global:Config.Pool_Algos.$Item.exclusions) {
                                     $global:Config.Pool_Algos.$Item.exclusions += $Value
                                 }
                             }
-                            else{log "WARNING: Cannot add $Value to $Item Bans" -ForeGroundColor Yellow}
+                            else { log "WARNING: Cannot add $Value to $Item Bans" -ForeGroundColor Yellow }
                         }
                     }
                 }
@@ -100,6 +103,7 @@ switch ($Action) {
                 if ($Arg.Count -eq 1) {
                     switch ($Launch) {
                         "Command" {
+                            $Arg = $Arg.Replace("cnight","cryptonight")
                             if ($Arg -in $JsonBanHammer) { $JsonBanHammer = $JsonBanHammer | ForEach-Object { if ($_ -ne $Arg) { $_ } } }
                             $BanChange = $true
                             $Screen += "Removed $Arg in bans.json"
@@ -107,12 +111,12 @@ switch ($Action) {
                     }
                 }
                 else {
-                    $Item = $_ -split "`:" | Select-Object -First 1
-                    $Value = $_ -split "`:" | Select-Object -Last 1
+                    $Item = ($_.split("`:") | Select-Object -First 1).replace("cnight","cryptonight");
+                    $Value = ($_.split("`:") | Select-Object -Last 1).replace("cnight","cryptonight");
                     switch ($Launch) {
                         "Command" {
                             if ($Value -in $PoolJson.$Item.exclusions) {
-                                $PoolJson.$Item.exclusions = $PoolJson.$Item.exclusions | Where-Object {$_ -ne $Value}
+                                $PoolJson.$Item.exclusions = $PoolJson.$Item.exclusions | Where-Object { $_ -ne $Value }
                                 $PoolChange = $true
                                 $Screen += "Removed $Value in $Item exclusions in pool-algos.json"
                             }
