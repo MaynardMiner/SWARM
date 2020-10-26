@@ -103,7 +103,7 @@ if ($Name -in $(arg).PoolName) {
         $Divisor = 1000000 * [Convert]::ToDouble($D_Table.$($_.algo))
         $Fee = [Convert]::ToDouble($F_Table.$($_.algo))
         $Estimate = [Convert]::ToDecimal($_.estimate) * 0.001
-        $actual = [Convert]::ToDecimal($_.'24h_btc')
+        $actual = -1
         $current = [Convert]::ToDecimal($Estimate / $Divisor * (1 - ($Fee / 100)))
 
         $Stat = [Pool_Stat]::New($StatName, $current, [Convert]::ToDecimal($Hashrate), $actual, $true)

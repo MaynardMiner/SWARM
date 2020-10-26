@@ -41,6 +41,7 @@ if ($Name -in $(arg).PoolName) {
     $Fee_Table = $(vars).FeeTable.zergpool;
     $Divisor_Table = $(vars).divisortable.zergpool;
     $Active_Symbols = $(vars).ActiveSymbol;
+    $ttf = $(arg).ttf_maximum;
 
     ## Change to universal naming schema and only items we need to add
     $Pool_Sorted = $Pool_Request.PSobject.Properties.Name | 
@@ -103,8 +104,9 @@ if ($Name -in $(arg).PoolName) {
         $Divisor = 1000000 * [Convert]::ToDouble($D_Table.$($_.algo))
         $Fee = [Convert]::ToDouble($F_Table.$($_.algo))
         $Estimate = [Convert]::ToDecimal($_.estimate) * 0.001
-        $actual = [Convert]::ToDecimal($_.'24h_btc_shared')
+        $24h_actual = [Convert]::ToDecimal($_.actual_last24h_shared) * 0.001
         $current = [Convert]::ToDecimal($Estimate / $Divisor * (1 - ($Fee / 100)))
+        $actual = [Convert]::ToDecimal($24h_actual / $Divisor * (1 - ($Fee / 100)))
 
         $Stat = [Pool_Stat]::New($StatName, $current, [Convert]::ToDecimal($Hashrate), $actual, $true)
 
@@ -152,6 +154,7 @@ if ($Name -in $(arg).PoolName) {
         $Params = $using:Get_Params
         $reg = $using:region
         $Miners = $using:Previous_Miners;
+        $max_ttf = $using:ttf;
         #######################################
 
         ## Get the current most profitable coin that meets
@@ -161,6 +164,11 @@ if ($Name -in $(arg).PoolName) {
         Where-Object Algo -eq $Selected | 
         Where-Object { [Convert]::ToInt32($_."24h_blocks_shared") -ge $Params.Min_Blocks } |
         Where-Object { $_.noautotrade -eq 0 } |
+        Where-Object {
+            if($max_ttf -ne 0) {
+                if($_.real_ttf -le $max_ttf) { $_ }
+            } else { $_ }
+        } |
         Sort-Object Level -Descending |
         Select-Object -First 1
 

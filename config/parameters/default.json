@@ -111,5 +111,6 @@
     "Throttle": 0,
     "Hashrate_Threshold": 10,
     "SuperWallet": "",
-    "HashrentInstance": ""
+    "HashrentInstance": "",
+    "ttf_maximum": 0
 }
