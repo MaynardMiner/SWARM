@@ -1,5 +1,14 @@
-# SWARM 3.4.9
+# SWARM 3.5.0
+
+## What's New?
+* Added nanominer to NVIDIA per user request.
+* New Parameter: -Maximum_TTF. Works for -Auto_Coin Yes only. Works only for zergpool. Will let you set a maximum coin Time Until Find in seconds. This is an advanced parameter.
 
 ## Improvements
-* Created opencl compatiblitly between old version and new by adding libs to SWARM. Not relevant if using newer/up to date version of opencl. 
-* Made more cuda lib fixes for new/first time users.
+* Evaluated/Improved -Historical_Bias parameter, particularly for -Auto_Coin
+* Improved Modifiers/Coin rankings for -Auto_Coin parameter (merely how it is displayed in ``-get_stats``).
+
+## Updates
+* teamredminer updated
+* wildrig updated
+* xmrigcc updated

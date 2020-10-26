@@ -2814,3 +2814,12 @@ identity. Was related to machine potentially having multiple active MAC addresse
 
 ## Improvements
 * It was brought to my attention that some of the cuda 11.0 libs were missing. This is for linux users trying to use drivers associated with cuda 11.0 libs.
+
+#####################################################
+#####################################################
+
+# SWARM 3.4.9
+
+## Improvements
+* Created opencl compatiblitly between old version and new by adding libs to SWARM. Not relevant if using newer/up to date version of opencl. 
+* Made more cuda lib fixes for new/first time users.
