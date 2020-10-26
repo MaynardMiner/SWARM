@@ -1,0 +1,90 @@
+{
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "cuckaroo29": "",
+            "cuckaroo29d": "",
+            "kawpow": "",
+            "ubqhash": ""
+        },
+        "difficulty": {
+            "cuckaroo29": "",
+            "cuckaroo29d": "",
+            "kawpow": "",
+            "ubqhash": ""
+        },
+        "naming": {
+            "cuckaroo29": "cuckaroo29",
+            "cuckaroo29d": "cuckaroo29d",
+            "kawpow": "kawpow",
+            "ubqhash": "ubqhash"
+        },
+        "fee": {
+            "cuckaroo29": 2,
+            "cuckaroo29d": 2,
+            "kawpow": 1,
+            "ubqhash": 1
+        }
+    },
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "cuckaroo29": "",
+            "cuckaroo29d": "",
+            "kawpow": "",
+            "ubqhash": ""
+        },
+        "difficulty": {
+            "cuckaroo29": "",
+            "cuckaroo29d": "",
+            "kawpow": "",
+            "ubqhash": ""
+        },
+        "naming": {
+            "cuckaroo29": "cuckaroo29",
+            "cuckaroo29d": "cuckaroo29d",
+            "kawpow": "kawpow",
+            "ubqhash": "ubqhash"
+        },
+        "fee": {
+            "cuckaroo29": 2,
+            "cuckaroo29d": 2,
+            "kawpow": 1,
+            "ubqhash": 1
+        }
+    },
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "cuckaroo29": "",
+            "cuckaroo29d": "",
+            "kawpow": "",
+            "ubqhash": ""
+        },
+        "difficulty": {
+            "cuckaroo29": "",
+            "cuckaroo29d": "",
+            "kawpow": "",
+            "ubqhash": ""
+        },
+        "naming": {
+            "cuckaroo29": "cuckaroo29",
+            "cuckaroo29d": "cuckaroo29d",
+            "kawpow": "kawpow",
+            "ubqhash": "ubqhash"
+        },
+        "fee": {
+            "cuckaroo29": 2,
+            "cuckaroo29d": 2,
+            "kawpow": 1,
+            "ubqhash": 1
+        }
+    },
+    "name": "nanominer-nv"
+}

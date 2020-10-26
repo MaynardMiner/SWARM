@@ -351,5 +351,16 @@
     "version": "0.28.1",
     "optional": "No",
     "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.28.1/wildrig-multi-linux-0.28.1.tar.gz"
-  }        
+  },        
+  "nanominer-nv": {
+    "name": "nanominer-nv",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\nanominer-nv-1\\nanominer",
+    "NVIDIA2": ".\\bin\\nanominer-nv-2\\nanominer",
+    "NVIDIA3": ".\\bin\\nanominer-nv-3\\nanominer",
+    "minername": "nanominer",
+    "version": "1.10.1",
+    "optional": "No",
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.11.0/nanominer-linux-1.11.0.tar.gz"
+  }
 }

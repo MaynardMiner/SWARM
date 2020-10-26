@@ -134,6 +134,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                             $MinerArguments = "-c command.json -p $($MinerCurrent.Port)"
                             set-nicehash $($MinerCurrent.NPool) 3200 $($MinerCurrent.NUser) $($MinerCurrent.Algo) $($MinerCurrent.CommandFile) "$($MinerCurrent.Devices)" "$($MinerCurrent.NCommands)"
                         }
+                        "nanominer" { global:set-minerconfig $MinerCurrent $Logs }
                         default { $MinerArguments = "$($MinerCurrent.Arguments)" }
                     }
                 }
@@ -151,6 +152,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                         "gminer" { $MinerArguments = "-d $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
                         "wildrig-nv" { $MinerArguments = "--opencl-devices $($MinerCurrent.ArgDevices) $($MinerCurrent.Arguments)" }
                         "lolminer" { $MinerArguments = "--devices NVIDIA $($MinerCurrent.Arguments)" }
+                        "nanominer" { global:set-minerconfig $MinerCurrent $Logs }
                         default { $MinerArguments = "$($MinerCurrent.Arguments)" }
                     }
                 }
