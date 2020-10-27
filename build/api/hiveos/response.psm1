@@ -79,6 +79,7 @@ function Global:Set-Stats($Site) {
             power     = @($HGPUPowerTable)
             df        = "$global:diskspace"
             mem       = @($mem)
+            cputemp   = [CPU_Temp]::Get();
             cpuavg    = @($global:load_avg_1m,$global:load_avg_5m,$global:load_avg_15m)
            }
     }

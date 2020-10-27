@@ -25,6 +25,8 @@ if ($isWindows) {
     if ([int]$os_string -lt 10) {
         invoke-expression "mode 800"
     }
+    Add-Type -Path "$env:SWARM_DIR\build\apps\openhardware\OpenHardwareMonitorLib.dll"
+    . .\build\apps\openhardware\cpu_temp.ps1;
 }
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 #$WorkingDir = "/SWARM"
@@ -723,6 +725,7 @@ While ($True) {
         gpu_total  = $global:GPUKHS;
         algo       = $Global:StatAlgo;
         uptime     = $global:UPTIME;
+        cputemp    = [CPU_Temp]::Get();
         hsu        = "khs";
         fans       = @($global:GPUFanTable);
         temps      = @($global:GPUTempTable);
