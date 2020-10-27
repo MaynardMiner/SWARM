@@ -246,13 +246,14 @@ class Stat {
       ## Some pools have no actual 24_hour values
       ## We have four scenarios:
       ## 1.) actual / day_ma - 1 = % bias (positive means it did better predicted, done if no daily values)
-      ## 2.) daily_actual_avg / daily_ma_average  = % bias (positive means it did better than predicted)
-      ## 3.) live / daily_ma = % bias (positive means it has generally been higher, done if no daily values)
-      ## 4.) daily / daily_ma_average = % bias (positive means it has generally been higher)
+      ## 2.) daily_actual_avg / daily_ma_average - 1 = % bias (positive means it did better than predicted)
+      ## 3.) live / daily_ma - 1 = % bias (positive means it has generally been higher, done if no daily values)
+      ## 4.) daily / daily_ma - 1 = % bias (positive means it has generally been higher)
    
       $HasDailyValues = $item.Daily_Values.Count -gt 0;
       $NoActual = $item.Actual -eq -1;
-   
+      $item.Historical_Bias = -1;
+
       if ($NoActual) {
          ## Scenario 3
          $x = $item.Live;
@@ -276,7 +277,9 @@ class Stat {
             $y = $theta.sum / $theta.count
          }
       }
-      $item.Historical_Bias = [math]::Round($x / $y - 1, 4)
+      if ($y -ne 0) {
+         $item.Historical_Bias = [math]::Round($x / $y - 1, 4)
+      }
    }   
    
 }
