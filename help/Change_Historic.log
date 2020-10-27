@@ -2841,3 +2841,17 @@ identity. Was related to machine potentially having multiple active MAC addresse
 * teamredminer updated
 * wildrig updated
 * xmrigcc updated
+
+#####################################################
+#####################################################
+
+# SWARM 3.5.1
+
+## What's New?
+* Added beta changes to Windows HiveOS to api to include cputemps. 
+  * Uses OpenHardwareMonitor library with some self-changed modifications for .NET core. (fix compatibility)
+  * https://github.com/openhardwaremonitor/openhardwaremonitor
+  * Please test and let me know if errors/issues present in Windows. Changes are beta.
+
+## Improvements
+* Hotfix for -Auto_Coin to remove/fix erroneous divide by zero error.
