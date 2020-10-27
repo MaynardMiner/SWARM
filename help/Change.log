@@ -1,14 +1,10 @@
-# SWARM 3.5.0
+# SWARM 3.5.1
 
 ## What's New?
-* Added nanominer to NVIDIA per user request.
-* New Parameter: -Maximum_TTF. Works for -Auto_Coin Yes only. Works only for zergpool. Will let you set a maximum coin Time Until Find in seconds. This is an advanced parameter.
+* Added beta changes to Windows HiveOS to api to include cputemps. 
+  * Uses OpenHardwareMonitor library with some self-changed modifications for .NET core. (fix compatibility)
+  * https://github.com/openhardwaremonitor/openhardwaremonitor
+  * Please test and let me know if errors/issues present in Windows. Changes are beta.
 
 ## Improvements
-* Evaluated/Improved -Historical_Bias parameter, particularly for -Auto_Coin
-* Improved Modifiers/Coin rankings for -Auto_Coin parameter (merely how it is displayed in ``-get_stats``).
-
-## Updates
-* teamredminer updated
-* wildrig updated
-* xmrigcc updated
+* Hotfix for -Auto_Coin to remove/fix erroneous divide by zero error.
