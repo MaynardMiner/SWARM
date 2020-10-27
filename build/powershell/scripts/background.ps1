@@ -725,7 +725,6 @@ While ($True) {
         gpu_total  = $global:GPUKHS;
         algo       = $Global:StatAlgo;
         uptime     = $global:UPTIME;
-        cputemp    = [CPU_Temp]::Get();
         hsu        = "khs";
         fans       = @($global:GPUFanTable);
         temps      = @($global:GPUTempTable);
