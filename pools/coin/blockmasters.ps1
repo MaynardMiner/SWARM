@@ -38,6 +38,7 @@ if ($Name -in $(arg).PoolName) {
 
     ## Only get algos we need & convert name to universal schema
     $Pool_Algos = $global:Config.Pool_Algos;
+    $Pool_Coins = $global:Config.Pool_Coins;
     $Ban_Hammer = $global:Config.vars.BanHammer;
     $Fee_Table = $(vars).FeeTable.blockmasters;
     $Divisor_Table = $(vars).divisortable.blockmasters;
@@ -54,6 +55,7 @@ if ($Name -in $(arg).PoolName) {
     ForEach-Object -Parallel {
         $request = $using:Pool_Request
         $Pipe_Algos = $using:Pool_Algos;
+        $Pipe_Coins = $using:Pool_Coins;
         $Pipe_Hammer = $using:Ban_Hammer;
         $Algo_List = $using:Algos;       
         $F_Table = $using:Fee_Table;
@@ -66,7 +68,9 @@ if ($Name -in $(arg).PoolName) {
         $request.$_.Algo = $Pipe_Algos.PSObject.Properties.Name | Where-Object { $Algo -in $Pipe_Algos.$_.alt_names };
         if ( 
             $request.$_.algo -in $Algo_List -and
-            $request.$_.sym -notin $Pipe_Algos.($_.Algo).exclusions -and
+            $request.$_.algo -notin $Pipe_Algos.($request.$_.Algo).exclusions -and
+            $request.$_.sym -notin $Pipe_Algos.($request.$_.Algo).exclusions -and
+            $request.$_.sym -notin $Pipe_Coins.($request.$_.sym).exclusions -and
             $request.$_.sym -notin $Pipe_Hammer -and
             $request.$_.algo -in $F_Table.keys -and
             $request.$_.algo -in $D_Table.keys -and
