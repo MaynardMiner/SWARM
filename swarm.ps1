@@ -449,6 +449,10 @@ $($_.InvocationInfo.PositionMessage)
     Global:Add-Module "$($(vars).build)\configs.psm1"
     Global:Get-MinerConfigs
     $global:Config.Pool_Algos = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
+    $global:Config.Pool_Coins = [PSCustomObject]@{}
+    if(test-path ".\config\pools\pool-algos.json") {
+        $global:Config.Pool_Coins = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json;
+    }
     Global:Add-ASICS
     create oc_default (Get-Content ".\config\oc\oc-defaults.json" | ConvertFrom-Json)
     create oc_algos (Get-Content ".\config\oc\oc-algos.json" | ConvertFrom-Json)
