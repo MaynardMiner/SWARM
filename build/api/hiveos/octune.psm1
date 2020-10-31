@@ -30,7 +30,7 @@ function Global:Start-HiveTune {
     $OCSheet = @()
     $Algo = $Algo -replace "`_", " "
     $Algo = $Algo -replace "veil", "x16rt"
-    $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/workers/$($Global:Config.hive_params.Id)?token=$($(arg).API_Key)"
+    $Url = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/workers/$($Global:Config.hive_params.Id)"
     $CheckOC = $false
     $CheckDate = Get-Date
     $Success = $false
@@ -43,7 +43,7 @@ function Global:Start-HiveTune {
 
     ## Get Current Worker:
     $T = @{Authorization = "Bearer $($(arg).API_Key)" }
-    $Splat = @{ Method = "GET"; Uri = $Url; Headers = $T; ContentType = 'application/json'; }
+    $Splat = @{ Method = "GET"; Uri = $Url + "?token=$($(arg).API_Key)"; Headers = $T; ContentType = 'application/json'; }
     try { $Worker = Invoke-RestMethod @Splat -TimeoutSec 10 -ErrorAction Stop } catch { log "WARNING: Failed to Contact HiveOS for OC" -ForegroundColor Yellow; return }
 
     ## Patch Worker:
