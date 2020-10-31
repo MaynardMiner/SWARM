@@ -51,7 +51,7 @@ function Global:Update-HiveTagging {
         $Tag_Ids = @{};
 
         ## Get Current Tag List
-        $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags";
+        $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags?token=$($(arg).API_Key)";
         $API.Method = "GET";
         $API.Body = $Null;
         try { 
@@ -64,7 +64,7 @@ function Global:Update-HiveTagging {
         }
 
         ## Get Current Worker
-        $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/workers/$($Global:Config.hive_params.Id)";
+        $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/workers/$($Global:Config.hive_params.Id)?token=$($(arg).API_Key)";
         $API.Method = "GET"
         $API.Body = $Null;
         try { 
@@ -86,7 +86,7 @@ function Global:Update-HiveTagging {
         $Old_Profit_Tag = ($Tags.data | Where-Object name -like "*$($Global:Config.hive_params.Worker) Profit:*").id
         if ($Old_Profit_Tag) {
             $API.Method = "PATCH";
-            $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/$Old_Profit_Tag"
+            $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/$Old_Profit_Tag?token=$($(arg).API_Key)"
             $API.Body = @{ name = $New_Profit_Day; color = 11; } | ConvertTo-Json -Compress;
             try { 
                 $Set_Tag = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
@@ -109,7 +109,7 @@ function Global:Update-HiveTagging {
             ## Patch old coin tag or add to list of tags to create
             if($Old_Coin_Tag) {
                 $API.Method = "PATCH";
-                $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/$Old_Coin_Tag"
+                $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/$Old_Coin_Tag?token=$($(arg).API_Key)"
                 $API.Body = @{ name = $New_Coin_Name; color = 6; } | ConvertTo-Json -Compress;
                 try { 
                     $Set_Tag = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
@@ -149,7 +149,7 @@ function Global:Update-HiveTagging {
         ## Add tags- Get their id
         if ($AddTags.Count -gt 0) {
             $API.Body = @{ data = $AddTags } | ConvertTo-Json -Compress
-            $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/multi";
+            $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/tags/multi?token=$($(arg).API_Key)";
             $API.Method = "POST";
             try { 
                 $New_tags = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
@@ -192,7 +192,7 @@ function Global:Update-HiveTagging {
         if($Miner_Tag) { $Worker_TagIDs += $Miner_Tag; }
         if($Coin_Tag) { $Worker_TagIDs += $Coin_Tag;}
         $API.Method = "PATCH"
-        $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/workers/$($Global:Config.hive_params.Id)"
+        $API.Uri = "https://api2.hiveos.farm/api/v2/farms/$($Global:Config.hive_params.FarmID)/workers/$($Global:Config.hive_params.Id)?token=$($(arg).API_Key)"
         $API.Body = @{ tag_ids = $Worker_TagIDs } | ConvertTo-Json -Compress;
         try { 
             $Worker_Post = Invoke-RestMethod @API -TimeoutSec 10 -ErrorAction Stop 
