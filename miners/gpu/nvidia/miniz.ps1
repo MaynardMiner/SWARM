@@ -69,10 +69,20 @@ $(vars).NVIDIATypes | ForEach-Object {
                 $SelAlgo = $_.Algorithm
                 switch ($SelAlgo) {
                     "equihash_96/5" { $AddArgs = "--par=96,5 --pers auto " }
-                    "equihash_144/5" { $AddArgs = "--par=144,5 --pers auto " }
+                    "equihash_144/5" { 
+                        switch ($SelName) {
+                            "zergpool" { $AddArgs = "--algo 144,5 --pers auto " }
+                            "mph" { $AddArgs = "--algo 144,5 --pers BgoldPoW " }
+                        }
+                    }
                     "equihash_210/9" { $AddArgs = "--par=210,9 --pers auto " }
                     "equihash_200/9" { $AddArgs = "--par=200,9 --pers auto " } 
-                    "equihash_192/7" { $AddArgs = "--par=192,7 --pers auto " }       
+                    "equihash_192/7" { 
+                        switch ($SelName) {
+                        "zergpool" { $AddArgs = "--algo 192,7 --pers auto " }
+                        "mph" { $AddArgs = "--algo 192,7 --pers ZcashPoW " }                    
+                        }
+                    }       
                     "equihash_125/4" { $AddArgs = "--par=125,4 --pers auto " }       
                     "equihash_150/5" { $AddArgs = "--par=150,5 --pers auto " } 
                     "beamv2" { $AddArgs = "--par=150,5,3 --pers auto " }   
