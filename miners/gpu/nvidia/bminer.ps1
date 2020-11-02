@@ -99,6 +99,11 @@ $(vars).NVIDIATypes | ForEach-Object {
                             "ethash" { $Naming = "ethproxy+ssl"; $AddArgs = " "; $PoolPort = "7777" }
                         }
                     }
+                    "mph" {
+                        switch ($Sel) {
+                            "ethash" { $Naming = "stratum+ssl"; $AddArgs = " "; }
+                        }
+                    }
                     "hashrent" {
                         switch($Sel) {
                             "ethash" {$Naming = "ethproxy"; $UserPass = $GetUser.replace("/","%2F") + "." + $GetUser.Split("/")[1] + ":$GetPass"; $AddArgs = " ";}

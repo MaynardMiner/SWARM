@@ -98,6 +98,11 @@ $(vars).NVIDIATypes | ForEach-Object {
                             "ethash" { $AddArgs = " -proto 2 -rate 1 -stales 0 "; $MinerWorker = " -worker $($GetUser.Split("/")[1] ) -pass x" }
                         }
                     }
+                    "mph" {
+                        switch ($SelAlgo) {
+                            "ethash" { $AddArgs = " -proto 2 -rate 1 "; $MinerWorker = " -worker $GetUser -pass x" }
+                        }
+                    }
                 }
                 [PSCustomObject]@{
                     MName      = $Name

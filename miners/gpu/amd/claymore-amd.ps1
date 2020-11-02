@@ -25,7 +25,20 @@ $(vars).AMDTypes | ForEach-Object {
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") {
         $ClayDevices1 = $Get_Devices -split ","
-        $ClayDevices1 = Switch ($ClayDevices1) { "10" { "a" }; "11" { "b" }; "12" { "c" }; "13" { "d" }; "14" { "e" }; "15" { "f" }; "16" { "g" }; "17" { "h" }; "18" { "i" }; "19" { "j" }; "20" { "k" }; default { "$_" }; }
+        $ClayDevices1 = Switch ($ClayDevices1) { 
+            "10" { "a" }; 
+            "11" { "b" }; 
+            "12" { "c" }; 
+            "13" { "d" }; 
+            "14" { "e" }; 
+            "15" { "f" }; 
+            "16" { "g" }; 
+            "17" { "h" }; 
+            "18" { "i" }; 
+            "19" { "j" }; 
+            "20" { "k" }; 
+            default { "$_" }; 
+        }
         $ClayDevices1 = $ClayDevices1 | ForEach-Object { $_ -replace ("$($_)", ",$($_)") }
         $ClayDevices1 = $ClayDevices1 -join ""
         $ClayDevices1 = $ClayDevices1.TrimStart(" ", ",")  
@@ -77,6 +90,7 @@ $(vars).AMDTypes | ForEach-Object {
                 switch ($SelName) {
                     "nicehash" { $AddArgs = " -esm 3 -estale 0 " }
                     "hashrent" { $AddArgs = " -eworker $($GetUser.Split("/")[1]) -estale 0 "}
+                    "mph" { $AddArgs = " -eworker $GetUser -esm 3 "}
                     default { $AddArgs = " " }
                 }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }

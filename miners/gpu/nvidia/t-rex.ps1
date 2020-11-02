@@ -76,6 +76,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "ethash" {
                         switch ($SelName) {
                             "nicehash" { $stratum = "nicehash+tcp://"; }
+                            "mph" { $stratum = "stratum+ssl://"; }
                             "whalesburg" { $GetUser = $Getuser + "." + $Worker; $UserPass = " " }
                         }
                     }
