@@ -52,7 +52,7 @@ if ($Name -in $(arg).PoolName) {
         $A_Wallets = $using:Get_Wallets
         $reg = $using:region
         $StatAlgo = $_.algo -replace "`_", "`-"
-        $Divisor = 100000000
+        $Divisor = 1000000000
         $Pool_Port = $_.algo_switch_port
         $Pool_Host = $_.host;
         if($_.all_host_list.count -gt 1) {
