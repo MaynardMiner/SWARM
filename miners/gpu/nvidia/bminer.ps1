@@ -101,7 +101,12 @@ $(vars).NVIDIATypes | ForEach-Object {
                     }
                     "mph" {
                         switch ($Sel) {
-                            "ethash" { $Naming = "stratum+ssl"; $AddArgs = " "; }
+                            "ethash" { $Naming = "ethproxy"; $AddArgs = " "; $UserPass = $GetUser + "." + ":" + [System.Web.HttpUtility]::UrlEncode($GetPass + $Diff) }
+                            "equihash_144/5" { $Naming = "zhash"; $AddArgs = " -pers auto "; $CanUse = $false }
+                            "equihash_150/5" { $Naming = "beam"; $AddArgs = " -pers auto " ; $CanUse = $false }
+                            "equihash_144/5" { $Naming = "zhash"; $AddArgs = " -pers auto "; $CanUse = $false }
+                            "eaglesong" { $Naming = "eaglesong"; $AddArgs = " "; $UserPass = $GetUser + "." + ":" + [System.Web.HttpUtility]::UrlEncode($GetPass + $Diff) }
+                            "kawpow" { $Naming = "raven"; $AddArgs = " "; $UserPass = $GetUser + "." + ":" + [System.Web.HttpUtility]::UrlEncode($GetPass + $Diff) }
                         }
                     }
                     "hashrent" {

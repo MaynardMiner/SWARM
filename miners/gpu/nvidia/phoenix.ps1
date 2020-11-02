@@ -100,7 +100,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     }
                     "mph" {
                         switch ($SelAlgo) {
-                            "ethash" { $AddArgs = " -proto 2 -rate 1 "; $MinerWorker = " -worker $GetUser -pass x" }
+                            "ethash" { $AddArgs = " -proto 1 -rate 1 "; $MinerWorker = " -worker $GetUser -pass x" }
                         }
                     }
                 }

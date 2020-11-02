@@ -53,7 +53,7 @@ if ($Name -in $(arg).PoolName) {
         $reg = $using:region
         $StatAlgo = $_.algo -replace "`_", "`-"
         $Divisor = 100000000
-        $Pool_Port = $_.port
+        $Pool_Port = $_.algo_switch_port
         $Pool_Host = $_.host;
         if($_.all_host_list.count -gt 1) {
             $Pool_Hosts = $_.all_host_list.split(";")
@@ -100,9 +100,9 @@ if ($Name -in $(arg).PoolName) {
         if ($Hashrate -gt 0) {
             [Pool]::New(
                 ## Symbol
-                "$($_.Name)-Algo",
+                "$($_.algo)-Algo",
                 ## Algorithm
-                "$($_.Name)",
+                "$($_.algo)",
                 ## Level
                 $Level,
                 ## Stratum

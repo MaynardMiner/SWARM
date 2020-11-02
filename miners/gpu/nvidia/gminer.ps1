@@ -111,6 +111,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                             "nicehash" { $AddArgs = "--algo ethash --proto stratum " }
                             "zergpool" { $AddArgs = "--algo ethash "; }
                             "whalesburg" { $UserPass = ""; $AddArgs = "--algo ethash " }
+                            "mph" { $UserPass = ""; $AddArgs = "--algo ethash " }
                             default { $AddArgs = "--algo ethash --proto stratum " }
                         }
                     }
