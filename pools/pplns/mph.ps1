@@ -61,7 +61,7 @@ if ($Name -in $(arg).PoolName) {
         }
         $StatName = "$($P_Name)_$($StatAlgo)"
         $Get_Path = [IO.File]::Exists(".\stats\pool_$($P_Name)_$($StatAlgo)_pricing.json")
-        $Fee = 0.9;
+        $Fee = 1.1;
         $new_estimate = [Convert]::ToDecimal($_.profit);
         $current = [Convert]::ToDecimal($new_estimate / $Divisor * (1 - ($Fee / 100)));
         $hashrate = 1
