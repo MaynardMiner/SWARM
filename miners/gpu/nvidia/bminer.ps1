@@ -89,7 +89,6 @@ $(vars).NVIDIATypes | ForEach-Object {
                             "ethash" { $Naming = "ethproxy"; $AddArgs = " "; $UserPass = $GetUser + "." + ":" + [System.Web.HttpUtility]::UrlEncode($GetPass + $Diff) }
                             "equihash_144/5" { $Naming = "zhash"; $AddArgs = " -pers auto "; $CanUse = $false }
                             "equihash_150/5" { $Naming = "beam"; $AddArgs = " -pers auto " ; $CanUse = $false }
-                            "equihash_144/5" { $Naming = "zhash"; $AddArgs = " -pers auto "; $CanUse = $false }
                             "eaglesong" { $Naming = "eaglesong"; $AddArgs = " "; $UserPass = $GetUser + "." + ":" + [System.Web.HttpUtility]::UrlEncode($GetPass + $Diff) }
                             "kawpow" { $Naming = "raven"; $AddArgs = " "; $UserPass = $GetUser + "." + ":" + [System.Web.HttpUtility]::UrlEncode($GetPass + $Diff) }
                         }
@@ -97,6 +96,14 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "whalesburg" {
                         switch ($Sel) {
                             "ethash" { $Naming = "ethproxy+ssl"; $AddArgs = " "; $PoolPort = "7777" }
+                        }
+                    }
+                    "mph" {
+                        switch ($Sel) {
+                            "ethash" { $Naming = "ethstratum"; $AddArgs = " "; $UserPass = $GetUser + "." + ":" + [System.Web.HttpUtility]::UrlEncode($GetPass + $Diff) }
+                            "equihash_144/5" { $Naming = "zhash"; $AddArgs = " -pers BgoldPoW "; $CanUse = $false }
+                            "eaglesong" { $Naming = "eaglesong"; $AddArgs = " "; $UserPass = $GetUser + "." + ":" + [System.Web.HttpUtility]::UrlEncode($GetPass + $Diff) }
+                            "kawpow" { $Naming = "raven"; $AddArgs = " "; $UserPass = $GetUser + "." + ":" + [System.Web.HttpUtility]::UrlEncode($GetPass + $Diff) }
                         }
                     }
                     "hashrent" {

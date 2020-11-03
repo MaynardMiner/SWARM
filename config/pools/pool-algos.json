@@ -441,7 +441,8 @@
   "equihash_192/7": {
     "alt_names": [
       "equihash_192/7",
-      "equihash192"
+      "equihash192",
+      "equihash-zcl"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -848,7 +849,8 @@
   "randomx": {
     "alt_names": [
       "randomxmonero",
-      "randomx"
+      "randomx",
+      "cryptonight-monero"
     ],
     "exclusions": [
       "add pool or miner here",

@@ -75,6 +75,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                 $GetPort = $_.Port;
                 switch($SelName) {
                     "nicehash" { $PArg = "-P stratum+tcp://$($GetUser):$($GetPass)@$($GetHost):$($GetPort) "; }
+                    "mph" { $PArg = "-P $($GetUser)@$($GetHost):$($GetPort) "; }
                     "zergpool" { 
                         switch($MinerAlgo) {
                             "ethash" { $PArg = "-P $($GetUser).x:$($GetPass)@$($GetHost):$($GetPort) ";}

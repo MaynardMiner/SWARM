@@ -75,6 +75,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                 switch ($SelName) {
                     "nicehash" { $AddArgs = " -esm 3 -estale 0 " }
                     "hashrent" { $AddArgs = " -eworker $($GetUser.Split("/")[1]) -estale 0 "}
+                    "mph" { $AddArgs = " -eworker $GetUser -esm 3 "}
                     default { $AddArgs = " " }
                 }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }

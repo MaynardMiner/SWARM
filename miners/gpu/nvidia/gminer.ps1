@@ -88,7 +88,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                 $GetWorker = $_.Worker;
                 switch ($SelName) {
                     "zergpool" { $GetUser = "$($GetUser).x" };
-                    "whalesburg" {$GetUser = $GetUser + "." + $GetWorker};
+                    "whalesburg" { $GetUser = $GetUser + "." + $GetWorker };
                 }
                 switch ($SelAlgo) {
                     "equihash_150/5" { $AddArgs = "--algo 150_5 " }
@@ -101,8 +101,18 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "beamv2" { $AddArgs = "--algo 150_5 " }
                     "equihash_96/5" { $AddArgs = "--algo 96_5 --pers auto " }
                     "equihash_125/4" { $AddArgs = "--algo 125_4 --pers auto " }
-                    "equihash_192/7" { $AddArgs = "--algo 192_7 --pers auto " }
-                    "equihash_144/5" { $AddArgs = "--algo 144_5 --pers auto " }
+                    "equihash_192/7" { 
+                        switch ($SelName) {
+                            "zergpool" { $AddArgs = "--algo 192_7 --pers auto " }
+                            "mph" { $AddArgs = "--algo 192_7 --pers ZcashPoW " }
+                        }
+                    }
+                    "equihash_144/5" {
+                        switch ($SelName) {
+                            "zergpool" { $AddArgs = "--algo 144_5 --pers auto " }
+                            "mph" { $AddArgs = "--algo 144_5 --pers BgoldPoW " }
+                        }
+                    }
                     "equihash_210/9" { $AddArgs = "--algo 210_9 --pers auto " }
                     "equihash_200/9" { $AddArgs = "--algo 200_9 --pers auto " }
                     "kawpow" { $AddArgs = "--algo kawpow " }
@@ -111,6 +121,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                             "nicehash" { $AddArgs = "--algo ethash --proto stratum " }
                             "zergpool" { $AddArgs = "--algo ethash "; }
                             "whalesburg" { $UserPass = ""; $AddArgs = "--algo ethash " }
+                            "mph" { $UserPass = ""; $AddArgs = "--algo ethash " }
                             default { $AddArgs = "--algo ethash --proto stratum " }
                         }
                     }
@@ -118,35 +129,35 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "beamhashv3" { $AddArgs = "--algo beamhash " }
                 }
                 [PSCustomObject]@{
-                    MName      = $Name
-                    Coin       = $(vars).Coins
-                    Delay      = $MinerConfig.$ConfigType.delay
-                    Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
-                    Symbol     = "$($_.Symbol)"
-                    MinerName  = $MinerName
-                    Prestart   = $PreStart
-                    Type       = $ConfigType
-                    Path       = $Path
-                    ArgDevices = $ArgDevices
-                    Devices    = $Devices
-                    Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
-                    Version    = "$($(vars).nvidia.gminer.version)"
-                    DeviceCall = "gminer"
-                    Arguments  = "--api $Port --server $($_.Pool_Host) --nvml 0 --port $($_.Port) $AddArgs--user $GetUser $UserPass--logfile `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
-                    HashRates  = [Decimal]$Stat.Hour
+                    MName             = $Name
+                    Coin              = $(vars).Coins
+                    Delay             = $MinerConfig.$ConfigType.delay
+                    Fees              = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
+                    Symbol            = "$($_.Symbol)"
+                    MinerName         = $MinerName
+                    Prestart          = $PreStart
+                    Type              = $ConfigType
+                    Path              = $Path
+                    ArgDevices        = $ArgDevices
+                    Devices           = $Devices
+                    Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
+                    Version           = "$($(vars).nvidia.gminer.version)"
+                    DeviceCall        = "gminer"
+                    Arguments         = "--api $Port --server $($_.Pool_Host) --nvml 0 --port $($_.Port) $AddArgs--user $GetUser $UserPass--logfile `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    HashRates         = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
-                    Quote      = $_.Price
-                    Rejections = $Stat.Rejections
-                    Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
-                    MinerPool  = "$($_.Name)"
-                    API        = "gminer"
-                    Port       = $Port
-                    Worker     = $Rig
-                    Wallet     = "$($_.$User)"
-                    URI        = $Uri
-                    Server     = "localhost"
-                    Algo       = "$($_.Algorithm)"
-                    Log        = "miner_generated"                                     
+                    Quote             = $_.Price
+                    Rejections        = $Stat.Rejections
+                    Power             = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                    MinerPool         = "$($_.Name)"
+                    API               = "gminer"
+                    Port              = $Port
+                    Worker            = $Rig
+                    Wallet            = "$($_.$User)"
+                    URI               = $Uri
+                    Server            = "localhost"
+                    Algo              = "$($_.Algorithm)"
+                    Log               = "miner_generated"                                     
                 }
             }
         }

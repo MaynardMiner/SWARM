@@ -74,6 +74,7 @@ $(vars).AMDTypes | ForEach-Object {
                             "zergpool" { $Stratum = "stratum+tcp://"; $A = "ethash"; $UserValue = $GetUser + "." + "x" + ":" + $GetPass }
                             "whalesburg" { $Stratum = "ethproxy+tcp://"; $A = "ethash"; $UserValue = $GetUser + "." + $GetWorker + ":" + "x" }
                             "hashrent" { $Stratum = "ethproxy+tcp://"; $A = "ethash"; $UserValue = $GetUser + "." + $GetUser.Split("/")[1] + ":" + $GetPass }
+                            "mph" { $Stratum = "ethproxy+tcp://"; $A = "ethash"; $UserValue = $GetUser + ":" + $GetPass }
                         }
                     }
                     "cuckaroo29" { $Stratum = "nicehash+tcp://"; $A = "cuckarood"; $UserValue = $GetUser + ":" + $GetPass }
