@@ -271,7 +271,7 @@
     "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig",
     "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig",
     "minername": "xmrig",
-    "version": "6.3.5",
+    "version": "6.5.3",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/xmrig-linux.tar.xz"
   },
