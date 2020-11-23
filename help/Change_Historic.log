@@ -2855,3 +2855,11 @@ identity. Was related to machine potentially having multiple active MAC addresse
 
 ## Improvements
 * Hotfix for -Auto_Coin to remove/fix erroneous divide by zero error.
+
+#####################################################
+#####################################################
+
+# SWARM 3.5.2
+
+## Improvements
+* Hotfix for linux issue post cputemp change in Windows. If you experience loss of stats from the beta change, this will fix.
