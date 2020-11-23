@@ -18,9 +18,9 @@
     "NVIDIA2": ".\\bin\\nbminer-2\\nbminer.exe",
     "NVIDIA3": ".\\bin\\nbminer-3\\nbminer.exe",
     "minername": "nbminer.exe",
-    "version": "32.1",
+    "version": "33.6",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v32.1/NBMiner_32.1_Win.zip"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v33.6/NBMiner_33.6_Win.zip"
   },
   "cc-sha3d": {
     "name": "cc-sha3d",
@@ -106,9 +106,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
     "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "2.29",
+    "version": "2.30",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.29/gminer_2_29_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.30/gminer_2_30_windows64.zip"
   },
   "claymore": {
     "name": "claymore",
@@ -118,7 +118,7 @@
     "NVIDIA3": ".\\bin\\claymore-3\\ethdcrminer64.exe",
     "minername": "ethdcrminer64.exe",
     "version": "15.0",
-    "optional": "No",
+    "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/claymore-windows.zip"
   },
   "cryptodredge": {
@@ -194,7 +194,7 @@
     "NVIDIA2": ".\\bin\\phoenix-2\\PhoenixMiner.exe",
     "NVIDIA3": ".\\bin\\phoenix-3\\PhoenixMiner.exe",
     "minername": "PhoenixMiner.exe",
-    "version": "5.1c",
+    "version": "5.2e",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/phoenix-miner-windows.zip"
   },
@@ -238,9 +238,9 @@
     "NVIDIA2": ".\\bin\\trex-2\\t-rex.exe",
     "NVIDIA3": ".\\bin\\trex-3\\t-rex.exe",
     "minername": "t-rex.exe",
-    "version": "0.18.2",
+    "version": "0.18.11",
     "optional": "No",
-    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.18.2/t-rex-0.18.2-win-cuda10.0.zip"
+    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.18.11/t-rex-0.18.11-win-cuda11.1.zip"
   },
   "zjazz": {
     "name": "zjazz",
@@ -326,8 +326,8 @@
     "NVIDIA2": ".\\bin\\nanominer-nv-2\\nanominer.exe",
     "NVIDIA3": ".\\bin\\nanominer-nv-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "1.12.0",
+    "version": "3.1.1",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.12.0/nanominer-windows-1.12.0.zip"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.1.1/nanominer-windows-3.1.1-cuda11.zip"
   }
 }

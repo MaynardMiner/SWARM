@@ -8,7 +8,7 @@
     "NVIDIA3": ".\\bin\\claymore-3\\ethdcrminer64",
     "minername": "ethdcrminer64",
     "version": "15.0",
-    "optional": "No",
+    "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/Claymore-Linux-AMD.tar.gz"
   },
   "nbminer": {
@@ -18,9 +18,9 @@
     "NVIDIA2": ".\\bin\\nbminer-2\\nbminer",
     "NVIDIA3": ".\\bin\\nbminer-3\\nbminer",
     "minername": "nbminer",
-    "version": "32.1",
+    "version": "33.6",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v32.1/NBMiner_32.1_Linux.tgz"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v33.6/NBMiner_33.6_Linux.tgz"
   },
   "multiminer": {
     "name": "multiminer",
@@ -40,7 +40,7 @@
     "NVIDIA2": ".\\bin\\phoenix-2\\PhoenixMiner",
     "NVIDIA3": ".\\bin\\phoenix-3\\PhoenixMiner",
     "minername": "PhoenixMiner",
-    "version": "5.1c",
+    "version": "5.2e",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz"
   },
@@ -183,9 +183,9 @@
     "NVIDIA2": ".\\bin\\t-rex-2\\t-rex",
     "NVIDIA3": ".\\bin\\t-rex-3\\t-rex",
     "minername": "t-rex",
-    "version": "0.18.2",
+    "version": "0.18.11",
     "optional": "No",
-    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.18.2/t-rex-0.18.2-linux-cuda10.0.tar.gz"
+    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.18.11/t-rex-0.18.11-linux-cuda11.1.tar.gz"
   },
   "zjazz": {
     "name": "zjazz",
@@ -216,9 +216,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner",
     "NVIDIA3": ".\\bin\\gminer-3\\miner",
     "minername": "miner",
-    "version": "2.29",
+    "version": "2.30",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.29/gminer_2_29_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.30/gminer_2_30_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",
@@ -249,9 +249,9 @@
     "NVIDIA2": ".\\bin\\miniz-2\\miniZ",
     "NVIDIA3": ".\\bin\\miniz-3\\miniZ",
     "minername": "miniZ",
-    "version": "1.6w",
+    "version": "1.6w2",
     "optional": "No",
-    "uri": "https://miniz.ch/?smd_process_download=1&download_id=3862"
+    "uri": "https://miniz.ch/?smd_process_download=1&download_id=3934"
   },
   "progminer": {
     "name": "progminer",

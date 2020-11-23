@@ -19,7 +19,7 @@
     "AMD3": ".\\bin\\claymore-amd-3\\ethdcrminer64",
     "minername": "ethdcrminer64",
     "version": "15.0",
-    "optional": "No",
+    "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/Claymore-Linux-AMD.tar.gz"
   },
   "gminer-amd": {
@@ -29,9 +29,9 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner",
     "AMD3": ".\\bin\\gminer-amd-3\\miner",
     "minername": "miner",
-    "version": "2.29",
+    "version": "2.30",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.29/gminer_2_29_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.30/gminer_2_30_linux64.tar.xz"
   },
   "kbminer-amd": {
     "name": "kbminer-amd",
@@ -95,7 +95,7 @@
     "AMD2": ".\\bin\\phoenix-amd-2\\PhoenixMiner",
     "AMD3": ".\\bin\\phoenix-amd-3\\PhoenixMiner",
     "minername": "PhoenixMiner",
-    "version": "5.1c",
+    "version": "5.2e",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz"
   },
@@ -161,9 +161,9 @@
     "AMD2": ".\\bin\\teamredminer-2\\teamredminer",
     "AMD3": ".\\bin\\teamredminer-3\\teamredminer",
     "minername": "teamredminer",
-    "version": "0.7.16c",
+    "version": "0.7.17",
     "optional": "No",
-    "uri": "https://github.com/todxx/teamredminer/releases/download/0.7.16c/teamredminer-v0.7.16c-linux.tgz"
+    "uri": "https://github.com/todxx/teamredminer/releases/download/0.7.17/teamredminer-v0.7.17-linux.tgz"
   },
   "xmr-stak": {
     "name": "xmr-stak",
@@ -271,8 +271,8 @@
     "AMD2": ".\\bin\\nbminer-amd-2\\nbminer",
     "AMD3": ".\\bin\\nbminer-amd-3\\nbminer",
     "minername": "nbminer",
-    "version": "32.1",
+    "version": "33.6",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v32.1/NBMiner_32.1_Linux.tgz"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v33.6/NBMiner_33.6_Linux.tgz"
   }
 }
