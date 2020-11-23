@@ -282,9 +282,9 @@
     "NVIDIA2": ".\\bin\\nv-lolminer-2\\lolMiner.exe",
     "NVIDIA3": ".\\bin\\nv-lolminer-3\\lolMiner.exe",
     "minername": "lolMiner.exe",
-    "version": "0.9.3",
+    "version": "1.16",
     "optional": "Yes",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/0.93/lolMiner_v093_Win64.zip"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.16/lolMiner_v1.16_Win64.zip"
   },
   "ethminer": {
     "name": "ethminer",
