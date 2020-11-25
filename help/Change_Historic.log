@@ -2863,3 +2863,28 @@ identity. Was related to machine potentially having multiple active MAC addresse
 
 ## Improvements
 * Hotfix for linux issue post cputemp change in Windows. If you experience loss of stats from the beta change, this will fix.
+
+######################################################
+######################################################
+
+# SWARM 3.5.3
+
+## What's New?
+* Added mining pool hub pool. (-Poolname mph). I found there was issues with certain algorithms- Pool side.
+* Added argument -MPH_User, which is username for Mining Pool Hub
+
+## Improvements
+* Replaced cuda 10.2 miner with cuda 11.1 miners (where possible, I still need to recompile a lot of miners)
+* Bans should now do -Bans [Coin]:[Pool] correctly for -Auto_Coin Yes 
+* Claymore moved to optional miners. See -optional argument if you wish to still use.
+
+## Updates
+* T-rex udpated
+* Teamredminer udpated
+* Phoenix miner updated
+* Miniz updated
+* Nanominer updated
+* Nbminer updated
+* gminer updated
+* xmrig updated
+* lolminer updated (still need to add ethash)
