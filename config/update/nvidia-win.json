@@ -284,7 +284,7 @@
     "minername": "lolMiner.exe",
     "version": "1.16",
     "optional": "Yes",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.16/lolMiner_v1.16_Win64.zip"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.16/lolMiner_v1.16a_Win64.zip"
   },
   "ethminer": {
     "name": "ethminer",
