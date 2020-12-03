@@ -19,7 +19,8 @@
             "verushash": "",
             "yescrypt": "",
             "argon2d-dyn": "",
-            "ubqhash": ""
+            "ubqhash": "",
+            "etchash": ""
         },
         "difficulty": {
             "kangaroo12": "",
@@ -30,7 +31,8 @@
             "verushash": "",
             "yescrypt": "",
             "argon2d-dyn": "",
-            "ubqhash": ""
+            "ubqhash": "",
+            "etchash": ""
         },
         "naming": {
             "kangaroo12": "k12",
@@ -41,7 +43,8 @@
             "verushash": "verushash",
             "yescrypt": "yescrypt",
             "argon2d-dyn": "argon2d_dynamic",
-            "ubqhash": "ubqhash"
+            "ubqhash": "ubqhash",
+            "etchash": "etchash"
         },
         "fee": {
             "kangaroo12": 0.85,
@@ -52,7 +55,8 @@
             "verushash": 0.85,
             "yescrypt": 0.85,
             "argon2d-dyn": 0.85,
-            "ubqhash": 0.85
+            "ubqhash": 0.85,
+            "etchash": 0.85
         }
     }
 }

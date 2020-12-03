@@ -172,6 +172,11 @@ Access Denied Error prevented.
                                 $Data.$_.naming | Add-Member "beamhashv3" "beamhashv3" -ErrorAction SilentlyContinue
                                 $Data.$_.fee | Add-Member "beamhashv3" 2 -ErrorAction SilentlyContinue
 
+                                $Data.$_.commands | Add-Member "etchash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "etchash" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "etchash" "etchash" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "etchash" 2 -ErrorAction SilentlyContinue
+
                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
                                 $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "equihash_150/5", "cuckaroo29d", "cuckaroo29"
@@ -217,6 +222,11 @@ Access Denied Error prevented.
                                 $Data.$_.difficulty | Add-Member "ubqhash" "" -ErrorAction SilentlyContinue 
                                 $Data.$_.naming | Add-Member "ubqhash" "ubqhash" -ErrorAction SilentlyContinue
                                 $Data.$_.fee | Add-Member "ubqhash" 0.85 -ErrorAction SilentlyContinue
+
+                                $Data.$_.commands | Add-Member "etchash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "etchash" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "etchash" "etchash" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "etchash" 0.85 -ErrorAction SilentlyContinue
                             }
                         }
                     }
@@ -345,10 +355,26 @@ Access Denied Error prevented.
                                 $Data.$_.naming | Add-Member "ubqhash" "ubqhash" -ErrorAction SilentlyContinue
                                 $Data.$_.fee | Add-Member "ubqhash" 2 -ErrorAction SilentlyContinue
 
+                                $Data.$_.commands | Add-Member "etchash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "etchash" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "etchash" "etchash" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "etchash" 2.5 -ErrorAction SilentlyContinue
+
                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomx"
                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "randomx"
                                 $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "randomx"
                                 $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "randomx"
+                            }
+                        }
+                    }
+
+                    if ($ChangeFile -eq "nanominer-nv.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "etchash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "etchash" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "etchash" "etchash" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "etchash" 1 -ErrorAction SilentlyContinue
                             }
                         }
                     }
@@ -972,6 +998,11 @@ Access Denied Error prevented.
                                 $Data.$_.naming | Add-Member "cuckarood29" "cuckarood29" -ErrorAction SilentlyContinue
                                 $Data.$_.fee | Add-Member "cuckarood29" 2.5 -ErrorAction SilentlyContinue
 
+                                $Data.$_.commands | Add-Member "etchash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "etchash" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "etchash" "etchash" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "etchash" 2.5 -ErrorAction SilentlyContinue
+
                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                 $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
@@ -1002,6 +1033,11 @@ Access Denied Error prevented.
                                 $Data.$_.difficulty | Add-Member "x16rv2" "" -ErrorAction SilentlyContinue 
                                 $Data.$_.naming | Add-Member "x16rv2" "x16rv2" -ErrorAction SilentlyContinue
                                 $Data.$_.fee | Add-Member "x16rv2" 1 -ErrorAction SilentlyContinue
+
+                                $Data.$_.commands | Add-Member "etchash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "etchash" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "etchash" "etchash" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "etchash" 1 -ErrorAction SilentlyContinue
                             }
                         }
                     }
