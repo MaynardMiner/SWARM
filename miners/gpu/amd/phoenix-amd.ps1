@@ -90,6 +90,7 @@ $(vars).AMDTypes | ForEach-Object {
                         switch ($SelAlgo) {
                             "progpow" { $AddArgs = " -coin bci -proto 1 " }
                             "ethash" { $AddArgs = " -proto 2 -rate 1 " }
+                            "etchash" { $AddArgs = " -proto 2 -rate 1 " }
                         }
                     }
                     "hashrent" {
