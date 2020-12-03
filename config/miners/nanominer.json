@@ -8,32 +8,28 @@
             "cuckaroo29d": "",
             "kawpow": "",
             "ubqhash": "",
-            "etchash": "",
-            "octopus": ""
+            "etchash": ""
         },
         "difficulty": {
             "cuckaroo29": "",
             "cuckaroo29d": "",
             "kawpow": "",
             "ubqhash": "",
-            "etchash": "",
-            "octopus": ""
+            "etchash": ""
         },
         "naming": {
             "cuckaroo29": "cuckaroo29",
             "cuckaroo29d": "cuckaroo29d",
             "kawpow": "kawpow",
             "ubqhash": "ubqhash",
-            "etchash": "etchash",
-            "octopus": "octopus"
+            "etchash": "etchash"
         },
         "fee": {
             "cuckaroo29": 2,
             "cuckaroo29d": 2,
             "kawpow": 1,
             "ubqhash": 1,
-            "etchash": 1,
-            "octopus": 1
+            "etchash": 1
         }
     },
     "name": "nanominer"
