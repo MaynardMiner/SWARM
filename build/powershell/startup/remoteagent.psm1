@@ -797,6 +797,29 @@ Access Denied Error prevented.
                         }
                     }
 
+                    if ($ChangeFile -eq "phoenix.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                            
+                                $Data.$_.commands | Add-Member "etchash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "etchash" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "etchash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "etchash" 1 -ErrorAction SilentlyContinue
+                            }
+                        }
+                    }
+                    if ($ChangeFile -eq "phoenix-amd.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                            
+                                $Data.$_.commands | Add-Member "etchash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "etchash" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "etchash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "etchash" 1 -ErrorAction SilentlyContinue
+                            }
+                        }
+                    }
+
                     if ($ChangeFile -eq "fancyix.json") {
                         $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {

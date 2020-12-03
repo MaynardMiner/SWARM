@@ -12,19 +12,23 @@
         ],
         "commands": {
             "ethash": "",
-            "progpow": ""
+            "progpow": "",
+            "etchash": ""
         },
         "difficulty": {
             "ethash": "",
-            "progpow": ""
+            "progpow": "",
+            "etchash": ""
         },
         "naming": {
             "ethash": "ethash",
-            "progpow": "progpow"
+            "progpow": "progpow",
+            "etchash": "etchash"
         },
         "fee": {
             "ethash": 0.65,
-            "progpow": 0.65
+            "progpow": 0.65,
+            "etchash": 0.65
         }
     }
 }
