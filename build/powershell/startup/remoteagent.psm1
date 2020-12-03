@@ -1181,6 +1181,8 @@ Access Denied Error prevented.
                         $Data | add-Member "x11k" @{alt_names = @("x11k"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
                         $Data | add-Member "x33" @{alt_names = @("x33"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
                         $Data | add-Member "ubqhash" @{alt_names = @("ubqhash"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
+                        $Data | add-Member "etchash" @{alt_names = @("etchash"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
+                        $Data | add-Member "octopus" @{alt_names = @("octopus"); exclusions = @("add pool or miner here", "comma seperated") } -ErrorAction SilentlyContinue -Force
                     }
 
                     $Data | ConvertTo-Json -Depth 10 | Set-Content $NewJson;

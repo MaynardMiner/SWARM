@@ -741,6 +741,15 @@
       "comma seperated"
     ]
   },
+  "octopus": {
+    "alt_names": [
+      "octopus"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "energihash": {
     "alt_names": [
       "energihash",
