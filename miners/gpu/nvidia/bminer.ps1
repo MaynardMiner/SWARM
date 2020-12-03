@@ -82,6 +82,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                             "eaglesong" { $Naming = "eaglesong"; $AddArgs = " " }
                             "kawpow" { $Naming = "raven"; $AddArgs = " " }
                             "cuckarooz29" { $Naming = "cuckaroo29z"; $AddArgs = " " }
+                            "octopus" { $Naming = "conflux"; $AddArgs = " " }
                         }
                     }
                     "zergpool" {
