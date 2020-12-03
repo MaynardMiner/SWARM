@@ -36,7 +36,8 @@
             "honeycomb": "",
             "kawpow": "",
             "ethash": "",
-            "etchash": ""
+            "etchash": "",
+            "octopus": ""
         },
         "difficulty": {
             "tribus": "",
@@ -71,7 +72,8 @@
             "honeycomb": "",
             "kawpow": "",
             "ethash": "",
-            "etchash": ""
+            "etchash": "",
+            "octopus": ""
         },
         "naming": {
             "tribus": "tribus",
@@ -106,7 +108,8 @@
             "honeycomb": "honeycomb",
             "kawpow": "kawpow",
             "ethash": "ethash",
-            "etchash": "etchash"
+            "etchash": "etchash",
+            "octopus": "octopus"
         },
         "fee": {
             "tribus": 1,
@@ -141,7 +144,8 @@
             "honeycomb": 1,
             "kawpow": 1,
             "ethash": 1,
-            "etchash": 1
+            "etchash": 1,
+            "octopus": 1
         }
     },
     "NVIDIA2": {
@@ -181,7 +185,8 @@
             "honeycomb": "",
             "kawpow": "",
             "ethash": "",
-            "etchash": ""
+            "etchash": "",
+            "octopus": ""
         },
         "difficulty": {
             "tribus": "",
@@ -216,7 +221,8 @@
             "honeycomb": "",
             "kawpow": "",
             "ethash": "",
-            "etchash": ""
+            "etchash": "",
+            "octopus": ""
         },
         "naming": {
             "tribus": "tribus",
@@ -251,7 +257,8 @@
             "honeycomb": "honeycomb",
             "kawpow": "kawpow",
             "ethash": "ethash",
-            "etchash": "etchash"
+            "etchash": "etchash",
+            "octopus": "octopus"
         },
         "fee": {
             "tribus": 1,
@@ -286,7 +293,8 @@
             "honeycomb": 1,
             "kawpow": 1,
             "ethash": 1,
-            "etchash": 1
+            "etchash": 1,
+            "octopus": 1
         }
     },
     "NVIDIA3": {
@@ -326,7 +334,8 @@
             "honeycomb": "",
             "kawpow": "",
             "ethash": "",
-            "etchash": ""
+            "etchash": "",
+            "octopus": ""
         },
         "difficulty": {
             "tribus": "",
@@ -361,7 +370,8 @@
             "honeycomb": "",
             "kawpow": "",
             "ethash": "",
-            "etchash": ""
+            "etchash": "",
+            "octopus": ""
         },
         "naming": {
             "tribus": "tribus",
@@ -396,7 +406,8 @@
             "honeycomb": "honeycomb",
             "kawpow": "kawpow",
             "ethash": "ethash",
-            "etchash": "etchash"
+            "etchash": "etchash",
+            "octopus": "octopus"
         },
         "fee": {
             "tribus": 1,
@@ -431,7 +442,8 @@
             "honeycomb": 1,
             "kawpow": 1,
             "ethash": 1,
-            "etchash": 1
+            "etchash": 1,
+            "octopus": 1
         }
     },
     "name": "t-rex"

@@ -11,7 +11,8 @@
             "cuckatoo32": "",
             "eaglesong": "",
             "handshake": "",
-            "kawpow": ""
+            "kawpow": "",
+            "octopus": ""
         },
         "difficulty": {
             "ethash": "",
@@ -20,7 +21,8 @@
             "cuckatoo32": "",
             "eaglesong": "",
             "handshake": "",
-            "kawpow": ""
+            "kawpow": "",
+            "octopus": ""
         },
         "naming": {
             "ethash": "ethash",
@@ -29,7 +31,8 @@
             "cuckatoo32": "cuckatoo32",
             "eaglesong": "eaglesong",
             "handshake": "hns",
-            "kawpow": "kawpow"
+            "kawpow": "kawpow",
+            "octopus": "octopus"
         },
         "fee": {
             "ethash": 0.65,
@@ -38,9 +41,9 @@
             "cuckatoo32": 2,
             "eaglesong": 2,
             "handshake": 2,
-            "kawpow": 2
+            "kawpow": 2,
+            "octopus": 2
         }
-
     },
     "NVIDIA2": {
         "name": "NVIDIA2",
@@ -53,7 +56,8 @@
             "cuckatoo32": "",
             "eaglesong": "",
             "handshake": "",
-            "kawpow": ""
+            "kawpow": "",
+            "octopus": ""
         },
         "difficulty": {
             "ethash": "",
@@ -62,7 +66,8 @@
             "cuckatoo32": "",
             "eaglesong": "",
             "handshake": "",
-            "kawpow": ""
+            "kawpow": "",
+            "octopus": ""
         },
         "naming": {
             "ethash": "ethash",
@@ -71,7 +76,8 @@
             "cuckatoo32": "cuckatoo32",
             "eaglesong": "eaglesong",
             "handshake": "hns",
-            "kawpow": "kawpow"
+            "kawpow": "kawpow",
+            "octopus": "octopus"
         },
         "fee": {
             "ethash": 0.65,
@@ -80,7 +86,8 @@
             "cuckatoo32": 2,
             "eaglesong": 2,
             "handshake": 2,
-            "kawpow": 2
+            "kawpow": 2,
+            "octopus": 2
         }
     },
     "NVIDIA3": {
@@ -94,7 +101,8 @@
             "cuckatoo32": "",
             "eaglesong": "",
             "handshake": "",
-            "kawpow": ""
+            "kawpow": "",
+            "octopus": ""
         },
         "difficulty": {
             "ethash": "",
@@ -103,7 +111,8 @@
             "cuckatoo32": "",
             "eaglesong": "",
             "handshake": "",
-            "kawpow": ""
+            "kawpow": "",
+            "octopus": ""
         },
         "naming": {
             "ethash": "ethash",
@@ -112,7 +121,8 @@
             "cuckatoo32": "cuckatoo32",
             "eaglesong": "eaglesong",
             "handshake": "hns",
-            "kawpow": "kawpow"
+            "kawpow": "kawpow",
+            "octopus": "octopus"
         },
         "fee": {
             "ethash": 0.65,
@@ -121,7 +131,8 @@
             "cuckatoo32": 2,
             "eaglesong": 2,
             "handshake": 2,
-            "kawpow": 2
+            "kawpow": 2,
+            "octopus": 2
         }
     }
 }

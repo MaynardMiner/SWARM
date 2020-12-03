@@ -360,6 +360,11 @@ Access Denied Error prevented.
                                 $Data.$_.naming | Add-Member "etchash" "etchash" -ErrorAction SilentlyContinue
                                 $Data.$_.fee | Add-Member "etchash" 2.5 -ErrorAction SilentlyContinue
 
+                                $Data.$_.commands | Add-Member "octopus" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "octopus" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "octopus" "octopus" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "octopus" 1 -ErrorAction SilentlyContinue
+
                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomx"
                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "randomx"
                                 $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "randomx"
@@ -375,6 +380,10 @@ Access Denied Error prevented.
                                 $Data.$_.difficulty | Add-Member "etchash" "" -ErrorAction SilentlyContinue 
                                 $Data.$_.naming | Add-Member "etchash" "etchash" -ErrorAction SilentlyContinue
                                 $Data.$_.fee | Add-Member "etchash" 1 -ErrorAction SilentlyContinue
+                                $Data.$_.commands | Add-Member "octopus" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "octopus" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "octopus" "octopus" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "octopus" 1 -ErrorAction SilentlyContinue
                             }
                         }
                     }
@@ -532,6 +541,11 @@ Access Denied Error prevented.
                                 $Data.$_.difficulty | Add-Member "kawpow" "" -ErrorAction SilentlyContinue 
                                 $Data.$_.naming | Add-Member "kawpow" "kawpow" -ErrorAction SilentlyContinue
                                 $Data.$_.fee | Add-Member "kawpow" 2 -ErrorAction SilentlyContinue
+
+                                $Data.$_.commands | Add-Member "octopus" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "octopus" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "octopus" "octopus" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "octopus" 2 -ErrorAction SilentlyContinue
 
                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "cuckaroo29d", "cuckaroo29"
@@ -1061,6 +1075,11 @@ Access Denied Error prevented.
                                 $Data.$_.difficulty | Add-Member "etchash" "" -ErrorAction SilentlyContinue 
                                 $Data.$_.naming | Add-Member "etchash" "etchash" -ErrorAction SilentlyContinue
                                 $Data.$_.fee | Add-Member "etchash" 1 -ErrorAction SilentlyContinue
+
+                                $Data.$_.commands | Add-Member "octopus" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "octopus" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "octopus" "octopus" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "octopus" 1 -ErrorAction SilentlyContinue
                             }
                         }
                     }
