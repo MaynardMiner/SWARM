@@ -16,21 +16,24 @@
             "cuckaroo29d": "",
             "kawpow": "",
             "ubqhash": "",
-            "etchash": ""
+            "etchash": "",
+            "octopus": ""
         },
         "naming": {
             "cuckaroo29": "cuckaroo29",
             "cuckaroo29d": "cuckaroo29d",
             "kawpow": "kawpow",
             "ubqhash": "ubqhash",
-            "etchash": "etchash"
+            "etchash": "etchash",
+            "octopus": "octopus"
         },
         "fee": {
             "cuckaroo29": 2,
             "cuckaroo29d": 2,
             "kawpow": 1,
             "ubqhash": 1,
-            "etchash": 1
+            "etchash": 1,
+            "octopus": 1
         }
     },
     "name": "nanominer"
