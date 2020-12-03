@@ -62,9 +62,9 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner.exe",
     "AMD3": ".\\bin\\gminer-amd-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "2.30",
+    "version": "2.33",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.30/gminer_2_30_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.33/gminer_2_33_windows64.zip"
   },
   "phoenix-amd": {
     "name": "phoenix-amd",
@@ -73,7 +73,7 @@
     "AMD2": ".\\bin\\phoenix-amd-2\\PhoenixMiner.exe",
     "AMD3": ".\\bin\\phoenix-amd-3\\PhoenixMiner.exe",
     "minername": "PhoenixMiner.exe",
-    "version": "5.2e",
+    "version": "5.3b",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/phoenix-miner-windows.zip"
   },
@@ -194,9 +194,9 @@
     "AMD2": ".\\bin\\srbminer-2\\SRBMiner-CN.exe",
     "AMD3": ".\\bin\\srbminer-3\\SRBMiner-CN.exe",
     "minername": "SRBMiner-CN.exe",
-    "version": "1.8.4",
-    "optional": "Yes",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/srbminer-windows.zip"
+    "version": "0.5.8",
+    "optional": "No",
+    "uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.5.8/SRBMiner-Multi-0-5-8-Linux.tar.xz"
   },
   "progminer-amd": {
     "name": "progminer-amd",
@@ -227,9 +227,9 @@
     "AMD2": ".\\bin\\nanominer-2\\nanominer.exe",
     "AMD3": ".\\bin\\nanominer-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "3.1.1",
+    "version": "3.1.2",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.1.1/nanominer-windows-3.1.1-cuda11.zip"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.1.2/nanominer-windows-3.1.2-cuda11.zip"
   },
   "nbminer-amd": {
     "name": "nbminer-amd",

@@ -7,9 +7,9 @@
     "AMD2": ".\\bin\\srbmulti-2\\SRBMiner-MULTI",
     "AMD3": ".\\bin\\srbmulti-3\\SRBMiner-MULTI",
     "minername": "SRBMiner-MULTI",
-    "version": "0.5.4",
+    "version": "0.5.8",
     "optional": "No",
-    "uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.5.4/SRBMiner-Multi-0-5-4-Linux.tar.xz"
+    "uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.5.8/SRBMiner-Multi-0-5-8-Linux.tar.xz"
   },
   "claymore-amd": {
     "name": "claymore-amd",
@@ -29,9 +29,9 @@
     "AMD2": ".\\bin\\gminer-amd-2\\miner",
     "AMD3": ".\\bin\\gminer-amd-3\\miner",
     "minername": "miner",
-    "version": "2.30",
+    "version": "2.33",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.30/gminer_2_30_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.33/gminer_2_33_linux64.tar.xz"
   },
   "kbminer-amd": {
     "name": "kbminer-amd",
@@ -95,7 +95,7 @@
     "AMD2": ".\\bin\\phoenix-amd-2\\PhoenixMiner",
     "AMD3": ".\\bin\\phoenix-amd-3\\PhoenixMiner",
     "minername": "PhoenixMiner",
-    "version": "5.2e",
+    "version": "5.3b",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz"
   },
@@ -260,9 +260,9 @@
     "AMD2": ".\\bin\\nanominer-2\\nanominer",
     "AMD3": ".\\bin\\nanominer-3\\nanominer",
     "minername": "nanominer",
-    "version": "1.12.0",
+    "version": "3.1.2",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v1.12.0/nanominer-linux-1.12.0.tar.gz"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.1.2/nanominer-linux-3.1.2-cuda11.tar.gz"
   },
   "nbminer-amd": {
     "name": "nbminer-amd",
