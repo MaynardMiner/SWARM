@@ -360,11 +360,6 @@ Access Denied Error prevented.
                                 $Data.$_.naming | Add-Member "etchash" "etchash" -ErrorAction SilentlyContinue
                                 $Data.$_.fee | Add-Member "etchash" 2.5 -ErrorAction SilentlyContinue
 
-                                $Data.$_.commands | Add-Member "octopus" "" -ErrorAction SilentlyContinue
-                                $Data.$_.difficulty | Add-Member "octopus" "" -ErrorAction SilentlyContinue 
-                                $Data.$_.naming | Add-Member "octopus" "octopus" -ErrorAction SilentlyContinue
-                                $Data.$_.fee | Add-Member "octopus" 1 -ErrorAction SilentlyContinue
-
                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "randomx"
                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "randomx"
                                 $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "randomx"
