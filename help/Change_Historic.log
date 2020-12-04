@@ -2888,3 +2888,8 @@ identity. Was related to machine potentially having multiple active MAC addresse
 * gminer updated
 * xmrig updated
 * lolminer updated (still need to add ethash)
+
+# SWARM 3.5.5
+
+## Improvements
+* Some miner links were pulled by devs post last release. This updates links.
