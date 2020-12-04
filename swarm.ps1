@@ -404,8 +404,6 @@ $($_.InvocationInfo.PositionMessage)
     #######                     PHASE 1: Build                              ######
     ##############################################################################
 
-    hhhh
-
     ## Basic Variable Control:
     ## 'create' will add a new variable to the variable hashtable (vars)
     ## 'remove' will either remove the variable specified, or all varibles if 'all' is specified.
