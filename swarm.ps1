@@ -393,6 +393,7 @@ $($_.InvocationInfo.PositionMessage)
     | Category: $($_.CategoryInfo.Category) | Activity: $($_.CategoryInfo.Activity)
     | Reason: $($_.CategoryInfo.Reason) 
     | Target Name: $($_.CategoryInfo.TargetName) | Target Type: $($_.CategoryInfo.TargetType)
+    | Invocation: $($_.InvocationInfo | Format-List -Force | Out-String)
 " -ForeGround Red; 
         continue;
     }
@@ -402,6 +403,8 @@ $($_.InvocationInfo.PositionMessage)
     ##############################################################################
     #######                     PHASE 1: Build                              ######
     ##############################################################################
+
+    hhhh
 
     ## Basic Variable Control:
     ## 'create' will add a new variable to the variable hashtable (vars)
