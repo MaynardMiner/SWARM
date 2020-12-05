@@ -1,24 +1,9 @@
-# SWARM 3.5.5
-
-## Note
-* There was a lot of changes done in a short time, but I wanted to get it out with new algos asap since it may affect profitability.
-* If you have issues, post in discord support or make an issue and I will address.
-* If using HiveOS, you must update NVIDIA drivers to 455.45.
-
-## What's New?
-* Etchash algorithm added.
-* Octopus algorithm added.
+# SWARM 3.5.6
 
 ## Improvements
-* gpu-z updated
-* windows pciutils updated
-* all miners that can do new algorithms should be added. I am still testing through them, but not major issues yet.
+* Uses miniz cuda 11 version now.
+* Fixed link for teamredminer linux version.
+* SWARM will now wipe dead screens on startup. (linux)
 
-## Updates
-* t-rex updated
-* gminer updated
-* lolminer updated
-* teamredminer updated
-* srbminer updated 
-* bminer updated
-* nanominer updated
+## Note
+* I am aware of nanominer issues. I am still trying to address them. Just uploading fixes I have made thus far.
