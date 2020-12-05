@@ -33,6 +33,10 @@
 ## Needs to be started as root
 ## ./install_linux
 
+
+## Wipe dead screens
+screen -wipe
+
 screen -S miner -m pwsh -command "&.\startup.ps1"
 echo "swarm started on miner screen"
 echo "type sudo screen -r miner to view"
