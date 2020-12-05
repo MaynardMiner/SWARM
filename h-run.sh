@@ -70,6 +70,9 @@ json=`echo cat $SWARMCONF`
 $json | jq -e . >/dev/null 2>&1
 get=$?
 
+## Wipe dead screens
+screen -wipe
+
 if [ "$get" -eq 0 ]; then
   ## Set json to config.json
   $json > $PWD/config.json;
