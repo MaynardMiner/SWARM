@@ -251,7 +251,7 @@
     "minername": "miniZ",
     "version": "v1.6x",
     "optional": "No",
-    "uri": "https://miniz.ch/?smd_process_download=1&download_id=3999"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/miniz-linux.tar.gz"
   },
   "progminer": {
     "name": "progminer",
