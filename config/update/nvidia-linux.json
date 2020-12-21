@@ -238,9 +238,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "16.3.6",
+    "version": "16.3.7",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-v16.3.6-b37c2ec-amd64.tar.xz"
+    "uri": "https://www.bminercontent.com/releases/bminer-v16.3.7-d9521d5-amd64.tar.xz"
   },
   "miniz": {
     "name": "miniz",
