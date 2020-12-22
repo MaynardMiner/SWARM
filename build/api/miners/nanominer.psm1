@@ -20,6 +20,7 @@ function Global:Get-StatsNanominer {
             switch ($global:MinerAlgo) {
                 "ethash" { $Data.Devices | ForEach-Object { $global:RAW += [Double]$_.hashrates.hashrate * 1000000 } }
                 "etchash" { $Data.Devices | ForEach-Object { $global:RAW += [Double]$_.hashrates.hashrate * 1000000 } }
+                "octopus" { $Data.Devices | ForEach-Object { $global:RAW += [Double]$_.hashrates.hashrate * 1000000 } }
                 default { $Data.Devices | ForEach-Object { $global:RAW += [Double]$_.hashrates.hashrate } }
             }
             Global:Write-MinerData2;
@@ -29,6 +30,7 @@ function Global:Get-StatsNanominer {
                     switch ($global:MinerAlgo) {
                         "ethash" { $global:GPUHashrates.$(Global:Get-GPUs) = $Hash * 1000 }
                         "etchash" { $global:GPUHashrates.$(Global:Get-GPUs) = $Hash * 1000 }
+                        "octopus" { $global:GPUHashrates.$(Global:Get-GPUs) = $Hash * 1000 }
                         default { $global:GPUHashrates.$(Global:Get-GPUs) = $Hash / 1000 }
                     }
                 }
