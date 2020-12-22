@@ -35,10 +35,10 @@ function Global:Get-StatsEthminer {
         try { $Data = $Request | ConvertFrom-Json -ErrorAction Stop; }
         catch { Write-Host "Failed To parse API" -ForegroundColor Red; Break }
         if ($Data) { $Summary = $Data.result[2]; $Threads = $Data.result[3]; }
-        $global:RAW += $Summary -split ";" | Select-Object -First 1 | ForEach-Object { [Double]$_ * $Multiplier } 
+        $global:RAW += $Summary -split ";" | Select-Object -First 1 | ForEach-Object { [Convert]::ToDouble($_) * $Multiplier } 
         Global:Write-MinerData2;
-        $global:GPUKHS += $Summary -split ";" | Select-Object -First 1 | ForEach-Object { [Double]$_ / $Divsor } 
-        $Hash = $Threads -split ";" | ForEach-Object { [Double]$_ / $Divsor }
+        $global:GPUKHS += $Summary -split ";" | Select-Object -First 1 | ForEach-Object { [Convert]::ToDouble($_) / $Divsor } 
+        $Hash = $Threads -split ";" | ForEach-Object { [Convert]::ToDouble($_) / $Divsor }
         
         try { 
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
