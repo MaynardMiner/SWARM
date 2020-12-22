@@ -194,9 +194,9 @@
     "AMD2": ".\\bin\\wildrig-2\\wildrig-multi",
     "AMD3": ".\\bin\\wildrig-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.28.1",
+    "version": "0.28.2",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.28.1/wildrig-multi-linux-0.28.1.tar.gz"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.28.2/wildrig-multi-linux-0.28.2.tar.xz"
   },
   "fancyix": {
     "name": "fancyix",
@@ -216,7 +216,7 @@
     "AMD2": ".\\bin\\xmrig-amd-2\\xmrig",
     "AMD3": ".\\bin\\xmrig-amd-3\\xmrig",
     "minername": "xmrig",
-    "version": "6.5.3",
+    "version": "6.7.0",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/xmrig-linux.tar.xz"
   },

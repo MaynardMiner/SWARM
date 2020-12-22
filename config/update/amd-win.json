@@ -150,9 +150,9 @@
     "AMD2": ".\\bin\\wildrig-2\\wildrig.exe",
     "AMD3": ".\\bin\\wildrig-3\\wildrig.exe",
     "minername": "wildrig.exe",
-    "version": "0.28.1",
+    "version": "0.28.2",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.28.1/wildrig-multi-windows-0.28.1.7z"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.28.2/wildrig-multi-windows-0.28.2.7z"
   },
   "fancyix": {
     "name": "fancyix",
@@ -172,9 +172,9 @@
     "AMD2": ".\\bin\\xmrig-amd-2\\xmrig.exe",
     "AMD3": ".\\bin\\xmrig-amd-3\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "6.5.3",
+    "version": "6.7.0",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.5.3/xmrig-6.5.3-msvc-cuda10_2-win64.zip"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.7.0/xmrig-6.7.0-msvc-win64.zip"
   },
   "xmrigcc-amd": {
     "name": "xmrigcc-amd",

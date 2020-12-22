@@ -271,7 +271,7 @@
     "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig",
     "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig",
     "minername": "xmrig",
-    "version": "6.5.3",
+    "version": "6.7.0",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/xmrig-linux.tar.xz"
   },
@@ -348,9 +348,9 @@
     "NVIDIA2": ".\\bin\\wildrig-nv-2\\wildrig-multi",
     "NVIDIA3": ".\\bin\\wildrig-nv-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.28.1",
+    "version": "0.28.2",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.28.1/wildrig-multi-linux-0.28.1.tar.gz"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.28.2/wildrig-multi-linux-0.28.2.tar.xz"
   },        
   "nanominer-nv": {
     "name": "nanominer-nv",
