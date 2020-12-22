@@ -359,8 +359,8 @@
     "NVIDIA2": ".\\bin\\nanominer-nv-2\\nanominer",
     "NVIDIA3": ".\\bin\\nanominer-nv-3\\nanominer",
     "minername": "nanominer",
-    "version": "3.1.2",
+    "version": "3.1.4",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.1.2/nanominer-linux-3.1.2-cuda11.tar.gz"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.1.4/nanominer-linux-3.1.4-cuda11.tar.gz"
   }
 }
