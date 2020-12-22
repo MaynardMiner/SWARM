@@ -1,10 +1,21 @@
-# SWARM 3.5.6
+# SWARM 3.5.7
 
 ## Improvements
-* Uses miniz cuda 11 version now.
-* Fixed link for teamredminer linux version.
-* SWARM will now wipe dead screens on startup. (linux)
+* Cuda 11.2 libs added for linux. (no miner supports 11.2 yet, but is available if they do)
+* attempted api fix for issues with phoenix-miner windows
+* nbminer for amd moved to -optional due to its limited features/support
+* --no-nvml parameter removed from nbminer
+* updated miniz link for windows that was not working right.
+* fixed some nanominer api issues.
 
-## Note
-* I am aware of nanominer issues. I am still trying to address them. Just uploading fixes I have made thus far.
-* I am also aware that tt-miner and lolminer have updates as well. I need to test them first.
+## updates
+* lolminer updated
+* gminer updated
+* teamredminer updated
+* srbmulti updated 
+* phoenix miner updated 
+* xmrig updated
+* nbminer updated
+* t-rex updated 
+* wildrig updated
+* bminer updated
