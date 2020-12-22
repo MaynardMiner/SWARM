@@ -18,9 +18,9 @@
     "NVIDIA2": ".\\bin\\nbminer-2\\nbminer.exe",
     "NVIDIA3": ".\\bin\\nbminer-3\\nbminer.exe",
     "minername": "nbminer.exe",
-    "version": "34.4",
+    "version": "35.0",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v34.4/NBMiner_34.4_Win.zip"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v35.0/NBMiner_35.0_Win.zip"
   },
   "cc-sha3d": {
     "name": "cc-sha3d",
@@ -84,9 +84,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
     "minername": "bminer.exe",
-    "version": "16.3.6",
+    "version": "16.3.7",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.3.6-b37c2ec-amd64.zip"
+    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.3.7-d9521d5-amd64.zip"
   },
   "ehssand": {
     "name": "ehssand",
@@ -106,9 +106,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
     "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "2.33",
+    "version": "2.36",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.33/gminer_2_33_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.36/gminer_2_36_windows64.zip"
   },
   "claymore": {
     "name": "claymore",
@@ -183,7 +183,7 @@
     "NVIDIA2": ".\\bin\\miniz-2\\miniZ.exe",
     "NVIDIA3": ".\\bin\\miniz-3\\miniZ.exe",
     "minername": "miniZ.exe",
-    "version": "v1.6w4",
+    "version": "v1.6x",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/miniz-windows.zip"
   },
@@ -194,7 +194,7 @@
     "NVIDIA2": ".\\bin\\phoenix-2\\PhoenixMiner.exe",
     "NVIDIA3": ".\\bin\\phoenix-3\\PhoenixMiner.exe",
     "minername": "PhoenixMiner.exe",
-    "version": "5.3b",
+    "version": "5.4c",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/phoenix-miner-windows.zip"
   },
@@ -238,9 +238,9 @@
     "NVIDIA2": ".\\bin\\trex-2\\t-rex.exe",
     "NVIDIA3": ".\\bin\\trex-3\\t-rex.exe",
     "minername": "t-rex.exe",
-    "version": "0.19.1",
+    "version": "0.19.5",
     "optional": "No",
-    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.19.1/t-rex-0.19.1-win-cuda11.1.zip"
+    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.19.5/t-rex-0.19.5-win-cuda11.1.zip"
   },
   "zjazz": {
     "name": "zjazz",
@@ -271,9 +271,9 @@
     "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig.exe",
     "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "6.5.3",
+    "version": "6.7.0",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.5.3/xmrig-6.5.3-msvc-cuda10_2-win64.zip"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.7.0/xmrig-6.7.0-msvc-cuda10_2-win64.zip"
   },
   "nv-lolminer": {
     "name": "nv-lolminer",
@@ -315,9 +315,9 @@
     "NVIDIA2": ".\\bin\\wildrig-nv-2\\wildrig.exe",
     "NVIDIA3": ".\\bin\\wildrig-nv-3\\wildrig.exe",
     "minername": "wildrig.exe",
-    "version": "0.28.1",
+    "version": "0.28.2",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.28.1/wildrig-multi-windows-0.28.1.7z"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.28.2/wildrig-multi-windows-0.28.2.7z"
   },
   "nanominer-nv": {
     "name": "nanominer-nv",
@@ -326,8 +326,8 @@
     "NVIDIA2": ".\\bin\\nanominer-nv-2\\nanominer.exe",
     "NVIDIA3": ".\\bin\\nanominer-nv-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "3.1.2",
+    "version": "3.1.4",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.1.2/nanominer-windows-3.1.2-cuda11.zip"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.1.4/nanominer-windows-3.1.4-cuda11.zip"
   }
 }
