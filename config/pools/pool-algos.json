@@ -160,6 +160,15 @@
       "comma seperated"
     ]
   },
+  "chukwa2": {
+    "alt_names": [
+      "chukwa2"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "cpupower": {
     "alt_names": [
       "cpupower"
@@ -741,9 +750,27 @@
       "comma seperated"
     ]
   },
+  "mtp-tcr": {
+    "alt_names": [
+      "mtp-tcr"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "neoscrypt": {
     "alt_names": [
       "neoscrypt"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "ninja": {
+    "alt_names": [
+      "ninja"
     ],
     "exclusions": [
       "add pool or miner here",
