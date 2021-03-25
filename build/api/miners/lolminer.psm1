@@ -16,7 +16,7 @@ function Global:Get-StatsLolminer {
     $Request = Global:Get-HTTP -Server $global:Server -Port $global:Port -Message $Message
     if ($request) {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop; }catch { Write-Host "Failed To parse API" -ForegroundColor Red; break }
-        if($Data.Session.Performance_Unit -eq "mh\/s"){
+        if($Data.Session.Performance_Unit -eq "mh/s"){
             #Fix lolminer API reporting in mh/s for ETC & ETH
             $lolHashrate = [Double]$Data.Session.Performance_Summary * 1000000
             $lolmulti=1000000
