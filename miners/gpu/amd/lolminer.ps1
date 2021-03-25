@@ -73,8 +73,8 @@ $(vars).AMDTypes | ForEach-Object {
                     "cuckatoo32" { $AddArgs = "--algo C32 " }
                     "cuckarood29v" { $AddArgs = "--algo C29D " }
                     "beamhashv3" { $AddArgs = "--algo BEAM-III --tls 0 " }
-                    "ethash" { $AddArgs = "--algo ethash " }
-                    "etchash" { $AddArgs = "--algo etchash " }
+                    "ethash" { $AddArgs = "--algo ETHASH " }
+                    "etchash" { $AddArgs = "--algo ETCHASH " }
                 }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 [PSCustomObject]@{
