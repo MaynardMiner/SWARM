@@ -4,28 +4,24 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "eaglesong": "",
             "handshake": "",
             "kawpow": "",
             "ethash": "",
             "beamhashv3": ""
         },
         "difficulty": {
-            "eaglesong": "",
             "handshake": "",
             "kawpow": "",
             "ethash": "",
             "beamhashv3": ""
         },
         "naming": {
-            "eaglesong": "eaglesong",
             "handshake": "hns",
             "kawpow": "kawpow",
             "ethash": "ethash",
             "beamhashv3": "beamv3"
         },
         "fee": {
-            "eaglesong": 2,
             "handshake": 2,
             "kawpow": 2,
             "ethash": 1,
