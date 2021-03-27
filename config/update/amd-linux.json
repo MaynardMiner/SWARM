@@ -271,8 +271,8 @@
     "AMD2": ".\\bin\\nbminer-amd-2\\nbminer",
     "AMD3": ".\\bin\\nbminer-amd-3\\nbminer",
     "minername": "nbminer",
-    "version": "35.1",
+    "version": "37.1",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v35.1/NBMiner_35.1_Linux.tgz"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v37.1/NBMiner_37.1_Linux.tgz"
   }
 }

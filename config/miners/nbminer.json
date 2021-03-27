@@ -6,43 +6,43 @@
         "prestart": [],
         "commands": {
             "ethash": "",
-            "cuckaroo29d": "",
             "cuckatoo31": "",
             "cuckatoo32": "",
             "eaglesong": "",
             "handshake": "",
             "kawpow": "",
-            "octopus": ""
+            "octopus": "",
+            "beamhashv3": ""
         },
         "difficulty": {
             "ethash": "",
-            "cuckaroo29d": "",
             "cuckatoo31": "",
             "cuckatoo32": "",
             "eaglesong": "",
             "handshake": "",
             "kawpow": "",
-            "octopus": ""
+            "octopus": "",
+            "beamhashv3": ""
         },
         "naming": {
             "ethash": "ethash",
-            "cuckaroo29d": "cuckaroo29d",
             "cuckatoo31": "cuckatoo31",
             "cuckatoo32": "cuckatoo32",
             "eaglesong": "eaglesong",
             "handshake": "hns",
             "kawpow": "kawpow",
-            "octopus": "octopus"
+            "octopus": "octopus",
+            "beamhashv3": "beamv3"
         },
         "fee": {
-            "ethash": 0.65,
-            "cuckaroo29d": 2,
+            "ethash": 1,
             "cuckatoo31": 2,
             "cuckatoo32": 2,
             "eaglesong": 2,
             "handshake": 2,
             "kawpow": 2,
-            "octopus": 2
+            "octopus": 3,
+            "beamhashv3": 2
         }
     },
     "NVIDIA2": {
@@ -51,43 +51,43 @@
         "prestart": [],
         "commands": {
             "ethash": "",
-            "cuckaroo29d": "",
             "cuckatoo31": "",
             "cuckatoo32": "",
             "eaglesong": "",
             "handshake": "",
             "kawpow": "",
-            "octopus": ""
+            "octopus": "",
+            "beamhashv3": ""
         },
         "difficulty": {
             "ethash": "",
-            "cuckaroo29d": "",
             "cuckatoo31": "",
             "cuckatoo32": "",
             "eaglesong": "",
             "handshake": "",
             "kawpow": "",
-            "octopus": ""
+            "octopus": "",
+            "beamhashv3": ""
         },
         "naming": {
             "ethash": "ethash",
-            "cuckaroo29d": "cuckaroo29d",
             "cuckatoo31": "cuckatoo31",
             "cuckatoo32": "cuckatoo32",
             "eaglesong": "eaglesong",
             "handshake": "hns",
             "kawpow": "kawpow",
-            "octopus": "octopus"
+            "octopus": "octopus",
+            "beamhashv3": "beamv3"
         },
         "fee": {
-            "ethash": 0.65,
-            "cuckaroo29d": 2,
+            "ethash": 1,
             "cuckatoo31": 2,
             "cuckatoo32": 2,
             "eaglesong": 2,
             "handshake": 2,
             "kawpow": 2,
-            "octopus": 2
+            "octopus": 3,
+            "beamhashv3": 2
         }
     },
     "NVIDIA3": {
@@ -96,43 +96,43 @@
         "prestart": [],
         "commands": {
             "ethash": "",
-            "cuckaroo29d": "",
             "cuckatoo31": "",
             "cuckatoo32": "",
             "eaglesong": "",
             "handshake": "",
             "kawpow": "",
-            "octopus": ""
+            "octopus": "",
+            "beamhashv3": ""
         },
         "difficulty": {
             "ethash": "",
-            "cuckaroo29d": "",
             "cuckatoo31": "",
             "cuckatoo32": "",
             "eaglesong": "",
             "handshake": "",
             "kawpow": "",
-            "octopus": ""
+            "octopus": "",
+            "beamhashv3": ""
         },
         "naming": {
             "ethash": "ethash",
-            "cuckaroo29d": "cuckaroo29d",
             "cuckatoo31": "cuckatoo31",
             "cuckatoo32": "cuckatoo32",
             "eaglesong": "eaglesong",
             "handshake": "hns",
             "kawpow": "kawpow",
-            "octopus": "octopus"
+            "octopus": "octopus",
+            "beamhashv3": "beamv3"
         },
         "fee": {
-            "ethash": 0.65,
-            "cuckaroo29d": 2,
+            "ethash": 1,
             "cuckatoo31": 2,
             "cuckatoo32": 2,
             "eaglesong": 2,
             "handshake": 2,
             "kawpow": 2,
-            "octopus": 2
+            "octopus": 3,
+            "beamhashv3": 2
         }
     }
 }
