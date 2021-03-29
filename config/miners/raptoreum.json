@@ -4,6 +4,7 @@
         "delay": "1",
         "prestart": [],
         "commands": {
+            "ghostrider": "",
             "yescryptr8": "",
             "yescrypt": "",
             "yescryptr16": "",
@@ -14,11 +15,10 @@
             "yespowerr16": "",
             "yespowerr24": "",
             "yespowerr32": "",
-            "lyra2z330": "",
-            "x16rv2": "",
-            "power2b": ""
+            "lyra2z330": ""
         },
         "difficulty": {
+            "ghostrider": "",
             "yescryptr8": "",
             "yescrypt": "",
             "yescryptr16": "",
@@ -29,11 +29,10 @@
             "yespowerr16": "",
             "yespowerr24": "",
             "yespowerr32": "",
-            "lyra2z330": "",
-            "x16rv2": "",
-            "power2b": ""
+            "lyra2z330": ""
         },
         "naming": {
+            "ghostrider": "gr",
             "yescryptr8": "yescryptr8",
             "yescrypt": "yescrypt",
             "yescryptr16": "yescryptr16",
@@ -44,11 +43,10 @@
             "yespowerr16": "yespowerr16",
             "yespowerr24": "yespowerr24",
             "yespowerr32": "yespowerr32",
-            "lyra2z330": "lyra2z330",
-            "x16rv2": "x16rv2",
-            "power2b": "yespower-b2b"
+            "lyra2z330": "lyra2z330"
         },
         "fee": {
+            "ghostrider": 0,
             "yescryptr8": 0,
             "yescrypt": 0,
             "yescryptr16": 0,
@@ -59,10 +57,8 @@
             "yespowerr16": 0,
             "yespowerr24": 0,
             "yespowerr32": 0,
-            "lyra2z330": 0,
-            "x16rv2": 0,
-            "power2b": 0
+            "lyra2z330": 0
         }
     },
-    "name": "jayddee"
+    "name": "raptoreum"
 }

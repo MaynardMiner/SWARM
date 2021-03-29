@@ -21,7 +21,8 @@
             "kawpow": "",
             "cuckaroo29-bfc": "",
             "beamhashv3": "",
-            "cuckarooz29": ""
+            "cuckarooz29": "",
+            "etchash": ""
         },
         "difficulty": {
             "cuckoo_cycle": "",
@@ -40,7 +41,8 @@
             "kawpow": "",
             "cuckaroo29-bfc": "",
             "beamhashv3": "",
-            "cuckarooz29": ""
+            "cuckarooz29": "",
+            "etchash": ""
         },
         "naming": {
             "cuckoo_cycle": "cuckoo_cycle",
@@ -59,7 +61,8 @@
             "kawpow": "kawpow",
             "cuckaroo29-bfc": "cuckaroo29-bfc",
             "beamhashv3": "beamhashv3",
-            "cuckarooz29": "cuckarooz29"
+            "cuckarooz29": "cuckarooz29",
+            "etchash": "etchash"
 
         },
         "fee": {
@@ -76,10 +79,11 @@
             "equihash_210/9": 2,
             "equihash_200/9": 2,
             "equihash_125/4": 2,
-            "kawpow": 2,
-            "cuckaroo29-bfc": 2,
+            "kawpow": 1,
+            "cuckaroo29-bfc": 3,
             "beamhashv3": 2,
-            "cuckarooz29": 2
+            "cuckarooz29": 2,
+            "etchash": 0.65
         }
     },
     "NVIDIA2": {

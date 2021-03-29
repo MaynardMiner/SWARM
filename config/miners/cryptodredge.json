@@ -18,7 +18,9 @@
             "kawpow": "",
             "mtp": "",
             "mtp-tcr": "",
-            "ninja": ""
+            "ninja": "",
+            "cryptonight-haven": "",
+            "cryptonight-fast": ""
         },
         "difficulty": {
             "chukwa": "",
@@ -34,22 +36,26 @@
             "kawpow": "",
             "mtp": "",
             "mtp-tcr": "",
-            "ninja": ""
+            "ninja": "",
+            "cryptonight-haven": "",
+            "cryptonight-fast": ""
         },
         "naming": {
-            "chukwa": "argon2-512",
+            "chukwa": "chukwa",
             "chukwa2": "chukwa2",
             "argon2d-dyn": "argon2d-dyn",
             "argon2d4096": "argon2d4096",
             "argon2d250": "argon2d250",
-            "cryptonight-heavy": "cryptonightheavy",
+            "cryptonight-heavy": "cnheavy",
             "cryptonight-gpu": "cngpu",
-            "cryptonight-upx2": "CryptoNightUPX",
+            "cryptonight-upx2": "cnupx2",
             "cryptonight-conceal": "cnconceal",
             "kawpow": "kawpow",
             "mtp": "mtp",
             "mtp-tcr": "mtp-tcr",
-            "ninja": "ninja"
+            "ninja": "ninja",
+            "cryptonight-haven": "cnhaven",
+            "cryptonight-fast": "cnfast2"
         },
         "fee": {
             "chukwa": 1,
@@ -62,9 +68,11 @@
             "cryptonight-upx2": 1,
             "cryptonight-conceal": 1,
             "kawpow": 1,
-            "mtp": 1,
+            "mtp": 2,
             "mtp-tcr": 1,
-            "ninja": 1
+            "ninja": 1,
+            "cryptonight-haven": 1,
+            "cryptonight-fast": 1
         }
     },
     "NVIDIA2": {
@@ -85,7 +93,9 @@
             "kawpow": "",
             "mtp": "",
             "mtp-tcr": "",
-            "ninja": ""
+            "ninja": "",
+            "cryptonight-haven": "",
+            "cryptonight-fast": ""
         },
         "difficulty": {
             "chukwa": "",
@@ -101,22 +111,26 @@
             "kawpow": "",
             "mtp": "",
             "mtp-tcr": "",
-            "ninja": ""
+            "ninja": "",
+            "cryptonight-haven": "",
+            "cryptonight-fast": ""
         },
         "naming": {
-            "chukwa": "argon2-512",
+            "chukwa": "chukwa",
             "chukwa2": "chukwa2",
             "argon2d-dyn": "argon2d-dyn",
             "argon2d4096": "argon2d4096",
             "argon2d250": "argon2d250",
-            "cryptonight-heavy": "cryptonightheavy",
+            "cryptonight-heavy": "cnheavy",
             "cryptonight-gpu": "cngpu",
-            "cryptonight-upx2": "CryptoNightUPX",
+            "cryptonight-upx2": "cnupx2",
             "cryptonight-conceal": "cnconceal",
             "kawpow": "kawpow",
             "mtp": "mtp",
             "mtp-tcr": "mtp-tcr",
-            "ninja": "ninja"
+            "ninja": "ninja",
+            "cryptonight-haven": "cnhaven",
+            "cryptonight-fast": "cnfast2"
         },
         "fee": {
             "chukwa": 1,
@@ -129,9 +143,11 @@
             "cryptonight-upx2": 1,
             "cryptonight-conceal": 1,
             "kawpow": 1,
-            "mtp": 1,
+            "mtp": 2,
             "mtp-tcr": 1,
-            "ninja": 1
+            "ninja": 1,
+            "cryptonight-haven": 1,
+            "cryptonight-fast": 1
         }
     },
     "NVIDIA3": {
@@ -152,7 +168,9 @@
             "kawpow": "",
             "mtp": "",
             "mtp-tcr": "",
-            "ninja": ""
+            "ninja": "",
+            "cryptonight-haven": "",
+            "cryptonight-fast": ""
         },
         "difficulty": {
             "chukwa": "",
@@ -168,22 +186,26 @@
             "kawpow": "",
             "mtp": "",
             "mtp-tcr": "",
-            "ninja": ""
+            "ninja": "",
+            "cryptonight-haven": "",
+            "cryptonight-fast": ""
         },
         "naming": {
-            "chukwa": "argon2-512",
+            "chukwa": "chukwa",
             "chukwa2": "chukwa2",
             "argon2d-dyn": "argon2d-dyn",
             "argon2d4096": "argon2d4096",
             "argon2d250": "argon2d250",
-            "cryptonight-heavy": "cryptonightheavy",
+            "cryptonight-heavy": "cnheavy",
             "cryptonight-gpu": "cngpu",
-            "cryptonight-upx2": "CryptoNightUPX",
+            "cryptonight-upx2": "cnupx2",
             "cryptonight-conceal": "cnconceal",
             "kawpow": "kawpow",
             "mtp": "mtp",
             "mtp-tcr": "mtp-tcr",
-            "ninja": "ninja"
+            "ninja": "ninja",
+            "cryptonight-haven": "cnhaven",
+            "cryptonight-fast": "cnfast2"
         },
         "fee": {
             "chukwa": 1,
@@ -196,9 +218,11 @@
             "cryptonight-upx2": 1,
             "cryptonight-conceal": 1,
             "kawpow": 1,
-            "mtp": 1,
+            "mtp": 2,
             "mtp-tcr": 1,
-            "ninja": 1
+            "ninja": 1,
+            "cryptonight-haven": 1,
+            "cryptonight-fast": 1
         }
     }
 }

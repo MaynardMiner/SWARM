@@ -106,9 +106,9 @@
     "AMD2": ".\\bin\\lolMiner-AMD-2\\lolMiner",
     "AMD3": ".\\bin\\lolMiner-AMD-3\\lolMiner",
     "minername": "lolMiner",
-    "version": "1.17",
+    "version": "1.24a",
     "optional": "No",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.17/lolMiner_v1.17_Lin64.tar.gz"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.24/lolMiner_v1.24a_Lin64.tar.gz"
   },
   "avermore": {
     "name": "avermore",
@@ -227,9 +227,9 @@
     "AMD2": ".\\bin\\xmrigcc-amd-2\\xmrigDaemon",
     "AMD3": ".\\bin\\xmrigcc-amd-3\\xmrigDaemon",
     "minername": "xmrigDaemon",
-    "version": "2.8.3",
+    "version": "1.9.3",
     "optional": "No",
-    "uri": "https://github.com/Bendr0id/xmrigCC/releases/download/2.8.3/xmrigCC-2.8.3-with_tls_and_gzip-gcc7-linux-static-amd64.tar.gz"
+    "uri": "https://github.com/Bendr0id/xmrigCC-amd/releases/download/1.9.3/xmrigCC-amd-1.9.3-with_tls_and_api-gcc7-linux-static-miner_only-x64.tar.gz"
   },
   "progminer-amd": {
     "name": "progminer-amd",
@@ -271,8 +271,8 @@
     "AMD2": ".\\bin\\nbminer-amd-2\\nbminer",
     "AMD3": ".\\bin\\nbminer-amd-3\\nbminer",
     "minername": "nbminer",
-    "version": "35.1",
+    "version": "37.1",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v35.1/NBMiner_35.1_Linux.tgz"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v37.1/NBMiner_37.1_Linux.tgz"
   }
 }

@@ -71,5 +71,14 @@
     "version": "1.0",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/cpupower-linux.tar.gz"
+  },
+  "raptoreum": {
+    "name": "raptoreum",
+    "type": "cpu",
+    "CPU": ".\\bin\\raptoreum-1\\cpuminer",
+    "minername": "raptoreum",
+    "version": "1.2.0",
+    "optional": "No",
+    "uri": "https://github.com/npq7721/cpuminer-gr/releases/download/1.2.0/cpuminer-rtm-mainnet-ubuntu16-18.tar.gz"
   }
 }

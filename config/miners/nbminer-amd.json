@@ -4,28 +4,28 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "eaglesong": "",
             "handshake": "",
             "kawpow": "",
-            "octopus": ""
+            "ethash": "",
+            "beamhashv3": ""
         },
         "difficulty": {
-            "eaglesong": "",
             "handshake": "",
             "kawpow": "",
-            "octopus": ""
+            "ethash": "",
+            "beamhashv3": ""
         },
         "naming": {
-            "eaglesong": "eaglesong",
             "handshake": "hns",
             "kawpow": "kawpow",
-            "octopus": "octopus"
+            "ethash": "ethash",
+            "beamhashv3": "beamv3"
         },
         "fee": {
-            "eaglesong": 2,
             "handshake": 2,
             "kawpow": 2,
-            "octopus":2
+            "ethash": 1,
+            "beamhashv3": 2
         }
     },
     "name": "nbminer-amd"
