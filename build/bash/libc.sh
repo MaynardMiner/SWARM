@@ -10,7 +10,7 @@
 #You should have received a copy of the GNU General Public License
 #along with this program.  If not, see <http://www.gnu.org/licenses/>.
 PKG_MANAGER=$( command -v yum || command -v apt-get || command -v pacman)
-if [ $PKG_MANAGER == *'pacman' ]
+if [[ $PKG_MANAGER == *'pacman' ]]
  then
   $PKG_MANAGER -S libc-ares2 --noconfirm
  else
