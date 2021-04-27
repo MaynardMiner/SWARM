@@ -215,6 +215,8 @@ Argument          Options           Explanation
                                         in password arguments. Used when -Type NVIDIA3 is specified.
                                         Will not work with Pools that only use BTC.
 
+-MPH_User       [User]                  MPH Username if using -poolname mph.
+
 -Startup        [Yes or No]             Default is Yes. Currently Windows Version only. SWARM will attempt to add
                                         itself to windows startup, allowing you to remote reboot through remote 
                                         commands.
