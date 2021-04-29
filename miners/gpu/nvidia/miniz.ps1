@@ -72,6 +72,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "equihash_96/5" { $AddArgs = "--par=96,5 --pers auto " }
                     "equihash_144/5" { 
                         switch ($SelName) {
+                            "nlpool" { $AddArgs = "--algo 144,5 --pers auto " }
                             "zergpool" { $AddArgs = "--algo 144,5 --pers auto " }
                             "mph" { $AddArgs = "--algo 144,5 --pers BgoldPoW " }
                         }
@@ -80,6 +81,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "equihash_200/9" { $AddArgs = "--par=200,9 --pers auto " } 
                     "equihash_192/7" { 
                         switch ($SelName) {
+                        "nlpool" { $AddArgs = "--algo 192,7 --pers auto " }
                         "zergpool" { $AddArgs = "--algo 192,7 --pers auto " }
                         "mph" { $AddArgs = "--algo 192,7 --pers ZcashPoW " }                    
                         }

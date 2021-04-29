@@ -103,12 +103,14 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "equihash_125/4" { $AddArgs = "--algo 125_4 --pers auto " }
                     "equihash_192/7" { 
                         switch ($SelName) {
+                            "nlpool" { $AddArgs = "--algo 192_7 --pers auto " }
                             "zergpool" { $AddArgs = "--algo 192_7 --pers auto " }
                             "mph" { $AddArgs = "--algo 192_7 --pers ZcashPoW " }
                         }
                     }
                     "equihash_144/5" {
                         switch ($SelName) {
+                            "nlpool" { $AddArgs = "--algo 192_7 --pers auto " }
                             "zergpool" { $AddArgs = "--algo 144_5 --pers auto " }
                             "mph" { $AddArgs = "--algo 144_5 --pers BgoldPoW " }
                         }
