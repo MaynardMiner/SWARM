@@ -84,7 +84,7 @@ function Global:Get-RigData {
             $String1 = "$uuid-$cpuid-$eth0".ToLower()
             $uid = Global:Get-StringHash $string1
             $RigData.Add("uid",$uid)
-            $Date = Invoke-Expression "date `+`Foreach-Object s"
+            $Date = Invoke-Expression "date `+`%s"
             $Boot = $(Invoke-Expression "cat /proc/uptime") -split " " | Select-Object  -First 1
             $Boot_Time = [Math]::Round($Date - $Boot)     
             $RigData.Add("boot_time",$Boot_Time)
