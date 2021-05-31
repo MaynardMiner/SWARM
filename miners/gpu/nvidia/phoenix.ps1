@@ -1,7 +1,7 @@
 . .\build\powershell\global\miner_stat.ps1;
 . .\build\powershell\global\modules.ps1;
 $(vars).NVIDIATypes | ForEach-Object {
-    
+
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
@@ -29,7 +29,7 @@ $(vars).NVIDIATypes | ForEach-Object {
         $ClayDevices1 = Switch ($ClayDevices1) { "10" { "a" }; "11" { "b" }; "12" { "c" }; "13" { "d" }; "14" { "e" }; "15" { "f" }; "16" { "g" }; "17" { "h" }; "18" { "i" }; "19" { "j" }; "20" { "k" }; default { "$_" }; }
         $ClayDevices1 = $ClayDevices1 | ForEach-Object { $_ -replace ("$($_)", ",$($_)") }
         $ClayDevices1 = $ClayDevices1 -join ""
-        $ClayDevices1 = $ClayDevices1.TrimStart(" ", ",")  
+        $ClayDevices1 = $ClayDevices1.TrimStart(" ", ",")
         $ClayDevices1 = $ClayDevices1 -replace (",", "")
         $Devices = $ClayDevices1
     }
@@ -59,14 +59,14 @@ $(vars).NVIDIATypes | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ( 
-            $MinerAlgo -in $(vars).Algorithm -and 
-            $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and 
-            $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and 
+        if (
+            $MinerAlgo -in $(vars).Algorithm -and
+            $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and
+            $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and
             $Name -notin $(vars).BanHammer
         ) {
             $StatAlgo = $MinerAlgo -replace "`_", "`-"
-            $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
+            $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate"
             if ($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3) { $HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
             else { $HashStat = $Stat.Hour }
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
@@ -115,7 +115,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Type       = $ConfigType
                     Path       = $Path
                     Devices    = $Devices
-                    Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
+                    Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version    = "$($(vars).nvidia.phoenix.version)"
                     DeviceCall = "claymore"
                     Arguments  = "-nvidia -mport $Port -pool $($_.Protocol)://$($_.Pool_Host):$($_.Port) -wal $($_.$User)$MinerWorker$AddArgs -wd 0 -log 0 -gser 2 -dbg -1 -eres 1 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
@@ -123,7 +123,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
                     Rejections = $Stat.Rejections
-                    Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                    Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 }
                     API        = "claymore"
                     Port       = $Port
                     Worker     = $Rig
@@ -131,9 +131,9 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Wallet     = "$($_.$User)"
                     URI        = $Uri
                     Server     = "localhost"
-                    Algo       = "$($_.Algorithm)"                        
+                    Algo       = "$($_.Algorithm)"
                     Log        = $Log
-                }            
+                }
             }
         }
     }

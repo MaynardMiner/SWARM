@@ -1,7 +1,7 @@
 . .\build\powershell\global\miner_stat.ps1;
 . .\build\powershell\global\modules.ps1;
 $(vars).NVIDIATypes | ForEach-Object {
-    
+
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
@@ -29,13 +29,13 @@ $(vars).NVIDIATypes | ForEach-Object {
         $GPUDevices1 = $GPUDevices1 -replace ',', ' '
         $Devices = $GPUDevices1
     }
-    else { $Devices = $Get_Devices }    
+    else { $Devices = $Get_Devices }
 
     ##gminer apparently doesn't know how to tell the difference between
-    ##cuda and amd devices, like every other miner that exists. So now I 
+    ##cuda and amd devices, like every other miner that exists. So now I
     ##have to spend an hour and parse devices
     ##to matching platforms.
-    
+
     $ArgDevices = $Null
     if ($Get_Devices -ne "none") {
         $GPUEDevices = $Get_Devices
@@ -69,14 +69,14 @@ $(vars).NVIDIATypes | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ( 
-            $MinerAlgo -in $(vars).Algorithm -and 
-            $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and 
-            $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and 
+        if (
+            $MinerAlgo -in $(vars).Algorithm -and
+            $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and
+            $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and
             $Name -notin $(vars).BanHammer
         ) {
             $StatAlgo = $MinerAlgo -replace "`_", "`-"
-            $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
+            $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate"
             if ($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3) { $HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
             else { $HashStat = $Stat.Hour }
             $Pools | Where-Object Algorithm -eq $MinerAlgo | Where-Object Name -ne "hashrent" | ForEach-Object {
@@ -101,7 +101,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "beamv2" { $AddArgs = "--algo 150_5 " }
                     "equihash_96/5" { $AddArgs = "--algo 96_5 --pers auto " }
                     "equihash_125/4" { $AddArgs = "--algo 125_4 --pers auto " }
-                    "equihash_192/7" { 
+                    "equihash_192/7" {
                         switch ($SelName) {
                             "nlpool" { $AddArgs = "--algo 192_7 --pers auto " }
                             "zergpool" { $AddArgs = "--algo 192_7 --pers auto " }
@@ -118,7 +118,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "equihash_210/9" { $AddArgs = "--algo 210_9 --pers auto " }
                     "equihash_200/9" { $AddArgs = "--algo 200_9 --pers auto " }
                     "kawpow" { $AddArgs = "--algo kawpow " }
-                    "ethash" { 
+                    "ethash" {
                         switch ($SelName) {
                             "nicehash" { $AddArgs = "--algo ethash --proto stratum " }
                             "zergpool" { $AddArgs = "--algo ethash "; }
@@ -142,7 +142,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Path              = $Path
                     ArgDevices        = $ArgDevices
                     Devices           = $Devices
-                    Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
+                    Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version           = "$($(vars).nvidia.gminer.version)"
                     DeviceCall        = "gminer"
                     Arguments         = "--api $Port --server $($_.Pool_Host) --nvml 0 --port $($_.Port) $AddArgs--user $GetUser $UserPass--logfile `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
@@ -150,7 +150,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote             = $_.Price
                     Rejections        = $Stat.Rejections
-                    Power             = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                    Power             = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 }
                     MinerPool         = "$($_.Name)"
                     API               = "gminer"
                     Port              = $Port
@@ -159,7 +159,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     URI               = $Uri
                     Server            = "localhost"
                     Algo              = "$($_.Algorithm)"
-                    Log               = "miner_generated"                                     
+                    Log               = "miner_generated"
                 }
             }
         }
