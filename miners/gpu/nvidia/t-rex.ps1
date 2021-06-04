@@ -1,7 +1,7 @@
 . .\build\powershell\global\miner_stat.ps1;
 . .\build\powershell\global\modules.ps1;
 $(vars).NVIDIATypes | ForEach-Object {
-    
+
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     $Cname = "t-rex"
@@ -53,14 +53,14 @@ $(vars).NVIDIATypes | ForEach-Object {
 
         $MinerAlgo = $_
 
-        if ( 
-            $MinerAlgo -in $(vars).Algorithm -and 
-            $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and 
-            $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and 
+        if (
+            $MinerAlgo -in $(vars).Algorithm -and
+            $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and
+            $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and
             $Name -notin $(vars).BanHammer
         ) {
             $StatAlgo = $MinerAlgo -replace "`_", "`-"
-            $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
+            $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate"
             if ($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3) { $HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
             else { $HashStat = $Stat.Hour }
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
@@ -92,7 +92,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Type              = $ConfigType
                     Path              = $Path
                     Devices           = $Devices
-                    Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
+                    Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version           = "$($(vars).nvidia.$CName.version)"
                     DeviceCall        = "trex"
                     Arguments         = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no-watchdog --no-nvml -o $stratum$($_.Pool_Host):$($_.Port) --api-bind-telnet 0.0.0.0:$Port2 -u $($GetUser) $UserPass-l `'$Log`' --api-bind-http 0.0.0.0:$Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
@@ -100,7 +100,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
                     Rejections = $Stat.Rejections
-                    Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
+                    Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 }
                     MinerPool  = "$($_.Name)"
                     Port       = $Port
                     Worker     = $Rig
@@ -109,8 +109,8 @@ $(vars).NVIDIATypes | ForEach-Object {
                     URI        = $Uri
                     Server     = "localhost"
                     Algo       = "$($_.Algorithm)"
-                    Log        = "miner_generated"                                     
-                }            
+                    Log        = "miner_generated"
+                }
             }
         }
     }
