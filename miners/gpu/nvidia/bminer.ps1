@@ -9,7 +9,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     if ($(vars).nvidia.bminer.uri) { $Uri = "$($(vars).nvidia.bminer.uri)" } else { $Uri = "None" }
     if ($(vars).nvidia.bminer.MinerName) { $MinerName = "$($(vars).nvidia.bminer.MinerName)" } else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "bminer-$Num"; $Port = "4000$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "bminer-$Num"; $Port = "2200$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
