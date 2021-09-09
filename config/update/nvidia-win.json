@@ -271,9 +271,9 @@
     "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig.exe",
     "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "6.7.0",
+    "version": "6.15.0",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.7.0/xmrig-6.7.0-msvc-cuda10_2-win64.zip"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.15.0/xmrig-6.15.0-msvc-win64.zip"
   },
   "nv-lolminer": {
     "name": "nv-lolminer",
@@ -315,9 +315,9 @@
     "NVIDIA2": ".\\bin\\wildrig-nv-2\\wildrig.exe",
     "NVIDIA3": ".\\bin\\wildrig-nv-3\\wildrig.exe",
     "minername": "wildrig.exe",
-    "version": "0.28.2",
+    "version": "0.28.3",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.28.2/wildrig-multi-windows-0.28.2.7z"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.28.3/wildrig-multi-windows-0.28.3.7z"
   },
   "nanominer-nv": {
     "name": "nanominer-nv",
