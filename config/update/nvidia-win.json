@@ -84,9 +84,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer.exe",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer.exe",
     "minername": "bminer.exe",
-    "version": "16.4.6",
+    "version": "16.4.7",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.4.6-d77cc9b-amd64.zip"
+    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.4.7-cccd70d-amd64.zip"
   },
   "ehssand": {
     "name": "ehssand",
@@ -106,9 +106,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
     "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "2.66",
+    "version": "2.67",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.66/gminer_2_66_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.67/gminer_2_67_windows64.zip"
   },
   "claymore": {
     "name": "claymore",
@@ -326,8 +326,8 @@
     "NVIDIA2": ".\\bin\\nanominer-nv-2\\nanominer.exe",
     "NVIDIA3": ".\\bin\\nanominer-nv-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "3.3.8",
+    "version": "3.3.9",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.3.8/nanominer-windows-3.3.8-cuda11.zip"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.3.9/nanominer-windows-3.3.9-cuda11.zip"
   }
 }
