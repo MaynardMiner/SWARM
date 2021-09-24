@@ -18,9 +18,9 @@
     "NVIDIA2": ".\\bin\\nbminer-2\\nbminer.exe",
     "NVIDIA3": ".\\bin\\nbminer-3\\nbminer.exe",
     "minername": "nbminer.exe",
-    "version": "39.3",
+    "version": "39.5",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v39.3/NBMiner_39.3_Win.zip"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v39.5/NBMiner_39.5_Win.zip"
   },
   "cc-sha3d": {
     "name": "cc-sha3d",
@@ -106,9 +106,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
     "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "2.68",
+    "version": "2.69",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.68/gminer_2_68_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.69/gminer_2_69_windows64.zip"
   },
   "claymore": {
     "name": "claymore",
@@ -172,9 +172,9 @@
     "NVIDIA2": ".\\bin\\klaust-2\\ccminer.exe",
     "NVIDIA3": ".\\bin\\klaust-3\\ccminer.exe",
     "minername": "ccminer.exe",
-    "version": "8.25",
+    "version": "8.26",
     "optional": "Yes",
-    "uri": "https://github.com/KlausT/ccminer/releases/download/8.25/ccminer-825-cuda101-x64.zip"
+    "uri": "https://github.com/KlausT/ccminer/releases/download/8.26/ccminer-826-cuda114-x64.zip"
   },
   "miniz": {
     "name": "miniz",
@@ -271,9 +271,9 @@
     "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig.exe",
     "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "6.15.0",
+    "version": "6.15.1",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.15.0/xmrig-6.15.0-msvc-win64.zip"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.15.1/xmrig-6.15.1-msvc-win64.zip"
   },
   "nv-lolminer": {
     "name": "nv-lolminer",
@@ -282,9 +282,9 @@
     "NVIDIA2": ".\\bin\\nv-lolminer-2\\lolMiner.exe",
     "NVIDIA3": ".\\bin\\nv-lolminer-3\\lolMiner.exe",
     "minername": "lolMiner.exe",
-    "version": "1.16a",
+    "version": "1.32a",
     "optional": "Yes",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.16/lolMiner_v1.16a_Win64.zip"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.32/lolMiner_v1.32a_Win64.zip"
   },
   "ethminer": {
     "name": "ethminer",
@@ -326,8 +326,8 @@
     "NVIDIA2": ".\\bin\\nanominer-nv-2\\nanominer.exe",
     "NVIDIA3": ".\\bin\\nanominer-nv-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "3.3.11",
+    "version": "3.3.12",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.3.11/nanominer-windows-3.3.11-cuda11.zip"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.3.12/nanominer-windows-3.3.12-cuda11.zip"
   }
 }
