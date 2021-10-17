@@ -14,7 +14,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     if ($(vars).nvidia.$CName.minername) { $MinerName = "$($(vars).nvidia.$CName.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "5000$Num"; $Port2 = "8000$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "5000$Num";
 
     Switch ($Num) {
         1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
@@ -95,7 +95,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version           = "$($(vars).nvidia.$CName.version)"
                     DeviceCall        = "trex"
-                    Arguments         = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no-watchdog --no-nvml -o $stratum$($_.Pool_Host):$($_.Port) --api-bind-telnet 0.0.0.0:$Port2 -u $($GetUser) $UserPass-l `'$Log`' --api-bind-http 0.0.0.0:$Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments         = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no-watchdog --no-nvml -o $stratum$($_.Pool_Host):$($_.Port) -u $($GetUser) $UserPass-l `'$Log`' --api-bind-http 0.0.0.0:$Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates         = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
