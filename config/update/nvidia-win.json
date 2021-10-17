@@ -238,9 +238,9 @@
     "NVIDIA2": ".\\bin\\trex-2\\t-rex.exe",
     "NVIDIA3": ".\\bin\\trex-3\\t-rex.exe",
     "minername": "t-rex.exe",
-    "version": "0.24.0",
+    "version": "0.24.2",
     "optional": "No",
-    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.24.0/t-rex-0.24.0-win.zip"
+    "uri": "https://github.com/trexminer/T-Rex/releases/download/0.24.2/t-rex-0.24.2-win.zip"
   },
   "zjazz": {
     "name": "zjazz",
@@ -271,7 +271,7 @@
     "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig.exe",
     "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "6.15.1",
+    "version": "6.15.2",
     "optional": "No",
     "uri": "https://github.com/xmrig/xmrig/releases/download/v6.15.2/xmrig-6.15.2-msvc-win64.zip"
   },
@@ -282,9 +282,9 @@
     "NVIDIA2": ".\\bin\\nv-lolminer-2\\lolMiner.exe",
     "NVIDIA3": ".\\bin\\nv-lolminer-3\\lolMiner.exe",
     "minername": "lolMiner.exe",
-    "version": "1.32a",
+    "version": "1.33",
     "optional": "Yes",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.32/lolMiner_v1.32a_Win64.zip"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.33/lolMiner_v1.33_Win64.zip"
   },
   "ethminer": {
     "name": "ethminer",
