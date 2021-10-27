@@ -18,9 +18,9 @@
     "NVIDIA2": ".\\bin\\nbminer-2\\nbminer.exe",
     "NVIDIA3": ".\\bin\\nbminer-3\\nbminer.exe",
     "minername": "nbminer.exe",
-    "version": "39.5",
+    "version": "39.6",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v39.5/NBMiner_39.5_Win.zip"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v39.6/NBMiner_39.6_Win.zip"
   },
   "cc-sha3d": {
     "name": "cc-sha3d",
@@ -326,8 +326,8 @@
     "NVIDIA2": ".\\bin\\nanominer-nv-2\\nanominer.exe",
     "NVIDIA3": ".\\bin\\nanominer-nv-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "3.3.14",
+    "version": "3.4.1",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.3.14/nanominer-windows-3.3.14-cuda11.zip"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.4.1/nanominer-windows-3.4.1-cuda11.zip"
   }
 }
