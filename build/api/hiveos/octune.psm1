@@ -171,8 +171,8 @@ function Global:Start-HiveTune {
     }
     
     if ($Success) {
-        if (test-path ".\debug\ocamd.txt") { $OCSheet += Get-Content ".\debug\ocnvidia.txt" }
-        if (test-path ".\debug\ocamd.txt") { $OCSheet += Get-Content ".\debug\ocnvidia.txt" }
+        if (test-path ".\debug\ocamd.txt") { $OCSheet += Get-Content ".\debug\ocamd.txt" }
+        if (test-path ".\debug\ocnvidia.txt") { $OCSheet += Get-Content ".\debug\ocnvidia.txt" }
         if (test-path "/var/log/nvidia-oc.log") { $OCSheet += Get-Content "/var/log/nvidia-oc.log" }
         if (test-path "/var/log/amd-oc.log") { $OCSheet += Get-Content "/var/log/amd-oc.log" }
     }
