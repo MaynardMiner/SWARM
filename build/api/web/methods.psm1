@@ -31,7 +31,7 @@ function Global:Get-RigData {
             $Uptime = (New-TimeSpan -Start (Get-Date "01/01/1970") -End ($BootTime.ToUniversalTime())).TotalSeconds
             $UpTime = [Math]::Round($Uptime)
             $RigData.Add("boot_time", $Uptime)
-            $Ip = $(Get-CimInstance Win32_NetworkAdapterConfiguration | Where-Object  { $_.Ipaddress.length -gt 1 }).ipaddress[0]
+            $Ip = $(Get-CimInstance Win32_NetworkAdapterConfiguration | Where-Object  { $_.Ipaddress.length -ne $null }).ipaddress[0]
             $RigData.Add("ip", "$Ip")
             $RigData.Add("gpu", $(vars).BusData)
             $AMDCount = ($(vars).BusData | Where-Object  brand -eq "amd").Count
