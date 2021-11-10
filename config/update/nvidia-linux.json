@@ -220,6 +220,17 @@
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/grin-miner-linux.tar.gz"
   },
+   "bminer": {
+    "name": "bminer",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\bminer-1\\bminer",
+    "NVIDIA2": ".\\bin\\bminer-2\\bminer",
+    "NVIDIA3": ".\\bin\\bminer-3\\bminer",
+    "minername": "bminer",
+    "version": "16.4.9",
+    "optional": "No",
+    "uri": "https://www.bminercontent.com/releases/bminer-v16.4.9-c80288d-amd64.tar.xz"
+  },
   "miniz": {
     "name": "miniz",
     "type": "nvidia",
