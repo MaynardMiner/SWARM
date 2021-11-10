@@ -23,9 +23,9 @@
     "type": "cpu",
     "CPU": ".\\bin\\rplant-1\\cpuminer-avx2",
     "minername": "cpuminer-avx2",
-    "version": "5.0.21",
+    "version": "5.0.24",
     "optional": "No",
-    "uri": "https://github.com/rplant8/cpuminer-opt-rplant/releases/download/5.0.21/cpuminer-opt-linux.tar.gz"
+    "uri": "https://github.com/rplant8/cpuminer-opt-rplant/releases/download/5.0.24/cpuminer-opt-linux.tar.gz"
   },
   "xmrig-cpu": {
     "name": "xmrig-cpu",
@@ -41,9 +41,9 @@
     "type": "cpu",
     "CPU": ".\\bin\\xmrigcc-cpu-1\\xmrigDaemon",
     "minername": "xmrigDaemon",
-    "version": "2.9.3",
+    "version": "2.9.7",
     "optional": "No",
-    "uri": "https://github.com/Bendr0id/xmrigCC/releases/download/2.9.3/xmrigCC-2.9.3-linux-generic-amd64.tar.gz"
+    "uri": "https://github.com/Bendr0id/xmrigCC/releases/download/2.9.7/xmrigCC-2.9.7-linux-generic-amd64.tar.gz"
   },
   "sugarchain": {
     "name": "sugarchain",
