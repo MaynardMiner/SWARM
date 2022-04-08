@@ -5,9 +5,9 @@
     "type": "cpu",
     "CPU": ".\\bin\\bubasik\\cpuminer-avx2.exe",
     "minername": "cpuminer-avx2.exe",
-    "version": "3.9.3.1",
+    "version": "3.18.2",
     "optional": "No",
-    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.9.3.1/cpuminer-opt-3.9.3.1-windows.zip"
+    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.18.2/cpuminer-opt-3.18.2-windows.zip"
   },
   "verium_miner": {
     "name": "verium_miner",
@@ -23,27 +23,27 @@
     "type": "cpu",
     "CPU": ".\\bin\\rplant-1\\cpuminer-avx2.exe",
     "minername": "cpuminer-avx2.exe",
-    "version": "4.5.5",
+    "version": "5.0.24",
     "optional": "No",
-    "uri": "https://github.com/rplant8/cpuminer-opt-rplant/releases/download/4.5.5/cpuminer-opt-win.zip"
+    "uri": "https://github.com/rplant8/cpuminer-opt-rplant/releases/download/5.0.24/cpuminer-opt-win.zip"
   },
   "xmrig-cpu": {
     "name": "xmrig-cpu",
     "type": "cpu",
     "CPU": ".\\bin\\xmrig-cpu-1\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "6.7.0",
+    "version": "6.15.3",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.7.0/xmrig-6.7.0-msvc-win64.zip"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.15.3/xmrig-6.15.3-msvc-win64.zip"
   },
   "xmrigcc-cpu": {
     "name": "xmrigcc-cpu",
     "type": "cpu",
     "CPU": ".\\bin\\xmrigcc-cpu-1\\xmrigDaemon.exe",
     "minername": "xmrigDaemon.exe",
-    "version": "2.8.3",
+    "version": "2.9.7",
     "optional": "No",
-    "uri": "https://github.com/Bendr0id/xmrigCC/releases/download/2.8.3/xmrigCC-2.8.3-with_tls_and_gzip-mvc-win64.zip"
+    "uri": "https://github.com/Bendr0id/xmrigCC/releases/download/2.9.7/xmrigCC-2.9.7-with_tls_and_gzip-mvc-win64.zip"
   },
   "sugarchain": {
     "name": "sugarchain",
@@ -59,9 +59,9 @@
     "type": "cpu",
     "CPU": ".\\bin\\jayddee-1\\cpuminer-avx2.exe",
     "minername": "cpuminer-avx2.exe",
-    "version": "3.13.1.1",
+    "version": "3.18.2",
     "optional": "No",
-    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.13.1.1/cpuminer-opt-3.13.1.1-windows.zip"
+    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.18.2/cpuminer-opt-3.18.2-windows.zip"
   },
   "cpupower": {
     "name": "cpupower",

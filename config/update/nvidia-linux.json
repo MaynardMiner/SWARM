@@ -18,9 +18,9 @@
     "NVIDIA2": ".\\bin\\nbminer-2\\nbminer",
     "NVIDIA3": ".\\bin\\nbminer-3\\nbminer",
     "minername": "nbminer",
-    "version": "37.5",
+    "version": "39.7",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v37.5/NBMiner_37.5_Linux.tgz"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v39.7/NBMiner_39.7_Linux.tgz"
   },
   "multiminer": {
     "name": "multiminer",
@@ -43,17 +43,6 @@
     "version": "5.4c",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/phoenix-linux.tar.gz"
-  },
-  "cryptodredge": {
-    "name": "cryptodredge",
-    "type": "nvidia",
-    "NVIDIA1": ".\\bin\\cryptodredge-1\\CryptoDredge",
-    "NVIDIA2": ".\\bin\\cryptodredge-2\\CryptoDredge",
-    "NVIDIA3": ".\\bin\\cryptodredge-3\\CryptoDredge",
-    "minername": "CryptoDredge",
-    "version": "0.26.0",
-    "optional": "No",
-    "uri": "https://github.com/technobyl/CryptoDredge/releases/download/v0.26.0/CryptoDredge_0.26.0_cuda_11.2_linux.tar.gz"
   },
   "cc-sha3d": {
     "name": "cc-sha3d",
@@ -183,9 +172,9 @@
     "NVIDIA2": ".\\bin\\t-rex-2\\t-rex",
     "NVIDIA3": ".\\bin\\t-rex-3\\t-rex",
     "minername": "t-rex",
-    "version": "0.20.4",
+    "version": "0.24.5",
     "optional": "No",
-    "uri": "https://trex-miner.com/download/t-rex-0.20.4-linux.tar.gz"
+    "uri": "https://trex-miner.com/download/t-rex-0.24.5-linux.tar.gz"
   },
   "zjazz": {
     "name": "zjazz",
@@ -216,9 +205,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner",
     "NVIDIA3": ".\\bin\\gminer-3\\miner",
     "minername": "miner",
-    "version": "2.54",
+    "version": "2.71",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.54/gminer_2_54_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.71/gminer_2_71_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",
@@ -231,16 +220,16 @@
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/grin-miner-linux.tar.gz"
   },
-  "bminer": {
+   "bminer": {
     "name": "bminer",
     "type": "nvidia",
     "NVIDIA1": ".\\bin\\bminer-1\\bminer",
     "NVIDIA2": ".\\bin\\bminer-2\\bminer",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "16.4.6",
+    "version": "16.4.9",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-v16.4.6-d77cc9b-amd64.tar.xz"
+    "uri": "https://www.bminercontent.com/releases/bminer-v16.4.9-c80288d-amd64.tar.xz"
   },
   "miniz": {
     "name": "miniz",
@@ -304,9 +293,9 @@
     "NVIDIA2": ".\\bin\\nv-lolminer-2\\lolMiner",
     "NVIDIA3": ".\\bin\\nv-lolminer-3\\lolMiner",
     "minername": "lolMiner",
-    "version": "1.29",
+    "version": "1.35",
     "optional": "Yes",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.29/lolMiner_v1.29_Lin64.tar.gz"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.35/lolMiner_v1.35_Lin64.tar.gz"
   },
   "tt-miner": {
     "name": "tt-miner",
@@ -348,9 +337,9 @@
     "NVIDIA2": ".\\bin\\wildrig-nv-2\\wildrig-multi",
     "NVIDIA3": ".\\bin\\wildrig-nv-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.28.3",
+    "version": "0.30.1",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.28.3/wildrig-multi-linux-0.28.3.tar.xz"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.30.1/wildrig-multi-linux-0.30.1.tar.xz"
   },
   "nanominer-nv": {
     "name": "nanominer-nv",
@@ -359,8 +348,8 @@
     "NVIDIA2": ".\\bin\\nanominer-nv-2\\nanominer",
     "NVIDIA3": ".\\bin\\nanominer-nv-3\\nanominer",
     "minername": "nanominer",
-    "version": "3.3.5",
+    "version": "3.4.2",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/3.3.5/nanominer-linux-3.3.5-cuda11.tar.gz"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/3.4.2/nanominer-linux-3.4.2-cuda11.tar.gz"
   }
 }
