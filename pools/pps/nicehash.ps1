@@ -50,11 +50,12 @@ if ($Name -in $(arg).PoolName) {
          
     } 
   
+    ## Nicehash has auto location
     Switch ($(arg).Location) {
-        "US" { $Region = "usa" }
-        "ASIA" { $Region = "hk" }
-        "EUROPE" { $Region = "eu" }
-        "JAPAN" { $Region = "hk" }
+        "US" { $Region = "auto" }
+        "ASIA" { $Region = "auto" }
+        "EUROPE" { $Region = "auto" }
+        "JAPAN" { $Region = "auto" }
     }
 
     $Get_Params = $Global:Config.params
