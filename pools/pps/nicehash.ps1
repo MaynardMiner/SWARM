@@ -17,27 +17,31 @@ if ($Name -in $(arg).PoolName) {
 
     $nicehash_Request = [PSCustomObject]@{ } 
 
+
+    <#
+    ## This is depreciated, as nicehash uses only one port.
     ## Make a Port map so I don't have to pull from nicehash twice
     $Nicehash_Ports = 
     '{
-"scrypt":"3333",            "btc":"3334",               "scryptnf":"3335",          "x11":"3336",
-"x13":"3337",               "keccak":"3338",            "x15":"3339",               "nist5":"3340",
-"neoscrypt":"3341",         "lyra2re":"3342",           "whirlpoolx":"3343",        "qubit":"3344",
-"quark":"3345",             "axiom":"3346",             "lyra2rev2":"3347",         "scryptjanenf16":"3348",
-"blake256r8":"3349",        "blake256r14":"3350",       "blake256r8vnl":"3351",     "hodl":"3352",
-"daggerhashimoto":"3353",   "decred":"3354",            "cryptonight":"3355",       "lbry":"3356",
-"equihash":"3357",          "pascal":"3358",            "x11ghost":"3359",          "sia":"3360",
-"blake2s":"3361",           "skunk":"3362",             "cryptonightv7":"3363",     "cryptonightheavy":"3364",
-"lyra2z":"3365",            "x16r":"3366",              "cryptonightv8":"3367",     "sha256asicboost":"3368",
-"zhash":"3369",             "beam":"3370",              "grincuckaroo29":"3371",    "grincuckatoo31":"3372",
-"lyra2rev3":"3373",         "mtp":"3374",               "cryptonightr":"3375",      "cuckoocycle":"3376",
-"grincuckarood29":"3377",   "beamv2":"3378",            "x16rv2":"3379",            "randomxmonero":"3380",
-"eaglesong":"3381",         "cuckaroom": "3382",        "grincuckatoo32":"3383",    "handshake":"3384",
-"kawpow": "3385",           "cuckaroo29bfc": "3386",     "beamv3": "3387",          "cuckarooz29": "3388",
-"octopus": "3389"
-}'    
+    "scrypt":"3333",            "btc":"3334",               "scryptnf":"3335",          "x11":"3336",
+    "x13":"3337",               "keccak":"3338",            "x15":"3339",               "nist5":"3340",
+    "neoscrypt":"3341",         "lyra2re":"3342",           "whirlpoolx":"3343",        "qubit":"3344",
+    "quark":"3345",             "axiom":"3346",             "lyra2rev2":"3347",         "scryptjanenf16":"3348",
+    "blake256r8":"3349",        "blake256r14":"3350",       "blake256r8vnl":"3351",     "hodl":"3352",
+    "daggerhashimoto":"3353",   "decred":"3354",            "cryptonight":"3355",       "lbry":"3356",
+    "equihash":"3357",          "pascal":"3358",            "x11ghost":"3359",          "sia":"3360",
+    "blake2s":"3361",           "skunk":"3362",             "cryptonightv7":"3363",     "cryptonightheavy":"3364",
+    "lyra2z":"3365",            "x16r":"3366",              "cryptonightv8":"3367",     "sha256asicboost":"3368",
+    "zhash":"3369",             "beam":"3370",              "grincuckaroo29":"3371",    "grincuckatoo31":"3372",
+    "lyra2rev3":"3373",         "mtp":"3374",               "cryptonightr":"3375",      "cuckoocycle":"3376",
+    "grincuckarood29":"3377",   "beamv2":"3378",            "x16rv2":"3379",            "randomxmonero":"3380",
+    "eaglesong":"3381",         "cuckaroom": "3382",        "grincuckatoo32":"3383",    "handshake":"3384",
+    "kawpow": "3385",           "cuckaroo29bfc": "3386",     "beamv3": "3387",          "cuckarooz29": "3388",
+    "octopus": "3389"
+    }'    
 
     $Nicehash_Ports = $Nicehash_Ports | ConvertFrom-Json
+    #>
 
     $X = ""
     if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" }
@@ -81,7 +85,6 @@ if ($Name -in $(arg).PoolName) {
                 . .\build\powershell\global\classes.ps1
                 $reg = $using:Region;
                 $params = $using:Get_Params;
-                $ports = $using:Nicehash_Ports;
                 $sub = $using:X
 
                 ## Nicehash 'Gets' you with the fees. If you read the fine print,
@@ -94,7 +97,6 @@ if ($Name -in $(arg).PoolName) {
                 if (-not $params.Nicehash_Wallet3) { $NH_Wallet3 = $params.Wallet3; [Double]$Fee = 5; }else { $NH_Wallet3 = $params.Nicehash_Wallet3; [Double]$Fee = $params.Nicehash_Fee }
 
                 $nicehash_Host = "${Algo}.${reg}.nicehash.com${sub}"
-                $nicehash_Port = $ports.$Algo
                 ## 8 bit estimates
                 $Divisor = 100000000
                 $value = ([Convert]::ToDecimal($_.paying) / $Divisor * (1 - ($Fee / 100)))
@@ -128,6 +130,9 @@ if ($Name -in $(arg).PoolName) {
                     }
                     $Level = [Math]::Max($Level + ($Level * $Deviation), $SmallestValue)
                 }        
+                
+                ## According to Incode, 9200 works best.
+                $nicehash_Port = 9200
 
                 [Pool]::New(
                     ## Symbol
