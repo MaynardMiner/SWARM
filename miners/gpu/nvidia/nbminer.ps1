@@ -90,7 +90,6 @@ $(vars).NVIDIATypes | ForEach-Object {
                     }
                     default { $Stratum = "stratum+tcp://"; $A = "$($MinerConfig.$ConfigType.naming.$MinerAlgo)"; $UserValue = $GetUser + "." + $GetPass }
                 }
-                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                 [PSCustomObject]@{
                     MName             = $Name
                     Coin              = $(vars).Coins
@@ -105,7 +104,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version           = "$($(vars).nvidia.nbminer.version)"
                     DeviceCall        = "ccminer"
-                    Arguments         = "-a $A --api 0.0.0.0:$Port --platform 1 --log-file `'$log`' --url $Stratum$($_.Pool_Host):$($_.Port) --user $UserValue$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments         = "-a $A --api 0.0.0.0:$Port --platform 1 --log-file `'$log`' --url $Stratum$($_.Pool_Host):$($_.Port) --user $UserValue$($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates         = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote             = $_.Price

@@ -64,11 +64,9 @@ $(vars).NVIDIATypes | ForEach-Object {
             if ($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3) { $HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
             else { $HashStat = $Stat.Hour }
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 $SelAlgo = $_.Algorithm
                 $SelName = $_.Name
-                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
-                $UserPass = "-p $($_.$Pass)$Diff "
+                $UserPass = "-p $($_.$Pass)"
                 $GetUser = "$($_.$User)";
                 $Worker = $_.Worker;
                 $stratum = "stratum+tcp://"
@@ -95,7 +93,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version           = "$($(vars).nvidia.$CName.version)"
                     DeviceCall        = "trex"
-                    Arguments         = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no-watchdog --no-nvml -o $stratum$($_.Pool_Host):$($_.Port) -u $($GetUser) $UserPass-l `'$Log`' --api-bind-http 0.0.0.0:$Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments         = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no-watchdog --no-nvml -o $stratum$($_.Pool_Host):$($_.Port) -u $($GetUser) -l `'$Log`' --api-bind-http 0.0.0.0:$Port $UserPass$($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates         = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
