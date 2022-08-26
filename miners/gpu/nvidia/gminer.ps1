@@ -82,8 +82,7 @@ $(vars).NVIDIATypes | ForEach-Object {
             $Pools | Where-Object Algorithm -eq $MinerAlgo | Where-Object Name -ne "hashrent" | ForEach-Object {
                 $SelAlgo = $_.Algorithm
                 $SelName = $_.Name
-                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
-                $UserPass = "--pass $($_.$Pass)$Diff "
+                $UserPass = "--pass $($_.$Pass)"
                 $GetUser = "$($_.$User)";
                 $GetWorker = $_.Worker;
                 switch ($SelName) {
