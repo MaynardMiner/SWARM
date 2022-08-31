@@ -58,7 +58,7 @@ $(vars).CPUTypes | ForEach-Object {
             else { $HashStat = $Stat.Hour }
 
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",sd=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $(vars).Coins

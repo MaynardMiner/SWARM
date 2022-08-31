@@ -76,7 +76,7 @@ $(vars).AMDTypes | ForEach-Object {
                     "ethash" { $AddArgs = "--algo ETHASH " }
                     "etchash" { $AddArgs = "--algo ETCHASH " }
                 }
-                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",sd=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $(vars).Coins

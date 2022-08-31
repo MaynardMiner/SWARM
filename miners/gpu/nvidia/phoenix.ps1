@@ -72,7 +72,7 @@ $(vars).NVIDIATypes | ForEach-Object {
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 $SelName = $_.Name
                 $SelAlgo = $_.Algorithm
-                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",sd=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 if ($_.Worker) { $MinerWorker = " -worker $($_.Worker) " }
                 else { $MinerWorker = " -pass $($_.$Pass)$($Diff) " }
                 $GetUser = $_.$User;

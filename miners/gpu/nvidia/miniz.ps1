@@ -91,7 +91,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "beamv2" { $AddArgs = "--par=150,5,3 --pers auto " }
                     "beamhashv3" { $AddArgs = "--pers auto " }
                 }
-                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
+                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",sd=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $(vars).Coins

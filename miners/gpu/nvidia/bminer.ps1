@@ -65,7 +65,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                 $GetUser = $_.$User;
                 if ($_.Worker) { $GetPass = "$($_.Worker)" }
                 $CanUse = $true;
-                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = "d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",sd=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)),d=" }else { $Diff = "" }
                 $UserPass = $_.$User + ":" + [System.Web.HttpUtility]::UrlEncode($GetPass + $Diff);
                 $PoolPort = $_.Port
                 Switch ($SelName) {
