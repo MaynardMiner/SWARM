@@ -66,7 +66,13 @@ $(vars).AMDTypes | ForEach-Object {
             if ($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3) { $HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
             else { $HashStat = $Stat.Hour }
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
-                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",sd=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
+                $Diff = ""
+                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { 
+                    switch($_.Name) {
+                        "zergpool" { $Diff = ",sd=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
+                        default { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
+                    }
+                }
                 $GetUser = $_.$User;
                 $UserPass = " -p $($_.$Pass)$($Diff) "
                 if($_.Worker){ $GetUser = $GetUser + "." + $_.Worker; $UserPass = " " }

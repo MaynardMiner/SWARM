@@ -73,13 +73,20 @@ $(vars).NVIDIATypes | ForEach-Object {
                 $GetWorker = $_.Worker;
                 $GetHost = $_.Pool_Host;
                 $GetPort = $_.Port;
+                $Diff = ""
+                if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { 
+                    switch($_.Name) {
+                        "zergpool" { $Diff = ",sd=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
+                        default { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
+                    }
+                }
                 switch($SelName) {
-                    "nicehash" { $PArg = "-P stratum+tcp://$($GetUser):$($GetPass)@$($GetHost):$($GetPort) "; }
+                    "nicehash" { $PArg = "-P stratum+tcp://$($GetUser):$($GetPass)$($Diff)@$($GetHost):$($GetPort) "; }
                     "mph" { $PArg = "-P $($GetUser)@$($GetHost):$($GetPort) "; }
                     "zergpool" { 
                         switch($MinerAlgo) {
-                            "ethash" { $PArg = "-P $($GetUser).x:$($GetPass)@$($GetHost):$($GetPort) ";}
-                            default {$PArg = "-P stratum+tcp://$($GetUser).x:$($GetPass)@$($GetHost):$($GetPort) ";}
+                            "ethash" { $PArg = "-P $($GetUser).x:$($GetPass)$($Diff)@$($GetHost):$($GetPort) ";}
+                            default {$PArg = "-P stratum+tcp://$($GetUser).x:$($GetPass)$($Diff)@$($GetHost):$($GetPort) ";}
                         }
                     }
                     "hashrent" { $PArg = "-o $($GetHost):$($GetPort) -u $GetUser -worker $($GetUser.Split("/")[1]) "}
