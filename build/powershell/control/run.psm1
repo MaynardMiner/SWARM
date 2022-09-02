@@ -212,13 +212,18 @@ function Global:Start-NewMiners {
                                 ## Do oc if they have API key
                                 if ([string]$(arg).API_Key -ne "") {
 
-                                    ## HiveOS Can only do Group 1, while SWARM can do all three.
-                                    ## If group 1 has changed, SWARM will run oc for that group. 
-                                    ## If this is a different group- User is screwed for other groups.
+                                    ## New method for OC profiles for HiveOS-
+                                    ## Step 1: Grab OC profiles for all algorithms.
+                                    ## Step 2: Generate an OC profile for devices based on algorithms
+                                    ## Step 3: Apply custom OC Profile use HiveAPI
+                                    ## This allows all device groups to have proper OC based on algorithm.
+
+                                    ## If group 1 (NVIDIA1/AMD1) has changed, SWARM will run oc for that group
+                                    ## This will applay it for all other groups.
 
                                     if ($Miner.Type -notlike "*ASIC*" -and $Miner.Type -ne "CPU" -and $Miner.Type -like "*1*") {
                                         $Hive_Miner_Name = $Miner.Name.replace("-1","");
-                                        $OC_Success = Global:Start-HiveTune $Miner.Algo
+                                        $OC_Success = Global:Start-HiveTune $(vars).BestActiveMiners
 
                                         ## If it succeeded- SWARM will add to the oc_groups, which
                                         ## is a list of what OC has been done. If not, then it will
