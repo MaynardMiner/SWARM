@@ -227,9 +227,9 @@
     "NVIDIA2": ".\\bin\\bminer-2\\bminer",
     "NVIDIA3": ".\\bin\\bminer-3\\bminer",
     "minername": "bminer",
-    "version": "16.4.9",
+    "version": "16.4.11",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-v16.4.9-c80288d-amd64.tar.xz"
+    "uri": "https://www.bminercontent.com/releases/bminer-v16.4.11-2849b5c-amd64.tar.xz"
   },
   "miniz": {
     "name": "miniz",
@@ -351,5 +351,16 @@
     "version": "3.4.2",
     "optional": "No",
     "uri": "https://github.com/nanopool/nanominer/releases/download/3.4.2/nanominer-linux-3.4.2-cuda11.tar.gz"
+  },
+  "cryptodredge": {
+    "name": "cryptodredge",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\cryptodredge-1\\cryptodredge",
+    "NVIDIA2": ".\\bin\\cryptodredge-2\\cryptodredge",
+    "NVIDIA3": ".\\bin\\cryptodredge-3\\cryptodredge",
+    "minername": "cryptodredge",
+    "version": "0.27.0",
+    "optional": "No",
+    "uri": "https://cryptodredge.org/download/linux/11.4/latest"
   }
 }
