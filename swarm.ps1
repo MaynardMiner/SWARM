@@ -426,12 +426,12 @@ $($_.InvocationInfo.PositionMessage)
     ##  These are all global values- It can be used with user-created modules.
 
 
-    ## SWARM runs its loop every 5 minutes (-Interval). Miners will run for at least your interval time- If you took
+    ## SWARM runs its loop every 5 minutes. Miners will run for at least your time- If you took
     ## 3 minutes to calculate your data, and miner ran for only two minutes: SWARM will not switch off that miner and
     ## wait until at least 5 minutes runtime has happened.
     if (
         $(vars).switch -ne $true -and 
-        [math]::Round(((Get-Date).ToUniversalTime() - $(vars).Check_Interval).TotalSeconds) -ge $(($(arg).Interval) * 60)
+        [math]::Round(((Get-Date).ToUniversalTime() - $(vars).Check_Interval).TotalSeconds) -ge $(300)
     ) {
         $(vars).switch = $true
         $(vars).Check_Interval = (Get-Date).ToUniversalTime()

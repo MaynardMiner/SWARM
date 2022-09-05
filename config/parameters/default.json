@@ -23,7 +23,6 @@
     "Auto_Coin": "No",
     "Ban_GLT": "No",
     "Bans": [],
-    "Benchmark": 2,
     "CLPlatform": "",
     "Coin": [
         ""
@@ -50,7 +49,6 @@
     "Historical_Bias": "25:1",
     "Hive_Hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "HiveOS": "No",
-    "Interval": 5,
     "kwh": "",
     "Lite": "No",
     "Location": "US",

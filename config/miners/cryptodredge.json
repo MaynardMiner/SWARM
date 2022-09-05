@@ -13,7 +13,6 @@
             "cryptonight-upx": "",
             "cryptonight-haven": "",
             "kawpow": "",
-            "ethash": "",
             "firoPoW": ""
         },
         "difficulty": {
@@ -25,7 +24,6 @@
             "cryptonight-upx": "",
             "cryptonight-haven": "",
             "kawpow": "",
-            "ethash": "",
             "firoPoW": ""
         },
         "naming": {
@@ -37,7 +35,6 @@
             "cryptonight-upx": "cnupx2",
             "cryptonight-haven": "cnhaven",
             "kawpow": "kawpow",
-            "ethash": "ethash",
             "firoPoW": "firopow"
         },
         "fee": {
@@ -49,7 +46,6 @@
             "cryptonight-upx": 1,
             "cryptonight-haven": 1,
             "kawpow": 1,
-            "ethash": 1,
             "firoPoW": 1
         }
     },
@@ -66,7 +62,6 @@
             "cryptonight-upx": "",
             "cryptonight-haven": "",
             "kawpow": "",
-            "ethash": "",
             "firoPoW": ""
         },
         "difficulty": {
@@ -78,7 +73,6 @@
             "cryptonight-upx": "",
             "cryptonight-haven": "",
             "kawpow": "",
-            "ethash": "",
             "firoPoW": ""
         },
         "naming": {
@@ -90,7 +84,6 @@
             "cryptonight-upx": "cnupx2",
             "cryptonight-haven": "cnhaven",
             "kawpow": "kawpow",
-            "ethash": "ethash",
             "firoPoW": "firopow"
         },
         "fee": {
@@ -102,7 +95,6 @@
             "cryptonight-upx": 1,
             "cryptonight-haven": 1,
             "kawpow": 1,
-            "ethash": 1,
             "firoPoW": 1
         }
     },
@@ -119,7 +111,6 @@
             "cryptonight-upx": "",
             "cryptonight-haven": "",
             "kawpow": "",
-            "ethash": "",
             "firoPoW": ""
         },
         "difficulty": {
@@ -131,7 +122,6 @@
             "cryptonight-upx": "",
             "cryptonight-haven": "",
             "kawpow": "",
-            "ethash": "",
             "firoPoW": ""
         },
         "naming": {
@@ -143,7 +133,6 @@
             "cryptonight-upx": "cnupx2",
             "cryptonight-haven": "cnhaven",
             "kawpow": "kawpow",
-            "ethash": "ethash",
             "firoPoW": "firopow"
         },
         "fee": {
@@ -155,7 +144,6 @@
             "cryptonight-upx": 1,
             "cryptonight-haven": 1,
             "kawpow": 1,
-            "ethash": 1,
             "firoPoW": 1
         }
     }

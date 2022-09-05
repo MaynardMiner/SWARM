@@ -106,9 +106,9 @@
     "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
     "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "2.71",
+    "version": "3.05",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/2.71/gminer_2_71_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.05/gminer_3_05_windows64.zip"
   },
   "claymore": {
     "name": "claymore",
@@ -172,7 +172,7 @@
     "NVIDIA2": ".\\bin\\miniz-2\\miniZ.exe",
     "NVIDIA3": ".\\bin\\miniz-3\\miniZ.exe",
     "minername": "miniZ.exe",
-    "version": "v1.6x",
+    "version": "v1.9z",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/miniz-windows.zip"
   },
@@ -322,12 +322,12 @@
   "cryptodredge": {
     "name": "cryptodredge",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\cryptodredge-1\\cryptodredge",
-    "NVIDIA2": ".\\bin\\cryptodredge-2\\cryptodredge",
-    "NVIDIA3": ".\\bin\\cryptodredge-3\\cryptodredge",
-    "minername": "cryptodredge",
+    "NVIDIA1": ".\\bin\\cryptodredge-1\\cryptodredge.exe",
+    "NVIDIA2": ".\\bin\\cryptodredge-2\\cryptodredge.exe",
+    "NVIDIA3": ".\\bin\\cryptodredge-3\\cryptodredge.exe",
+    "minername": "cryptodredge.exe",
     "version": "0.27.0",
     "optional": "No",
-    "uri": "https://cryptodredge.org/download/windows/11.4/latest"
+    "uri": "https://github.com/CryptoDredge/miner/releases/download/v0.27.0/CryptoDredge_0.27.0_cuda_11.4_windows.zip"
   }
 }
