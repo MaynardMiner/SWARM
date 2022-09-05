@@ -11,6 +11,7 @@
             "firopow": "",
             "kawpow": "",
             "mtp": "",
+            "mtp-tcr": "",
             "multi": "",
             "octopus": "",
             "progpow": "",
@@ -27,6 +28,7 @@
             "firopow": "",
             "kawpow": "",
             "mtp": "",
+            "mtp-tcr": "",
             "multi": "",
             "octopus": "",
             "progpow": "",
@@ -43,6 +45,7 @@
             "firopow": "firopow",
             "kawpow": "kawpow",
             "mtp": "mtp",
+            "mtp-tcr": "mtp-tcr",
             "multi": "multi",
             "octopus": "octopus",
             "progpow": "progpow",
@@ -52,20 +55,21 @@
             "tensority": "tensority"
         },
         "fee": {
-            "autolykos2": 1,
+            "autolykos2": 2,
             "blake3": 1,
             "etchash": 1,
             "ethash": 1,
             "firopow": 1,
             "kawpow": 1,
             "mtp": 1,
+            "mtp-tcr": 1,
             "multi": 1,
-            "octopus": 1,
+            "octopus": 2,
             "progpow": 1,
             "progpow-veil": 1,
             "progpow-veriblock": 1,
             "progpowz": 1,
-            "tensority": 1
+            "tensority": 1        
         }
     },
     "NVIDIA2": {
@@ -80,6 +84,7 @@
             "firopow": "",
             "kawpow": "",
             "mtp": "",
+            "mtp-tcr": "",
             "multi": "",
             "octopus": "",
             "progpow": "",
@@ -96,6 +101,7 @@
             "firopow": "",
             "kawpow": "",
             "mtp": "",
+            "mtp-tcr": "",
             "multi": "",
             "octopus": "",
             "progpow": "",
@@ -112,6 +118,7 @@
             "firopow": "firopow",
             "kawpow": "kawpow",
             "mtp": "mtp",
+            "mtp-tcr": "mtp-tcr",
             "multi": "multi",
             "octopus": "octopus",
             "progpow": "progpow",
@@ -121,21 +128,22 @@
             "tensority": "tensority"
         },
         "fee": {
-            "autolykos2": 1,
+            "autolykos2": 2,
             "blake3": 1,
             "etchash": 1,
             "ethash": 1,
             "firopow": 1,
             "kawpow": 1,
             "mtp": 1,
+            "mtp-tcr": 1,
             "multi": 1,
-            "octopus": 1,
+            "octopus": 2,
             "progpow": 1,
             "progpow-veil": 1,
             "progpow-veriblock": 1,
             "progpowz": 1,
-            "tensority": 1
-        }
+            "tensority": 1        
+        }    
     },
     "NVIDIA3": {
         "name": "NVIDIA3",
@@ -149,6 +157,7 @@
             "firopow": "",
             "kawpow": "",
             "mtp": "",
+            "mtp-tcr": "",
             "multi": "",
             "octopus": "",
             "progpow": "",
@@ -165,6 +174,7 @@
             "firopow": "",
             "kawpow": "",
             "mtp": "",
+            "mtp-tcr": "",
             "multi": "",
             "octopus": "",
             "progpow": "",
@@ -181,6 +191,7 @@
             "firopow": "firopow",
             "kawpow": "kawpow",
             "mtp": "mtp",
+            "mtp-tcr": "mtp-tcr",
             "multi": "multi",
             "octopus": "octopus",
             "progpow": "progpow",
@@ -190,20 +201,21 @@
             "tensority": "tensority"
         },
         "fee": {
-            "autolykos2": 1,
+            "autolykos2": 2,
             "blake3": 1,
             "etchash": 1,
             "ethash": 1,
             "firopow": 1,
             "kawpow": 1,
             "mtp": 1,
+            "mtp-tcr": 1,
             "multi": 1,
-            "octopus": 1,
+            "octopus": 2,
             "progpow": 1,
             "progpow-veil": 1,
             "progpow-veriblock": 1,
             "progpowz": 1,
-            "tensority": 1
+            "tensority": 1        
         }
     },
     "name": "t-rex"

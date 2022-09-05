@@ -26,7 +26,6 @@ if ($isWindows) {
 ## Set Current Path
 $Global:config = [hashtable]::Synchronized(@{ })
 [cultureinfo]::CurrentCulture = 'en-US'
-
 $Global:Config.Add("vars", @{ })
 $Global:Config.vars.Add( "dir", (Split-Path $script:MyInvocation.MyCommand.Path) )
 $Global:Config.vars.dir = $Global:Config.vars.dir -replace "/var/tmp", "/root"
@@ -34,6 +33,11 @@ Set-Location $Global:Config.vars.dir
 if (-not (test-path ".\debug")) { New-Item -Path "debug" -ItemType Directory | Out-Null }
 $Global:Version = (Get-Content ".\h-manifest.conf" | ConvertFrom-StringData).CUSTOM_VERSION;
 
+
+## SWARM will log miners so users can review since they are happening in different screens.
+## Some miners have spaces in the directory path like "/root/my directory/SWARM" will cause
+## issues when using their argument -log /root/my directory/SWARM. This cannot be controlled,
+## so a error-like warning is notated as a result.
 if ($GLobal:Config.vars.dir -like "* *") {
     Write-Host "Warning: Detected File Path To Be $($Global:Config.vars.dir)" -ForegroundColor Red
     Write-Host "Because there is a space within a parent directory," -ForegroundColor Red
@@ -46,7 +50,9 @@ if ($GLobal:Config.vars.dir -like "* *") {
 }
 
 if ($IsWindows) {
-    ## Warn User about path
+    ## SWARM will kill old miners if they are still running in windows- Sometimes they will
+    ## ignore the original Kill app commmand on exit. It will also kill SWARM if there is an
+    ## an older version running.
     Write-Host "Stopping Any Previous SWARM Instances..."
     $ID = ".\build\pid\miner_pid.txt"
     if (Test-Path $ID) { 
@@ -59,12 +65,13 @@ if ($IsWindows) {
         }
     }
     ## Fix weird PATH issues for commands
+    ## Ensure PATH is set (The environment variable)
+    ## This was a problem for some users using weird mining setups
     $restart = $false
     $Target1 = [System.EnvironmentVariableTarget]::Machine
     $Target2 = [System.EnvironmentVariableTarget]::Process
     $Path = [System.Environment]::GetEnvironmentVariable('Path', $Target1)
     $Path_List = $Path.Split(';')
-    
     ## Remove all old SWARM Paths and add current
     if ("$($Global:Config.vars.dir)\build\cmd" -notin $Path_List) {
         Write-Host "Please Wait- Setting Environment Variables..." -ForegroundColor Green
@@ -75,7 +82,6 @@ if ($IsWindows) {
         [System.Environment]::SetEnvironmentVariable('Path', $New_PATH, $Target2)
         $restart = $true
     }
-
     ## Set Path
     if ($Env:SWARM_DIR -ne $Global:Config.vars.dir) {
         $restart = $true
@@ -91,18 +97,19 @@ if ($IsWindows) {
 }
 
 ## Check Powershell version. Output warning.
-if ($PSVersionTable.PSVersion -ne "7.1.0") {
-    Write-Host "WARNING: Powershell Core Version is $($PSVersionTable.PSVersion)" -ForegroundColor Red
-    Write-Host "Currently supported version for SWARM is 7.1.0" -ForegroundColor Red
-    Write-Host "SWARM will continue anyways- It may cause issues." -ForegroundColor Red
+## In most cases it will not cause issue, but notating they
+## may be using a version that will.
+if ($PSVersionTable.PSVersion -ne "7.2.6") {
+    Write-Host "WARNING: Powershell Core Version is $($PSVersionTable.PSVersion)" -ForegroundColor Yellow
+    Write-Host "Currently supported version for SWARM is 7.1.0" -ForegroundColor Yellow
+    Write-Host "SWARM will continue anyways- It may cause issues." -ForegroundColor Yellow
     Write-Host ""
-    Write-Host "Link for Powershell:" -ForegroundColor Red
-    Write-Host "https://github.com/PowerShell/PowerShell/releases/tag/v7.1.0" -ForegroundColor Red
+    Write-Host "Link for Powershell:" -ForegroundColor Yellow
+    Write-Host "https://github.com/PowerShell/PowerShell/releases/tag/v7.1.0" -ForegroundColor Yellow
     Write-Host ""
-    Write-Host "Windows: Microsoft Visual C++ Redistributable for Visual Studio (2012) (2013) (2015,2017 and 2019)" -ForegroundColor Red
-    Write-Host "Link For download:" -ForegroundColor Red
-    Write-Host "https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads" -ForegroundColor Red
-
+    Write-Host "Windows: Microsoft Visual C++ Redistributable for Visual Studio (2012) (2013) (2015,2017 and 2019)" -ForegroundColor Yellow
+    Write-Host "Link For download:" -ForegroundColor Yellow
+    Write-Host "https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads" -ForegroundColor Yellow
     ## Create a pause in case window is scrolling too fast.
     Start-Sleep -S 5
 }
@@ -112,6 +119,9 @@ if ($PSVersionTable.PSVersion -ne "7.1.0") {
 $env:Path += ";$($(vars).dir)\build\cmd"
 
 ## Window Security Items
+## This attempts to prevent Windows Defender from trying to 
+## stop apps from running. This is no gurantee it will actually
+## work, because Windows.
 if ($IsWindows) {
     $Host.UI.RawUI.BackgroundColor = 'Black'
     $Host.UI.RawUI.ForegroundColor = 'White'
@@ -137,14 +147,13 @@ if ($IsWindows) {
     }
     catch { }
     Remove-Variable -name Net -ErrorAction Ignore
-
     ## Windows Icon
     Start-Process "powershell" -ArgumentList "Set-Location `'$($(vars).dir)`'; .\build\powershell\scripts\icon.ps1 `'$($(vars).dir)\build\apps\icons\SWARM.ico`'" -NoNewWindow
-
     ## Add .dll
     Add-Type -Path ".\build\apps\launchcode.dll"
 }
 
+## This loads MegaAPI into SWARM, for miner downloads on Mega.nz
 Add-Type -Path ".\build\apps\device\MegaApiClient.dll"
 
 ## Debug Mode- Allow you to run with last known arguments or commandline.json.
@@ -386,6 +395,9 @@ $ErrorActionPreference = [System.Management.Automation.ActionPreference]::Stop;
 
 While ($true) {
 
+
+    ## This will catch all errors, and log them as they happen since we are using
+    ## our own custom logging.
     trap { 
         log "
 $($_.Exception.Message)
@@ -413,6 +425,10 @@ $($_.InvocationInfo.PositionMessage)
     ##  This allows the abililty to remove/add variables to both, as well as clear them all with a single command.
     ##  These are all global values- It can be used with user-created modules.
 
+
+    ## SWARM runs its loop every 5 minutes (-Interval). Miners will run for at least your interval time- If you took
+    ## 3 minutes to calculate your data, and miner ran for only two minutes: SWARM will not switch off that miner and
+    ## wait until at least 5 minutes runtime has happened.
     if (
         $(vars).switch -ne $true -and 
         [math]::Round(((Get-Date).ToUniversalTime() - $(vars).Check_Interval).TotalSeconds) -ge $(($(arg).Interval) * 60)
@@ -428,7 +444,7 @@ $($_.InvocationInfo.PositionMessage)
     create ASICS @{ }
     create All_AltWalltes $null
     $(vars).ETH_exchange = 0;
-        
+    
     ##Insert Build Single Modules Here
 
     ##Insert Build Looping Modules Here

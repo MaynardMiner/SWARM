@@ -86,7 +86,7 @@
     "minername": "bminer.exe",
     "version": "16.4.9",
     "optional": "No",
-    "uri": "https://www.bminercontent.com/releases/bminer-lite-v16.4.9-c80288d-amd64.zip"
+    "uri": "https://www.bminercontent.com/releases/bminer-v16.4.11-2849b5c-amd64.zip"
   },
   "ehssand": {
     "name": "ehssand",
@@ -318,5 +318,16 @@
     "version": "3.4.2",
     "optional": "No",
     "uri": "https://github.com/nanopool/nanominer/releases/download/v3.4.2/nanominer-windows-3.4.2-cuda11.zip"
+  },
+  "cryptodredge": {
+    "name": "cryptodredge",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\cryptodredge-1\\cryptodredge",
+    "NVIDIA2": ".\\bin\\cryptodredge-2\\cryptodredge",
+    "NVIDIA3": ".\\bin\\cryptodredge-3\\cryptodredge",
+    "minername": "cryptodredge",
+    "version": "0.27.0",
+    "optional": "No",
+    "uri": "https://cryptodredge.org/download/windows/11.4/latest"
   }
 }
