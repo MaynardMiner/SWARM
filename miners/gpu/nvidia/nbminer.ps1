@@ -111,7 +111,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version           = "$($(vars).nvidia.nbminer.version)"
                     DeviceCall        = "ccminer"
-                    Arguments         = "-a $A --api 0.0.0.0:$Port --platform 1 --log-file `'$log`' --url $Stratum$($_.Pool_Host):$($_.Port) --user $UserValue$Diff $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments         = "-a $A --api 0.0.0.0:$Port --platform 1 --log-file `'$log`' --url $Stratum$($_.Pool_Host):$($_.Port) --user $UserValue$($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates         = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote             = $_.Price
