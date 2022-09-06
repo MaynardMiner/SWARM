@@ -118,6 +118,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "etchash" {
                         switch ($SelName) {
                             "nicehash" { $AddArgs = "--algo etchash --proto stratum " }
+                            "zergpool" { $AddArgs = "--algo etchash " }
                         }
                     }
                 }
