@@ -21,17 +21,17 @@ function Global:Get-StatsNanominer {
             Global:Write-MinerData2;
             try { 
                 for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) {
-                    $Hash = $($Data."GPU $global:i".Hashrate)
+                    $Hash = $($Data."GPU $($global:Devices[$global:i])".Hashrate)
                     $global:GPUHashrates.$($global:Devices[$global:i]) = [decimal]($Hash / 1000)
                     $global:GPUKHS += [decimal]($Hash / 1000)
                 }
             }
             catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) {
-                $global:MinerACC += $($Data."GPU $global:i".Accepted)
-                $global:MinerREJ += $($Data."GPU $global:i".Denied)
-                $global:ALLACC += $($Data."GPU $global:i".Accepted)
-                $global:ALLREJ += $($Data."GPU $global:i".Denied)
+                $global:MinerACC += $($Data."GPU $($global:Devices[$global:i])".Accepted)
+                $global:MinerREJ += $($Data."GPU $($global:Devices[$global:i])".Denied)
+                $global:ALLACC += $($Data."GPU $($global:Devices[$global:i])".Accepted)
+                $global:ALLREJ += $($Data."GPU $($global:Devices[$global:i])".Denied)
             }
         }
     }
