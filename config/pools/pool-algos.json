@@ -17,6 +17,15 @@
       "comma seperated"
     ]
   },
+  "anime": {
+    "alt_names": [
+      "anime"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "argon2d250": {
     "alt_names": [
       "argon2d250",
@@ -453,6 +462,15 @@
       "comma seperated"
     ]
   },
+  "curvehash": {
+    "alt_names": [
+      "curvehash"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "equihash_144/5": {
     "alt_names": [
       "equihash_144/5",
@@ -544,6 +562,15 @@
       "comma seperated"
     ]
   },
+  "ghostrider": {
+    "alt_names": [
+      "ghostrider"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "globalhash": {
     "alt_names": [
       "globalhash",
@@ -558,6 +585,15 @@
     "alt_names": [
       "handshake",
       "hns"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "heavyhash": {
+    "alt_names": [
+      "heavyhash"
     ],
     "exclusions": [
       "add pool or miner here",
