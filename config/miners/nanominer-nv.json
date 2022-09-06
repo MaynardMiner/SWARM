@@ -10,9 +10,7 @@
             "etchash": "",
             "octopus": "",
             "firopow": "",
-            "autolykos": "",
-            "verushash": "",
-            "verthash": ""
+            "autolykos": ""
         },
         "difficulty": {
             "kawpow": "",
@@ -21,9 +19,7 @@
             "etchash": "",
             "octopus": "",
             "firopow": "",
-            "autolykos": "",
-            "verushash": "",
-            "verthash": ""
+            "autolykos": ""
         },
         "naming": {
             "kawpow": "kawpow",
@@ -32,9 +28,7 @@
             "etchash": "etchash",
             "octopus": "octopus",
             "firopow": "firopow",
-            "autolykos": "autolykos",
-            "verushash": "verushash",
-            "verthash": "verthash"
+            "autolykos": "autolykos"
         },
         "fee": {
             "kawpow": 1,
@@ -43,9 +37,7 @@
             "etchash": 1,
             "octopus": 2,
             "firopow": 1,
-            "autolykos": 2.5,
-            "verushash": 2,
-            "verthash": 1
+            "autolykos": 2.5
         }
     },
     "NVIDIA2": {
@@ -59,9 +51,7 @@
             "etchash": "",
             "octopus": "",
             "firopow": "",
-            "autolykos": "",
-            "verushash": "",
-            "verthash": ""
+            "autolykos": ""
         },
         "difficulty": {
             "kawpow": "",
@@ -70,9 +60,7 @@
             "etchash": "",
             "octopus": "",
             "firopow": "",
-            "autolykos": "",
-            "verushash": "",
-            "verthash": ""
+            "autolykos": ""
         },
         "naming": {
             "kawpow": "kawpow",
@@ -81,9 +69,7 @@
             "etchash": "etchash",
             "octopus": "octopus",
             "firopow": "firopow",
-            "autolykos": "autolykos",
-            "verushash": "verushash",
-            "verthash": "verthash"
+            "autolykos": "autolykos"
         },
         "fee": {
             "kawpow": 1,
@@ -92,9 +78,7 @@
             "etchash": 1,
             "octopus": 2,
             "firopow": 1,
-            "autolykos": 2.5,
-            "verushash": 2,
-            "verthash": 1
+            "autolykos": 2.5
         }
     },
     "NVIDIA3": {
@@ -108,9 +92,7 @@
             "etchash": "",
             "octopus": "",
             "firopow": "",
-            "autolykos": "",
-            "verushash": "",
-            "verthash": ""
+            "autolykos": ""
         },
         "difficulty": {
             "kawpow": "",
@@ -119,9 +101,7 @@
             "etchash": "",
             "octopus": "",
             "firopow": "",
-            "autolykos": "",
-            "verushash": "",
-            "verthash": ""
+            "autolykos": ""
         },
         "naming": {
             "kawpow": "kawpow",
@@ -130,9 +110,7 @@
             "etchash": "etchash",
             "octopus": "octopus",
             "firopow": "firopow",
-            "autolykos": "autolykos",
-            "verushash": "verushash",
-            "verthash": "verthash"
+            "autolykos": "autolykos"
         },
         "fee": {
             "kawpow": 1,
@@ -141,9 +119,7 @@
             "etchash": 1,
             "octopus": 2,
             "firopow": 1,
-            "autolykos": 2.5,
-            "verushash": 2,
-            "verthash": 1
+            "autolykos": 2.5
         }
     },
     "name": "nanominer-nv"
