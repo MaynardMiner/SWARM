@@ -18,9 +18,9 @@
     "NVIDIA2": ".\\bin\\nbminer-2\\nbminer.exe",
     "NVIDIA3": ".\\bin\\nbminer-3\\nbminer.exe",
     "minername": "nbminer.exe",
-    "version": "39.7",
+    "version": "42.3",
     "optional": "No",
-    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v39.7/NBMiner_39.7_Win.zip"
+    "uri": "https://github.com/NebuTech/NBMiner/releases/download/v42.3/NBMiner_42.3_Win.zip"
   },
   "cc-sha3d": {
     "name": "cc-sha3d",
@@ -183,9 +183,9 @@
     "NVIDIA2": ".\\bin\\phoenix-2\\PhoenixMiner.exe",
     "NVIDIA3": ".\\bin\\phoenix-3\\PhoenixMiner.exe",
     "minername": "PhoenixMiner.exe",
-    "version": "5.4c",
+    "version": "6.2c",
     "optional": "No",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/phoenix-miner-windows.zip"
+    "uri": "https://phoenixminer.info/downloads/PhoenixMiner_6.2c_Windows.zip"
   },
   "tpruvot": {
     "name": "tpruvot",
@@ -315,9 +315,9 @@
     "NVIDIA2": ".\\bin\\nanominer-nv-2\\nanominer.exe",
     "NVIDIA3": ".\\bin\\nanominer-nv-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "3.4.2",
+    "version": "3.7.0",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.4.2/nanominer-windows-3.4.2-cuda11.zip"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.0/nanominer-windows-3.7.0.zip"
   },
   "cryptodredge": {
     "name": "cryptodredge",
