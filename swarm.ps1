@@ -712,7 +712,8 @@ $($_.InvocationInfo.PositionMessage)
     if ($IsWindows) { Global:Stop-StrayMiners }
 
     ## Randomx Hugepages Before starting miners
-    Global:Start-HugePage_Check
+    ## Not longer needed and may cause issues.
+    ## Global:Start-HugePage_Check
 
     ## Start New Miners
     Global:Start-NewMiners -Reason "Launch"
