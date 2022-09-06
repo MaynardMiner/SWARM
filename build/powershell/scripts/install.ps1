@@ -99,17 +99,14 @@ $Libs += [PSCustomObject]@{ link = "libstdc++.so.6"; path = "/usr/local/swarm/li
 $Libs += [PSCustomObject]@{ link = "libcudart.so"; path = "/usr/local/swarm/lib64/libcudart.so.11.6.55" }
 $Libs += [PSCustomObject]@{ link = "libcudart.so.11.6"; path = "/usr/local/swarm/lib64/libcudart.so.11.6.55" }
 $Libs += [PSCustomObject]@{ link = "libcudart.so.11.5"; path = "/usr/local/swarm/lib64/libcudart.so.11.5.117" }
-$Libs += [PSCustomObject]@{ link = "libcudart.so.11.4"; path = "/usr/local/swarm/lib64/libcudart.so.11.4.108" }
 
 $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.11.6.124" }
 $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.11.6"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.11.6.124" }
 $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.11.5"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.11.5.119" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.11.4"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.11.4.120" }
 
 $Libs += [PSCustomObject]@{ link = "libnvrtc.so"; path = "/usr/local/swarm/lib64/libnvrtc.so.11.6.124" }
 $Libs += [PSCustomObject]@{ link = "libnvrtc.so.11.6"; path = "/usr/local/swarm/lib64/libnvrtc.so.11.6.124" }
 $Libs += [PSCustomObject]@{ link = "libnvrtc.so.11.5"; path = "/usr/local/swarm/lib64/libnvrtc.so.11.5.119" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc.so.11.4"; path = "/usr/local/swarm/lib64/libnvrtc.so.11.4.120" }
 
 Set-Location "/usr/local/swarm/lib64/"
 
