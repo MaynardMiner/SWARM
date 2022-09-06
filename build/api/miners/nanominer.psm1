@@ -17,13 +17,13 @@ function Global:Get-StatsNanominer {
         Catch { Write-Host "Failed To parse API" -ForegroundColor Red; Break }
         if ($Data) {
             $Data = $Data.Algorithms.$global:MinerAlgo
-            $global:RA += $Data.Total.Hashrate
+            $global:RAW += [decimal]$Data.Total.Hashrate
             Global:Write-MinerData2;
             try { 
                 for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) {
                     $Hash = $($Data."GPU $global:i".Hashrate)
-                    $global:GPUHashrates.$(Global:Get-GPUs) = $Hash / 1000
-                    $global:GPUKHS += $Hash / 1000
+                    $global:GPUHashrates.$(Global:Get-GPUs) = [decimal]($Hash / 1000)
+                    $global:GPUKHS += [decimal]($Hash / 1000)
                 }
             }
             catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };
