@@ -85,7 +85,6 @@ $(vars).NVIDIATypes | Where-Object {$_ -eq "NVIDIA1"} | ForEach-Object {
                             "ethash" { $Naming = "ethstratum"; $AddArgs = " " }
                             "cuckaroom" { $Naming = "cuckaroo29m"; $AddArgs = " " }
                             "cuckaroo29-bfc" { $Naming = "bfc"; $AddArgs = " " }
-                            "cuckatoo31" { $Naming = "cuckatoo31"; $AddArgs = " " }
                             "equihash_150/5" { $Naming = "beam"; $AddArgs = " -pers auto " }
                             "equihash_144/5" { $Naming = "zhash"; $AddArgs = " -pers auto " }
                             "beamv2" { $Naming = "beamhash2"; $AddArgs = " " }

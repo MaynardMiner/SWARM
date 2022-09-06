@@ -69,27 +69,28 @@ $(vars).NVIDIATypes | ForEach-Object {
                 $SelName = $_.Name
                 $SelAlgo = $_.Algorithm
                 switch ($SelAlgo) {
-                    "equihash_96/5" { $AddArgs = "--par=96,5 --pers auto " }
+                    "equihash_96/5" { $AddArgs = "--par=96,5 --pers=auto " }
                     "equihash_144/5" {
                         switch ($SelName) {
-                            "nlpool" { $AddArgs = "--algo 144,5 --pers auto " }
-                            "zergpool" { $AddArgs = "--algo 144,5 --pers auto " }
-                            "mph" { $AddArgs = "--algo 144,5 --pers BgoldPoW " }
+                            "nlpool" { $AddArgs = "--par=96,5 --pers=auto " }
+                            "zergpool" { $AddArgs = "--par=96,5 --pers=auto " }
+                            "mph" { $AddArgs = "--par=96,5 --pers=BgoldPoW " }
                         }
                     }
-                    "equihash_210/9" { $AddArgs = "--par=210,9 --pers auto " }
-                    "equihash_200/9" { $AddArgs = "--par=200,9 --pers auto " }
+                    "equihash_210/9" { $AddArgs = "--par=210,9 --pers=auto " }
+                    "equihash_200/9" { $AddArgs = "--par=96,5200,9 --pers=auto " }
                     "equihash_192/7" {
                         switch ($SelName) {
-                        "nlpool" { $AddArgs = "--algo 192,7 --pers auto " }
-                        "zergpool" { $AddArgs = "--algo 192,7 --pers auto " }
-                        "mph" { $AddArgs = "--algo 192,7 --pers ZcashPoW " }
+                        "nlpool" { $AddArgs = "--par=192,7 --pers=auto " }
+                        "zergpool" { $AddArgs = "--par=192,7 --pers=auto " }
+                        "mph" { $AddArgs = "--par=192,7 --pers=ZcashPoW " }
                         }
                     }
-                    "equihash_125/4" { $AddArgs = "--par=125,4 --pers auto " }
-                    "equihash_150/5" { $AddArgs = "--par=150,5 --pers auto " }
-                    "beamv2" { $AddArgs = "--par=150,5,3 --pers auto " }
-                    "beamhashv3" { $AddArgs = "--pers auto " }
+                    "equihash_125/4" { $AddArgs = "--par=125,4 --pers=auto " }
+                    "equihash_150/5" { $AddArgs = "--par=150,5 --pers=auto " }
+                    "beamhashv3" { $AddArgs = "--par=beam3 --pers=auto " }
+                    "ethash" { $AddArgs = "--par=ethash " }
+                    "etchash" { $AddArgs = "--par=etchash " }
                 }
                 $Diff = ""
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { 
@@ -112,7 +113,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version    = "$($(vars).nvidia.miniz.version)"
                     DeviceCall = "miniz"
-                    Arguments  = "--telemetry 0.0.0.0:$Port --server $($_.Pool_Host) --port $($_.Port) $AddArgs--user $($_.$User) --pass $($_.$Pass)$($Diff) --logfile=`'$log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "--nvidia --telemetry 0.0.0.0:$Port --server=$($_.Pool_Host) --port=$($_.Port) $AddArgs--user=$($_.$User) --logfile=`'$log`' --pass=$($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price

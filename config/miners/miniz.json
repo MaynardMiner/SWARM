@@ -12,8 +12,9 @@
             "equihash_125/4": "",
             "equihash_150/5": "",
             "equihash_96/5": "",
-            "beamv2": "",
-            "beamhashv3": ""
+            "beamhashv3": "",
+            "kawpow": "",
+            "ethash": ""
         },
         "difficulty": {
             "equihash_144/5": "",
@@ -23,8 +24,9 @@
             "equihash_125/4": "",
             "equihash_150/5": "",
             "equihash_96/5": "",
-            "beamv2": "",
-            "beamhashv3": ""
+            "beamhashv3": "",
+            "kawpow": "",
+            "ethash": ""
         },
         "naming": {
             "equihash_144/5": "equihash_144/5",
@@ -34,8 +36,9 @@
             "equihash_125/4": "equihash_125/4",
             "equihash_150/5": "equihash_150/5",
             "equihash_96/5": "equihash_96/5",
-            "beamv2": "beamv2",
-            "beamhashv3": "beamhashv3"
+            "beamhashv3": "beamhashv3",
+            "kawpow": "kawpow",
+            "ethash": "ethash"
         },
         "fee": {
             "equihash_144/5": 2,
@@ -45,8 +48,9 @@
             "equihash_125/4": 2,
             "equihash_150/5": 2,
             "equihash_96/5": 2,
-            "beamv2":2,
-            "beamhashv3": 2
+            "beamhashv3": 2,
+            "kawpow": 2,
+            "ethash": 2
         }
     },
     "NVIDIA2": {
@@ -61,8 +65,9 @@
             "equihash_125/4": "",
             "equihash_150/5": "",
             "equihash_96/5": "",
-            "beamv2": "",
-            "beamhashv3": ""
+            "beamhashv3": "",
+            "kawpow": "",
+            "ethash": ""
         },
         "difficulty": {
             "equihash_144/5": "",
@@ -72,8 +77,9 @@
             "equihash_125/4": "",
             "equihash_150/5": "",
             "equihash_96/5": "",
-            "beamv2": "",
-            "beamhashv3": ""
+            "beamhashv3": "",
+            "kawpow": "",
+            "ethash": ""
         },
         "naming": {
             "equihash_144/5": "equihash_144/5",
@@ -83,8 +89,9 @@
             "equihash_125/4": "equihash_125/4",
             "equihash_150/5": "equihash_150/5",
             "equihash_96/5": "equihash_96/5",
-            "beamv2": "beamv2",
-            "beamhashv3": "beamhashv3"
+            "beamhashv3": "beamhashv3",
+            "kawpow": "kawpow",
+            "ethash": "ethash"
         },
         "fee": {
             "equihash_144/5": 2,
@@ -94,8 +101,9 @@
             "equihash_125/4": 2,
             "equihash_150/5": 2,
             "equihash_96/5": 2,
-            "beamv2":2,
-            "beamhashv3": 2
+            "beamhashv3": 2,
+            "kawpow": 2,
+            "ethash": 2
         }
     },
     "NVIDIA3": {
@@ -110,8 +118,9 @@
             "equihash_125/4": "",
             "equihash_150/5": "",
             "equihash_96/5": "",
-            "beamv2": "",
-            "beamhashv3": ""
+            "beamhashv3": "",
+            "kawpow": "",
+            "ethash": ""
         },
         "difficulty": {
             "equihash_144/5": "",
@@ -121,8 +130,9 @@
             "equihash_125/4": "",
             "equihash_150/5": "",
             "equihash_96/5": "",
-            "beamv2": "",
-            "beamhashv3": ""
+            "beamhashv3": "",
+            "kawpow": "",
+            "ethash": ""
         },
         "naming": {
             "equihash_144/5": "equihash_144/5",
@@ -132,8 +142,9 @@
             "equihash_125/4": "equihash_125/4",
             "equihash_150/5": "equihash_150/5",
             "equihash_96/5": "equihash_96/5",
-            "beamv2": "beamv2",
-            "beamhashv3": "beamhashv3"
+            "beamhashv3": "beamhashv3",
+            "kawpow": "kawpow",
+            "ethash": "ethash"
         },
         "fee": {
             "equihash_144/5": 2,
@@ -143,8 +154,9 @@
             "equihash_125/4": 2,
             "equihash_150/5": 2,
             "equihash_96/5": 2,
-            "beamv2":2,
-            "beamhashv3": 2
+            "beamhashv3": 2,
+            "kawpow": 2,
+            "ethash": 2
         }
     }
 }

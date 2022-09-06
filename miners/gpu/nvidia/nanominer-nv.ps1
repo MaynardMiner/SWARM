@@ -13,7 +13,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     if ($(vars).nvidia.$CName.minername) { $MinerName = "$($(vars).nvidia.$CName.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "6500$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "909$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
@@ -104,7 +104,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         port      = $Port;
                         devices   = $ArgDevices;
                     }
-                    Arguments         = "`[$($($MinerConfig.$ConfigType.naming.$($_.Algorithm)))`] wallet=$($_.$User) rigPassword=$($_.$Pass)$($Diff) pool1=$($_.Pool_Host):$($_.Port) webport=$Port logPath=$Log"
+                    Arguments         = "`[$($($MinerConfig.$ConfigType.naming.$($_.Algorithm)))`] wallet=$($_.$User) pool1=$($_.Pool_Host):$($_.Port) webport=$Port logPath=$Log rigPassword=$($_.$Pass)$($Diff)"
                     HashRates         = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote             = $_.Price
