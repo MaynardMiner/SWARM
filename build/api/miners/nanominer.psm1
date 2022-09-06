@@ -22,7 +22,7 @@ function Global:Get-StatsNanominer {
             try { 
                 for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) {
                     $Hash = $($Data."GPU $global:i".Hashrate)
-                    $global:GPUHashrates.$(Global:Get-GPUs) = [decimal]($Hash / 1000)
+                    $global:GPUHashrates.$($global:Devices[$global:i]) = [decimal]($Hash / 1000)
                     $global:GPUKHS += [decimal]($Hash / 1000)
                 }
             }
