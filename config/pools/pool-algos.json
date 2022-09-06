@@ -17,6 +17,15 @@
       "comma seperated"
     ]
   },
+  "anime": {
+    "alt_names": [
+      "anime"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "argon2d250": {
     "alt_names": [
       "argon2d250",
@@ -55,6 +64,15 @@
       "comma seperated"
     ]
   },
+  "autolykos2": {
+    "alt_names": [
+      "autolykos2"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "balloon": {
     "alt_names": [
       "balloon"
@@ -76,6 +94,15 @@
   "blake2b": {
     "alt_names": [
       "blake2b"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "blake3": {
+    "alt_names": [
+      "blake3"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -435,6 +462,15 @@
       "comma seperated"
     ]
   },
+  "curvehash": {
+    "alt_names": [
+      "curvehash"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "equihash_144/5": {
     "alt_names": [
       "equihash_144/5",
@@ -508,9 +544,27 @@
       "comma seperated"
     ]
   },
+  "firopow": {
+    "alt_names": [
+      "firopow"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "geek": {
     "alt_names": [
       "geek"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "ghostrider": {
+    "alt_names": [
+      "ghostrider"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -531,6 +585,15 @@
     "alt_names": [
       "handshake",
       "hns"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "heavyhash": {
+    "alt_names": [
+      "heavyhash"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -753,6 +816,15 @@
   "mtp-tcr": {
     "alt_names": [
       "mtp-tcr"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "multi": {
+    "alt_names": [
+      "multi"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -986,6 +1058,15 @@
   "sonoa": {
     "alt_names": [
       "sonoa"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "tensority": {
+    "alt_names": [
+      "tensority"
     ],
     "exclusions": [
       "add pool or miner here",

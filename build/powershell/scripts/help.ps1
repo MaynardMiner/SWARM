@@ -87,7 +87,7 @@ Please choose an advanced setting you wish to modify:
 [Strategy]
 1 My -Wallet address was not a BTC address. I want to specify its symbol (-PasswordCurrency)
 2 I want to add altcoin wallets to use if available on pool (-AltWallet & -AltPassword)
-3 I wish to modify the time SWARM takes to benchmark an algorithm (-Benchmark)
+3 [DEPRECIATED] I wish to modify the time SWARM takes to benchmark an algorithm (-Benchmark)
 4 I wish SWARM to not mine when Profit/Day is negatve (-Conserve)
 5 I don't want SWARM to mine all available algorithms. I want to mine a specific amount (-Algorithm)
 6 I want to mine a particular coin (-Coin)
@@ -95,7 +95,7 @@ Please choose an advanced setting you wish to modify:
 [Switching]
 7 I want SWARM to switch by specific coins, not algorithms if possible. (-Auto_Coin)
 8 I want to turn off/on Auto_Algo switching (-Auto_Algo)
-9 I wish to change the interval period in which SWARM queries pools for stats (-Interval)
+9 [DEPRECIATED] I wish to change the interval period in which SWARM queries pools for stats (-Interval)
 10 I wish to activate SWARM_MODE, so that all my rigs switch at the same time (-SWARM_MODE)
 11 I want to set a minimum runtime before SWARM records hashrates. (-StatsInterval)
 12 I wish to increase the minimum threshold before SWARM decides to switch (-Switch_Threshold)

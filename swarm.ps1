@@ -101,11 +101,11 @@ if ($IsWindows) {
 ## may be using a version that will.
 if ($PSVersionTable.PSVersion -ne "7.2.6") {
     Write-Host "WARNING: Powershell Core Version is $($PSVersionTable.PSVersion)" -ForegroundColor Yellow
-    Write-Host "Currently supported version for SWARM is 7.1.0" -ForegroundColor Yellow
+    Write-Host "Currently supported version for SWARM is 7.2.6" -ForegroundColor Yellow
     Write-Host "SWARM will continue anyways- It may cause issues." -ForegroundColor Yellow
     Write-Host ""
     Write-Host "Link for Powershell:" -ForegroundColor Yellow
-    Write-Host "https://github.com/PowerShell/PowerShell/releases/tag/v7.1.0" -ForegroundColor Yellow
+    Write-Host "https://github.com/PowerShell/PowerShell/releases/tag/v7.2.6" -ForegroundColor Yellow
     Write-Host ""
     Write-Host "Windows: Microsoft Visual C++ Redistributable for Visual Studio (2012) (2013) (2015,2017 and 2019)" -ForegroundColor Yellow
     Write-Host "Link For download:" -ForegroundColor Yellow
@@ -426,12 +426,12 @@ $($_.InvocationInfo.PositionMessage)
     ##  These are all global values- It can be used with user-created modules.
 
 
-    ## SWARM runs its loop every 5 minutes (-Interval). Miners will run for at least your interval time- If you took
+    ## SWARM runs its loop every 5 minutes. Miners will run for at least your time- If you took
     ## 3 minutes to calculate your data, and miner ran for only two minutes: SWARM will not switch off that miner and
     ## wait until at least 5 minutes runtime has happened.
     if (
         $(vars).switch -ne $true -and 
-        [math]::Round(((Get-Date).ToUniversalTime() - $(vars).Check_Interval).TotalSeconds) -ge $(($(arg).Interval) * 60)
+        [math]::Round(((Get-Date).ToUniversalTime() - $(vars).Check_Interval).TotalSeconds) -ge $(300)
     ) {
         $(vars).switch = $true
         $(vars).Check_Interval = (Get-Date).ToUniversalTime()
@@ -712,7 +712,8 @@ $($_.InvocationInfo.PositionMessage)
     if ($IsWindows) { Global:Stop-StrayMiners }
 
     ## Randomx Hugepages Before starting miners
-    Global:Start-HugePage_Check
+    ## Not longer needed and may cause issues.
+    ## Global:Start-HugePage_Check
 
     ## Start New Miners
     Global:Start-NewMiners -Reason "Launch"

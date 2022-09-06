@@ -4,35 +4,40 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "cuckaroo29": "",
-            "cuckaroo29d": "",
             "kawpow": "",
             "ubqhash": "",
+            "ethash": "",
             "etchash": "",
-            "octopus": ""
+            "octopus": "",
+            "firopow": "",
+            "autolykos": ""
         },
         "difficulty": {
-            "cuckaroo29": "",
-            "cuckaroo29d": "",
             "kawpow": "",
+            "ubqhash": "",
+            "ethash": "",
             "etchash": "",
-            "octopus": ""
+            "octopus": "",
+            "firopow": "",
+            "autolykos": ""
         },
         "naming": {
-            "cuckaroo29": "cuckaroo29",
-            "cuckaroo29d": "cuckaroo29d",
             "kawpow": "kawpow",
             "ubqhash": "ubqhash",
+            "ethash": "ethash",
             "etchash": "etchash",
-            "octopus": "octopus"
+            "octopus": "octopus",
+            "firopow": "firopow",
+            "autolykos": "autolykos"
         },
         "fee": {
-            "cuckaroo29": 2,
-            "cuckaroo29d": 2,
             "kawpow": 1,
             "ubqhash": 1,
+            "ethash": 1,
             "etchash": 1,
-            "octopus": 1
+            "octopus": 2,
+            "firopow": 1,
+            "autolykos": 2.5
         }
     },
     "NVIDIA2": {
@@ -40,35 +45,40 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "cuckaroo29": "",
-            "cuckaroo29d": "",
             "kawpow": "",
             "ubqhash": "",
+            "ethash": "",
             "etchash": "",
-            "octopus": ""
+            "octopus": "",
+            "firopow": "",
+            "autolykos": ""
         },
         "difficulty": {
-            "cuckaroo29": "",
-            "cuckaroo29d": "",
             "kawpow": "",
+            "ubqhash": "",
+            "ethash": "",
             "etchash": "",
-            "octopus": ""
+            "octopus": "",
+            "firopow": "",
+            "autolykos": ""
         },
         "naming": {
-            "cuckaroo29": "cuckaroo29",
-            "cuckaroo29d": "cuckaroo29d",
             "kawpow": "kawpow",
             "ubqhash": "ubqhash",
+            "ethash": "ethash",
             "etchash": "etchash",
-            "octopus": "octopus"
+            "octopus": "octopus",
+            "firopow": "firopow",
+            "autolykos": "autolykos"
         },
         "fee": {
-            "cuckaroo29": 2,
-            "cuckaroo29d": 2,
             "kawpow": 1,
             "ubqhash": 1,
+            "ethash": 1,
             "etchash": 1,
-            "octopus": 1
+            "octopus": 2,
+            "firopow": 1,
+            "autolykos": 2.5
         }
     },
     "NVIDIA3": {
@@ -76,35 +86,40 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "cuckaroo29": "",
-            "cuckaroo29d": "",
             "kawpow": "",
             "ubqhash": "",
+            "ethash": "",
             "etchash": "",
-            "octopus": ""
+            "octopus": "",
+            "firopow": "",
+            "autolykos": ""
         },
         "difficulty": {
-            "cuckaroo29": "",
-            "cuckaroo29d": "",
             "kawpow": "",
+            "ubqhash": "",
+            "ethash": "",
             "etchash": "",
-            "octopus": ""
+            "octopus": "",
+            "firopow": "",
+            "autolykos": ""
         },
         "naming": {
-            "cuckaroo29": "cuckaroo29",
-            "cuckaroo29d": "cuckaroo29d",
             "kawpow": "kawpow",
             "ubqhash": "ubqhash",
+            "ethash": "ethash",
             "etchash": "etchash",
-            "octopus": "octopus"
+            "octopus": "octopus",
+            "firopow": "firopow",
+            "autolykos": "autolykos"
         },
         "fee": {
-            "cuckaroo29": 2,
-            "cuckaroo29d": 2,
             "kawpow": 1,
             "ubqhash": 1,
+            "ethash": 1,
             "etchash": 1,
-            "octopus": 1
+            "octopus": 2,
+            "firopow": 1,
+            "autolykos": 2.5
         }
     },
     "name": "nanominer-nv"

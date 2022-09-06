@@ -122,7 +122,6 @@ function Global:set-minerconfig($ConfigMiner, $Logs) {
             $ConfigAlgo = $ConfigMiner.Host.Algorithm -replace "cryptonight-r","cryptonightr"
             $ConfigAlgo = $ConfigMiner.Host.Algorithm -replace "cuckaroo29d","cuckarood29"
             $ConfigFile += "watchdog=false"
-            $ConfigFile += "logPath=$Logs"
             $ConfigFile += "webPort=$($ConfigMiner.Host.Port)"
             $ConfigFile += ""
             $ConfigFile += "`[$ConfigAlgo`]"

@@ -383,17 +383,6 @@ Argument          Options           Explanation
                                     updates, and whether or not it is safe to transfer files. This does not
 				    work in Windows- Windows users run get update command.
 
--Benchmark     [0-1000]             Expressed in minues. Default 3. Sets specific interval time for when SWARM 
-			            is in benchmark mode. Can be used for faster benchmarking. When SWARM has
-				    a set hashrate- Miner will defer to time expressed in -Interval parameter.
-                                    This means you can benchmark algorithms faster that you would during normal
-                                    run (benchmarking stats)
-
--Interval         [1-1000]          Expression is in minutes. This parameter defines the minimum time
-                                    required to wait before executing a switch. However, if SWARM detected
-                                    an error on gathering data on what you are currently mining- It will
-                                    ignore this parameter and switch anyways (in case pool is having issues).
-
 -StatsInterval   [1-10000]          Expression is in minues. This is time required for miner apps to run
                                     before miner write/re-writes benchmarking. This is not be confused 
                                     with -Interval argument, which is used for when miner begins swithing 
