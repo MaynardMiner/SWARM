@@ -90,7 +90,7 @@ if (-not (test-path "/usr/local/swarm/lib64")) {
     if(!$check) {
         $Extract = $true;
     } else {
-        $Version = [Int32]::TryParse([IO.File]::ReadAllText("/usr/local/swarm/lib64/version.txt"));
+        $Version = [Int32]::Parse([IO.File]::ReadAllText("/usr/local/swarm/lib64/version.txt"));
         if($Version -lt $Lib_Version) {
             $Extract = $true;
         }
