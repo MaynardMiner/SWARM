@@ -123,8 +123,8 @@ $Libs += [PSCustomObject]@{ link = "libnvrtc.so"; path = "/usr/local/swarm/lib64
 $Libs += [PSCustomObject]@{ link = "libnvrtc.so.11.6"; path = "/usr/local/swarm/lib64/libnvrtc.so.11.6.124" }
 $Libs += [PSCustomObject]@{ link = "libnvrtc.so.11.5"; path = "/usr/local/swarm/lib64/libnvrtc.so.11.5.119" }
 
+### ALWAYS Set lib links just in case.
 Set-Location "/usr/local/swarm/lib64/"
-
 foreach ($lib in $Libs) {
     $link = $lib.link; 
     $path = $lib.path; 
