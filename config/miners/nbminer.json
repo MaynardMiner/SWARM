@@ -7,8 +7,6 @@
         "commands": {
             "ethash": "",
             "etchash": "",
-            "cuckatoo31": "",
-            "cuckatoo32": "",
             "kawpow": "",
             "octopus": "",
             "beamhashv3": ""
@@ -16,8 +14,6 @@
         "difficulty": {
             "ethash": "",
             "etchash": "",
-            "cuckatoo31": "",
-            "cuckatoo32": "",
             "kawpow": "",
             "octopus": "",
             "beamhashv3": ""
@@ -25,8 +21,6 @@
         "naming": {
             "ethash": "ethash",
             "etchash": "etchash",
-            "cuckatoo31": "cuckatoo31",
-            "cuckatoo32": "cuckatoo32",
             "kawpow": "kawpow",
             "octopus": "octopus",
             "beamhashv3": "beamv3"
@@ -34,8 +28,6 @@
         "fee": {
             "ethash": 1,
             "etchash": 1,
-            "cuckatoo31": 2,
-            "cuckatoo32": 2,
             "kawpow": 2,
             "octopus": 3,
             "beamhashv3": 2
@@ -48,8 +40,6 @@
         "commands": {
             "ethash": "",
             "etchash": "",
-            "cuckatoo31": "",
-            "cuckatoo32": "",
             "kawpow": "",
             "octopus": "",
             "beamhashv3": ""
@@ -57,8 +47,6 @@
         "difficulty": {
             "ethash": "",
             "etchash": "",
-            "cuckatoo31": "",
-            "cuckatoo32": "",
             "kawpow": "",
             "octopus": "",
             "beamhashv3": ""
@@ -66,8 +54,6 @@
         "naming": {
             "ethash": "ethash",
             "etchash": "etchash",
-            "cuckatoo31": "cuckatoo31",
-            "cuckatoo32": "cuckatoo32",
             "kawpow": "kawpow",
             "octopus": "octopus",
             "beamhashv3": "beamv3"
@@ -75,8 +61,6 @@
         "fee": {
             "ethash": 1,
             "etchash": 1,
-            "cuckatoo31": 2,
-            "cuckatoo32": 2,
             "kawpow": 2,
             "octopus": 3,
             "beamhashv3": 2
@@ -89,8 +73,6 @@
         "commands": {
             "ethash": "",
             "etchash": "",
-            "cuckatoo31": "",
-            "cuckatoo32": "",
             "kawpow": "",
             "octopus": "",
             "beamhashv3": ""
@@ -98,8 +80,6 @@
         "difficulty": {
             "ethash": "",
             "etchash": "",
-            "cuckatoo31": "",
-            "cuckatoo32": "",
             "kawpow": "",
             "octopus": "",
             "beamhashv3": ""
@@ -107,8 +87,6 @@
         "naming": {
             "ethash": "ethash",
             "etchash": "etchash",
-            "cuckatoo31": "cuckatoo31",
-            "cuckatoo32": "cuckatoo32",
             "kawpow": "kawpow",
             "octopus": "octopus",
             "beamhashv3": "beamv3"
@@ -116,8 +94,6 @@
         "fee": {
             "ethash": 1,
             "etchash": 1,
-            "cuckatoo31": 2,
-            "cuckatoo32": 2,
             "kawpow": 2,
             "octopus": 3,
             "beamhashv3": 2
