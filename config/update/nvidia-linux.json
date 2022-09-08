@@ -350,7 +350,7 @@
     "minername": "nanominer",
     "version": "3.7.0",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.0/nanominer-linux-3.7.0.tar.gz"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.0/nanominer-linux-3.7.0-cuda11.tar.gz"
   },
   "cryptodredge": {
     "name": "cryptodredge",
