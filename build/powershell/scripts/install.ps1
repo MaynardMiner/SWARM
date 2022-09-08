@@ -11,6 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
+[Int32]$Lib_Version = 1;
 $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 $dir = $dir -replace "/var/tmp", "/root"
 Set-Location $dir
@@ -75,6 +76,7 @@ if (-not (test-path "/usr/local/swarm/lib64")) {
     ## I believe this is causing an issue with miners accessing libs contained in SWARM.
     ## Testing has shown if libs are placed anywhere else, they work fine.
     ## Therefor I have decided to place libs in a more proper location: /usr/local/swarm/lib64 
+    $Extract = $false;
     log "library folder not found (/usr/local/swarm/lib64). Exracting lib64.tar.gz" -ForegroundColor Yellow;
     $check = [IO.Directory]::Exists("/usr/local/swarm")
     if(!$check){
@@ -84,8 +86,20 @@ if (-not (test-path "/usr/local/swarm/lib64")) {
     if(!$check){
         Start-Process "mkdir" -ArgumentList "/usr/local/swarm/lib64"
     }
-    $Proc = Start-Process "tar" -ArgumentList "-xzvf build/lib64.tar.gz -C /usr/local/swarm" -PassThru; 
-    $Proc | Wait-Process;
+    $check = [IO.File]::Exists("/usr/local/swarm/lib64/version.txt")
+    if(!$check) {
+        $Extract = $true;
+    } else {
+        $Version = [Int32]::Parse([IO.File]::ReadAllText("/usr/local/swarm/lib64/version.txt"));
+        if($Version -lt $Lib_Version) {
+            $Extract = $true;
+        }
+    }
+    if($Extract) {
+        $Proc = Start-Process "tar" -ArgumentList "-xzvf build/lib64.tar.gz -C /usr/local/swarm" -PassThru; 
+        $Proc | Wait-Process;
+        [IO.File]::WriteAllText("/usr/local/swarm/lib64/version.txt",$Lib_Version);
+    }
 }    
 
 $Libs = @()
@@ -96,6 +110,7 @@ $Libs += [PSCustomObject]@{ link = "libmicrohttpd.so.10"; path = "/usr/local/swa
 $Libs += [PSCustomObject]@{ link = "libhwloc.so.5"; path = "/usr/local/swarm/lib64/libhwloc.so.5.6.8" }
 $Libs += [PSCustomObject]@{ link = "libstdc++.so.6"; path = "/usr/local/swarm/lib64/libstdc++.so.6.0.25" }
 
+$Libs += [PSCustomObject]@{ link = "libcudart.so.11.0"; path = "/usr/local/swarm/lib64/libcudart.so.11.6.55" }
 $Libs += [PSCustomObject]@{ link = "libcudart.so"; path = "/usr/local/swarm/lib64/libcudart.so.11.6.55" }
 $Libs += [PSCustomObject]@{ link = "libcudart.so.11.6"; path = "/usr/local/swarm/lib64/libcudart.so.11.6.55" }
 $Libs += [PSCustomObject]@{ link = "libcudart.so.11.5"; path = "/usr/local/swarm/lib64/libcudart.so.11.5.117" }
@@ -108,8 +123,8 @@ $Libs += [PSCustomObject]@{ link = "libnvrtc.so"; path = "/usr/local/swarm/lib64
 $Libs += [PSCustomObject]@{ link = "libnvrtc.so.11.6"; path = "/usr/local/swarm/lib64/libnvrtc.so.11.6.124" }
 $Libs += [PSCustomObject]@{ link = "libnvrtc.so.11.5"; path = "/usr/local/swarm/lib64/libnvrtc.so.11.5.119" }
 
+### ALWAYS Set lib links just in case.
 Set-Location "/usr/local/swarm/lib64/"
-
 foreach ($lib in $Libs) {
     $link = $lib.link; 
     $path = $lib.path; 
