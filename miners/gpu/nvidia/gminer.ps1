@@ -137,7 +137,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version           = "$($(vars).nvidia.gminer.version)"
                     DeviceCall        = "gminer"
-                    Arguments         = "--api $Port --server $($_.Pool_Host) --nvml 0 --port $($_.Port) $AddArgs--user $GetUser --logfile `'$Log`' $UserPass$($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments         = "--api $Port --server $($_.Pool_Host) --port $($_.Port) $AddArgs--user $GetUser --logfile `'$Log`' $UserPass$($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates         = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote             = $_.Price
