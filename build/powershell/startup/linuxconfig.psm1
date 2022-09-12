@@ -121,7 +121,7 @@ function Global:Get-Data {
     }
 
     Set-Location "/"
-    Set-Location $($(vars).dir)     
+    Set-Location $Env:SWARM_DIR
 }
 
 function Global:Get-GPUCount {
