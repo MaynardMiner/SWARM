@@ -93,8 +93,11 @@ if (Test-Path ".\build\apps\wolfamdctrl\wolfamdctrl") {
         }
     }
     if($Extract) {
-        if([System.IO.Directory]::GetFiles("/usr/local/swarm/lib64").Count -gt 0) {
-            Start-Process "rm -rf /usr/local/swarm/lib64/*"
+        $files = [System.IO.Directory]::GetFiles("/usr/local/swarm/lib64")
+        if($files.Count -gt 0) {
+            foreach($file in $files) {
+                [System.IO.File]::Delete($file)
+            }
         }
         log "library folder not found (/usr/local/swarm/lib64). Exracting export.tar.gz" -ForegroundColor Yellow;
         $Proc = Start-Process "tar" -ArgumentList "-xzvf build/lib64.tar.gz -C /usr/local/swarm" -PassThru; 
