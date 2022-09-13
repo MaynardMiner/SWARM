@@ -4,36 +4,28 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "yescryptr8g": "",
-            "yespoweritc": "",
-            "power2b": "",
-            "yespoweriots": "",
-            "yespoweric": "",
-            "sha256csm": ""
+            "yespowermgpc": "",
+            "ghostrider": "",
+            "minotaurx": "",
+            "mike": ""
         },
         "difficulty": {
-            "yescryptr8g": "",
-            "yespoweritc": "",
-            "power2b": "",
-            "yespoweriots": "",
-            "yespoweric": "",
-            "sha256csm": ""
+            "yespowermgpc": "",
+            "ghostrider": "",
+            "minotaurx": "",
+            "mike": ""
         },
         "naming": {
-            "yescryptr8g": "yescryptr8g",
-            "yespoweritc": "yespoweritc",
-            "power2b": "power2b",
-            "yespoweriots": "yespoweriots",
-            "yespoweric": "yespoweric",
-            "sha256csm": "sha256csm"
+            "yespowermgpc": "yespowermgpc",
+            "ghostrider": "gr",
+            "minotaurx": "minotaurx",
+            "mike": "mike"
         },
         "fee": {
-            "yescryptr8g": 0,
-            "yespoweritc": 0,
-            "power2b": 0,
-            "yespoweriots": 0,
-            "yespoweric": 0,
-            "sha256csm": 0
+            "yespowermgpc": 0,
+            "ghostrider": 0,
+            "minotaurx": 0,
+            "mike": 0
         }
     },
     "name": "rplant"

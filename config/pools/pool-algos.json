@@ -573,7 +573,8 @@
   },
   "ghostrider": {
     "alt_names": [
-      "ghostrider"
+      "ghostrider",
+      "gr"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -804,9 +805,27 @@
       "comma seperated"
     ]
   },
+  "mike": {
+    "alt_names": [
+      "mike"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "minotaur": {
     "alt_names": [
       "minotaur"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "minotaurx": {
+    "alt_names": [
+      "minotaurx"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -1397,6 +1416,15 @@
   "yespowerurx": {
     "alt_names": [
       "yespowerurx"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "yespowermgpc": {
+    "alt_names": [
+      "yespowermgpc"
     ],
     "exclusions": [
       "add pool or miner here",
