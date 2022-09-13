@@ -70,7 +70,7 @@
     "minername": "cpuminer",
     "version": "1.1.0",
     "optional": "No",
-    "uri": "https://github.com/Kudaraidee/cpuminer-opt-kudaraidee/releases/download/v1.1.0/cpuminer-opt-kudaraidee-linux.tar.gz"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/kudaraidee-linux.tar.gz"
   },
   "cpupower": {
     "name": "cpupower",
