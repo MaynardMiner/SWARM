@@ -26,6 +26,15 @@
       "comma seperated"
     ]
   },
+  "argon2d16000": {
+    "alt_names": [
+      "argon2d16000"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "argon2d250": {
     "alt_names": [
       "argon2d250",
@@ -1370,6 +1379,24 @@
   "yespowerr8": {
     "alt_names": [
       "yespowerr8"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "yespowersugar": {
+    "alt_names": [
+      "yespowersugar"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "yespowerurx": {
+    "alt_names": [
+      "yespowerurx"
     ],
     "exclusions": [
       "add pool or miner here",

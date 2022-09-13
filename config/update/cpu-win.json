@@ -63,6 +63,15 @@
     "optional": "No",
     "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.20.2/cpuminer-opt-3.20.2-windows.zip"
   },
+  "kudaraidee": {
+    "name": "kudaraidee",
+    "type": "cpu",
+    "CPU": ".\\bin\\kudaraidee-1\\cpuminer-avx2.exe",
+    "minername": "cpuminer-avx2.exe",
+    "version": "3.20.2",
+    "optional": "No",
+    "uri": "https://github.com/Kudaraidee/cpuminer-opt-kudaraidee/releases/download/v1.1.0/cpuminer-opt-kudaraidee-win.zip"
+  },
   "cpupower": {
     "name": "cpupower",
     "type": "cpu",
