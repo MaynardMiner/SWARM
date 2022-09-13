@@ -27,8 +27,6 @@ $Proc = Start-Process ".\build\bash\libc.sh" -PassThru
 $Proc | Wait-Process
 $Proc = Start-Process ".\build\bash\libv.sh" -PassThru
 $Proc | Wait-Process
-$Proc = Start-Process ".\build\bash\libcurl3.sh" -PassThru
-$Proc | Wait-Process
 
 $dir | set-content ".\build\bash\dir.sh"
 
@@ -71,7 +69,6 @@ if (Test-Path ".\build\apps\wolfamdctrl\wolfamdctrl") {
     Set-Location $dir     
 }
 
-if (-not (test-path "/usr/local/swarm/lib64")) {
     ## HiveOS is messing with ownership of SWARM folder through custom miners.
     ## I believe this is causing an issue with miners accessing libs contained in SWARM.
     ## Testing has shown if libs are placed anywhere else, they work fine.
@@ -96,41 +93,46 @@ if (-not (test-path "/usr/local/swarm/lib64")) {
         }
     }
     if($Extract) {
+        if([System.IO.Directory]::GetFiles("/usr/local/swarm/lib64").Count -gt 0) {
+            Start-Process "rm -rf /usr/local/swarm/lib64/*"
+        }
+        log "library folder not found (/usr/local/swarm/lib64). Exracting export.tar.gz" -ForegroundColor Yellow;
+        $Proc = Start-Process "tar" -ArgumentList "-xzvf build/lib64.tar.gz -C /usr/local/swarm" -PassThru; 
+        $Proc | Wait-Process;
+        [IO.File]::WriteAllText("/usr/local/swarm/lib64/version.txt",$Lib_Version);
+        $Libs = @()
+        $Libs += [PSCustomObject]@{ link = "libcurl.so.4"; path = "/usr/local/swarm/lib64/libcurl.so.4.5.0" }
+        $Libs += [PSCustomObject]@{ link = "libcurl.so.3"; path = "/usr/local/swarm/lib64/libcurl.so.4.4.0" }
+
+        $Libs += [PSCustomObject]@{ link = "libmicrohttpd.so.10"; path = "/usr/local/swarm/lib64/libmicrohttpd.so.10.34.0" }
+        $Libs += [PSCustomObject]@{ link = "libhwloc.so.5"; path = "/usr/local/swarm/lib64/libhwloc.so.5.6.8" }
+        $Libs += [PSCustomObject]@{ link = "libstdc++.so.6"; path = "/usr/local/swarm/lib64/libstdc++.so.6.0.25" }
+        
+        $Libs += [PSCustomObject]@{ link = "libcudart.so.11.0"; path = "/usr/local/swarm/lib64/libcudart.so.11.6.55" }
+        $Libs += [PSCustomObject]@{ link = "libcudart.so"; path = "/usr/local/swarm/lib64/libcudart.so.11.6.55" }
+        $Libs += [PSCustomObject]@{ link = "libcudart.so.11.6"; path = "/usr/local/swarm/lib64/libcudart.so.11.6.55" }
+        $Libs += [PSCustomObject]@{ link = "libcudart.so.11.5"; path = "/usr/local/swarm/lib64/libcudart.so.11.5.117" }
+        
+        $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.11.6.124" }
+        $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.11.6"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.11.6.124" }
+        $Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.11.5"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.11.5.119" }
+        
+        $Libs += [PSCustomObject]@{ link = "libnvrtc.so"; path = "/usr/local/swarm/lib64/libnvrtc.so.11.6.124" }
+        $Libs += [PSCustomObject]@{ link = "libnvrtc.so.11.6"; path = "/usr/local/swarm/lib64/libnvrtc.so.11.6.124" }
+        $Libs += [PSCustomObject]@{ link = "libnvrtc.so.11.5"; path = "/usr/local/swarm/lib64/libnvrtc.so.11.5.119" }
+            
+        Set-Location "/usr/local/swarm/lib64/"
+    
+        foreach ($lib in $Libs) {
+            $link = $lib.link; 
+            $path = $lib.path; 
+            $Proc = Start-Process "ln" -ArgumentList "-sf $path $link" -PassThru; 
+            $Proc | Wait-Process
+        }    
         $Proc = Start-Process "tar" -ArgumentList "-xzvf build/lib64.tar.gz -C /usr/local/swarm" -PassThru; 
         $Proc | Wait-Process;
         [IO.File]::WriteAllText("/usr/local/swarm/lib64/version.txt",$Lib_Version);
     }
-}    
-
-$Libs = @()
-$Libs += [PSCustomObject]@{ link = "libcurl.so.4"; path = "/usr/local/swarm/lib64/libcurl.so.4.4.0" }
-$Libs += [PSCustomObject]@{ link = "libcurl.so.3"; path = "/usr/local/swarm/lib64/libcurl.so.4" }
-
-$Libs += [PSCustomObject]@{ link = "libmicrohttpd.so.10"; path = "/usr/local/swarm/lib64/libmicrohttpd.so.10.34.0" }
-$Libs += [PSCustomObject]@{ link = "libhwloc.so.5"; path = "/usr/local/swarm/lib64/libhwloc.so.5.6.8" }
-$Libs += [PSCustomObject]@{ link = "libstdc++.so.6"; path = "/usr/local/swarm/lib64/libstdc++.so.6.0.25" }
-
-$Libs += [PSCustomObject]@{ link = "libcudart.so.11.0"; path = "/usr/local/swarm/lib64/libcudart.so.11.6.55" }
-$Libs += [PSCustomObject]@{ link = "libcudart.so"; path = "/usr/local/swarm/lib64/libcudart.so.11.6.55" }
-$Libs += [PSCustomObject]@{ link = "libcudart.so.11.6"; path = "/usr/local/swarm/lib64/libcudart.so.11.6.55" }
-$Libs += [PSCustomObject]@{ link = "libcudart.so.11.5"; path = "/usr/local/swarm/lib64/libcudart.so.11.5.117" }
-
-$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.11.6.124" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.11.6"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.11.6.124" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc-builtins.so.11.5"; path = "/usr/local/swarm/lib64/libnvrtc-builtins.so.11.5.119" }
-
-$Libs += [PSCustomObject]@{ link = "libnvrtc.so"; path = "/usr/local/swarm/lib64/libnvrtc.so.11.6.124" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc.so.11.6"; path = "/usr/local/swarm/lib64/libnvrtc.so.11.6.124" }
-$Libs += [PSCustomObject]@{ link = "libnvrtc.so.11.5"; path = "/usr/local/swarm/lib64/libnvrtc.so.11.5.119" }
-
-### ALWAYS Set lib links just in case.
-Set-Location "/usr/local/swarm/lib64/"
-foreach ($lib in $Libs) {
-    $link = $lib.link; 
-    $path = $lib.path; 
-    $Proc = Start-Process "ln" -ArgumentList "-sf $path $link" -PassThru; 
-    $Proc | Wait-Process
-}
 
 Set-Location "/"
 Set-Location $dir     
