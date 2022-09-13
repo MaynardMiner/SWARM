@@ -12,7 +12,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function Global:Expand-Lib {
-    [Int32]$Lib_Version = 3;
+    [Int32]$Lib_Version = 4;
     $Extract = $false;
     ## HiveOS is messing with ownership of SWARM folder through custom miners.
     ## I believe this is causing an issue with miners accessing libs contained in SWARM.
