@@ -4,7 +4,7 @@ $(vars).NVIDIATypes | ForEach-Object {
 
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
-    $CName = 'cc-verus'
+    $CName = 'verus'
 
     ##Miner Path Information
     if ($(vars).nvidia.$CName.$ConfigType) { $Path = "$($(vars).nvidia.$CName.$ConfigType)" } else { $Path = "None" }

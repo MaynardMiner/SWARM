@@ -5,14 +5,14 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($(vars).nvidia.'cc-yescrypt'.$ConfigType) { $Path = "$($(vars).nvidia.'cc-yescrypt'.$ConfigType)" }
+    if ($(vars).nvidia.'yescrypt'.$ConfigType) { $Path = "$($(vars).nvidia.'yescrypt'.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).nvidia.'cc-yescrypt'.uri) { $Uri = "$($(vars).nvidia.'cc-yescrypt'.uri)" }
+    if ($(vars).nvidia.'yescrypt'.uri) { $Uri = "$($(vars).nvidia.'yescrypt'.uri)" }
     else { $Uri = "None" }
-    if ($(vars).nvidia.'cc-yescrypt'.minername) { $MinerName = "$($(vars).nvidia.'cc-yescrypt'.minername)" }
+    if ($(vars).nvidia.'yescrypt'.minername) { $MinerName = "$($(vars).nvidia.'yescrypt'.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cc-yescrypt-$Num"; $Port = "5600$Num";
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "yescrypt-$Num"; $Port = "5600$Num";
 
     Switch ($Num) {
         1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
@@ -29,7 +29,7 @@ $(vars).NVIDIATypes | ForEach-Object {
 
     ##Get Configuration File
     ##This is located in config\miners
-    $MinerConfig = $Global:config.miners.'cc-yescrypt'
+    $MinerConfig = $Global:config.miners.'yescrypt'
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = "/usr/local/swarm/lib64"
@@ -82,7 +82,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Path       = $Path
                     Devices    = $Devices
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
-                    Version    = "$($(vars).nvidia.'cc-yescrypt'.version)"
+                    Version    = "$($(vars).nvidia.'yescrypt'.version)"
                     DeviceCall = "ccminer"
                     Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Pool_Host):$($_.Port) -b 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour

@@ -1,11 +1,11 @@
 {
   "name": "nvidia-win",
-  "cc-yescrypt": {
-    "name": "cc-yescrypt",
+  "yescrypt": {
+    "name": "yescrypt",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\cc-yescrypt-1\\ccminer.exe",
-    "NVIDIA2": ".\\bin\\cc-yescrypt-2\\ccminer.exe",
-    "NVIDIA3": ".\\bin\\cc-yescrypt-3\\ccminer.exe",
+    "NVIDIA1": ".\\bin\\yescrypt-1\\ccminer.exe",
+    "NVIDIA2": ".\\bin\\yescrypt-2\\ccminer.exe",
+    "NVIDIA3": ".\\bin\\yescrypt-3\\ccminer.exe",
     "minername": "ccminer.exe",
     "version": "10b",
     "optional": "No",
@@ -55,12 +55,12 @@
     "optional": "No",
     "uri": "https://github.com/Minerx117/ccminer8.21r9-lyra2z330/releases/download/v3/ccminerlyra2z330v3.zip"
   },
-  "cc-verus": {
-    "name": "cc-verus",
+  "verus": {
+    "name": "verus",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\cc-verus-1\\ccminer.exe",
-    "NVIDIA2": ".\\bin\\cc-verus-2\\ccminer.exe",
-    "NVIDIA3": ".\\bin\\cc-verus-3\\ccminer.exe",
+    "NVIDIA1": ".\\bin\\verus-1\\ccminer.exe",
+    "NVIDIA2": ".\\bin\\verus-2\\ccminer.exe",
+    "NVIDIA3": ".\\bin\\verus-3\\ccminer.exe",
     "minername": "ccminer.exe",
     "version": "3.611",
     "optional": "No",

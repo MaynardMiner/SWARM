@@ -99,12 +99,12 @@
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/ewbf-linux.tar.gz"
   },
-  "cc-yescrypt": {
-    "name": "cc-yescrypt",
+  "yescrypt": {
+    "name": "yescrypt",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\cc-yescrypt-1\\ccminer",
-    "NVIDIA2": ".\\bin\\cc-yescrypt-2\\ccminer",
-    "NVIDIA3": ".\\bin\\cc-yescrypt-3\\ccminer",
+    "NVIDIA1": ".\\bin\\yescrypt-1\\ccminer",
+    "NVIDIA2": ".\\bin\\yescrypt-2\\ccminer",
+    "NVIDIA3": ".\\bin\\yescrypt-3\\ccminer",
     "minername": "ccminer",
     "version": "10c",
     "optional": "No",
@@ -264,12 +264,12 @@
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/xmrig-linux.tar.xz"
   },
-  "cc-verus": {
-    "name": "cc-verus",
+  "verus": {
+    "name": "verus",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\cc-verus-1\\ccminer",
-    "NVIDIA2": ".\\bin\\cc-verus-2\\ccminer",
-    "NVIDIA3": ".\\bin\\cc-verus-3\\ccminer",
+    "NVIDIA1": ".\\bin\\verus-1\\ccminer",
+    "NVIDIA2": ".\\bin\\verus-2\\ccminer",
+    "NVIDIA3": ".\\bin\\verus-3\\ccminer",
     "minername": "ccminer",
     "version": "3.611",
     "optional": "No",
