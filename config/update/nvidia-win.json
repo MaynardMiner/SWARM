@@ -322,12 +322,12 @@
   "cdredge": {
     "name": "cdredge",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\cdredge-1\\cdredge.exe",
-    "NVIDIA2": ".\\bin\\cdredge-2\\cdredge.exe",
-    "NVIDIA3": ".\\bin\\cdredge-3\\cdredge.exe",
-    "minername": "cdredge.exe",
+    "NVIDIA1": ".\\bin\\cdredge-1\\cryptodredge.exe",
+    "NVIDIA2": ".\\bin\\cdredge-2\\cryptodredge.exe",
+    "NVIDIA3": ".\\bin\\cdredge-3\\cryptodredge.exe",
+    "minername": "cryptodredge.exe",
     "version": "0.27.0",
     "optional": "No",
-    "uri": "https://github.com/cdredge/miner/releases/download/v0.27.0/cdredge_0.27.0_cuda_11.4_windows.zip"
+    "uri": "https://github.com/cryptodredge/miner/releases/download/v0.27.0/cryptodredge_0.27.0_cuda_11.4_windows.zip"
   }
 }
