@@ -344,7 +344,7 @@ function Global:Start-NewMiners {
                     ## Change Process priority
                     ## It has been found that lowering priority may
                     ## Help with performance
-                    ## Some miners (like cryptodredge) will set their
+                    ## Some miners (like cdredge) will set their
                     ## Priority to above normal- Crashing any rig with
                     ## A not-so-great CPU in Windows.
                     if ($IsWindows) {

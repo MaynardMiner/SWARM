@@ -297,37 +297,37 @@
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/SWARM-MINER-windows.zip"
   },
-  "wildrig-nv": {
-    "name": "wildrig-nv",
+  "wildrig-n": {
+    "name": "wildrig-n",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\wildrig-nv-1\\wildrig.exe",
-    "NVIDIA2": ".\\bin\\wildrig-nv-2\\wildrig.exe",
-    "NVIDIA3": ".\\bin\\wildrig-nv-3\\wildrig.exe",
+    "NVIDIA1": ".\\bin\\wildrig-n-1\\wildrig.exe",
+    "NVIDIA2": ".\\bin\\wildrig-n-2\\wildrig.exe",
+    "NVIDIA3": ".\\bin\\wildrig-n-3\\wildrig.exe",
     "minername": "wildrig.exe",
     "version": "0.32.2",
     "optional": "No",
     "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.32.2/wildrig-multi-windows-0.32.2.7z"
   },
-  "nanominer-nv": {
-    "name": "nanominer-nv",
+  "nanominer-n": {
+    "name": "nanominer-n",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\nanominer-nv-1\\nanominer.exe",
-    "NVIDIA2": ".\\bin\\nanominer-nv-2\\nanominer.exe",
-    "NVIDIA3": ".\\bin\\nanominer-nv-3\\nanominer.exe",
+    "NVIDIA1": ".\\bin\\nanominer-n-1\\nanominer.exe",
+    "NVIDIA2": ".\\bin\\nanominer-n-2\\nanominer.exe",
+    "NVIDIA3": ".\\bin\\nanominer-n-3\\nanominer.exe",
     "minername": "nanominer.exe",
     "version": "3.7.0",
     "optional": "No",
     "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.0/nanominer-windows-3.7.0.zip"
   },
-  "cryptodredge": {
-    "name": "cryptodredge",
+  "cdredge": {
+    "name": "cdredge",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\cryptodredge-1\\cryptodredge.exe",
-    "NVIDIA2": ".\\bin\\cryptodredge-2\\cryptodredge.exe",
-    "NVIDIA3": ".\\bin\\cryptodredge-3\\cryptodredge.exe",
-    "minername": "cryptodredge.exe",
+    "NVIDIA1": ".\\bin\\cdredge-1\\cdredge.exe",
+    "NVIDIA2": ".\\bin\\cdredge-2\\cdredge.exe",
+    "NVIDIA3": ".\\bin\\cdredge-3\\cdredge.exe",
+    "minername": "cdredge.exe",
     "version": "0.27.0",
     "optional": "No",
-    "uri": "https://github.com/CryptoDredge/miner/releases/download/v0.27.0/CryptoDredge_0.27.0_cuda_11.4_windows.zip"
+    "uri": "https://github.com/cdredge/miner/releases/download/v0.27.0/cdredge_0.27.0_cuda_11.4_windows.zip"
   }
 }

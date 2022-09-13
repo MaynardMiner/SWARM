@@ -4,17 +4,15 @@ $(vars).NVIDIATypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
-    $ref = "wildrig-nv";
-
     ##Miner Path Information
-    if ($(vars).nvidia.$ref.$ConfigType) { $Path = "$($(vars).nvidia.$ref.$ConfigType)" }
+    if ($(vars).nvidia.cdredge.$ConfigType) { $Path = "$($(vars).nvidia.cdredge.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).nvidia.$ref.uri) { $Uri = "$($(vars).nvidia.$ref.uri)" }
+    if ($(vars).nvidia.cdredge.uri) { $Uri = "$($(vars).nvidia.cdredge.uri)" }
     else { $Uri = "None" }
-    if ($(vars).nvidia.$ref.minername) { $MinerName = "$($(vars).nvidia.$ref.minername)" }
+    if ($(vars).nvidia.cdredge.minername) { $MinerName = "$($(vars).nvidia.cdredge.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$ref-$Num"; $Port = "6400$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cdredge-$Num"; $Port = "4300$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
@@ -26,28 +24,13 @@ $(vars).NVIDIATypes | ForEach-Object {
     $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
-    if ($Get_Devices -ne "none") {
-        $GPUDevices1 = $Get_Devices
-        $GPUDevices1 = $GPUDevices1 -replace ',', ' '
-        $Devices = $GPUDevices1
-    }
-    else { $Devices = $Get_Devices }    
-    
-    $ArgDevices = $Null
-    if ($Get_Devices -ne "none") {
-        $GPUEDevices = $Get_Devices
-        $GPUEDevices = $GPUEDevices -split ","
-        $GPUEDevices | ForEach-Object { $ArgDevices += "$($(vars).GCount.NVIDIA.$_)," }
-        $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1)
-    }
-    else { 
-        $(vars).GCount.NVIDIA.PSObject.Properties.Name | ForEach-Object { $ArgDevices += "$($_)," }; $ArgDevices = $ArgDevices.Substring(0, $ArgDevices.Length - 1) 
-    }
+    if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
+    else { $Devices = $Get_Devices }
 
     ##Get Configuration File
     ##This is located in config\miners
-    $MinerConfig = $Global:config.miners.$ref
-    
+    $MinerConfig = $Global:config.miners.cdredge
+
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = "/usr/local/swarm/lib64"
     $Miner_Dir = Join-Path ($(vars).dir) ((Split-Path $Path).replace(".", ""))
@@ -62,7 +45,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     if ($(vars).Coins) { $Pools = $(vars).CoinPools } else { $Pools = $(vars).AlgoPools }
 
     if ($(vars).Bancount -lt 1) { $(vars).Bancount = 5 }
-
+        
     ##Build Miner Settings
     $MinerConfig.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
 
@@ -91,17 +74,17 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Coin       = $(vars).Coins
                     Delay      = $MinerConfig.$ConfigType.delay
                     Fees       = $MinerConfig.$ConfigType.fee.$($_.Algorithm)
+                    Platform   = $(arg).Platform
                     Symbol     = "$($_.Symbol)"
                     MinerName  = $MinerName
                     Prestart   = $PreStart
                     Type       = $ConfigType
                     Path       = $Path
-                    ArgDevices = $ArgDevices
                     Devices    = $Devices
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
-                    Version    = "$($(vars).nvidia.$ref.version)"
-                    DeviceCall = "wildrig-nv"
-                    Arguments  = "--opencl-platforms nvidia --api-port $Port --multiple-instance --algo $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Pool_Host):$($_.Port) --donate-level 1 --user $($_.$User) --pass $($_.$Pass)$($Diff) --log-file `'$Log`' $($MinerConfig.$ConfigType.commands.$($MinerConfig.$ConfigType.naming.$($_.Algorithm)))"
+                    Version    = "$($(vars).nvidia.cdredge.version)"
+                    DeviceCall = "ccminer"
+                    Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Pool_Host):$($_.Port) -b 0.0.0.0:$Port --log `'$Log`' -u $($_.$User) -p $($_.$Pass)$($Diff) --no-nvml --no-watchdog $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
@@ -110,13 +93,13 @@ $(vars).NVIDIATypes | ForEach-Object {
                     MinerPool  = "$($_.Name)"
                     Port       = $Port
                     Worker     = $Rig
-                    API        = "wildrig"
+                    API        = "Ccminer"
                     Wallet     = "$($_.$User)"
                     URI        = $Uri
                     Server     = "localhost"
                     Algo       = "$($_.Algorithm)"                         
                     Log        = "miner_generated"
-                }            
+                }
             }
         }
     }

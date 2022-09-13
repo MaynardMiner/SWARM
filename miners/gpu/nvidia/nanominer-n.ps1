@@ -3,7 +3,7 @@
 $(vars).NVIDIATypes | ForEach-Object {
     
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
-    $CName = "nanominer-nv"
+    $CName = "nanominer-n"
 
     ##Miner Path Information
     if ($(vars).nvidia.$CName.$ConfigType) { $Path = "$($(vars).nvidia.$CName.$ConfigType)" }

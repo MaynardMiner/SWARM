@@ -330,37 +330,37 @@
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/SWARM-MINER-linux.tar.gz"
   },
-  "wildrig-nv": {
-    "name": "wildrig-nv",
+  "wildrig-n": {
+    "name": "wildrig-n",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\wildrig-nv-1\\wildrig-multi",
-    "NVIDIA2": ".\\bin\\wildrig-nv-2\\wildrig-multi",
-    "NVIDIA3": ".\\bin\\wildrig-nv-3\\wildrig-multi",
+    "NVIDIA1": ".\\bin\\wildrig-n-1\\wildrig-multi",
+    "NVIDIA2": ".\\bin\\wildrig-n-2\\wildrig-multi",
+    "NVIDIA3": ".\\bin\\wildrig-n-3\\wildrig-multi",
     "minername": "wildrig-multi",
     "version": "0.32.2",
     "optional": "No",
     "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.32.2/wildrig-multi-linux-0.32.2.tar.xz"
   },
-  "nanominer-nv": {
-    "name": "nanominer-nv",
+  "nanominer-n": {
+    "name": "nanominer-n",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\nanominer-nv-1\\nanominer",
-    "NVIDIA2": ".\\bin\\nanominer-nv-2\\nanominer",
-    "NVIDIA3": ".\\bin\\nanominer-nv-3\\nanominer",
+    "NVIDIA1": ".\\bin\\nanominer-n-1\\nanominer",
+    "NVIDIA2": ".\\bin\\nanominer-n-2\\nanominer",
+    "NVIDIA3": ".\\bin\\nanominer-n-3\\nanominer",
     "minername": "nanominer",
     "version": "3.7.0",
     "optional": "No",
     "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.0/nanominer-linux-3.7.0-cuda11.tar.gz"
   },
-  "cryptodredge": {
-    "name": "cryptodredge",
+  "cdredge": {
+    "name": "cdredge",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\cryptodredge-1\\CryptoDredge",
-    "NVIDIA2": ".\\bin\\cryptodredge-2\\CryptoDredge",
-    "NVIDIA3": ".\\bin\\cryptodredge-3\\CryptoDredge",
-    "minername": "CryptoDredge",
+    "NVIDIA1": ".\\bin\\cdredge-1\\cdredge",
+    "NVIDIA2": ".\\bin\\cdredge-2\\cdredge",
+    "NVIDIA3": ".\\bin\\cdredge-3\\cdredge",
+    "minername": "cdredge",
     "version": "0.27.0",
     "optional": "No",
-    "uri": "https://github.com/CryptoDredge/miner/releases/download/v0.27.0/CryptoDredge_0.27.0_cuda_11.4_linux.tar.gz"
+    "uri": "https://github.com/cdredge/miner/releases/download/v0.27.0/cdredge_0.27.0_cuda_11.4_linux.tar.gz"
   }
 }
