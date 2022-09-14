@@ -177,11 +177,11 @@ if ($Name -in $(arg).PoolName) {
                 ## User3
                 $User3,
                 ## Pass1
-                "c=$Pass1,id=$($Params.RigName1)",
+                "c=$Pass1,ID=$($Params.RigName1)",
                 ## Pass2
-                "c=$Pass2,id=$($Params.RigName2)",
+                "c=$Pass2,ID=$($Params.RigName2)",
                 ## Pass3
-                "c=$Pass3,id=$($Params.RigName3)",
+                "c=$Pass3,ID=$($Params.RigName3)",
                 ## Previous
                 $actual
             )
