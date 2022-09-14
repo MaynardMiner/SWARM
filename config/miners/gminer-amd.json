@@ -10,48 +10,40 @@
             "export GPU_MAX_ALLOC_PERCENT=100"
         ],
         "commands": {
-            "cuckoo_cycle": "",
-            "beamv2": "",
-            "eaglesong": "",
-            "equihash_125/4": "",
-            "equihash_192/7": "",
+            "ethash": "",
+            "etchash": "",
+            "kawpow": "",
+            "cortex": "",
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_200/9": "",
-            "cuckaroo29-bfc": ""
+            "equihash_125/4": ""
         },
         "difficulty": {
-            "cuckoo_cycle": "",
-            "beamv2": "",
-            "eaglesong": "",
-            "equihash_125/4": "",
-            "equihash_192/7": "",
+            "ethash": "",
+            "etchash": "",
+            "kawpow": "",
+            "cortex": "",
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_200/9": "",
-            "cuckaroo29-bfc": ""
+            "equihash_125/4": ""
         },
         "naming": {
-            "cuckoo_cycle": "cuckoo_cycle",
-            "beamv2": "beamv2",
-            "eaglesong": "eaglesong",
-            "equihash_125/4": "equihash_125/4",
-            "equihash_192/7": "equihash_192/7",
+            "ethash": "ethash",
+            "etchash": "etchash",
+            "kawpow": "kawpow",
+            "cortex": "cortex",
             "equihash_144/5": "equihash_144/5",
             "equihash_210/9": "equihash_210/9",
-            "equihash_200/9": "equihash_210/9",
-            "cuckaroo29-bfc": "cuckaroo29-bfc"
+            "equihash_125/4": "equihash_125/4"
         },
         "fee": {
-            "cuckoo_cycle": 2,
-            "beamv2": 2,
-            "eaglesong": 2,
-            "equihash_125/4": 2,
-            "equihash_192/7": 2,
+            "ethash": 1,
+            "etchash": 1,
+            "kawpow": 1,
+            "cortex": 5,
             "equihash_144/5": 2,
             "equihash_210/9": 2,
-            "equihash_200/9": 2,
-            "cuckaroo29-bfc": 2
+            "equihash_125/4": 2
         }
     }
 }
