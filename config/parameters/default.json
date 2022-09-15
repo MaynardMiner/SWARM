@@ -46,7 +46,7 @@
     "GPUDevices3": [
         ""
     ],
-    "Historical_Bias": "25:1",
+    "Historical_Bias": "1:1",
     "Hive_Hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
     "HiveOS": "No",
     "kwh": "",
@@ -58,7 +58,7 @@
     "Nicehash_Wallet1": "",
     "Nicehash_Wallet2": "",
     "Nicehash_Wallet3": "",
-    "optional": [],
+    "Optional": [],
     "Passwordcurrency1": "BTC",
     "Passwordcurrency2": "BTC",
     "Passwordcurrency3": "BTC",
@@ -104,7 +104,7 @@
     "Admin_Pass": "BTC",
     "Rej_Factor": "Yes",
     "cpu_priority": 0,
-    "Min_Blocks": 1,
+    "Min_Blocks": 4,
     "Hidden": "No",
     "Throttle": 0,
     "Hashrate_Threshold": 10,
