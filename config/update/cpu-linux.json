@@ -23,9 +23,9 @@
     "type": "cpu",
     "CPU": ".\\bin\\rplant-1\\cpuminer-avx2",
     "minername": "cpuminer-avx2",
-    "version": "5.0.24",
+    "version": "5.0.29",
     "optional": "No",
-    "uri": "https://github.com/rplant8/cpuminer-opt-rplant/releases/download/5.0.24/cpuminer-opt-linux.tar.gz"
+    "uri": "https://github.com/rplant8/cpuminer-opt-rplant/releases/download/5.0.29/cpuminer-opt-linux.tar.gz"
   },
   "xmrig-cpu": {
     "name": "xmrig-cpu",
@@ -59,9 +59,18 @@
     "type": "cpu",
     "CPU": ".\\bin\\jayddee-1\\cpuminer",
     "minername": "cpuminer",
-    "version": "3.13.1.1",
+    "version": "3.20.2",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/jayddee-linux.tar.gz"
+  },
+  "kudaraidee": {
+    "name": "kudaraidee",
+    "type": "cpu",
+    "CPU": ".\\bin\\kudaraidee-1\\cpuminer",
+    "minername": "cpuminer",
+    "version": "1.1.0",
+    "optional": "No",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/kudaraidee-linux.tar.gz"
   },
   "cpupower": {
     "name": "cpupower",

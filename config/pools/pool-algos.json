@@ -17,6 +17,24 @@
       "comma seperated"
     ]
   },
+  "anime": {
+    "alt_names": [
+      "anime"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "argon2d16000": {
+    "alt_names": [
+      "argon2d16000"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "argon2d250": {
     "alt_names": [
       "argon2d250",
@@ -415,9 +433,28 @@
       "comma seperated"
     ]
   },
-  "cuckarood29v": {
+  "cuckaroo30ctxc": {
     "alt_names": [
-      "GrinCuckarood29"
+      "cuckaroo30ctxc"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cuckarood29": {
+    "alt_names": [
+      "grincuckarood29"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cuckarood29-32": {
+    "alt_names": [
+      "grincuckarood29-32",
+      "cuckarood29-32"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -447,6 +484,15 @@
     "alt_names": [
       "cuckatoo32",
       "grincuckatoo32"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "curvehash": {
+    "alt_names": [
+      "curvehash"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -544,6 +590,16 @@
       "comma seperated"
     ]
   },
+  "ghostrider": {
+    "alt_names": [
+      "ghostrider",
+      "gr"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "globalhash": {
     "alt_names": [
       "globalhash",
@@ -558,6 +614,15 @@
     "alt_names": [
       "handshake",
       "hns"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "heavyhash": {
+    "alt_names": [
+      "heavyhash"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -759,9 +824,27 @@
       "comma seperated"
     ]
   },
+  "mike": {
+    "alt_names": [
+      "mike"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "minotaur": {
     "alt_names": [
       "minotaur"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "minotaurx": {
+    "alt_names": [
+      "minotaurx"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -1334,6 +1417,42 @@
   "yespowerr8": {
     "alt_names": [
       "yespowerr8"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "yespowersugar": {
+    "alt_names": [
+      "yespowersugar"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "yespowerurx": {
+    "alt_names": [
+      "yespowerurx"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "yespowermgpc": {
+    "alt_names": [
+      "yespowermgpc"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "zelhash": {
+    "alt_names": [
+      "zelhash"
     ],
     "exclusions": [
       "add pool or miner here",

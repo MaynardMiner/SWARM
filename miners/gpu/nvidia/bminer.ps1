@@ -1,6 +1,11 @@
 . .\build\powershell\global\miner_stat.ps1;
 . .\build\powershell\global\modules.ps1;
-$(vars).NVIDIATypes | ForEach-Object {
+
+## Bminer cannot run more than 1 application at a time. Trying to use for multiple
+## device groups = failure. Therefor SWARM is programmed to run bminer in only 
+## 1 device group {NVIDIA1}
+
+$(vars).NVIDIATypes | Where-Object {$_ -eq "NVIDIA1"} | ForEach-Object {
 
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
@@ -80,7 +85,6 @@ $(vars).NVIDIATypes | ForEach-Object {
                             "ethash" { $Naming = "ethstratum"; $AddArgs = " " }
                             "cuckaroom" { $Naming = "cuckaroo29m"; $AddArgs = " " }
                             "cuckaroo29-bfc" { $Naming = "bfc"; $AddArgs = " " }
-                            "cuckatoo31" { $Naming = "cuckatoo31"; $AddArgs = " " }
                             "equihash_150/5" { $Naming = "beam"; $AddArgs = " -pers auto " }
                             "equihash_144/5" { $Naming = "zhash"; $AddArgs = " -pers auto " }
                             "beamv2" { $Naming = "beamhash2"; $AddArgs = " " }

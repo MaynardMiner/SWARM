@@ -1,0 +1,72 @@
+{
+    "CPU": {
+        "name": "CPU",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "argon2d4096": "",
+            "argon2d16000": "",
+            "cpupower": "",
+            "lyra2z330": "",
+            "m7m": "",
+            "power2b": "",
+            "scryptn2": "",
+            "yescrypt": "",
+            "yescryptr16": "",
+            "yescryptr32": "",
+            "yespower": "",
+            "yespowerr16": "",
+            "yespowersugar": "",
+            "yespowerurx": ""
+        },
+        "difficulty": {
+            "argon2d4096": "",
+            "argon2d16000": "",
+            "cpupower": "",
+            "lyra2z330": "",
+            "m7m": "",
+            "power2b": "",
+            "scryptn2": "",
+            "yescrypt": "",
+            "yescryptr16": "",
+            "yescryptr32": "",
+            "yespower": "",
+            "yespowerr16": "",
+            "yespowersugar": "",
+            "yespowerurx": ""
+        },
+        "naming": {
+            "argon2d4096": "argon2d4096",
+            "argon2d16000": "argon2d16000",
+            "cpupower": "cpupower",
+            "lyra2z330": "lyra2z330",
+            "m7m": "m7m",
+            "power2b": "power2b",
+            "scryptn2": "scryptn2",
+            "yescrypt": "yescrypt",
+            "yescryptr16": "yescryptr16",
+            "yescryptr32": "yescryptr32",
+            "yespower": "yespower",
+            "yespowerr16": "yespowerr16",
+            "yespowersugar": "yespowersugar",
+            "yespowerurx": "yespowerurx"
+        },
+        "fee": {
+            "argon2d4096": 0,
+            "argon2d16000": 0,
+            "cpupower": 0,
+            "lyra2z330": 0,
+            "m7m": 0,
+            "power2b": 0,
+            "scryptn2": 0,
+            "yescrypt": 0,
+            "yescryptr16": 0,
+            "yescryptr32": 0,
+            "yespower": 0,
+            "yespowerr16": 0,
+            "yespowersugar": 0,
+            "yespowerurx": 0
+        }
+    },
+    "name": "kudaraidee"
+}

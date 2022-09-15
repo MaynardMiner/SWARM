@@ -1,0 +1,150 @@
+{
+    "name": "cdredge",
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "chukwa": "",
+            "chukwa2": "",
+            "argon2d-dyn": "",
+            "argon2d4096": "",
+            "cryptonight-gpu": "",
+            "cryptonight-upx": "",
+            "cryptonight-haven": "",
+            "kawpow": "",
+            "firoPoW": ""
+        },
+        "difficulty": {
+            "chukwa": "",
+            "chukwa2": "",
+            "argon2d-dyn": "",
+            "argon2d4096": "",
+            "cryptonight-gpu": "",
+            "cryptonight-upx": "",
+            "cryptonight-haven": "",
+            "kawpow": "",
+            "firoPoW": ""
+        },
+        "naming": {
+            "chukwa": "chukwa",
+            "chukwa2": "chukwa2",
+            "argon2d-dyn": "argon2d-dyn",
+            "argon2d4096": "argon2d4096",
+            "cryptonight-gpu": "cngpu",
+            "cryptonight-upx": "cnupx2",
+            "cryptonight-haven": "cnhaven",
+            "kawpow": "kawpow",
+            "firoPoW": "firopow"
+        },
+        "fee": {
+            "chukwa": 1,
+            "chukwa2": 1,
+            "argon2d-dyn": 1,
+            "argon2d4096": 1,
+            "cryptonight-gpu": 1,
+            "cryptonight-upx": 1,
+            "cryptonight-haven": 1,
+            "kawpow": 1,
+            "firoPoW": 1
+        }
+    },
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "chukwa": "",
+            "chukwa2": "",
+            "argon2d-dyn": "",
+            "argon2d4096": "",
+            "cryptonight-gpu": "",
+            "cryptonight-upx": "",
+            "cryptonight-haven": "",
+            "kawpow": "",
+            "firoPoW": ""
+        },
+        "difficulty": {
+            "chukwa": "",
+            "chukwa2": "",
+            "argon2d-dyn": "",
+            "argon2d4096": "",
+            "cryptonight-gpu": "",
+            "cryptonight-upx": "",
+            "cryptonight-haven": "",
+            "kawpow": "",
+            "firoPoW": ""
+        },
+        "naming": {
+            "chukwa": "chukwa",
+            "chukwa2": "chukwa2",
+            "argon2d-dyn": "argon2d-dyn",
+            "argon2d4096": "argon2d4096",
+            "cryptonight-gpu": "cngpu",
+            "cryptonight-upx": "cnupx2",
+            "cryptonight-haven": "cnhaven",
+            "kawpow": "kawpow",
+            "firoPoW": "firopow"
+        },
+        "fee": {
+            "chukwa": 1,
+            "chukwa2": 1,
+            "argon2d-dyn": 1,
+            "argon2d4096": 1,
+            "cryptonight-gpu": 1,
+            "cryptonight-upx": 1,
+            "cryptonight-haven": 1,
+            "kawpow": 1,
+            "firoPoW": 1
+        }
+    },
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "chukwa": "",
+            "chukwa2": "",
+            "argon2d-dyn": "",
+            "argon2d4096": "",
+            "cryptonight-gpu": "",
+            "cryptonight-upx": "",
+            "cryptonight-haven": "",
+            "kawpow": "",
+            "firoPoW": ""
+        },
+        "difficulty": {
+            "chukwa": "",
+            "chukwa2": "",
+            "argon2d-dyn": "",
+            "argon2d4096": "",
+            "cryptonight-gpu": "",
+            "cryptonight-upx": "",
+            "cryptonight-haven": "",
+            "kawpow": "",
+            "firoPoW": ""
+        },
+        "naming": {
+            "chukwa": "chukwa",
+            "chukwa2": "chukwa2",
+            "argon2d-dyn": "argon2d-dyn",
+            "argon2d4096": "argon2d4096",
+            "cryptonight-gpu": "cngpu",
+            "cryptonight-upx": "cnupx2",
+            "cryptonight-haven": "cnhaven",
+            "kawpow": "kawpow",
+            "firoPoW": "firopow"
+        },
+        "fee": {
+            "chukwa": 1,
+            "chukwa2": 1,
+            "argon2d-dyn": 1,
+            "argon2d4096": 1,
+            "cryptonight-gpu": 1,
+            "cryptonight-upx": 1,
+            "cryptonight-haven": 1,
+            "kawpow": 1,
+            "firoPoW": 1
+        }
+    }
+}

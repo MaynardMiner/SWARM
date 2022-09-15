@@ -1,0 +1,126 @@
+{
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "kawpow": "",
+            "ubqhash": "",
+            "ethash": "",
+            "etchash": "",
+            "octopus": "",
+            "firopow": "",
+            "autolykos": ""
+        },
+        "difficulty": {
+            "kawpow": "",
+            "ubqhash": "",
+            "ethash": "",
+            "etchash": "",
+            "octopus": "",
+            "firopow": "",
+            "autolykos": ""
+        },
+        "naming": {
+            "kawpow": "kawpow",
+            "ubqhash": "ubqhash",
+            "ethash": "ethash",
+            "etchash": "etchash",
+            "octopus": "octopus",
+            "firopow": "firopow",
+            "autolykos": "autolykos"
+        },
+        "fee": {
+            "kawpow": 1,
+            "ubqhash": 1,
+            "ethash": 1,
+            "etchash": 1,
+            "octopus": 2,
+            "firopow": 1,
+            "autolykos": 2.5
+        }
+    },
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "kawpow": "",
+            "ubqhash": "",
+            "ethash": "",
+            "etchash": "",
+            "octopus": "",
+            "firopow": "",
+            "autolykos": ""
+        },
+        "difficulty": {
+            "kawpow": "",
+            "ubqhash": "",
+            "ethash": "",
+            "etchash": "",
+            "octopus": "",
+            "firopow": "",
+            "autolykos": ""
+        },
+        "naming": {
+            "kawpow": "kawpow",
+            "ubqhash": "ubqhash",
+            "ethash": "ethash",
+            "etchash": "etchash",
+            "octopus": "octopus",
+            "firopow": "firopow",
+            "autolykos": "autolykos"
+        },
+        "fee": {
+            "kawpow": 1,
+            "ubqhash": 1,
+            "ethash": 1,
+            "etchash": 1,
+            "octopus": 2,
+            "firopow": 1,
+            "autolykos": 2.5
+        }
+    },
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "kawpow": "",
+            "ubqhash": "",
+            "ethash": "",
+            "etchash": "",
+            "octopus": "",
+            "firopow": "",
+            "autolykos": ""
+        },
+        "difficulty": {
+            "kawpow": "",
+            "ubqhash": "",
+            "ethash": "",
+            "etchash": "",
+            "octopus": "",
+            "firopow": "",
+            "autolykos": ""
+        },
+        "naming": {
+            "kawpow": "kawpow",
+            "ubqhash": "ubqhash",
+            "ethash": "ethash",
+            "etchash": "etchash",
+            "octopus": "octopus",
+            "firopow": "firopow",
+            "autolykos": "autolykos"
+        },
+        "fee": {
+            "kawpow": 1,
+            "ubqhash": 1,
+            "ethash": 1,
+            "etchash": 1,
+            "octopus": 2,
+            "firopow": 1,
+            "autolykos": 2.5
+        }
+    },
+    "name": "nanominer-n"
+}

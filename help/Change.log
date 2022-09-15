@@ -1,21 +1,36 @@
-# SWARM 3.5.7
+# Version 3.5.8
 
-## Improvements
-* Cuda 11.2 libs added for linux. (no miner supports 11.2 yet, but is available if they do)
-* attempted api fix for issues with phoenix-miner windows
-* nbminer for amd moved to -optional due to its limited features/support
-* --no-nvml parameter removed from nbminer
-* updated miniz link for windows that was not working right.
-* fixed some nanominer api issues.
+## Alpha Release
+* This project is in a restoration period- I am trying to get it to full working status.
 
-## updates
-* lolminer updated
-* gminer updated
-* teamredminer updated
-* srbmulti updated 
-* phoenix miner updated 
-* xmrig updated
-* nbminer updated
-* t-rex updated 
-* wildrig updated
-* bminer updated
+## Known Working Items
+* Nvidia miners and using different NVIDIA groups is working.
+* CPU miners are working, but some miners use a lot of RAM- May be issue when using with GPU miners.
+* Removed depreciatied arguments, listed them as [depreciatied] in the SWARM helper script. Will remove altogether later.
+* HiveOS ready- Tested on latest HiveOS version, but HiveOS beta is HIGHLY reccommended.
+* Windows ready- Tested on Windows 10 and 11 and was working, including most HiveOS features.
+* I HAVE NOT tested on a generic Unix machine, and am in the process of building one for support.
+
+## Improvements 
+* All miners that are in the current lineup is updated to latest version.
+* Cuda libs updated to Cuda 11.6...Cuda 11.5 and 11.6 are supported.
+* Fixed ``get stats`` command to shorthand algo-miner combinations to better display on screen.
+* Added 10+ new algorithms.
+* Powershell and other apps will be installed/updated.
+
+## KNOWN ISSUES
+* ``Get Wallets`` not working.
+* Bminer has issues on nicehash pool.
+* More miners are coming soon- Not a lot of choices atm.
+* Swapping GPUs in Windows between differen PCI slots may cause incorrect Windows Registry data for GPUS. Solutions for fixes are being explored.
+* Combining AMD and NVIDIA was not tested/not supported atm, but will be soon.
+* Some pools used in -Poolname are depreciated, check to see if they exist before using.
+
+## Suggested Settings- What I as the Dev use.
+* -Auto_Coin Yes (use coin for calculations when applicable)
+* -Stat_Coin live (Mine based on individual coin statistics live values)
+* -Stat_Algo Live (Use live data for algorithms)
+* -Min_Blocks 4 (Don't mine anything that is going to take more than 6 hours to find)
+* -historical_bias 1:1 (Don't penalize based on historical data- Too much new activity now)
+* -Hashrate_Threshold 10 (Don't switch miner on same algorithm unless it falls below 10% hashrate of next best miner)
+* -Switch_Threshold 5 (Don't switch unless next profitable item is at least 5% better)

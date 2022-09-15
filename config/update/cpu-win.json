@@ -23,9 +23,9 @@
     "type": "cpu",
     "CPU": ".\\bin\\rplant-1\\cpuminer-avx2.exe",
     "minername": "cpuminer-avx2.exe",
-    "version": "5.0.24",
+    "version": "5.0.29",
     "optional": "No",
-    "uri": "https://github.com/rplant8/cpuminer-opt-rplant/releases/download/5.0.24/cpuminer-opt-win.zip"
+    "uri": "https://github.com/rplant8/cpuminer-opt-rplant/releases/download/5.0.29/cpuminer-opt-win.zip"
   },
   "xmrig-cpu": {
     "name": "xmrig-cpu",
@@ -59,9 +59,18 @@
     "type": "cpu",
     "CPU": ".\\bin\\jayddee-1\\cpuminer-avx2.exe",
     "minername": "cpuminer-avx2.exe",
-    "version": "3.18.2",
+    "version": "3.20.2",
     "optional": "No",
-    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.18.2/cpuminer-opt-3.18.2-windows.zip"
+    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.20.2/cpuminer-opt-3.20.2-windows.zip"
+  },
+  "kudaraidee": {
+    "name": "kudaraidee",
+    "type": "cpu",
+    "CPU": ".\\bin\\kudaraidee-1\\cpuminer-avx2.exe",
+    "minername": "cpuminer-avx2.exe",
+    "version": "3.20.2",
+    "optional": "No",
+    "uri": "https://github.com/Kudaraidee/cpuminer-opt-kudaraidee/releases/download/v1.1.0/cpuminer-opt-kudaraidee-win.zip"
   },
   "cpupower": {
     "name": "cpupower",

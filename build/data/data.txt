@@ -18,7 +18,6 @@ Function Global:Get-DebugParams {
     $(arg).RigName1 = "$($global:Config.user_params.RigName1)-D"
     $(arg).RigName2 = "$($global:Config.user_params.RigName2)-D"
     $(arg).RigName3 = "$($global:Config.user_params.RigName3)-D"
-    $(arg).Interval = 300
     $(arg).Passwordcurrency1 = @("BTC")
     $(arg).Passwordcurrency2 = @("BTC")
     $(arg).Passwordcurrency3 = @("BTC")

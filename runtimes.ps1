@@ -28,7 +28,7 @@ While ($True) {
     ##$min = Get-Date '08:00'
     ##$max = Get-Date '17:30'
     $min = Get-Date "$start_hour"
-    $max = Get-Data "$stop_hour"
+    $max = Get-Date "$stop_hour"
 
     $should_run = $false
 

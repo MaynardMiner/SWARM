@@ -16,26 +16,26 @@ function Global:Get-StatsLolminer {
     $Request = Global:Get-HTTP -Server $global:Server -Port $global:Port -Message $Message
     if ($request) {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop; }catch { Write-Host "Failed To parse API" -ForegroundColor Red; break }
-        if($Data.Session.Performance_Unit -eq "mh/s"){
+        if($Data.Algorithms.Performance_Unit -eq "mh/s"){
             #Fix lolminer API reporting in mh/s for ETC & ETH
-            $lolHashrate = [Double]$Data.Session.Performance_Summary * 1000000
+            $lolHashrate = [Double]$Data.Algorithms[0].Total_Performance * 1000000
             $lolmulti=1000000
         }else{
-            $lolHashrate = [Double]$Data.Session.Performance_Summary
+            $lolHashrate = [Double]$Data.Algorithms[0].Total_Performance
             $lolmulti=1
         }
         $global:RAW = $lolHashrate       
         $global:GPUKHS += $lolHashrate / 1000
         Global:Write-MinerData2;
-        $Hash = $Data.GPUs.Performance
+        $Hash = $Data.Algorithms[0].Worker_Performance
         try { 
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
                 $global:GPUHashrates.$(Global:Get-GPUs) = ((Global:Set-Array $Hash $global:i) * $lolmulti) / 1000 
             } 
         }
         catch { Write-Host "Failed To parse GPU Array" -ForegroundColor Red };
-        $global:MinerACC += [Double]$Data.Session.Accepted
-        $global:MinerREJ += [Double]$Data.Session.Submitted - [Double]$Data.Session.Accepted
+        $global:MinerACC += [Double]$Data.Algorithms[0].Worker_Accepted
+        $global:MinerREJ += [Double]$Data.Algorithms[0].Worker_Rejected
         $global:ALLACC += $global:MinerACC
         $global:ALLREJ += $global:MinerREJ
     }
