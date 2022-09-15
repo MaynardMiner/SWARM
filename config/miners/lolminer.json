@@ -12,7 +12,6 @@
         ],
         "commands": {
             "autolykos": "",
-            "beamhashv3": "",
             "cuckaroo29": "",
             "cuckarood29": "",
             "cuckaroo30ctxc": "",
@@ -28,7 +27,6 @@
         },
         "difficulty": {
             "autolykos": "",
-            "beamhashv3": "",
             "cuckaroo29": "",
             "cuckarood29": "",
             "cuckaroo30ctxc": "",
@@ -44,7 +42,6 @@
         },
         "naming": {
             "autolykos": "AUTOLYKOS2",
-            "beamhashv3": "BEAM",
             "cuckaroo29": "C29AE",
             "cuckarood29": "C29D",
             "cuckaroo30ctxc": "C30CTX",
@@ -60,7 +57,6 @@
         },
         "fee": {
             "autolykos": 1.5,
-            "beamhashv3": 1,
             "cuckaroo29": 2,
             "cuckarood29": 2,
             "cuckaroo30ctxc": 2,
