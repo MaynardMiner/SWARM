@@ -433,9 +433,28 @@
       "comma seperated"
     ]
   },
-  "cuckarood29v": {
+  "cuckaroo30ctxc": {
     "alt_names": [
-      "GrinCuckarood29"
+      "cuckaroo30ctxc"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cuckarood29": {
+    "alt_names": [
+      "grincuckarood29"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "cuckarood29-32": {
+    "alt_names": [
+      "grincuckarood29-32",
+      "cuckarood29-32"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -1425,6 +1444,15 @@
   "yespowermgpc": {
     "alt_names": [
       "yespowermgpc"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "zelhash": {
+    "alt_names": [
+      "zelhash"
     ],
     "exclusions": [
       "add pool or miner here",

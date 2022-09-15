@@ -3,7 +3,7 @@
 $(vars).NVIDIATypes | ForEach-Object {
 
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
-    $CName = "nv-lolminer"
+    $CName = "lolminer-n"
 
     ##Miner Path Information
     if ($(vars).nvidia.$CName.$ConfigType) { $Path = "$($(vars).nvidia.$CName.$ConfigType)" }
@@ -65,15 +65,6 @@ $(vars).NVIDIATypes | ForEach-Object {
             else { $HashStat = $Stat.Hour }
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 $SelAlgo = $_.Algorithm
-                switch ($SelAlgo) {
-                    "equihash_144/5" { $AddArgs = "--coin AUTO144_5 " }
-                    "equihash_96/5" { $AddArgs = "--coin MNX " }
-                    "equihash_192/7" { $AddArgs = "--coin AUTO192_7 " }
-                    "beamv2" { $AddArgs = "--coin BEAM-II --tls 0 " }
-                    "equihash_125/4" { $AddArgs = "--coin ZEL --tls 0 " }
-                    "cuckaroom" { $AddArgs = "--coin GRIN-C29M " }
-                    "cuckatoo31" { $AddArgs = "--coin GRIN-AT31 " }
-                }
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }else { $Diff = "" }
                 [PSCustomObject]@{
                     MName      = $Name
@@ -89,7 +80,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version    = "$($(vars).nvidia.$CName.version)"
                     DeviceCall = "lolminer"
-                    Arguments  = "--pool $($_.Pool_Host):$($_.Port) --user $($_.$User) $AddArgs--pass $($_.$Pass)$($Diff) --apiport $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "--coin $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --user $($_.$User) $AddArgs--pass $($_.$Pass)$($Diff) --apiport $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
