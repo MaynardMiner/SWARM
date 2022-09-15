@@ -2930,3 +2930,16 @@ identity. Was related to machine potentially having multiple active MAC addresse
 ## Note
 * I am aware of nanominer issues. I am still trying to address them. Just uploading fixes I have made thus far.
 * I am also aware that tt-miner and lolminer have updates as well. I need to test them first.
+######################################################
+######################################################
+
+# SWARM 3.5.7
+
+## Improvements
+* Uses miniz cuda 11 version now.
+* Fixed link for teamredminer linux version.
+* SWARM will now wipe dead screens on startup. (linux)
+
+## Note
+* I am aware of nanominer issues. I am still trying to address them. Just uploading fixes I have made thus far.
+* I am also aware that tt-miner and lolminer have updates as well. I need to test them first.
