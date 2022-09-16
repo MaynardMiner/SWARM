@@ -50,7 +50,7 @@ function Global:Expand-Lib {
                 }
             }    
         }
-        log "library folder not found (/usr/local/swarm/lib64). Exracting export.tar.gz" -ForegroundColor Yellow;
+        log "Updating library folder (/usr/local/swarm/lib64). Exracting lib64.tar.gz" -ForegroundColor Yellow;
         $Proc = Start-Process "tar" -ArgumentList "-xzvf build/lib64.tar.gz -C /usr/local/swarm" -PassThru; 
         $Proc | Wait-Process;
         [IO.File]::WriteAllText("/usr/local/swarm/lib64/version.txt",$Lib_Version);
@@ -83,6 +83,8 @@ function Global:Expand-Lib {
             $Proc = Start-Process "ln" -ArgumentList "-sf $path $link" -PassThru; 
             $Proc | Wait-Process
         }    
+        Set-Location "/"
+        Set-Location $Env:SWARM_DIR    
     }
     
 }
@@ -124,8 +126,6 @@ function Global:Get-Data {
 
     ## Extract export folder.
     Global:Expand-Lib
-    Set-Location "/"
-    Set-Location $Env:SWARM_DIR
 }
 
 function Global:Get-GPUCount {
