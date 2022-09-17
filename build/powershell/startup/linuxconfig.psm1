@@ -14,35 +14,43 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 function Global:Expand-Lib {
     [Int32]$Lib_Version = 5;
     $Extract = $false;
+    $Paths = @();
+    $Paths += "/usr";
+    $Paths += "/usr/local";
+    $Paths += "/usr/local/swarm";
+    $IsLib = [IO.Directory]::Exists("/usr/local/swarm/lib64");
+
     ## HiveOS is messing with ownership of SWARM folder through custom miners.
     ## I believe this is causing an issue with miners accessing libs contained in SWARM.
     ## Testing has shown if libs are placed anywhere else, they work fine.
     ## Therefor I have decided to place libs in a more proper location: /usr/local/swarm/lib64 
-    $check = [IO.Directory]::Exists("/usr/local/swarm")
-    if (!$check) {
-        Start-Process "mkdir" -ArgumentList "/usr/local/swarm"
+    
+    foreach($Path in $Paths) {
+        $exists = [IO.Directory]::Exists($Path)
+        if(!$exists) {
+            [IO.Directory]::CreateDirectory($Path)
+            $Extract = $true;
+        }
     }
-    $check = [IO.Directory]::Exists("/usr/local/swarm/lib64")
-    if (!$check) {
-        Start-Process "mkdir" -ArgumentList "/usr/local/swarm/lib64"
-    }
-    $check = [IO.File]::Exists("/usr/local/swarm/lib64/version.txt")
-    if(!$check) {
-        $Extract = $true;
-    } else {
+
+    if([IO.File]::Exists("/usr/local/swarm/lib64/version.txt")) {
         $Version = [Int32]::Parse([IO.File]::ReadAllText("/usr/local/swarm/lib64/version.txt"));
         if($Version -lt $Lib_Version) {
             $Extract = $true;
         }
     }
+
     if($Extract) {
-        $files = [System.IO.Directory]::GetFiles("/usr/local/swarm/lib64")
-        if($files.Count -gt 0) {
-            foreach($file in $files) {
-                [System.IO.File]::Delete($file)
-            }
+        ## Delete old files if they are there.
+        if($IsLib) {
+            $files = [System.IO.Directory]::GetFiles("/usr/local/swarm/lib64")
+            if($files.Count -gt 0) {
+                foreach($file in $files) {
+                    [System.IO.File]::Delete($file)
+                }
+            }    
         }
-        log "library folder not found (/usr/local/swarm/lib64). Exracting export.tar.gz" -ForegroundColor Yellow;
+        log "Updating library folder (/usr/local/swarm/lib64). Exracting lib64.tar.gz" -ForegroundColor Yellow;
         $Proc = Start-Process "tar" -ArgumentList "-xzvf build/lib64.tar.gz -C /usr/local/swarm" -PassThru; 
         $Proc | Wait-Process;
         [IO.File]::WriteAllText("/usr/local/swarm/lib64/version.txt",$Lib_Version);
@@ -75,6 +83,8 @@ function Global:Expand-Lib {
             $Proc = Start-Process "ln" -ArgumentList "-sf $path $link" -PassThru; 
             $Proc | Wait-Process
         }    
+        Set-Location "/"
+        Set-Location $Env:SWARM_DIR    
     }
     
 }
@@ -103,7 +113,6 @@ function Global:Get-Data {
     $Execs += "clear_watts"
     $Execs += "swarm_help"
     $Execs += "send-config"
-    $ExtractDone = $false;
 
     foreach ($exec in $Execs) {
         if (Test-Path ".\build\bash\$exec") {
@@ -117,8 +126,6 @@ function Global:Get-Data {
 
     ## Extract export folder.
     Global:Expand-Lib
-    Set-Location "/"
-    Set-Location $Env:SWARM_DIR
 }
 
 function Global:Get-GPUCount {
