@@ -99,12 +99,12 @@
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/ewbf-linux.tar.gz"
   },
-  "yescrypt": {
-    "name": "yescrypt",
+  "cyescrypt": {
+    "name": "cyescrypt",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\yescrypt-1\\ccminer",
-    "NVIDIA2": ".\\bin\\yescrypt-2\\ccminer",
-    "NVIDIA3": ".\\bin\\yescrypt-3\\ccminer",
+    "NVIDIA1": ".\\bin\\cyescrypt-1\\ccminer",
+    "NVIDIA2": ".\\bin\\cyescrypt-2\\ccminer",
+    "NVIDIA3": ".\\bin\\cyescrypt-3\\ccminer",
     "minername": "ccminer",
     "version": "10c",
     "optional": "No",
