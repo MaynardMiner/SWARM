@@ -12,7 +12,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     if ($(vars).nvidia.'cyescrypt'.minername) { $MinerName = "$($(vars).nvidia.'cyescrypt'.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cyescrypt$Num"; $Port = "5600$Num";
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cyescrypt-$Num"; $Port = "5600$Num";
 
     Switch ($Num) {
         1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
