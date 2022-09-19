@@ -5,25 +5,25 @@
         "prestart": [],
         "commands": {
             "yespowermgpc": "",
-            "ghostrider": "",
+            "gr": "",
             "minotaurx": "",
             "mike": ""
         },
         "difficulty": {
             "yespowermgpc": "",
-            "ghostrider": "",
+            "gr": "",
             "minotaurx": "",
             "mike": ""
         },
         "naming": {
             "yespowermgpc": "yespowermgpc",
-            "ghostrider": "gr",
+            "gr": "gr",
             "minotaurx": "minotaurx",
             "mike": "mike"
         },
         "fee": {
             "yespowermgpc": 0,
-            "ghostrider": 0,
+            "gr": 0,
             "minotaurx": 0,
             "mike": 0
         }

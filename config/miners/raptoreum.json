@@ -4,7 +4,7 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "ghostrider": "",
+            "gr": "",
             "yescryptr8": "",
             "yescrypt": "",
             "yescryptr16": "",
@@ -18,7 +18,7 @@
             "lyra2z330": ""
         },
         "difficulty": {
-            "ghostrider": "",
+            "gr": "",
             "yescryptr8": "",
             "yescrypt": "",
             "yescryptr16": "",
@@ -32,7 +32,7 @@
             "lyra2z330": ""
         },
         "naming": {
-            "ghostrider": "gr",
+            "gr": "gr",
             "yescryptr8": "yescryptr8",
             "yescrypt": "yescrypt",
             "yescryptr16": "yescryptr16",
@@ -46,7 +46,7 @@
             "lyra2z330": "lyra2z330"
         },
         "fee": {
-            "ghostrider": 0,
+            "gr": 0,
             "yescryptr8": 0,
             "yescrypt": 0,
             "yescryptr16": 0,
