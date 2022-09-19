@@ -6,7 +6,7 @@
         "prestart": [
         ],
         "commands": {
-            "autolykos": "",
+            "autolykos2": "",
             "cuckaroo29": "",
             "cuckatoo32": "",
             "cuckarood29": "",
@@ -19,7 +19,7 @@
             "zelhash": ""
         },
         "difficulty": {
-            "autolykos": "",
+            "autolykos2": "",
             "cuckaroo29": "",
             "cuckatoo32": "",
             "cuckarood29": "",
@@ -32,7 +32,7 @@
             "zelhash": ""
         },
         "naming": {
-            "autolykos": "AUTOLYKOS2",
+            "autolykos2": "AUTOLYKOS2",
             "cuckaroo29": "GRIN-C29M",
             "cuckatoo32": "GRIN-C32",
             "cuckarood29": "MWC-C29D",
@@ -45,7 +45,7 @@
             "zelhash": "ZEL"
         },
         "fee": {
-            "autolykos": 1.5,
+            "autolykos2": 1.5,
             "cuckaroo29": 2,
             "cuckatoo32": 2,
             "cuckarood29": 2,
@@ -64,7 +64,7 @@
         "prestart": [
         ],
         "commands": {
-            "autolykos": "",
+            "autolykos2": "",
             "cuckaroo29": "",
             "cuckatoo32": "",
             "cuckarood29": "",
@@ -77,7 +77,7 @@
             "zelhash": ""
         },
         "difficulty": {
-            "autolykos": "",
+            "autolykos2": "",
             "cuckaroo29": "",
             "cuckatoo32": "",
             "cuckarood29": "",
@@ -90,7 +90,7 @@
             "zelhash": ""
         },
         "naming": {
-            "autolykos": "AUTOLYKOS2",
+            "autolykos2": "AUTOLYKOS2",
             "cuckaroo29": "GRIN-C29M",
             "cuckatoo32": "GRIN-C32",
             "cuckarood29": "MWC-C29D",
@@ -103,7 +103,7 @@
             "zelhash": "ZEL"
         },
         "fee": {
-            "autolykos": 1.5,
+            "autolykos2": 1.5,
             "cuckaroo29": 2,
             "cuckatoo32": 2,
             "cuckarood29": 2,
@@ -122,7 +122,7 @@
         "prestart": [
         ],
         "commands": {
-            "autolykos": "",
+            "autolykos2": "",
             "cuckaroo29": "",
             "cuckatoo32": "",
             "cuckarood29": "",
@@ -135,7 +135,7 @@
             "zelhash": ""
         },
         "difficulty": {
-            "autolykos": "",
+            "autolykos2": "",
             "cuckaroo29": "",
             "cuckatoo32": "",
             "cuckarood29": "",
@@ -148,7 +148,7 @@
             "zelhash": ""
         },
         "naming": {
-            "autolykos": "AUTOLYKOS2",
+            "autolykos2": "AUTOLYKOS2",
             "cuckaroo29": "GRIN-C29M",
             "cuckatoo32": "GRIN-C32",
             "cuckarood29": "MWC-C29D",
@@ -161,7 +161,7 @@
             "zelhash": "ZEL"
         },
         "fee": {
-            "autolykos": 1.5,
+            "autolykos2": 1.5,
             "cuckaroo29": 2,
             "cuckatoo32": 2,
             "cuckarood29": 2,

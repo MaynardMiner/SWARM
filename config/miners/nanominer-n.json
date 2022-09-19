@@ -10,7 +10,7 @@
             "etchash": "",
             "octopus": "",
             "firopow": "",
-            "autolykos": ""
+            "autolykos2": ""
         },
         "difficulty": {
             "kawpow": "",
@@ -19,7 +19,7 @@
             "etchash": "",
             "octopus": "",
             "firopow": "",
-            "autolykos": ""
+            "autolykos2": ""
         },
         "naming": {
             "kawpow": "kawpow",
@@ -28,7 +28,7 @@
             "etchash": "etchash",
             "octopus": "octopus",
             "firopow": "firopow",
-            "autolykos": "autolykos"
+            "autolykos2": "autolykos"
         },
         "fee": {
             "kawpow": 1,
@@ -37,7 +37,7 @@
             "etchash": 1,
             "octopus": 2,
             "firopow": 1,
-            "autolykos": 2.5
+            "autolykos2": 2.5
         }
     },
     "NVIDIA2": {
@@ -51,7 +51,7 @@
             "etchash": "",
             "octopus": "",
             "firopow": "",
-            "autolykos": ""
+            "autolykos2": ""
         },
         "difficulty": {
             "kawpow": "",
@@ -60,7 +60,7 @@
             "etchash": "",
             "octopus": "",
             "firopow": "",
-            "autolykos": ""
+            "autolykos2": ""
         },
         "naming": {
             "kawpow": "kawpow",
@@ -69,7 +69,7 @@
             "etchash": "etchash",
             "octopus": "octopus",
             "firopow": "firopow",
-            "autolykos": "autolykos"
+            "autolykos2": "autolykos"
         },
         "fee": {
             "kawpow": 1,
@@ -78,7 +78,7 @@
             "etchash": 1,
             "octopus": 2,
             "firopow": 1,
-            "autolykos": 2.5
+            "autolykos2": 2.5
         }
     },
     "NVIDIA3": {
@@ -92,7 +92,7 @@
             "etchash": "",
             "octopus": "",
             "firopow": "",
-            "autolykos": ""
+            "autolykos2": ""
         },
         "difficulty": {
             "kawpow": "",
@@ -101,7 +101,7 @@
             "etchash": "",
             "octopus": "",
             "firopow": "",
-            "autolykos": ""
+            "autolykos2": ""
         },
         "naming": {
             "kawpow": "kawpow",
@@ -110,7 +110,7 @@
             "etchash": "etchash",
             "octopus": "octopus",
             "firopow": "firopow",
-            "autolykos": "autolykos"
+            "autolykos2": "autolykos"
         },
         "fee": {
             "kawpow": 1,
@@ -119,7 +119,7 @@
             "etchash": 1,
             "octopus": 2,
             "firopow": 1,
-            "autolykos": 2.5
+            "autolykos2": 2.5
         }
     },
     "name": "nanominer-n"
