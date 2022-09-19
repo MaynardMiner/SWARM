@@ -143,7 +143,40 @@ Access Denied Error prevented.
                     log "Pulled $OldJson"
 
                     try { $Data = $JsonData | ConvertFrom-Json -ErrorAction Stop } catch { }
- 
+
+                    if ($ChangeFile -eq "wildrig.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "mike" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "mike" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "mike" "mike" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "mike" 1 -ErrorAction SilentlyContinue
+                            }
+                        }
+                    }
+                    if ($ChangeFile -eq "wildrig-n.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "mike" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "mike" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "mike" "mike" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "mike" 1 -ErrorAction SilentlyContinue
+                            }
+                        }
+                    }
+                    if ($ChangeFile -eq "nanominer-n.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "autolykos2" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "autolykos2" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "autolykos2" "autolykos" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "autolykos2" 2.5 -ErrorAction SilentlyContinue
+                            }
+                        }
+                    }
+                    if ($ChangeFile -eq "pool-algos.json") {
+                        $Data."autolykos2".alt_names = @("autolykos2","autolykos","autolykosv2")
+                    }
                     $Data | ConvertTo-Json -Depth 10 | Set-Content $NewJson;
                     log "Wrote To $NewJson"
                 }
