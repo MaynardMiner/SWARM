@@ -134,7 +134,9 @@ function Global:Update-HiveTagging {
         ## Assign an ID to already created Tags.
         $set_tags = $Tags.data | Where-Object { $_.name -in $Tag_List }
         foreach ($tag in $set_tags) {
+            if(!$Tag_Ids.$($tag.name)) {
             $Tag_Ids.Add("$($tag.name)", "$($tag.id)")
+            }
         }
         $Miner_Tag = $Tag_Ids.$Miner_Name
         $Pool_Tag = $Tag_Ids.$Miner_Pool
