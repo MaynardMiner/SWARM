@@ -1,8 +1,8 @@
 function Global:Update-HiveTagging {
     if ([string]$(arg).API_Key -ne "") {
-        $Miner_Pool = "";
+        $Miner_Pool = "No Pool";
         $Profit_Day = 0;
-        $Miner_Name = "";
+        $Miner_Name = "Conserve";
         $Coin_Name = $null;
         $AddTags = @();
 
