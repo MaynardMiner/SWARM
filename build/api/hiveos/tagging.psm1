@@ -36,6 +36,8 @@ function Global:Update-HiveTagging {
         }
 
         $Tag_List = @();
+        $Tag_List += "Conserve"
+        $Tag_List += "No Pool"
         $Tag_List += (Get-ChildItem "miners\gpu\amd" | Where-Object name -like "*ps1*").BaseName;
         $Tag_List += (Get-ChildItem "miners\gpu\nvidia" | Where-Object name -like "*ps1*").BaseName;
         $Tag_List += (Get-ChildItem "miners\optional_and_old" | Where-Object name -like "*ps1*").BaseName;
