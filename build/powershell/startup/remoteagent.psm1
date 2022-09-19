@@ -13,6 +13,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function Global:start-update {
 
+    $Exclude = @("teamredminer.json","pool-algos.json")
+
     $Parent = Split-Path $(vars).dir
     log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
     log "Checking $Parent For any Previous Versions"
@@ -174,9 +176,6 @@ Access Denied Error prevented.
                                 $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "autolykos"
                             }
                         }
-                    }
-                    if ($ChangeFile -eq "pool-algos.json") {
-                        $Data."autolykos2".alt_names = @("autolykos2","autolykos","autolykosv2")
                     }
                     $Data | ConvertTo-Json -Depth 10 | Set-Content $NewJson;
                     log "Wrote To $NewJson"
