@@ -75,7 +75,8 @@
   },
   "autolykos2": {
     "alt_names": [
-      "autolykos2"
+      "autolykos2",
+      "autolykos"
     ],
     "exclusions": [
       "add pool or miner here",
