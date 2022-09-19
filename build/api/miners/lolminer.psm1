@@ -34,8 +34,8 @@ function Global:Get-StatsLolminer {
             } 
         }
         catch { Write-Host "Failed To parse GPU Array" -ForegroundColor Red };
-        $global:MinerACC += [Double]$Data.Algorithms[0].Worker_Accepted
-        $global:MinerREJ += [Double]$Data.Algorithms[0].Worker_Rejected
+        $global:MinerACC += [Double]$($Data.Algorithms[0].Worker_Accepted | Measure-Object -Sum).Sum
+        $global:MinerREJ += [Double]$($Data.Algorithms[0].Worker_Rejected | Measure-Object -Sum).Sum
         $global:ALLACC += $global:MinerACC
         $global:ALLREJ += $global:MinerREJ
     }
