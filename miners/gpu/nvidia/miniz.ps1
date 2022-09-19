@@ -89,8 +89,9 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "equihash_125/4" { $AddArgs = "--par=125,4 --pers=auto " }
                     "equihash_150/5" { $AddArgs = "--par=150,5 --pers=auto " }
                     "beamhashv3" { $AddArgs = "--par=beam3 --pers=auto " }
-                    "ethash" { $AddArgs = "--par=ethash " }
-                    "etchash" { $AddArgs = "--par=etchash " }
+                    "ethash" { $AddArgs = "--par=ethash --pers=auto " }
+                    "etchash" { $AddArgs = "--par=ethash --pers=etchash " }
+                    "kawpow" { $AddArgs = "--par=etchash --pers=auto " }
                 }
                 $Diff = ""
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { 
@@ -113,7 +114,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version    = "$($(vars).nvidia.miniz.version)"
                     DeviceCall = "miniz"
-                    Arguments  = "--nvidia --telemetry 0.0.0.0:$Port --server=$($_.Pool_Host) --port=$($_.Port) $AddArgs--user=$($_.$User) --logfile=`'$log`' --pass=$($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "--nvidia --telemetry 0.0.0.0:$Port --url=$($_.Pool_Host):$($_.Port) $AddArgs--user=$($_.$User) --logfile=`'$log`' --pass=$($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
