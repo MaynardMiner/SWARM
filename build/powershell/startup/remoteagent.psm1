@@ -171,6 +171,7 @@ Access Denied Error prevented.
                                 $Data.$_.difficulty | Add-Member "autolykos2" "" -ErrorAction SilentlyContinue 
                                 $Data.$_.naming | Add-Member "autolykos2" "autolykos" -ErrorAction SilentlyContinue
                                 $Data.$_.fee | Add-Member "autolykos2" 2.5 -ErrorAction SilentlyContinue
+                                $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "autolykos"
                             }
                         }
                     }
