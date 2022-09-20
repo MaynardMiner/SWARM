@@ -3,7 +3,7 @@
 $(vars).NVIDIATypes | ForEach-Object {
 
     ### Due to lolminer api- only 1 group can exist.
-    if ( $_ -eq "NVIDIA1") {
+    if ( $_ -eq "NVIDIA1" -and $(vars).AMDTypes.Count -eq 0) {
         $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
         $CName = "lolminer-n"
 
