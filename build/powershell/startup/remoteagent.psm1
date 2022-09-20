@@ -13,7 +13,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function Global:start-update {
 
-    $Exclude = @("teamredminer.json","pool-algos.json","yescrypt.json")
+    $Exclude = @("teamredminer.json","pool-algos.json","yescrypt.json","miniz.json","lolminer.json","lolminer-n.json","gminer-amd.json")
 
     $Parent = Split-Path $(vars).dir
     log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
@@ -221,6 +221,16 @@ Access Denied Error prevented.
                                 $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "ghostrider"
                                 $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "ghostrider"
                                 $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "ghostrider"
+                            }
+                        }
+                    }
+                    if ($ChangeFile -eq "cyescrypt.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "neoscrypt" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "neoscrypt" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "neoscrypt" "neoscrypt" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "neoscrypt" 1 -ErrorAction SilentlyContinue
                             }
                         }
                     }
