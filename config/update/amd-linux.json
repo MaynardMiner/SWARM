@@ -22,12 +22,12 @@
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/Claymore-Linux-AMD.tar.gz"
   },
-  "gminer-amd": {
-    "name": "gminer-amd",
+  "gminer-a": {
+    "name": "gminer-a",
     "type": "amd",
-    "AMD1": ".\\bin\\gminer-amd-1\\miner",
-    "AMD2": ".\\bin\\gminer-amd-2\\miner",
-    "AMD3": ".\\bin\\gminer-amd-3\\miner",
+    "AMD1": ".\\bin\\gminer-a-1\\miner",
+    "AMD2": ".\\bin\\gminer-a-2\\miner",
+    "AMD3": ".\\bin\\gminer-a-3\\miner",
     "minername": "miner",
     "version": "3.05",
     "optional": "No",
