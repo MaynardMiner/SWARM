@@ -11,12 +11,23 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-function Global:get-AMDPlatform {
-        $Platform = "0"
-        $A = (clinfo) | Select-string "Platform Vendor"
-        $PlatformA = @()
-        for ($i = 0; $i -lt $A.Count; $i++) { $PlatSel = $A | Select-Object -Skip $i -First 1; $PlatSel = $PlatSel -replace "Platform Vendor", "$i"; $PlatSel = $PlatSel -replace ":", "="; $PlatformA += $PlatSel}
-        $PlatformA = $PlatformA | ConvertFrom-StringData
-        $PlatformA.keys | ForEach-Object {if ($PlatformA.$_ -eq "AMD Accelerated Parallel Processing" -or $PlatformA.$_ -eq "Advanced Micro Devices, Inc.") {$Platform = $_}}
-        return $Platform
+function Global:Get-AMDPlatform() {
+        Add-Type -Path "./build/apps/opencl/OpenCL.NetCore.dll"
+        [OpenCL.NetCore.ErrorCode]$err = [OpenCL.NetCore.ErrorCode]::Unknown
+        [OpenCL.NetCore.Platform[]]$Platforms = [OpenCL.NetCore.Cl]::GetPlatformIDs([ref]$err)
+        if ($err -ne [OpenCL.NetCore.ErrorCode]::Success)
+        {
+            log "Failed to get OpenCL plaform. Use -CLPlatform. $err.ToString()" -ForegroundColor Red 
+            return 0;
+        }
+        [String[]]$PlatFormInfo = @();
+        foreach ($Platform in $Platforms) {
+            $PlatFormInfo += [Cl]::GetPlatformInfo($Platform, [PlatformInfo]::Name,[ref]$err).ToString()   
+         }
+         for($i=0; $i -lt $PlatFormInfo.Count;$i++) {
+            if($PlatFormInfo[$i] -eq "AMD Accelerated Parallel Processing" -or $PlatFormInfo[$i] -eq "Advanced Micro Devices, Inc.") {
+                return $i
+            }
+         }
+         return 0;
 }
