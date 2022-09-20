@@ -91,7 +91,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "beamhashv3" { $AddArgs = "--par=beam3 --pers=auto " }
                     "ethash" { $AddArgs = "--par=ethash --pers=auto " }
                     "etchash" { $AddArgs = "--par=ethash --pers=etchash " }
-                    "kawpow" { $AddArgs = "--par=etchash --pers=auto " }
+                    "kawpow" { $AddArgs = "--par=kawpow --pers=auto " }
                 }
                 $Diff = ""
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { 
