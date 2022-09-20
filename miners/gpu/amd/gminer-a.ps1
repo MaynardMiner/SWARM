@@ -92,7 +92,7 @@ $(vars).AMDTypes | ForEach-Object {
                 $GetWorker = $_.Worker;
                 switch ($SelName) {
                     "zergpool" { $GetUser = "$($GetUser).x" };
-                    "whalesburg" {$GetUser = $GetUser + "." + $GetWorker};
+                    "whalesburg" { $GetUser = $GetUser + "." + $GetWorker };
                 }
                 switch ($SelAlgo) {
                     "equihash_144/5" {
@@ -105,6 +105,8 @@ $(vars).AMDTypes | ForEach-Object {
                     }
                     "equihash_210/9" { $AddArgs = "--algo 210_9 --pers auto " }
                     "equihash_125/4" { $AddArgs = "--algo 125_4 --pers auto " }
+                    "cortex" { $AddArgs = "--algo cortex " }
+                    "kawpow" { $AddArgs = "--algo kawpow " }
                     "ethash" {
                         switch ($SelName) {
                             "nicehash" { $AddArgs = "--algo ethash --proto stratum " }
