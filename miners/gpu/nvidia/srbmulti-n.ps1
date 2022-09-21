@@ -1,28 +1,36 @@
 . .\build\powershell\global\miner_stat.ps1;
 . .\build\powershell\global\modules.ps1;
-$(vars).AMDTypes | ForEach-Object {
+$(vars).NVIDIATypes | ForEach-Object {
 
-    $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
+
+    $ref = "srbmulti-n";
 
     ##Miner Path Information
-    if ($(vars).amd.srbmulti.$ConfigType) { $Path = "$($(vars).amd.srbmulti.$ConfigType)" }
+    if ($(vars).nvidia.$ref.$ConfigType) { $Path = "$($(vars).nvidia.$ref.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).amd.srbmulti.uri) { $Uri = "$($(vars).amd.srbmulti.uri)" }
+    if ($(vars).nvidia.$ref.uri) { $Uri = "$($(vars).nvidia.$ref.uri)" }
     else { $Uri = "None" }
-    if ($(vars).amd.srbmulti.minername) { $MinerName = "$($(vars).amd.srbmulti.minername)" }
+    if ($(vars).nvidia.$ref.minername) { $MinerName = "$($(vars).nvidia.$ref.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "srbmulti-$Num"; $Port = "3400$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$ref-$Num"; $Port = "3400$Num"
 
     Switch ($Num) {
-        1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
+        1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
+        2 { $Get_Devices = $(vars).NVIDIADevices2; $Rig = $(arg).RigName2 }
+        3 { $Get_Devices = $(vars).NVIDIADevices3; $Rig = $(arg).RigName3 }
     }
 
     ##Log Directory
     $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
 
     ##Parse -GPUDevices
-    if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
+    if ($Get_Devices -ne "none") {
+        $GPUDevices1 = $Get_Devices
+        $GPUDevices1 = $GPUDevices1 -replace ',', ';'
+        $Devices = $GPUDevices1
+    }
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
@@ -84,9 +92,9 @@ $(vars).AMDTypes | ForEach-Object {
                     Path       = $Path
                     Devices    = $Devices
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
-                    Version    = "$($(vars).amd.srbmulti.version)"
+                    Version    = "$($(vars).nvidia.$ref.version)"
                     DeviceCall = "srbminer"
-                    Arguments  = "$Nicehash--adl-disable --gpu-platform $($(vars).AMDPlatform) --disable-cpu --algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --wallet $($_.$User) --password $($_.$Pass)$Diff --api-enable --logfile `'$Log`' --api-port $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "$Nicehash --disable-cpu --enable-opencl-cleanup --adl-disable --algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --wallet $($_.$User) --password $($_.$Pass)$Diff --api-enable --logfile `'$Log`' --api-port $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price

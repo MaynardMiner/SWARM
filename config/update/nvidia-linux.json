@@ -1,5 +1,16 @@
 {
   "name": "nvidia-linux",
+  "srbmulti-n": {
+    "name": "srbmulti-n",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\srbmulti-n-1\\SRBMiner-MULTI",
+    "NVIDIA2": ".\\bin\\srbmulti-n-2\\SRBMiner-MULTI",
+    "NVIDIA3": ".\\bin\\srbmulti-n-3\\SRBMiner-MULTI",
+    "minername": "SRBMiner-MULTI",
+    "version": "1.0.8",
+    "optional": "No",
+    "uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/1.0.8/SRBMiner-Multi-1-0-8-Linux.tar.xz"
+  },
   "claymore": {
     "name": "claymore",
     "type": "nvidia",
