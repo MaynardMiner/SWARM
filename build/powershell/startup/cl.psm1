@@ -12,6 +12,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function Global:Get-AMDPlatform() {
+        Add-Type -Path "./build/apps/opencl/OpenCL.dll"
         Add-Type -Path "./build/apps/opencl/OpenCL.NetCore.dll"
         [OpenCL.NetCore.ErrorCode]$err = [OpenCL.NetCore.ErrorCode]::Unknown
         [OpenCL.NetCore.Platform[]]$Platforms = [OpenCL.NetCore.Cl]::GetPlatformIDs([ref]$err)
