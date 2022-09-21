@@ -112,7 +112,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version    = "$($(vars).nvidia.miniz.version)"
                     DeviceCall = "miniz"
-                    Arguments  = "--nvidia --telemetry 0.0.0.0:$Port --url=$($_.Pool_Host):$($_.Port) $AddArgs--user=$($_.$User) --logfile=`'$log`' --pass=$($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "--nvidia --telemetry 0.0.0.0:$Port --url=$($_.$User)@$($_.Pool_Host):$($_.Port) $AddArgs --logfile=`'$log`' --pass=$($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
