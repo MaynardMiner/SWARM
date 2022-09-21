@@ -790,7 +790,7 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
             $Check = $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
         }
         elseif ($IsLinux) {
-            $EUID = (Invoke-Expression "bash -c set" | ConvertFrom-StringData).EUID
+            if ($IsLinux) { $Global:EUID = (Invoke-Expression "bash -c set" | Where {$_ -like "*EUID*"} | ConvertFrom-StringData).EUID }
             $Check = $EUID -eq 0;
         }
         

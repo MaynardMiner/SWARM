@@ -16,7 +16,7 @@ function Global:Get-StatsNanominer {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop } 
         Catch { Write-Host "Failed To parse API" -ForegroundColor Red; Break }
         if ($Data) {
-            $Data = $Data.Algorithms.$global:MinerAlgo
+            $Data = $Data.Algorithms.$($global:MinerAlgo.replace("autolykos2","autolykos"))
             $global:RAW += [decimal]$Data.Total.Hashrate
             Global:Write-MinerData2;
             try { 

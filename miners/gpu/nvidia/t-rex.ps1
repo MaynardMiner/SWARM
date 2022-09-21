@@ -100,7 +100,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version           = "$($(vars).nvidia.$CName.version)"
                     DeviceCall        = "trex"
-                    Arguments         = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no-watchdog --no-nvml -o $stratum$($_.Pool_Host):$($_.Port) -u $($GetUser) -l `'$Log`' --api-bind-http 0.0.0.0:$Port $UserPass$($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments         = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --no-watchdog -o $stratum$($_.Pool_Host):$($_.Port) -u $($GetUser) -l `'$Log`' --api-bind-http 0.0.0.0:$Port $UserPass$($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates         = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price

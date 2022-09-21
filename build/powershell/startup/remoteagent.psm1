@@ -13,6 +13,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function Global:start-update {
 
+    $Exclude = @("teamredminer.json","pool-algos.json","yescrypt.json")
+
     $Parent = Split-Path $(vars).dir
     log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
     log "Checking $Parent For any Previous Versions"
@@ -143,7 +145,85 @@ Access Denied Error prevented.
                     log "Pulled $OldJson"
 
                     try { $Data = $JsonData | ConvertFrom-Json -ErrorAction Stop } catch { }
- 
+
+                    if ($ChangeFile -eq "wildrig.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "mike" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "mike" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "mike" "mike" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "mike" 1 -ErrorAction SilentlyContinue
+                                $Data.$_.commands | Add-Member "gr" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "gr" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "gr" "ghostrider" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "gr" 1 -ErrorAction SilentlyContinue
+                                $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "ghostrider"
+                                $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "ghostrider"
+                                $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "ghostrider"
+                                $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "ghostrider"
+                            }
+                        }
+                    }
+                    if ($ChangeFile -eq "wildrig-n.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "mike" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "mike" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "mike" "mike" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "mike" 1 -ErrorAction SilentlyContinue
+                                $Data.$_.commands | Add-Member "gr" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "gr" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "gr" "ghostrider" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "gr" 1 -ErrorAction SilentlyContinue
+                                $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "ghostrider"
+                                $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "ghostrider"
+                                $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "ghostrider"
+                                $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "ghostrider"
+                            }
+                        }
+                    }
+                    if ($ChangeFile -eq "nanominer-n.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "autolykos2" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "autolykos2" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "autolykos2" "autolykos" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "autolykos2" 2.5 -ErrorAction SilentlyContinue
+                                $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "autolykos"
+                                $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "autolykos"
+                                $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "autolykos"
+                                $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "autolykos"
+                            }
+                        }
+                    }
+                    if ($ChangeFile -eq "raptoreum.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "gr" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "gr" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "gr" "gr" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "gr" 1 -ErrorAction SilentlyContinue
+                                $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "ghostrider"
+                                $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "ghostrider"
+                                $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "ghostrider"
+                                $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "ghostrider"
+                            }
+                        }
+                    }
+                    if ($ChangeFile -eq "rplant.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "gr" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "gr" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "gr" "gr" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "gr" 1 -ErrorAction SilentlyContinue
+                                $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "ghostrider"
+                                $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "ghostrider"
+                                $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "ghostrider"
+                                $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "ghostrider"
+                            }
+                        }
+                    }
                     $Data | ConvertTo-Json -Depth 10 | Set-Content $NewJson;
                     log "Wrote To $NewJson"
                 }

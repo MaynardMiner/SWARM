@@ -1,30 +1,21 @@
-# Version 3.5.8
+# Version 3.5.9
 
 ## Alpha Release
 * This project is in a restoration period- I am trying to get it to full working status.
 
-## Known Working Items
-* Nvidia miners and using different NVIDIA groups is working.
-* CPU miners are working, but some miners use a lot of RAM- May be issue when using with GPU miners.
-* Removed depreciatied arguments, listed them as [depreciatied] in the SWARM helper script. Will remove altogether later.
-* HiveOS ready- Tested on latest HiveOS version, but HiveOS beta is HIGHLY reccommended.
-* Windows ready- Tested on Windows 10 and 11 and was working, including most HiveOS features.
-* I HAVE NOT tested on a generic Unix machine, and am in the process of building one for support.
-
 ## Improvements 
-* All miners that are in the current lineup is updated to latest version.
-* Cuda libs updated to Cuda 11.6...Cuda 11.5 and 11.6 are supported.
-* Fixed ``get stats`` command to shorthand algo-miner combinations to better display on screen.
-* Added 10+ new algorithms.
-* Powershell and other apps will be installed/updated.
+* Wildrig updated.
+* Mike algo for GPU added.
+* Teamredminer added for Amd (Only does algorithms it supports on all gpus)
+* Bminer abandonded- Too many reported issues.
+* Autolykos for nicehash fixed.
+* -Conserve will tag miner when it is not mining "Conserve".
+* EUID error fixed.
+* yescrypt was named to cyescrypt to prevent issues.
 
 ## KNOWN ISSUES
-* ``Get Wallets`` not working.
-* Bminer has issues on nicehash pool.
-* More miners are coming soon- Not a lot of choices atm.
-* Swapping GPUs in Windows between differen PCI slots may cause incorrect Windows Registry data for GPUS. Solutions for fixes are being explored.
-* Combining AMD and NVIDIA was not tested/not supported atm, but will be soon.
-* Some pools used in -Poolname are depreciated, check to see if they exist before using.
+* Get Wallets not working.
+* More miners are coming soon.
 
 ## Suggested Settings- What I as the Dev use.
 * -Auto_Coin Yes (use coin for calculations when applicable)

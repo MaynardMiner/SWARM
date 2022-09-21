@@ -75,7 +75,9 @@
   },
   "autolykos2": {
     "alt_names": [
-      "autolykos2"
+      "autolykosv2",
+      "autolykos2",
+      "autolykos"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -590,7 +592,7 @@
       "comma seperated"
     ]
   },
-  "ghostrider": {
+  "gr": {
     "alt_names": [
       "ghostrider",
       "gr"

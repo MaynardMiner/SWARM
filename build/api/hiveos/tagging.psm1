@@ -1,8 +1,8 @@
 function Global:Update-HiveTagging {
     if ([string]$(arg).API_Key -ne "") {
-        $Miner_Pool = "";
+        $Miner_Pool = "No Pool";
         $Profit_Day = 0;
-        $Miner_Name = "";
+        $Miner_Name = "Conserve";
         $Coin_Name = $null;
         $AddTags = @();
 
@@ -36,6 +36,8 @@ function Global:Update-HiveTagging {
         }
 
         $Tag_List = @();
+        $Tag_List += "Conserve"
+        $Tag_List += "No Pool"
         $Tag_List += (Get-ChildItem "miners\gpu\amd" | Where-Object name -like "*ps1*").BaseName;
         $Tag_List += (Get-ChildItem "miners\gpu\nvidia" | Where-Object name -like "*ps1*").BaseName;
         $Tag_List += (Get-ChildItem "miners\optional_and_old" | Where-Object name -like "*ps1*").BaseName;
@@ -132,7 +134,9 @@ function Global:Update-HiveTagging {
         ## Assign an ID to already created Tags.
         $set_tags = $Tags.data | Where-Object { $_.name -in $Tag_List }
         foreach ($tag in $set_tags) {
+            if(!$Tag_Ids.$($tag.name)) {
             $Tag_Ids.Add("$($tag.name)", "$($tag.id)")
+            }
         }
         $Miner_Tag = $Tag_Ids.$Miner_Name
         $Pool_Tag = $Tag_Ids.$Miner_Pool
