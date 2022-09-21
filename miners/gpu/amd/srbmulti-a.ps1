@@ -76,7 +76,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Prestart   = $PreStart
                     Type       = $ConfigType
                     Path       = $Path
-                    Devices    = $Devices
+                    Devices    = "none"
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version    = "$($(vars).amd.$ref.version)"
                     DeviceCall = "srbmulti-n"
