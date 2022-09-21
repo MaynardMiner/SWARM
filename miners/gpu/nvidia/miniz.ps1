@@ -72,26 +72,24 @@ $(vars).NVIDIATypes | ForEach-Object {
                     "equihash_96/5" { $AddArgs = "--par=96,5 --pers=auto " }
                     "equihash_144/5" {
                         switch ($SelName) {
-                            "nlpool" { $AddArgs = "--par=96,5 --pers=auto " }
-                            "zergpool" { $AddArgs = "--par=96,5 --pers=auto " }
-                            "mph" { $AddArgs = "--par=96,5 --pers=BgoldPoW " }
+                            "mph" { $AddArgs = "--par=144,5 --pers=BgoldPoW " }
+                            default { $AddArgs = "--par=144,5 --pers=auto " }
                         }
                     }
                     "equihash_210/9" { $AddArgs = "--par=210,9 --pers=auto " }
-                    "equihash_200/9" { $AddArgs = "--par=96,5200,9 --pers=auto " }
+                    "equihash_200/9" { $AddArgs = "--par=200,9 --pers=auto " }
                     "equihash_192/7" {
                         switch ($SelName) {
-                        "nlpool" { $AddArgs = "--par=192,7 --pers=auto " }
-                        "zergpool" { $AddArgs = "--par=192,7 --pers=auto " }
                         "mph" { $AddArgs = "--par=192,7 --pers=ZcashPoW " }
+                        default { $AddArgs = "--par=192,7 --pers=auto " }
                         }
                     }
                     "equihash_125/4" { $AddArgs = "--par=125,4 --pers=auto " }
                     "equihash_150/5" { $AddArgs = "--par=150,5 --pers=auto " }
                     "beamhashv3" { $AddArgs = "--par=beam3 --pers=auto " }
-                    "ethash" { $AddArgs = "--par=ethash --pers=auto " }
+                    "ethash" { $AddArgs = "--par=ethash " }
                     "etchash" { $AddArgs = "--par=ethash --pers=etchash " }
-                    "kawpow" { $AddArgs = "--par=kawpow --pers=auto " }
+                    "kawpow" { $AddArgs = "--par=kawpow " }
                 }
                 $Diff = ""
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { 
