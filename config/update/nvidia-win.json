@@ -1,16 +1,5 @@
 {
   "name": "nvidia-win",
-  "srbmulti-n": {
-    "name": "srbmulti-n",
-    "type": "nvidia",
-    "NVIDIA1": ".\\bin\\srbmulti-n-1\\SRBMiner-MULTI.exe",
-    "NVIDIA2": ".\\bin\\srbmulti-n-2\\SRBMiner-MULTI.exe",
-    "NVIDIA3": ".\\bin\\srbmulti-n-3\\SRBMiner-MULTI.exe",
-    "minername": "SRBMiner-MULTI.exe",
-    "version": "1.0.8",
-    "optional": "No",
-    "uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/1.0.8/SRBMiner-Multi-1-0-8-win64.zip"
-  },
   "cyescrypt": {
     "name": "cyescrypt",
     "type": "nvidia",

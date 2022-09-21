@@ -1,15 +1,15 @@
 {
   "name": "amd-win",
-  "srbmulti": {
-    "name": "srbmulti",
+  "srbmulti-a": {
+    "name": "srbmulti-a",
     "type": "amd",
-    "AMD1": ".\\bin\\srbmulti-1\\SRBMiner-MULTI.exe",
-    "AMD2": ".\\bin\\srbmulti-2\\SRBMiner-MULTI.exe",
-    "AMD3": ".\\bin\\srbmulti-3\\SRBMiner-MULTI.exe",
+    "AMD1": ".\\bin\\srbmulti-a-1\\SRBMiner-MULTI.exe",
+    "AMD2": ".\\bin\\srbmulti-a-2\\SRBMiner-MULTI.exe",
+    "AMD3": ".\\bin\\srbmulti-a-3\\SRBMiner-MULTI.exe",
     "minername": "SRBMiner-MULTI.exe",
-    "version": "0.8.2",
+    "version": "1.0.8",
     "optional": "No",
-    "uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/0.8.2/SRBMiner-Multi-0-8-2-win64.zip"
+    "uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/1.0.8/SRBMiner-Multi-1-0-8-win64.zip"
   },
   "claymore-amd": {
     "name": "claymore-amd",
