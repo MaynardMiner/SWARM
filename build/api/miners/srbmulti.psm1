@@ -16,7 +16,7 @@ function Global:Get-StatsSrbmulti {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop }
         Catch { Write-Host "Failed To parse API" -ForegroundColor Red; Break }
         if ($Data) {
-            $global:RAW += $Data.algorithms.hashrate.now;
+            $global:RAW += $Data.algorithms.hashrate.'1min';
             $Hash = @()
             Global:Write-MinerData2;
             $Data.algorithms.hashrate.gpu | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {

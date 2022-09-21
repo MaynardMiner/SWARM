@@ -4,30 +4,24 @@ $(vars).AMDTypes | ForEach-Object {
 
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
 
+    $ref = "srbmulti-a";
+
     ##Miner Path Information
-    if ($(vars).amd.srbmulti.$ConfigType) { $Path = "$($(vars).amd.srbmulti.$ConfigType)" }
+    if ($(vars).amd.$ref.$ConfigType) { $Path = "$($(vars).amd.$ref.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).amd.srbmulti.uri) { $Uri = "$($(vars).amd.srbmulti.uri)" }
+    if ($(vars).amd.$ref.uri) { $Uri = "$($(vars).amd.$ref.uri)" }
     else { $Uri = "None" }
-    if ($(vars).amd.srbmulti.minername) { $MinerName = "$($(vars).amd.srbmulti.minername)" }
+    if ($(vars).amd.$ref.minername) { $MinerName = "$($(vars).amd.$ref.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "srbmulti-$Num"; $Port = "3400$Num"
-
-    Switch ($Num) {
-        1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
-    }
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$ref-$Num"; $Port = "3400$Num"
 
     ##Log Directory
     $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
 
-    ##Parse -GPUDevices
-    if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
-    else { $Devices = $Get_Devices }
-
     ##Get Configuration File
     ##This is located in config\miners
-    $MinerConfig = $Global:config.miners.srbmulti
+    $MinerConfig = $Global:config.miners.$ref
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = "/usr/local/swarm/lib64"
@@ -82,11 +76,11 @@ $(vars).AMDTypes | ForEach-Object {
                     Prestart   = $PreStart
                     Type       = $ConfigType
                     Path       = $Path
-                    Devices    = $Devices
+                    Devices    = "none"
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
-                    Version    = "$($(vars).amd.srbmulti.version)"
-                    DeviceCall = "srbminer"
-                    Arguments  = "$Nicehash--adl-disable --gpu-platform $($(vars).AMDPlatform) --disable-cpu --algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --wallet $($_.$User) --password $($_.$Pass)$Diff --api-enable --logfile `'$Log`' --api-port $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Version    = "$($(vars).amd.$ref.version)"
+                    DeviceCall = "srbmulti-n"
+                    Arguments  = "$Nicehash--disable-cpu --enable-opencl-cleanup --adl-disable --algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --wallet $($_.$User) --password $($_.$Pass)$Diff --api-enable --logfile `'$Log`' --api-port $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price

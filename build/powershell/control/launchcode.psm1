@@ -123,6 +123,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                         "lolminer" { $MinerArguments = "--devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "xmrstak" { $MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                         "progminer" { $MinerArguments = "--cuda-devices $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
+                        "srbmulti-n" { $MinerArguments = "$($MinerCurrent.Arguments) --gpu-id $($MinerCurrent.Devices)" }
                         "grin-miner" { global:set-minerconfig $NewMiner $Logs }
                         "zjazz" {
                             $GetDevices = $($MinerCurrent.Devices) -split ","
