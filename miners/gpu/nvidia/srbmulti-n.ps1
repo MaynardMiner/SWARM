@@ -28,7 +28,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") {
         $GPUDevices1 = $Get_Devices
-        $GPUDevices1 = $GPUDevices1 -replace ',', ';'
+        $GPUDevices1 = $GPUDevices1 -replace ',', '!'
         $Devices = $GPUDevices1
     }
     else { $Devices = $Get_Devices }
@@ -93,7 +93,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Devices    = $Devices
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version    = "$($(vars).nvidia.$ref.version)"
-                    DeviceCall = "srbminer-n"
+                    DeviceCall = "srbmulti-n"
                     Arguments  = "$Nicehash--disable-cpu --enable-opencl-cleanup --adl-disable --algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --wallet $($_.$User) --password $($_.$Pass)$Diff --api-enable --logfile `'$Log`' --api-port $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
