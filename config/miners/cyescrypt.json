@@ -7,25 +7,29 @@
             "yescryptr8": "-i 12.5",
             "yescryptr8g": "-i 12.5",
             "yescryptr16": "-i 12.5",
-            "yescryptr32": ""
+            "yescryptr32": "",
+            "neoscrypt": ""
         },
         "difficulty": {
             "yescryptr8": "",
             "yescryptr8g": "",
             "yescryptr16": "",
-            "yescryptr32": ""
+            "yescryptr32": "",
+            "neoscrypt": ""
         },
         "naming": {
             "yescryptr8": "yescryptr8",
             "yescryptr8g": "yescrypt",
             "yescryptr16": "yescryptr16",
-            "yescryptr32": "yescryptr32"
+            "yescryptr32": "yescryptr32",
+            "neoscrypt": "neoscrypt"
         },
         "fee": {
             "yescryptr8": 0,
             "yescryptr8g": 0,
             "yescryptr16": 0,
-            "yescryptr32": 0
+            "yescryptr32": 0,
+            "neoscrypt": 0
         }
     },
     "NVIDIA2": {
@@ -36,24 +40,29 @@
             "yescryptr8": "-i 12.5",
             "yescryptr8g": "-i 12.5",
             "yescryptr16": "-i 12.5",
-            "yescryptr32": ""
+            "yescryptr32": "",
+            "neoscrypt": ""
         },
         "difficulty": {
             "yescryptr8": "",
+            "yescryptr8g": "",
             "yescryptr16": "",
-            "yescryptr32": ""
+            "yescryptr32": "",
+            "neoscrypt": ""
         },
         "naming": {
             "yescryptr8": "yescryptr8",
             "yescryptr8g": "yescrypt",
             "yescryptr16": "yescryptr16",
-            "yescryptr32": "yescryptr32"
+            "yescryptr32": "yescryptr32",
+            "neoscrypt": "neoscrypt"
         },
         "fee": {
             "yescryptr8": 0,
             "yescryptr8g": 0,
             "yescryptr16": 0,
-            "yescryptr32": 0
+            "yescryptr32": 0,
+            "neoscrypt": 0
         }
     },
     "NVIDIA3": {
@@ -64,26 +73,30 @@
             "yescryptr8": "-i 12.5",
             "yescryptr8g": "-i 12.5",
             "yescryptr16": "-i 12.5",
-            "yescryptr32": ""
+            "yescryptr32": "",
+            "neoscrypt": ""
         },
         "difficulty": {
             "yescryptr8": "",
             "yescryptr8g": "",
             "yescryptr16": "",
-            "yescryptr32": ""
+            "yescryptr32": "",
+            "neoscrypt": ""
         },
         "naming": {
             "yescryptr8": "yescryptr8",
             "yescryptr8g": "yescrypt",
             "yescryptr16": "yescryptr16",
-            "yescryptr32": "yescryptr32"
+            "yescryptr32": "yescryptr32",
+            "neoscrypt": "neoscrypt"
         },
         "fee": {
             "yescryptr8": 0,
             "yescryptr8g": 0,
             "yescryptr16": 0,
-            "yescryptr32": 0
-        }
+            "yescryptr32": 0,
+            "neoscrypt": 0
+        }   
     },
     "name": "cyescrypt"
 }

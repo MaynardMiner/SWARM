@@ -55,12 +55,12 @@
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/ehssand-windows.zip"
   },
-  "gminer-amd": {
-    "name": "gminer-amd",
+  "gminer-a": {
+    "name": "gminer-a",
     "type": "amd",
-    "AMD1": ".\\bin\\gminer-amd-1\\miner.exe",
-    "AMD2": ".\\bin\\gminer-amd-2\\miner.exe",
-    "AMD3": ".\\bin\\gminer-amd-3\\miner.exe",
+    "AMD1": ".\\bin\\gminer-a-1\\miner.exe",
+    "AMD2": ".\\bin\\gminer-a-2\\miner.exe",
+    "AMD3": ".\\bin\\gminer-a-3\\miner.exe",
     "minername": "miner.exe",
     "version": "3.05",
     "optional": "No",
@@ -106,9 +106,9 @@
     "AMD2": ".\\bin\\lolMiner-AMD-2\\lolMiner.exe",
     "AMD3": ".\\bin\\lolMiner-AMD-3\\lolMiner.exe",
     "minername": "lolMiner.exe",
-    "version": "1.35",
+    "version": "1.57",
     "optional": "No",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.35/lolMiner_v1.35_Win64.zip"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.57/lolMiner_v1.57_Win64.zip"
   },
   "teamredminer": {
     "name": "teamredminer",

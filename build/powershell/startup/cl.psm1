@@ -13,12 +13,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function Global:Get-AMDPlatform() {
     $Opencl = 0;
-    $A = ($(clinfo) | Select-String "Platform Vendor").Line;
+    $Lines = @()
+    $A = (clinfo)
+    $Select = $A | Select-String "Platform Vendor"
     if($IsLinux){ 
-        $A.Replace("  Platform Vendor                                 ","")
-        for($i=0; $i -lt $A.Count; $i++) {
-            if($A[$i] -eq "AMD Accelerated Parallel Processing" -or $platform -eq "Advanced Micro Devices, Inc.") {
-                $Opencl = $i;
+        foreach($match in $Select.Matches) {
+            $Lines += $A[$match.Index].Replace("  Platform Vendor                                 ","");
+        }
+        for($i=0; $i -lt $Lines.Count; $i++) {
+            if($Lines[$i] -eq "AMD Accelerated Parallel Processing" -or $Lines[$i] -eq "Advanced Micro Devices, Inc.") {
+                $Opencl = $i
             }
         }
     }

@@ -62,20 +62,6 @@ $(vars).AMDTypes | ForEach-Object {
         
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
                 $SelAlgo = $_.Algorithm
-                switch ($SelAlgo) {
-                    "equihash_144/5" { $AddArgs = "--coin AUTO144_5 " }
-                    "equihash_96/5" { $AddArgs = "--coin MNX " }
-                    "equihash_125/4" { $AddArgs = "--coin ZEL --tls 0 " }
-                    "beamv2" { $AddArgs = "--coin BEAM-II --tls 0 " }
-                    "equihash_192/7" { $AddArgs = "--coin AUTO192_7 " }
-                    "cuckatoo31" { $AddArgs = "--algo C31 " }
-                    "cuckaroom" { $AddArgs = "--algo C29M " }
-                    "cuckatoo32" { $AddArgs = "--algo C32 " }
-                    "cuckarood29v" { $AddArgs = "--algo C29D " }
-                    "beamhashv3" { $AddArgs = "--algo BEAM-III --tls 0 " }
-                    "ethash" { $AddArgs = "--algo ETHASH " }
-                    "etchash" { $AddArgs = "--algo ETCHASH " }
-                }
                 $Diff = ""
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { 
                     switch($_.Name) {
@@ -97,7 +83,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).amd.lolminer.version)"
                     DeviceCall = "lolminer"
-                    Arguments  = "--pool $($_.Pool_Host):$($_.Port) --user $($_.$User) $AddArgs--pass $($_.$Pass)$($Diff) --apiport $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "--coin $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --user $($_.$User) $AddArgs--pass $($_.$Pass)$($Diff) --apiport $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price

@@ -11,7 +11,6 @@
             "export GPU_MAX_ALLOC_PERCENT=100"
         ],
         "commands": {
-            "autolykos2": "",
             "cuckaroo29": "",
             "cuckatoo32": "",
             "cuckarood29": "",
@@ -24,7 +23,6 @@
             "zelhash": ""
         },
         "difficulty": {
-            "autolykos2": "",
             "cuckaroo29": "",
             "cuckatoo32": "",
             "cuckarood29": "",
@@ -37,7 +35,6 @@
             "zelhash": ""
         },
         "naming": {
-            "autolykos2": "AUTOLYKOS2",
             "cuckaroo29": "GRIN-C29M",
             "cuckatoo32": "GRIN-C32",
             "cuckarood29": "MWC-C29D",
@@ -50,7 +47,6 @@
             "zelhash": "ZEL"
         },
         "fee": {
-            "autolykos2": 1.5,
             "cuckaroo29": 2,
             "cuckatoo32": 2,
             "cuckarood29": 2,
