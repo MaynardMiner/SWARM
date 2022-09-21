@@ -15,7 +15,7 @@ function Global:Get-AMDPlatform() {
     $Opencl = 0;
     $A = ($(clinfo) | Select-String "Platform Vendor").Line;
     if($IsLinux){ 
-        $A.Replace("  Platform Vendor                                 ","")
+        $A = $A.Replace("  Platform Vendor                                 ","")
         for($i=0; $i -lt $A.Count; $i++) {
             if($A[$i] -eq "AMD Accelerated Parallel Processing" -or $platform -eq "Advanced Micro Devices, Inc.") {
                 $Opencl = $i;
