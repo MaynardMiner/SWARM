@@ -3012,3 +3012,35 @@ identity. Was related to machine potentially having multiple active MAC addresse
 * -historical_bias 1:1 (Don't penalize based on historical data- Too much new activity now)
 * -Hashrate_Threshold 10 (Don't switch miner on same algorithm unless it falls below 10% hashrate of next best miner)
 * -Switch_Threshold 5 (Don't switch unless next profitable item is at least 5% better)
+
+######################################################
+######################################################
+
+# Version 3.6.0
+
+## Beta Release
+* This project has all basic miners, but need more miners and updates.
+
+## Important Note!
+* AMD requires clinfo installed. `apt-get install clinfo` will install it in linux.
+* If the above is too confusing, use -Opencl [AMD Platform]
+
+## Improvements 
+* Fixed OpenCl
+* miniz added.
+* gminer amd added.
+* lolminer added- SPECIAL NOTE: Will only work for NVIDIA1 due to api. Will only work for AMD1 if using AMD and NVIDIA.
+* neoscrypt added back in (Saw high on Whattomine.com)
+
+## KNOWN ISSUES
+* Get Wallets not working.
+* More miners are coming soon.
+
+## Suggested Settings- What I as the Dev use.
+* -Auto_Coin Yes (use coin for calculations when applicable)
+* -Stat_Coin live (Mine based on individual coin statistics live values)
+* -Stat_Algo Live (Use live data for algorithms)
+* -Min_Blocks 4 (Don't mine anything that is going to take more than 6 hours to find)
+* -historical_bias 1:1 (Don't penalize based on historical data- Too much new activity now)
+* -Hashrate_Threshold 10 (Don't switch miner on same algorithm unless it falls below 10% hashrate of next best miner)
+* -Switch_Threshold 5 (Don't switch unless next profitable item is at least 5% better)

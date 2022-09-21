@@ -1,18 +1,15 @@
-# Version 3.6.0
+# Version 3.6.1
 
 ## Beta Release
 * This project has all basic miners, but need more miners and updates.
 
 ## Important Note!
-* AMD requires clinfo installed. `apt-get install clinfo` will install it in linux.
-* If the above is too confusing, use -Opencl [AMD Platform]
+* AMD requires clinfo installed. HiveOS beta does not have it. `apt-get install clinfo` will install it in linux. (may need `apt update` first)
+* If the above is too confusing, use -Opencl [AMD Platform] if you know what platform AMD is.
 
 ## Improvements 
-* Fixed OpenCl
-* miniz added.
-* gminer amd added.
-* lolminer added- SPECIAL NOTE: Will only work for NVIDIA1 due to api. Will only work for AMD1 if using AMD and NVIDIA.
-* neoscrypt added back in (Saw high on Whattomine.com)
+* miniz issues were resolved.
+* srbmulti-a was added to AMD.
 
 ## KNOWN ISSUES
 * Get Wallets not working.
