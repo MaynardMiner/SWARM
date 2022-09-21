@@ -12,23 +12,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function Global:Get-AMDPlatform() {
-        Add-Type -Path "./build/apps/opencl/OpenCL.dll"
-        Add-Type -Path "./build/apps/opencl/OpenCL.NetCore.dll"
-        [OpenCL.NetCore.ErrorCode]$err = [OpenCL.NetCore.ErrorCode]::Unknown
-        [OpenCL.NetCore.Platform[]]$Platforms = [OpenCL.NetCore.Cl]::GetPlatformIDs([ref]$err)
-        if ($err -ne [OpenCL.NetCore.ErrorCode]::Success)
-        {
-            log "Failed to get OpenCL plaform. Use -CLPlatform. $err.ToString()" -ForegroundColor Red 
-            return 0;
-        }
-        [String[]]$PlatFormInfo = @();
-        foreach ($Platform in $Platforms) {
-            $PlatFormInfo += [Cl]::GetPlatformInfo($Platform, [PlatformInfo]::Name,[ref]$err).ToString()   
-         }
-         for($i=0; $i -lt $PlatFormInfo.Count;$i++) {
-            if($PlatFormInfo[$i] -eq "AMD Accelerated Parallel Processing" -or $PlatFormInfo[$i] -eq "Advanced Micro Devices, Inc.") {
-                return $i
+    $Opencl = 0;
+    $A = ($(clinfo) | Select-String "Platform Vendor").Line;
+    if($IsLinux){ 
+        $A.Replace("  Platform Vendor                                 ","")
+        for($i=0; $i -lt $A.Count; $i++) {
+            if($A[$i] -eq "AMD Accelerated Parallel Processing" -or $platform -eq "Advanced Micro Devices, Inc.") {
+                $Opencl = $i;
             }
-         }
-         return 0;
+        }
+    }
+    if($IsWindows) {
+        $A = (clinfo) | Select-string "Platform Vendor"
+        $PlatformA = @()
+        for ($i = 0; $i -lt $A.Count; $i++) { $PlatSel = $A | Select-Object -Skip $i -First 1; $PlatSel = $PlatSel -replace "Platform Vendor", "$i"; $PlatSel = $PlatSel -replace ":", "="; $PlatformA += $PlatSel}
+        $PlatformA = $PlatformA | ConvertFrom-StringData
+        $PlatformA.keys | ForEach-Object {if ($PlatformA.$_ -eq "AMD Accelerated Parallel Processing" -or $PlatformA.$_ -eq "Advanced Micro Devices, Inc.") {$Opencl = $_}}
+    }
+    return $Opencl
 }
