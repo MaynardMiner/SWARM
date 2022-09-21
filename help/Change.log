@@ -1,17 +1,18 @@
-# Version 3.5.9
+# Version 3.6.0
 
-## Alpha Release
-* This project is in a restoration period- I am trying to get it to full working status.
+## Beta Release
+* This project has all basic miners, but need more miners and updates.
+
+## Important Note!
+* AMD requires clinfo installed. `apt-get install clinfo` will install it in linux.
+* If the above is too confusing, use -Opencl [AMD Platform]
 
 ## Improvements 
-* Wildrig updated.
-* Mike algo for GPU added.
-* Teamredminer added for Amd (Only does algorithms it supports on all gpus)
-* Bminer abandonded- Too many reported issues.
-* Autolykos for nicehash fixed.
-* -Conserve will tag miner when it is not mining "Conserve".
-* EUID error fixed.
-* yescrypt was named to cyescrypt to prevent issues.
+* Fixed OpenCl
+* miniz added.
+* gminer amd added.
+* lolminer added- SPECIAL NOTE: Will only work for NVIDIA1 due to api. Will only work for AMD1 if using AMD and NVIDIA.
+* neoscrypt added back in (Saw high on Whattomine.com)
 
 ## KNOWN ISSUES
 * Get Wallets not working.
