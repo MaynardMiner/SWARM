@@ -94,7 +94,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version    = "$($(vars).nvidia.$ref.version)"
                     DeviceCall = "srbminer"
-                    Arguments  = "$Nicehash --disable-cpu --enable-opencl-cleanup --adl-disable --algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --wallet $($_.$User) --password $($_.$Pass)$Diff --api-enable --logfile `'$Log`' --api-port $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "$Nicehash--disable-cpu --enable-opencl-cleanup --adl-disable --algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --wallet $($_.$User) --password $($_.$Pass)$Diff --api-enable --logfile `'$Log`' --api-port $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
