@@ -15,9 +15,15 @@ function Global:Get-Statsxmrig {
     $Request = Global:Get-HTTP -Port $global:Port -Message $Message
     if ($Request) {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop; }catch { Write-Host "Failed To gather summary" -ForegroundColor Red; break }
-        $HashRate_Total = [Double]$Data.hashrate.total[0]
-        if (-not $HashRate_Total) { $HashRate_Total = [Double]$Data.hashrate.total[1] } #fix
-        if (-not $HashRate_Total) { $HashRate_Total = [Double]$Data.hashrate.total[2] } #fix
+        ##Grab the first one that has a value
+        foreach($hash in $Data.hashrate.total) {
+            $GetHash = 0;
+            $IsInt = [Double]::TryParse($hash,$GetHash);
+            if($IsInt) {
+                break;
+            }
+        }
+        $HashRate_Total = $GetHash;
         $global:RAW = $HashRate_Total
         $global:GPUKHS += $HashRate_Total / 1000
         Global:Write-MinerData2
@@ -25,13 +31,15 @@ function Global:Get-Statsxmrig {
         $Hash = @()
         try { 
             for ($global:i = 0; $global:i -lt $Data.hashrate.threads.count; $global:i++) {
-                $Hash += 
-                ## If there is more than one count
-                if ($Data.hashrate.threads[$global:i].count -gt 1) {
-                    $Data.Hashrate.threads[$global:i] | Select-Object -First 1 
-                }
-                ## If not select that singular item.
-                else { $Data.Hashrate.threads[$Global:i] }
+                $GetThread = $Data.hashrate.threads[$i]
+                foreach($hash in $GetThread) {
+                    $GetHash = 0;
+                    $IsInt = [Double]::TryParse($hash,$GetHash);
+                    if($IsInt) {
+                        break;
+                    }
+                }       
+                $Hash += $GetHash;
             }
         }
         catch { }
