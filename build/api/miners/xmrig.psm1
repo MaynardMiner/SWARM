@@ -16,9 +16,9 @@ function Global:Get-Statsxmrig {
     if ($Request) {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop; }catch { Write-Host "Failed To gather summary" -ForegroundColor Red; break }
         ##Grab the first one that has a value
-        foreach ($hash in $Data.hashrate.total) {
+        foreach ($testhash in $Data.hashrate.total) {
             $GetHash = 0;
-            $IsInt = [Double]::TryParse($hash, $GetHash);
+            $IsInt = [Double]::TryParse($testhash, [ref]$GetHash);
             if ($IsInt) {
                 break;
             }
@@ -28,16 +28,18 @@ function Global:Get-Statsxmrig {
         $global:GPUKHS += $HashRate_Total / 1000
         Global:Write-MinerData2
         $Hash = @()
-        try { 
-            for ($global:i = 0; $global:i -lt $Data.hashrate.threads.count; $global:i++) {
-                $GetThread = $Data.hashrate.threads[$i]
-                foreach ($hash in $GetThread) {
-                    $GetHash = 0;
-                    $IsInt = [Double]::TryParse($hash, $GetHash);
-                    if ($IsInt) {
-                        break;
-                    }
-                }       
+        try {
+            ## Assume we have same amount of threads per device..All we can do.
+            $Totalthreads = $Data.hashrate.threads.count / ($Data.hashrate.threads.count / $Devices.Count);
+            for ($global:i = 0; $global:i -lt $Totalthreads; $global:i++) {
+                [Double]$Gethash = 0;
+                $Value = [String]$Data.hashrate.threads[$global:i]
+                $Gethash = [Double]$Value
+                ## Prevent out of bounds.
+                if(($global:1 + 1) -le $Data.hashrate.threads.count) {
+                    $Value = [String]$Data.hashrate.threads[$global:i+1]
+                    $Gethash += [Double]$Value
+                }
                 $Hash += $GetHash;
             }
         }
