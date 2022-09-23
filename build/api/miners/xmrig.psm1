@@ -43,6 +43,9 @@ function Global:Get-Statsxmrig {
         }
         catch { }
         try { 
+            if($global:TypeS -eq "CPU") {
+                $global:CPUKHS += $($Hash | Measure-Object -Sum).Sum
+            }
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
                 $global:GPUHashrates.$(Global:Get-GPUs) = ($Hash[$global:i]) / 1000 
             } 
