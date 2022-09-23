@@ -27,7 +27,6 @@ function Global:Get-Statsxmrig {
         $global:RAW = $HashRate_Total
         $global:GPUKHS += $HashRate_Total / 1000
         Global:Write-MinerData2
-        Write-Host "Note: XMR-STAK/XMRig API is not great. You can't match threads to specific CPU." -ForegroundColor Yellow
         $Hash = @()
         try { 
             for ($global:i = 0; $global:i -lt $Data.hashrate.threads.count; $global:i++) {
