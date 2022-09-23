@@ -30,7 +30,7 @@ function Global:Get-Statsxmrig {
         $Hash = @()
         try {
             ## Assume we have same amount of threads per device..All we can do.
-            $Totalthreads = $Data.hashrate.threads.count / ($Data.hashrate.threads.count / $Devices.Count);
+            $Totalthreads = [Math]::Round($Data.hashrate.threads.count / ($Data.hashrate.threads.count / $Devices.Count));
             for ($global:i = 0; $global:i -lt $Totalthreads; $global:i++) {
                 [Double]$Gethash = 0;
                 $Value = [String]$Data.hashrate.threads[$global:i]
