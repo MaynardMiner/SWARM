@@ -17,10 +17,10 @@
             "gr": ""
         },
         "naming": {
-            "kawpow": "",
-            "random-arq": "",
-            "random-x": "",
-            "gr": ""
+            "kawpow": "kawpow",
+            "random-arq": "rx/arq",
+            "random-x": "rx/0",
+            "gr": "gr"
         },
         "fee": {
             "kawpow": 1,
@@ -46,10 +46,10 @@
             "gr": ""
         },
         "naming": {
-            "kawpow": "",
-            "random-arq": "",
-            "random-x": "",
-            "gr": ""
+            "kawpow": "kawpow",
+            "random-arq": "rx/arq",
+            "random-x": "rx/0",
+            "gr": "gr"
         },
         "fee": {
             "kawpow": 1,
@@ -75,10 +75,10 @@
             "gr": ""
         },
         "naming": {
-            "kawpow": "",
-            "random-arq": "",
-            "random-x": "",
-            "gr": ""
+            "kawpow": "kawpow",
+            "random-arq": "rx/arq",
+            "random-x": "rx/0",
+            "gr": "gr"
         },
         "fee": {
             "kawpow": 1,
