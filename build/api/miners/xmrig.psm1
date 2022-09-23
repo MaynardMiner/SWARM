@@ -16,10 +16,10 @@ function Global:Get-Statsxmrig {
     if ($Request) {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop; }catch { Write-Host "Failed To gather summary" -ForegroundColor Red; break }
         ##Grab the first one that has a value
-        foreach($hash in $Data.hashrate.total) {
+        foreach ($hash in $Data.hashrate.total) {
             $GetHash = 0;
-            $IsInt = [Double]::TryParse($hash,$GetHash);
-            if($IsInt) {
+            $IsInt = [Double]::TryParse($hash, $GetHash);
+            if ($IsInt) {
                 break;
             }
         }
@@ -31,10 +31,10 @@ function Global:Get-Statsxmrig {
         try { 
             for ($global:i = 0; $global:i -lt $Data.hashrate.threads.count; $global:i++) {
                 $GetThread = $Data.hashrate.threads[$i]
-                foreach($hash in $GetThread) {
+                foreach ($hash in $GetThread) {
                     $GetHash = 0;
-                    $IsInt = [Double]::TryParse($hash,$GetHash);
-                    if($IsInt) {
+                    $IsInt = [Double]::TryParse($hash, $GetHash);
+                    if ($IsInt) {
                         break;
                     }
                 }       
@@ -43,12 +43,14 @@ function Global:Get-Statsxmrig {
         }
         catch { }
         try { 
-            if($global:TypeS -eq "CPU") {
+            if ($global:TypeS -eq "CPU") {
                 $global:CPUKHS += $($Hash | Measure-Object -Sum).Sum
             }
-            for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
-                $global:GPUHashrates.$(Global:Get-GPUs) = ($Hash[$global:i]) / 1000 
-            } 
+            else {
+                for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
+                    $global:GPUHashrates.$(Global:Get-GPUs) = ($Hash[$global:i]) / 1000 
+                } 
+            }
         }
         catch { Write-Host "Failed To parse threads" -ForegroundColor Red };
         $global:MinerACC += $Data.results.shares_good
