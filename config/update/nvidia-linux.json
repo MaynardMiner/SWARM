@@ -293,9 +293,9 @@
     "NVIDIA2": ".\\bin\\lolminer-n-2\\lolMiner",
     "NVIDIA3": ".\\bin\\lolminer-n-3\\lolMiner",
     "minername": "lolMiner",
-    "version": "1.57",
+    "version": "1.59",
     "optional": "No",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.57/lolMiner_v1.57_Lin64.tar.gz"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.59/lolMiner_v1.59a_Lin64.tar.gz"
   },
   "tt-miner": {
     "name": "tt-miner",

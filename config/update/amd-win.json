@@ -106,9 +106,9 @@
     "AMD2": ".\\bin\\lolMiner-AMD-2\\lolMiner.exe",
     "AMD3": ".\\bin\\lolMiner-AMD-3\\lolMiner.exe",
     "minername": "lolMiner.exe",
-    "version": "1.57",
+    "version": "1.58",
     "optional": "No",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.57/lolMiner_v1.57_Win64.zip"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.58/lolMiner_v1.58_Win64.zip"
   },
   "teamredminer": {
     "name": "teamredminer",
