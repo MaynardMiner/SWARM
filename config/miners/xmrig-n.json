@@ -7,26 +7,22 @@
         "commands": {
             "kawpow": "",
             "random-arq": "",
-            "random-x": "",
-            "gr": ""
+            "random-x": ""
         },
         "difficulty": {
             "kawpow": "",
             "random-arq": "",
-            "random-x": "",
-            "gr": ""
+            "random-x": ""
         },
         "naming": {
             "kawpow": "kawpow",
             "random-arq": "rx/arq",
-            "random-x": "rx/0",
-            "gr": "gr"
+            "random-x": "rx/0"
         },
         "fee": {
             "kawpow": 1,
             "random-arq": 1,
-            "random-x": 1,
-            "gr": 1
+            "random-x": 1
         }   
     },
     "NVIDIA2": {
@@ -36,26 +32,22 @@
         "commands": {
             "kawpow": "",
             "random-arq": "",
-            "random-x": "",
-            "gr": ""
+            "random-x": ""
         },
         "difficulty": {
             "kawpow": "",
             "random-arq": "",
-            "random-x": "",
-            "gr": ""
+            "random-x": ""
         },
         "naming": {
             "kawpow": "kawpow",
             "random-arq": "rx/arq",
-            "random-x": "rx/0",
-            "gr": "gr"
+            "random-x": "rx/0"
         },
         "fee": {
             "kawpow": 1,
             "random-arq": 1,
-            "random-x": 1,
-            "gr": 1
+            "random-x": 1
         }   
     },
     "NVIDIA3": {
@@ -65,26 +57,22 @@
         "commands": {
             "kawpow": "",
             "random-arq": "",
-            "random-x": "",
-            "gr": ""
+            "random-x": ""
         },
         "difficulty": {
             "kawpow": "",
             "random-arq": "",
-            "random-x": "",
-            "gr": ""
+            "random-x": ""
         },
         "naming": {
             "kawpow": "kawpow",
             "random-arq": "rx/arq",
-            "random-x": "rx/0",
-            "gr": "gr"
+            "random-x": "rx/0"
         },
         "fee": {
             "kawpow": 1,
             "random-arq": 1,
-            "random-x": 1,
-            "gr": 1
+            "random-x": 1
         }   
     }
 }
