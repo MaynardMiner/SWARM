@@ -260,9 +260,9 @@
     "AMD2": ".\\bin\\nanominer-2\\nanominer",
     "AMD3": ".\\bin\\nanominer-3\\nanominer",
     "minername": "nanominer",
-    "version": "3.4.2",
+    "version": "3.7.2",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/3.4.2/nanominer-linux-3.4.2-cuda11.tar.gz"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.2/nanominer-linux-3.7.2.tar.gz"
   },
   "nbminer-amd": {
     "name": "nbminer-amd",
