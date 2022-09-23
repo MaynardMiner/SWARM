@@ -253,16 +253,16 @@
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/progminer-linux-10.tar.gz"
   },
-  "xmrig-nv": {
-    "name": "xmrig-nv",
+  "xmrig-n": {
+    "name": "xmrig-n",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\xmrig-nv-1\\xmrig",
-    "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig",
-    "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig",
+    "NVIDIA1": ".\\bin\\xmrig-n-1\\xmrig",
+    "NVIDIA2": ".\\bin\\xmrig-n-2\\xmrig",
+    "NVIDIA3": ".\\bin\\xmrig-n-3\\xmrig",
     "minername": "xmrig",
-    "version": "6.7.0",
+    "version": "6.18.0",
     "optional": "No",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v5.0/xmrig-linux.tar.xz"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.18.0/xmrig-6.18.0-linux-x64.tar.gz"
   },
   "verus": {
     "name": "verus",

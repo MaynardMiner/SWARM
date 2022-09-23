@@ -253,16 +253,16 @@
     "optional": "No",
     "uri": "https://tradeproject.de/download/Miner/TT-Miner.zip"
   },
-  "xmrig-nv": {
-    "name": "xmrig-nv",
+  "xmrig-n": {
+    "name": "xmrig-n",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\xmrig-nv-1\\xmrig.exe",
-    "NVIDIA2": ".\\bin\\xmrig-nv-2\\xmrig.exe",
-    "NVIDIA3": ".\\bin\\xmrig-nv-3\\xmrig.exe",
+    "NVIDIA1": ".\\bin\\xmrig-n-1\\xmrig.exe",
+    "NVIDIA2": ".\\bin\\xmrig-n-2\\xmrig.exe",
+    "NVIDIA3": ".\\bin\\xmrig-n-3\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "6.15.3",
+    "version": "6.18.0",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.15.3/xmrig-6.15.3-msvc-win64.zip"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.18.0/xmrig-6.18.0-msvc-win64.zip"
   },
   "lolminer-n": {
     "name": "lolminer-n",

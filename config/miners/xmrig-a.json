@@ -1,0 +1,37 @@
+{
+    "name": "xmrig-a",
+    "AMD1": {
+        "name": "AMD1",
+        "delay": "1",
+        "prestart": [
+            "export GPU_MAX_HEAP_SIZE=100",
+            "export GPU_USE_SYNC_OBJECTS=1",
+            "export GPU_SINGLE_ALLOC_PERCENT=100",
+            "export GPU_MAX_ALLOC_PERCENT=100"
+        ],
+        "commands": {
+            "kawpow": "",
+            "random-arq": "",
+            "random-x": "",
+            "gr": ""
+        },
+        "difficulty": {
+            "kawpow": "",
+            "random-arq": "",
+            "random-x": "",
+            "gr": ""
+        },
+        "naming": {
+            "kawpow": "",
+            "random-arq": "",
+            "random-x": "",
+            "gr": ""
+        },
+        "fee": {
+            "kawpow": 1,
+            "random-arq": 1,
+            "random-x": 1,
+            "gr": 1
+        }   
+    }
+}
