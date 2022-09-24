@@ -10,34 +10,44 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
+<#
+SWARM is open-source software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+SWARM is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#>
 function Global:Get-Statsxmrig {
     $Message = "/1/summary"
     $Request = Global:Get-HTTP -Port $global:Port -Message $Message
     if ($Request) {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop; }catch { Write-Host "Failed To gather summary" -ForegroundColor Red; break }
-        ##Grab the first one that has a value
-        foreach ($testhash in $Data.hashrate.total) {
-            $GetHash = 0;
-            $IsInt = [Double]::TryParse($testhash, [ref]$GetHash);
-            if ($IsInt) {
-                break;
-            }
+        $HashRate_Total = 0;
+        foreach($threads in $Data.hashrate.threads) {
+                $GetHash = 0;
+                $ToString = [string]$threads[0];
+                $IsInt = [Double]::TryParse($ToString, [ref]$GetHash);
+                $HashRate_Total += $Gethash;   
         }
-        $HashRate_Total = $GetHash;
         $global:RAW = $HashRate_Total
         $global:GPUKHS += $HashRate_Total / 1000
         Global:Write-MinerData2
         $Hash = @()
         try {
             ## Assume we have same amount of threads per device..All we can do.
-            $Totalthreads = [Math]::Round($Data.hashrate.threads.count / ($Data.hashrate.threads.count / $Devices.Count));
+            $Totalthreads = $Data.hashrate.threads.count / ($Data.hashrate.threads.count / $Devices.Count);
             for ($global:i = 0; $global:i -lt $Totalthreads; $global:i++) {
                 [Double]$Gethash = 0;
-                $Value = [String]$Data.hashrate.threads[$global:i]
+                $Value = [String]$Data.hashrate.threads[$global:i][0]
                 $Gethash = [Double]$Value
                 ## Prevent out of bounds.
                 if(($global:1 + 1) -le $Data.hashrate.threads.count) {
-                    $Value = [String]$Data.hashrate.threads[$global:i+1]
+                    $Value = [String]$Data.hashrate.threads[$global:i+1][0]
                     $Gethash += [Double]$Value
                 }
                 $Hash += $GetHash;

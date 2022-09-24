@@ -16,14 +16,13 @@ function Global:Get-Statsxmrigopt {
     $Request = Global:Get-HTTP -Port $global:Port -Message $Message
     if ($Request) {
         try { $Data = $Request.Content | ConvertFrom-Json -ErrorAction Stop; }catch { Write-Host "Failed To gather summary" -ForegroundColor Red; break }
-        foreach ($hash in $Data.hashrate.total) {
-            $GetHash = 0;
-            $IsInt = [Double]::TryParse($hash, $GetHash);
-            if ($IsInt) {
-                break;
-            }
+        $HashRate_Total = 0;
+        foreach($threads in $Data.hashrate.threads) {
+                $GetHash = 0;
+                $ToString = [string]$threads[0];
+                $IsInt = [Double]::TryParse($ToString, [ref]$GetHash);
+                $HashRate_Total += $Gethash;   
         }
-        $HashRate_Total = $GetHash;
         $global:RAW = $HashRate_Total
         $global:CPUKHS = $HashRate_Total / 1000
         Global:Write-MinerData2
