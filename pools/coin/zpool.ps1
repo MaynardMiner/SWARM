@@ -165,16 +165,16 @@ if ($Name -in $(arg).PoolName) {
         $To_Add += $Sorted | 
         Where-Object Algo -eq $Selected | 
         Where-Object { [Convert]::ToInt32($_."24h_blocks") -ge $Params.Min_Blocks } |
+        Where-Object { $_.conversion_disabled -eq 0 } |
         Sort-Object Level -Descending |
         Select-Object -First 1
 
         ## Add back in stats for running miners.
         ## Only add if it meets arguments min_blocks and autotrade
         $Miners | Foreach-Object {
-            Write-Host "Symbol is $($_.Symbol)"
             if ($_.Algo -eq $Selected -and $_.Symbol -notin $To_Add.Sym) {
                 $Add_Stat = $Sorted | Where-Object sym -eq $_.Symbol | 
-                Where-Object { [Convert]::ToInt32($_."24h_blocks_shared") -ge $Params.Min_Blocks }
+                Where-Object { [Convert]::ToInt32($_."24h_blocks") -ge $Params.Min_Blocks }
                 if ($Add_Stat) {
                     $To_Add += $Add_Stat
                 }

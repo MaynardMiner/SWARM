@@ -179,7 +179,6 @@ if ($Name -in $(arg).PoolName) {
         ## Add back in stats for running miners.
         ## Only add if it meets arguments min_blocks and autotrade
         $Miners | Foreach-Object {
-            Write-Host "Symbol is $($_.Symbol)"
             if($_.Algo -eq $Selected -and $_.Symbol -notin $To_Add.Sym) {
                 $Add_Stat = $Sorted | Where-Object sym -eq $_.Symbol | 
                 Where-Object { [Convert]::ToInt32($_."24h_blocks_shared") -ge $Params.Min_Blocks } | 
