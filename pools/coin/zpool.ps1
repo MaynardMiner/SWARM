@@ -166,6 +166,8 @@ if ($Name -in $(arg).PoolName) {
         Where-Object Algo -eq $Selected | 
         Where-Object { [Convert]::ToInt32($_."24h_blocks") -ge $Params.Min_Blocks } |
         Where-Object { $_.conversion_disabled -eq 0 } |
+        Where-Object { $_.Name -notmatch "HashTap"} |
+        Where-Object { $_.algo -notmatch "HashTap"} |
         Sort-Object Level -Descending |
         Select-Object -First 1
 
