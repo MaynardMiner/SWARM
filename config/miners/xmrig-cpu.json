@@ -5,22 +5,22 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "random-arq": "",
+            "randomx-arq": "",
             "randomx": "",
             "gr": ""
         },
         "difficulty": {
-            "random-arq": "",
+            "randomx-arq": "",
             "randomx": "",
             "gr": ""
         },
         "naming": {
-            "random-arq": "rx/arq",
+            "randomx-arq": "rx/arq",
             "randomx": "rx/0",
             "gr": "gr"
         },
         "fee": {
-            "random-arq": 1,
+            "randomx-arq": 1,
             "randomx": 1,
             "gr": 1
         }   
