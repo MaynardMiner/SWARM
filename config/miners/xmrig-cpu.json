@@ -5,25 +5,21 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "kawpow": "",
             "random-arq": "",
             "randomx": "",
             "gr": ""
         },
         "difficulty": {
-            "kawpow": "",
             "random-arq": "",
             "randomx": "",
             "gr": ""
         },
         "naming": {
-            "kawpow": "kawpow",
             "random-arq": "rx/arq",
             "randomx": "rx/0",
             "gr": "gr"
         },
         "fee": {
-            "kawpow": 1,
             "random-arq": 1,
             "randomx": 1,
             "gr": 1
