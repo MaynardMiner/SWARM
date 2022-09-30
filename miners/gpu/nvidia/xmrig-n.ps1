@@ -70,6 +70,10 @@ $(vars).NVIDIATypes | ForEach-Object {
                         default { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                     }
                 }
+                $Loader = "--cuda-loader=libxmrig-cuda.so"
+                if($IsWindows) {
+                    $Loader = "--cuda-loader=xmrig-cuda.dll"
+                }
                 [PSCustomObject]@{
                     MName      = $Name
                     Coin       = $(vars).Coins
@@ -84,7 +88,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
                     Version    = "$($(vars).nvidia.$CName.version)"
                     DeviceCall = "xmrstak"
-                    Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --http-enabled --http-port=$Port -o stratum+tcp://$($_.Pool_Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) --donate-level 1 --no-cpu --cuda --nicehash --log-file=`'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"    
+                    Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --http-enabled --http-port=$Port -o stratum+tcp://$($_.Pool_Host):$($_.Port) -u $($_.$User) -p $($_.$Pass)$($Diff) --donate-level 1 --no-cpu --cuda $Loader --nicehash --log-file=`'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"    
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
