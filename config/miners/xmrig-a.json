@@ -10,20 +10,16 @@
             "export GPU_MAX_ALLOC_PERCENT=100"
         ],
         "commands": {
-            "kawpow": "",
-            "randomx": ""
+            "kawpow": ""
         },
         "difficulty": {
-            "kawpow": "",
-            "randomx": ""
+            "kawpow": ""
         },
         "naming": {
-            "kawpow": "kawpow",
-            "randomx": "rx/0"
+            "kawpow": "kawpow"
         },
         "fee": {
-            "kawpow": 1,
-            "randomx": 1
+            "kawpow": 1
         }   
     }
 }
