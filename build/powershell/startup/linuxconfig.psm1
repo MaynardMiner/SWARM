@@ -12,7 +12,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function Global:Expand-Lib {
-    [Int32]$Lib_Version = 6;
+    [Int32]$Lib_Version = 7;
     $Extract = $false;
     $Paths = @();
     $Paths += "/usr";
@@ -57,7 +57,7 @@ function Global:Expand-Lib {
             New-Item ".\x64" -ItemType Directory | Out-Null;
         }
         $X64_zip = Join-Path ".\x64" "lib64.tar.gz";
-        try { Invoke-WebRequest "$Uri" -OutFile "$X64_zip" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 10 }catch { log "WARNING: Failed to contact $URI for miner binary" -ForeGroundColor Yellow }
+        try { Invoke-WebRequest "$Uri" -OutFile "$X64_zip" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 10 | Out-Null }catch { log "WARNING: Failed to contact $URI for miner binary" -ForeGroundColor Yellow }
         if (Test-Path "$X64_zip") { log "Download Succeeded!" -ForegroundColor Green }
         else { log "Download Failed! Verify you can connect to Github from rig!" -ForegroundColor DarkRed; Start-Sleep -S 10; exit }
         log "Extracting to temporary folder" -ForegroundColor Yellow

@@ -196,7 +196,7 @@ function Global:Expand-WebRequest {
                 $X64_extract = [IO.Path]::GetFileNameWithoutExtension($X64_zip);
             }
             else {
-                try { Invoke-WebRequest "$Uri" -OutFile "$X64_zip" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 10 }catch { log "WARNING: Failed to contact $URI for miner binary" -ForeGroundColor Yellow }
+                try { Invoke-WebRequest "$Uri" -OutFile "$X64_zip" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 10 | Out-Null }catch { log "WARNING: Failed to contact $URI for miner binary" -ForeGroundColor Yellow }
             }
             if (Test-Path "$X64_zip") { log "Download Succeeded!" -ForegroundColor Green }
             else { log "Download Failed!" -ForegroundColor DarkRed; break }
@@ -231,9 +231,9 @@ function Global:Expand-WebRequest {
                 $X64_extract = [IO.Path]::GetFileNameWithoutExtension($X64_zip);
             }
             else {
-                try { Invoke-WebRequest "$Uri" -OutFile "$X64_zip" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 10 }catch { log "WARNING: Failed to contact $URI for miner binary" -ForeGroundColor Yellow }
+                try { Invoke-WebRequest "$Uri" -OutFile "$X64_zip" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 10 | Out-Null }catch { log "WARNING: Failed to contact $URI for miner binary" -ForeGroundColor Yellow }
             }
-            try { Invoke-WebRequest "$Uri" -OutFile "$X64_zip" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 10 }catch { log "WARNING: Failed to contact $URI for miner binary" -ForeGroundColor Yellow }
+            try { Invoke-WebRequest "$Uri" -OutFile "$X64_zip" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 10 | Out-Null }catch { log "WARNING: Failed to contact $URI for miner binary" -ForeGroundColor Yellow }
             if (Test-Path "$X64_zip") { log "Download Succeeded!" -ForegroundColor Green }
             else { log "Download Failed!" -ForegroundColor DarkRed; break }
 
@@ -257,7 +257,7 @@ function Global:Expand-WebRequest {
             log "Download URI is $URI"
             log "Miner Exec is $Name"
             log "Miner Dir is $MoveThere"
-            try { Invoke-WebRequest "$Uri" -OutFile "$X64_zip" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 10 }catch { log "WARNING: Failed to contact $URI for miner binary" -ForeGroundColor Yellow }
+            try { Invoke-WebRequest "$Uri" -OutFile "$X64_zip" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 10 | Out-Null }catch { log "WARNING: Failed to contact $URI for miner binary" -ForeGroundColor Yellow }
             if (test-path "$X64_zip") {
                 New-Item ".\bin\$BinPath" -ItemType Directory -Force | Out-Null
                 Move-Item -Path $X64_zip -Destination ".\bin\$BinPath" | Out-Null
