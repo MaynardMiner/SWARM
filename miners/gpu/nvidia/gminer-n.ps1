@@ -3,13 +3,14 @@
 
 $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
+    $CName = "gminer-n"
 
     ##Miner Path Information
-    if ($(vars).nvidia.gminer.$ConfigType) { $Path = "$($(vars).nvidia.gminer.$ConfigType)" }
+    if ($(vars).nvidia.$CName.$ConfigType) { $Path = "$($(vars).nvidia.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).nvidia.gminer.uri) { $Uri = "$($(vars).nvidia.gminer.uri)" }
+    if ($(vars).nvidia.$CName.uri) { $Uri = "$($(vars).nvidia.$CName.uri)" }
     else { $Uri = "None" }
-    if ($(vars).nvidia.gminer.minername) { $MinerName = "$($(vars).nvidia.gminer.minername)" }
+    if ($(vars).nvidia.$CName.minername) { $MinerName = "$($(vars).nvidia.$CName.minername)" }
     else { $MinerName = "None" }
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "gminer-$Num"; $Port = "4600$Num"
@@ -47,7 +48,7 @@ $(vars).NVIDIATypes | ForEach-Object {
 
     ##Get Configuration File
     ##This is located in config\miners
-    $MinerConfig = $Global:config.miners.gminer
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = "/usr/local/swarm/lib64"
@@ -81,7 +82,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                 $SelName = $_.Name
                 $Diff = ""
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { 
-                    switch($_.Name) {
+                    switch ($_.Name) {
                         "zergpool" { $Diff = ",sd=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                         default { $Diff = ",d=$($MinerConfig.$ConfigType.difficulty.$($_.Algorithm))" }
                     }
@@ -89,6 +90,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                 $UserPass = "--pass $($_.$Pass)$Diff "
                 $GetUser = "$($_.$User)";
                 $GetWorker = $_.Worker;
+                $AddArgs = "--algo $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) "
                 switch ($SelName) {
                     "zergpool" { $GetUser = "$($GetUser).x" };
                     "whalesburg" { $GetUser = $GetUser + "." + $GetWorker };
@@ -135,7 +137,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     ArgDevices        = $ArgDevices
                     Devices           = $Devices
                     Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
-                    Version           = "$($(vars).nvidia.gminer.version)"
+                    Version           = "$($(vars).nvidia.$CName.version)"
                     DeviceCall        = "gminer"
                     Arguments         = "--api $Port --server $($_.Pool_Host) --port $($_.Port) $AddArgs--user $GetUser --logfile `'$Log`' $UserPass$($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates         = [Decimal]$Stat.Hour

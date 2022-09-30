@@ -90,6 +90,7 @@ $(vars).AMDTypes | ForEach-Object {
                 $UserPass = "--pass $($_.$Pass)$Diff "
                 $GetUser = "$($_.$User)";
                 $GetWorker = $_.Worker;
+                $AddArgs = "--algo $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) "
                 switch ($SelName) {
                     "zergpool" { $GetUser = "$($GetUser).x" };
                     "whalesburg" { $GetUser = $GetUser + "." + $GetWorker };

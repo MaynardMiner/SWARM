@@ -1,5 +1,5 @@
 {
-    "name": "gminer",
+    "name": "gminer-n",
     "NVIDIA1": {
         "name": "NVIDIA1",
         "delay": "1",
@@ -11,7 +11,8 @@
             "cortex": "",
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_125/4": ""
+            "equihash_125/4": "",
+            "autolykos2": ""
         },
         "difficulty": {
             "ethash": "",
@@ -20,7 +21,8 @@
             "cortex": "",
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_125/4": ""
+            "equihash_125/4": "",
+            "autolykos2": ""
         },
         "naming": {
             "ethash": "ethash",
@@ -29,7 +31,8 @@
             "cortex": "cortex",
             "equihash_144/5": "equihash_144/5",
             "equihash_210/9": "equihash_210/9",
-            "equihash_125/4": "equihash_125/4"
+            "equihash_125/4": "equihash_125/4",
+            "autolykos2": "autolykos2"
         },
         "fee": {
             "ethash": 1,
@@ -38,7 +41,8 @@
             "cortex": 5,
             "equihash_144/5": 2,
             "equihash_210/9": 2,
-            "equihash_125/4": 2
+            "equihash_125/4": 2,
+            "autolykos2": 2
         }
     },
     "NVIDIA2": {
@@ -52,7 +56,8 @@
             "cortex": "",
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_125/4": ""
+            "equihash_125/4": "",
+            "autolykos2": ""
         },
         "difficulty": {
             "ethash": "",
@@ -61,7 +66,8 @@
             "cortex": "",
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_125/4": ""
+            "equihash_125/4": "",
+            "autolykos2": ""
         },
         "naming": {
             "ethash": "ethash",
@@ -70,7 +76,8 @@
             "cortex": "cortex",
             "equihash_144/5": "equihash_144/5",
             "equihash_210/9": "equihash_210/9",
-            "equihash_125/4": "equihash_125/4"
+            "equihash_125/4": "equihash_125/4",
+            "autolykos2": "autolykos2"
         },
         "fee": {
             "ethash": 1,
@@ -79,7 +86,8 @@
             "cortex": 5,
             "equihash_144/5": 2,
             "equihash_210/9": 2,
-            "equihash_125/4": 2
+            "equihash_125/4": 2,
+            "autolykos2": 2
         }
     },
     "NVIDIA3": {
@@ -93,7 +101,8 @@
             "cortex": "",
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_125/4": ""
+            "equihash_125/4": "",
+            "autolykos2": ""
         },
         "difficulty": {
             "ethash": "",
@@ -102,7 +111,8 @@
             "cortex": "",
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_125/4": ""
+            "equihash_125/4": "",
+            "autolykos2": ""
         },
         "naming": {
             "ethash": "ethash",
@@ -111,7 +121,8 @@
             "cortex": "cortex",
             "equihash_144/5": "equihash_144/5",
             "equihash_210/9": "equihash_210/9",
-            "equihash_125/4": "equihash_125/4"
+            "equihash_125/4": "equihash_125/4",
+            "autolykos2": "autolykos2"
         },
         "fee": {
             "ethash": 1,
@@ -120,7 +131,8 @@
             "cortex": 5,
             "equihash_144/5": 2,
             "equihash_210/9": 2,
-            "equihash_125/4": 2
+            "equihash_125/4": 2,
+            "autolykos2": 2
         }
    }
 }

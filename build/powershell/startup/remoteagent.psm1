@@ -13,7 +13,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 function Global:start-update {
 
-    $Exclude = @("teamredminer.json","pool-algos.json","yescrypt.json","miniz.json","lolminer.json","lolminer-n.json","gminer-amd.json")
+    $Exclude = @("teamredminer.json","pool-algos.json","yescrypt.json","miniz.json","lolminer.json","lolminer-n.json","gminer-amd.json","gminer.json")
 
     $Parent = Split-Path $(vars).dir
     log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow

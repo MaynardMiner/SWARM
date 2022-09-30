@@ -198,16 +198,16 @@
     "optional": "Yes",
     "uri": "https://github.com/nicehash/excavator/releases/download/v1.5.13a/excavator_1.5.13a-cuda10_amd64.deb"
   },
-  "gminer": {
-    "name": "gminer",
+  "gminer-n": {
+    "name": "gminer-n",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\gminer-1\\miner",
-    "NVIDIA2": ".\\bin\\gminer-2\\miner",
-    "NVIDIA3": ".\\bin\\gminer-3\\miner",
+    "NVIDIA1": ".\\bin\\gminer-n-1\\miner",
+    "NVIDIA2": ".\\bin\\gminer-n-2\\miner",
+    "NVIDIA3": ".\\bin\\gminer-n-3\\miner",
     "minername": "miner",
-    "version": "3.05",
+    "version": "3.06",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.05/gminer_3_05_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.06/gminer_3_06_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",
