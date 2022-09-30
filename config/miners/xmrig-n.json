@@ -6,23 +6,19 @@
         "prestart": [],
         "commands": {
             "kawpow": "",
-            "random-arq": "",
-            "random-x": ""
+            "randomx": ""
         },
         "difficulty": {
             "kawpow": "",
-            "random-arq": "",
-            "random-x": ""
+            "randomx": ""
         },
         "naming": {
             "kawpow": "kawpow",
-            "random-arq": "rx/arq",
-            "random-x": "rx/0"
+            "randomx": "rx/0"
         },
         "fee": {
             "kawpow": 1,
-            "random-arq": 1,
-            "random-x": 1
+            "randomx": 1
         }   
     },
     "NVIDIA2": {
@@ -31,23 +27,19 @@
         "prestart": [],
         "commands": {
             "kawpow": "",
-            "random-arq": "",
-            "random-x": ""
+            "randomx": ""
         },
         "difficulty": {
             "kawpow": "",
-            "random-arq": "",
-            "random-x": ""
+            "randomx": ""
         },
         "naming": {
             "kawpow": "kawpow",
-            "random-arq": "rx/arq",
-            "random-x": "rx/0"
+            "randomx": "rx/0"
         },
         "fee": {
             "kawpow": 1,
-            "random-arq": 1,
-            "random-x": 1
+            "randomx": 1
         }   
     },
     "NVIDIA3": {
@@ -56,23 +48,19 @@
         "prestart": [],
         "commands": {
             "kawpow": "",
-            "random-arq": "",
-            "random-x": ""
+            "randomx": ""
         },
         "difficulty": {
             "kawpow": "",
-            "random-arq": "",
-            "random-x": ""
+            "randomx": ""
         },
         "naming": {
             "kawpow": "kawpow",
-            "random-arq": "rx/arq",
-            "random-x": "rx/0"
+            "randomx": "rx/0"
         },
         "fee": {
             "kawpow": 1,
-            "random-arq": 1,
-            "random-x": 1
+            "randomx": 1
         }   
     }
 }
