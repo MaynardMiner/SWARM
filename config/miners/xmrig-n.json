@@ -5,24 +5,16 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "kawpow": "",
-            "random-arq": "",
-            "randomx": ""
+            "kawpow": ""
         },
         "difficulty": {
-            "kawpow": "",
-            "random-arq": "",
-            "randomx": ""
+            "kawpow": ""
         },
         "naming": {
-            "kawpow": "kawpow",
-            "random-arq": "rx/arq",
-            "randomx": "rx/0"
+            "kawpow": "kawpow"
         },
         "fee": {
-            "kawpow": 1,
-            "random-arq": 1,
-            "randomx": 1
+            "kawpow": 1
         }   
     },
     "NVIDIA2": {
@@ -30,24 +22,16 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "kawpow": "",
-            "random-arq": "",
-            "randomx": ""
+            "kawpow": ""
         },
         "difficulty": {
-            "kawpow": "",
-            "random-arq": "",
-            "randomx": ""
+            "kawpow": ""
         },
         "naming": {
-            "kawpow": "kawpow",
-            "random-arq": "rx/arq",
-            "randomx": "rx/0"
+            "kawpow": "kawpow"
         },
         "fee": {
-            "kawpow": 1,
-            "random-arq": 1,
-            "randomx": 1
+            "kawpow": 1
         }   
     },
     "NVIDIA3": {
@@ -55,24 +39,16 @@
         "delay": "1",
         "prestart": [],
         "commands": {
-            "kawpow": "",
-            "random-arq": "",
-            "randomx": ""
+            "kawpow": ""
         },
         "difficulty": {
-            "kawpow": "",
-            "random-arq": "",
-            "randomx": ""
+            "kawpow": ""
         },
         "naming": {
-            "kawpow": "kawpow",
-            "random-arq": "rx/arq",
-            "randomx": "rx/0"
+            "kawpow": "kawpow"
         },
         "fee": {
-            "kawpow": 1,
-            "random-arq": 1,
-            "randomx": 1
+            "kawpow": 1
         }   
     }
 }
