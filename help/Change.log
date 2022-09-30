@@ -1,4 +1,4 @@
-# Version 3.6.1
+# Version 3.6.2
 
 ## Beta Release
 * This project has all basic miners, but need more miners and updates.
@@ -8,8 +8,14 @@
 * If the above is too confusing, use -Opencl [AMD Platform] if you know what platform AMD is.
 
 ## Improvements 
-* miniz issues were resolved.
-* srbmulti-a was added to AMD.
+* xmrig added- Having issues getting random algos to work on Gpu. See discord.
+* gminer updated
+* wildrig update
+* t-rex update
+* lib64 is now downloaded, not stored in release
+* All Cuda libs from 8.0 to 11.6 are now in SWARM
+* zpool -auto_coin improved
+* sha256cms algo support added
 
 ## KNOWN ISSUES
 * Get Wallets not working.
