@@ -45,10 +45,12 @@ function Global:Get-Statsxmrig {
                 [Double]$Gethash = 0;
                 $Value = [String]$Data.hashrate.threads[$global:i][0]
                 $Gethash = [Double]$Value
-                ## Prevent out of bounds.
-                if(($global:1 + 1) -le $Data.hashrate.threads.count) {
-                    $Value = [String]$Data.hashrate.threads[$global:i+1][0]
-                    $Gethash += [Double]$Value
+                if ($Totalthreads -gt $Devices.Count) {
+                    ## Prevent out of bounds if doing multiple threads
+                    if (($global:1 + 1) -le $Data.hashrate.threads.count) {
+                        $Value = [String]$Data.hashrate.threads[$global:i + 1][0]
+                        $Gethash += [Double]$Value
+                    }
                 }
                 $Hash += $GetHash;
             }
