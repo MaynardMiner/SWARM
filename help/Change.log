@@ -9,7 +9,7 @@
 
 ## Improvements 
 * xmrig added- Having issues getting random algos to work on Gpu. See discord.
-* gminer updated
+* gminer updated- Changed to gminer-n to match schema.
 * wildrig update
 * t-rex update
 * lib64 is now downloaded, not stored in release
