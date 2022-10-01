@@ -99,12 +99,12 @@
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/ehssand-windows.zip"
   },
-  "gminer": {
-    "name": "gminer",
+  "gminer-n": {
+    "name": "gminer-n",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\gminer-1\\miner.exe",
-    "NVIDIA2": ".\\bin\\gminer-2\\miner.exe",
-    "NVIDIA3": ".\\bin\\gminer-3\\miner.exe",
+    "NVIDIA1": ".\\bin\\gminer-n-1\\miner.exe",
+    "NVIDIA2": ".\\bin\\gminer-n-2\\miner.exe",
+    "NVIDIA3": ".\\bin\\gminer-n-3\\miner.exe",
     "minername": "miner.exe",
     "version": "3.06",
     "optional": "No",
