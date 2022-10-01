@@ -5,7 +5,7 @@
 
 ## Important Note!
 * AMD requires clinfo installed. HiveOS beta does not have it. `apt-get install clinfo` will install it in linux. (may need `apt update` first)
-* If the above is too confusing, use -Opencl [AMD Platform] if you know what platform AMD is.
+* If the above is too confusing, use -ClPlatform [AMD Platform] if you know what platform AMD is.
 
 ## Improvements 
 * xmrig added- Having issues getting random algos to work on Gpu. See discord.
