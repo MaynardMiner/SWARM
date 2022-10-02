@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-function Global:Get-OpenCL() {
+function Global:Get-AMDPlatform() {
     Add-Type -Path ".\build\apps\psopencl\OpenCl.DotNetCore.dll"
     Add-Type -Path ".\build\apps\psopencl\OpenCl.DotNetCore.Interop.dll"
 
