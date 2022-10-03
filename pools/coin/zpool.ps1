@@ -248,7 +248,7 @@ if ($Name -in $(arg).PoolName) {
 
             [Pool]::New(
                 ## Symbol
-                "$Pool_Symbol-Coin",
+                "$Pool_Symbol-Coins",
                 ## Algorithm
                 $Pool_Algo,
                 ## Level
