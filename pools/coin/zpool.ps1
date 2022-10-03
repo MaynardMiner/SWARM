@@ -53,7 +53,6 @@ if ($Name -in $(arg).PoolName) {
         else { $_ }
     } |
     ForEach-Object -Parallel {
-        if ($request.$_.Algo -ne $null) {
             $request = $using:Pool_Request
             $Pipe_Algos = $using:Pool_Algos;
             $Pipe_Coins = $using:Pool_Coins;
