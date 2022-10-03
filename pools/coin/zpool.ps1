@@ -109,7 +109,7 @@ if ($Name -in $(arg).PoolName) {
         $Hashrate = [math]::Max($_.hashrate, 1)
         $Divisor = 1000000 * [Convert]::ToDouble($_.mbtc_mh_factor)
         $Fee = [Convert]::ToDouble($F_Table.$($_.algo))
-        $Estimate = [Convert]::ToDecimal($_.estimate)
+        $Estimate = [Convert]::ToDecimal($_.estimate) * 0.001
         $actual = -1
         $current = [Convert]::ToDecimal($Estimate / $Divisor * (1 - ($Fee / 100)))
 
