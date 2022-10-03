@@ -11,6 +11,7 @@
 ## KNOWN ISSUES
 * Get Wallets not working.
 * More miners are coming soon.
+* User reported issue with AMD ryzen cpu & SWARM- If you have issue please report in discord.
 
 ## Suggested Settings- What I as the Dev use.
 * -Auto_Coin Yes (use coin for calculations when applicable)
