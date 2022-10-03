@@ -53,30 +53,32 @@ if ($Name -in $(arg).PoolName) {
         else { $_ }
     } |
     ForEach-Object -Parallel {
-        $request = $using:Pool_Request
-        $Pipe_Algos = $using:Pool_Algos;
-        $Pipe_Coins = $using:Pool_Coins;
-        $Pipe_Hammer = $using:Ban_Hammer;
-        $Algo_List = $using:Algos;       
-        $F_Table = $using:Fee_Table;
-        $D_Table = $using:Divisor_Table;
-        $Get_GLT = $using:NoGLT;
-        ################################
-        $request.$_ | Add-Member "sym" $_
-        $request.$_ | Add-Member "Original_Algo" $request.$_.Algo.ToLower()
-        $Algo = $request.$_.Algo
-        $request.$_.Algo = $Pipe_Algos.PSObject.Properties.Name | Where-Object { $Algo -in $Pipe_Algos.$_.alt_names };
-        if ( 
-            $request.$_.algo -in $Algo_List -and
-            $request.$_.algo -notin $Pipe_Algos.($request.$_.Algo).exclusions -and
-            $request.$_.sym -notin $Pipe_Algos.($request.$_.Algo).exclusions -and
-            $request.$_.sym -notin $Pipe_Coins.($request.$_.sym).exclusions -and
-            $request.$_.sym -notin $Pipe_Hammer -and
-            $request.$_.algo -in $F_Table.keys -and
-            $request.$_.algo -in $D_Table.keys -and
-            $request.$_.sym -notlike "*$Get_GLT*"
-        ) {
-            return $request.$_
+        if ($request.$_.Algo -ne $null) {
+            $request = $using:Pool_Request
+            $Pipe_Algos = $using:Pool_Algos;
+            $Pipe_Coins = $using:Pool_Coins;
+            $Pipe_Hammer = $using:Ban_Hammer;
+            $Algo_List = $using:Algos;       
+            $F_Table = $using:Fee_Table;
+            $D_Table = $using:Divisor_Table;
+            $Get_GLT = $using:NoGLT;
+            ################################
+            $request.$_ | Add-Member "sym" $_
+            $request.$_ | Add-Member "Original_Algo" $request.$_.Algo.ToLower()
+            $Algo = $request.$_.Algo
+            $request.$_.Algo = $Pipe_Algos.PSObject.Properties.Name | Where-Object { $Algo -in $Pipe_Algos.$_.alt_names };
+            if ( 
+                $request.$_.algo -in $Algo_List -and
+                $request.$_.algo -notin $Pipe_Algos.($request.$_.Algo).exclusions -and
+                $request.$_.sym -notin $Pipe_Algos.($request.$_.Algo).exclusions -and
+                $request.$_.sym -notin $Pipe_Coins.($request.$_.sym).exclusions -and
+                $request.$_.sym -notin $Pipe_Hammer -and
+                $request.$_.algo -in $F_Table.keys -and
+                $request.$_.algo -in $D_Table.keys -and
+                $request.$_.sym -notlike "*$Get_GLT*"
+            ) {
+                return $request.$_
+            }
         }
     } -ThrottleLimit $(arg).Throttle
 
@@ -166,8 +168,8 @@ if ($Name -in $(arg).PoolName) {
         Where-Object Algo -eq $Selected | 
         Where-Object { [Convert]::ToInt32($_."24h_blocks") -ge $Params.Min_Blocks } |
         Where-Object { $_.conversion_disabled -eq 0 } |
-        Where-Object { $_.name -notmatch "HashTap"} |
-        Where-Object { $_.algo -notmatch "HashTap"} |
+        Where-Object { $_.name -notmatch "HashTap" } |
+        Where-Object { $_.algo -notmatch "HashTap" } |
         Sort-Object Level -Descending |
         Select-Object -First 1
 
@@ -239,11 +241,6 @@ if ($Name -in $(arg).PoolName) {
                                 $User3 = $AltWallets.$Sym.address
                             }
                         }
-                        if ($AltWallets.$Sym.params -ne "enter additional params here, such as 'm=solo' or m=party.partypassword") {
-                            $mc += "m=$($AltWallets.$Sym.params),"
-                            $mc = $mc.replace("solo", "SOLO")
-                            $mc = $mc.replace("party", "PARTY")
-                        }    
                     }   
                 }
             }
