@@ -40,9 +40,10 @@ if ($Name -in $(arg).PoolName) {
     $Pool_Algos = $global:Config.Pool_Algos;
     $Pool_Coins = $global:Config.Pool_Coins;
     $Ban_Hammer = $global:Config.vars.BanHammer;
-    $Fee_Table = $(vars).FeeTable.blockmasters;
-    $Divisor_Table = $(vars).divisortable.blockmasters;
+    $Fee_Table = $(vars).FeeTable.zpool;
+    $Divisor_Table = $(vars).divisortable.zpool;
     $Active_Symbols = $(vars).ActiveSymbol;
+    $ttf = $(arg).ttf_maximum;
 
     ## Change to universal naming schema and only items we need to add
     $Pool_Sorted = $Pool_Request.PSobject.Properties.Name | 
