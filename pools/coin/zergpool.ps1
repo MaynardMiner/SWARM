@@ -53,7 +53,6 @@ if ($Name -in $(arg).PoolName) {
         else { $_ }
     } |
     ForEach-Object -Parallel {
-        if ($request.$_.Algo -ne $null) {
             $request = $using:Pool_Request
             $Pipe_Algos = $using:Pool_Algos;
             $Pipe_Coins = $using:Pool_Coins;
@@ -63,6 +62,7 @@ if ($Name -in $(arg).PoolName) {
             $D_Table = $using:Divisor_Table;
             $Get_GLT = $using:NoGLT;
             ################################
+            if ($request.$_.Algo -ne $null) {
             $request.$_ | Add-Member "sym" $_
             $request.$_ | Add-Member "Original_Algo" $request.$_.Algo.ToLower()
             $Algo = $request.$_.Algo
