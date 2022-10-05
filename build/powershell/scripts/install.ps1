@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-[Int32]$Lib_Version = 5;
+[Int32]$Lib_Version = 8;
 $dir = (Split-Path (Split-Path (Split-Path (Split-Path $script:MyInvocation.MyCommand.Path))))
 $dir = $dir -replace "/var/tmp", "/root"
 Set-Location $dir
@@ -104,6 +104,9 @@ if (Test-Path ".\build\apps\wolfamdctrl\wolfamdctrl") {
         $Proc | Wait-Process;
         [IO.File]::WriteAllText("/usr/local/swarm/lib64/version.txt",$Lib_Version);
         $Libs = @()
+        $Libs += [PSCustomObject]@{ link = "libOpenCL.so.1"; path = "/usr/local/swarm/lib64/libOpenCL.so.1.2" }
+        $Libs += [PSCustomObject]@{ link = "libOpenCL.so"; path = "/usr/local/swarm/lib64/libOpenCL.so.1" }
+
         $Libs += [PSCustomObject]@{ link = "libcurl.so.4"; path = "/usr/local/swarm/lib64/libcurl.so.4.5.0" }
         $Libs += [PSCustomObject]@{ link = "libcurl.so.3"; path = "/usr/local/swarm/lib64/libcurl.so.4.4.0" }
 

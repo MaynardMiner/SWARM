@@ -1,25 +1,17 @@
-# Version 3.6.2
+# Version 3.6.3
 
 ## Beta Release
 * This project has all basic miners, but need more miners and updates.
 
-## Important Note!
-* AMD requires clinfo installed. HiveOS beta does not have it. `apt-get install clinfo` will install it in linux. (may need `apt update` first)
-* If the above is too confusing, use -Opencl [AMD Platform] if you know what platform AMD is.
-
 ## Improvements 
-* xmrig added- Having issues getting random algos to work on Gpu. See discord.
-* gminer updated- Changed to gminer-n to match schema.
-* wildrig update
-* t-rex update
-* lib64 is now downloaded, not stored in release
-* All Cuda libs from 8.0 to 11.6 are now in SWARM
-* zpool -auto_coin improved
-* sha256cms algo support added
+* .Net method added for getting amd platform. 
+* Shut down autofan in windows before updating (happens post this release)
+* Zpool coin file fixed and tested.
 
 ## KNOWN ISSUES
 * Get Wallets not working.
 * More miners are coming soon.
+* User reported issue with AMD ryzen cpu & SWARM- If you have issue please report in discord.
 
 ## Suggested Settings- What I as the Dev use.
 * -Auto_Coin Yes (use coin for calculations when applicable)

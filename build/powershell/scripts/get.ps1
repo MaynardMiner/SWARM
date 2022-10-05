@@ -795,6 +795,12 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         }
         
         if ($Check -ne $false) {
+            ## Stop Autofan
+            $ID = ".\build\pid\autofan.txt"
+            if (Test-Path $ID) { $Agent = Get-Content $ID }
+            if ($Agent) { $BackGroundID = Get-Process | Where id -eq $Agent }
+            if ($BackGroundID.name -eq "pwsh") { Stop-Process $BackGroundID | Out-Null }                   
+
             $Failed = $false;
             $Endlink = $null;
             $Dir = Convert-Path "."
