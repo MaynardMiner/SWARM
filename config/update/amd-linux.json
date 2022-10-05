@@ -260,9 +260,9 @@
     "AMD2": ".\\bin\\nanominer-2\\nanominer",
     "AMD3": ".\\bin\\nanominer-3\\nanominer",
     "minername": "nanominer",
-    "version": "3.7.2",
+    "version": "3.7.3",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.2/nanominer-linux-3.7.2.tar.gz"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.3/nanominer-linux-3.7.3.tar.gz"
   },
   "nbminer-amd": {
     "name": "nbminer-amd",
