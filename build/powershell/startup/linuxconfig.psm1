@@ -57,7 +57,16 @@ function Global:Expand-Lib {
             New-Item ".\x64" -ItemType Directory | Out-Null;
         }
         $X64_zip = Join-Path ".\x64" "lib64.tar.gz";
-        try { Invoke-WebRequest "$Uri" -OutFile "$X64_zip" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 10 | Out-Null }catch { log "WARNING: Failed to contact $URI for miner binary" -ForeGroundColor Yellow }
+        try { Invoke-WebRequest "$Uri" -OutFile "$X64_zip" -UseBasicParsing -SkipCertificateCheck -TimeoutSec 10 | Out-Null }
+        catch {
+            log "WARNING: Failed to contact $URI for miner binary" -ForeGroundColor Yellow
+            Start-Sleep -Seconds 10;
+            log "Error: SWARM will not work without library- Check internet connection to www.github.com and restart SWARM" -ForegroundColor Red;
+            Start-Sleep -Seconds 5;
+            ## Delete the old directory to ensur a trigger download.
+            [System.IO.Directory]::Delete("/usr/local/swarm/",$true);
+            exit;
+        }
         if (Test-Path "$X64_zip") { log "Download Succeeded!" -ForegroundColor Green }
         else { log "Download Failed! Verify you can connect to Github from rig!" -ForegroundColor DarkRed; Start-Sleep -S 10; exit }
         log "Extracting to temporary folder" -ForegroundColor Yellow
