@@ -315,7 +315,7 @@
     "NVIDIA2": ".\\bin\\nanominer-n-2\\nanominer.exe",
     "NVIDIA3": ".\\bin\\nanominer-n-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "3.7.2",
+    "version": "3.7.3",
     "optional": "No",
     "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.3/nanominer-windows-3.7.3-cuda11.zip"
   },

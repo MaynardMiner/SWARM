@@ -117,9 +117,9 @@
     "AMD2": ".\\bin\\teamredminer-2\\teamredminer.exe",
     "AMD3": ".\\bin\\teamredminer-3\\teamredminer.exe",
     "minername": "teamredminer.exe",
-    "version": "0.10.3.1",
+    "version": "0.10.4",
     "optional": "No",
-    "uri": "https://github.com/todxx/teamredminer/releases/download/v0.10.3.1/teamredminer-v0.10.3.1-win.zip"
+    "uri": "https://github.com/todxx/teamredminer/releases/download/v0.10.4/teamredminer-v0.10.4-win.zip"
   },
   "xmr-stak": {
     "name": "xmr-stak",
@@ -227,7 +227,7 @@
     "AMD2": ".\\bin\\nanominer-2\\nanominer.exe",
     "AMD3": ".\\bin\\nanominer-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "3.7.2",
+    "version": "3.7.3",
     "optional": "No",
     "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.3/nanominer-windows-3.7.3.zip"
   },
