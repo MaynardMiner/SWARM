@@ -12,7 +12,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function Global:Expand-Lib {
-    [Int32]$Lib_Version = 7;
+    [Int32]$Lib_Version = 8;
     $Extract = $false;
     $Paths = @();
     $Paths += "/usr";

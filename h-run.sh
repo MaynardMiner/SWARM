@@ -59,6 +59,9 @@ ln -s /opt/microsoft/powershell/7.2.6/pwsh /usr/bin/pwsh
 rm -rf /tmp/powershell.tar.gz
 fi
 
+## Install AngleParse for future web-scraping/Info
+pwsh -command "Install-Package AngleParse -force"
+
 export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu
 
 ## remove old config.json
