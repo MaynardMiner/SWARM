@@ -115,7 +115,7 @@ if ($PSVersionTable.PSVersion -ne "7.2.6") {
 }
 
 ## Install AngleParse For Future Implementation
-if($null -eq (Get-InstalledModule | Where { $_.Name -eq "AngleParse"})) {
+if($null -eq (Get-InstalledModule | Where-Object { $_.Name -eq "AngleParse"})) {
     Install-Package AngleParse -force
 }
 
