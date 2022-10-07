@@ -114,6 +114,12 @@ if ($PSVersionTable.PSVersion -ne "7.2.6") {
     Start-Sleep -S 5
 }
 
+## Install AngleParse For Future Implementation
+if($null -eq (Get-InstalledModule | Where { $_.Name -eq "AngleParse"})) {
+    Install-Package AngleParse -force
+}
+
+
 ##filepath dir
 . .\build\powershell\global\modules.ps1
 $env:Path += ";$($(vars).dir)\build\cmd"
