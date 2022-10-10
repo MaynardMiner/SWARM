@@ -142,7 +142,8 @@
     "alt_names": [
       "zelcash",
       "equihash_125/4",
-      "equihash125"
+      "equihash125",
+      "zelhash"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -1446,15 +1447,6 @@
   "yespowermgpc": {
     "alt_names": [
       "yespowermgpc"
-    ],
-    "exclusions": [
-      "add pool or miner here",
-      "comma seperated"
-    ]
-  },
-  "zelhash": {
-    "alt_names": [
-      "zelhash"
     ],
     "exclusions": [
       "add pool or miner here",
