@@ -62,7 +62,7 @@
     "NVIDIA2": ".\\bin\\verus-2\\ccminer.exe",
     "NVIDIA3": ".\\bin\\verus-3\\ccminer.exe",
     "minername": "ccminer.exe",
-    "version": "3.611",
+    "version": "3.8.1",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/cc-verus-windows.zip"
   },
