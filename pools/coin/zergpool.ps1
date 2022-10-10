@@ -106,7 +106,7 @@ if ($Name -in $(arg).PoolName) {
         ## switch coin name if same
         if ($_.sym -eq $_.algo) { $coin_name = "$($_.sym)-COIN" }
         $StatName = "$($P_Name)_$($coin_name)"
-        $Hashrate = [math]::Max($_.hashrate_shared, 1)
+        $Hashrate = [math]::Max([Convert]::ToDecimal($_.hashrate_shared), 1)
         $Divisor = 1000000 * [Convert]::ToDouble($_.mbtc_mh_factor)
         $Fee = [Convert]::ToDouble($F_Table.$($_.algo))
         $Estimate = [Convert]::ToDecimal($_.estimate) * 0.001

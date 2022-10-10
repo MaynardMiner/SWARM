@@ -78,7 +78,7 @@ if ($Name -in $(arg).PoolName) {
         $Pool_Host = "$($_.Original_Algo.ToLower()).$reg.mine.zergpool.com$sub"
         $StatName = "$($P_Name)_$($StatAlgo)"
         $Get_Path = [IO.File]::Exists(".\stats\pool_$($StatName)_pricing.json")
-        $Hashrate = [math]::Max($_.hashrate_shared, 1)
+        $Hashrate = [math]::Max([Convert]::ToDecimal($_.hashrate_shared), 1)
         $Estimate = $_.estimate_last24h
         if ($Get_Path) { $Estimate = $_.estimate_current }
 
