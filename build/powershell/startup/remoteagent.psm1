@@ -234,6 +234,34 @@ Access Denied Error prevented.
                             }
                         }
                     }
+                    if ($ChangeFile -eq "lolminer.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "equihash_125/4" "ZEL" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "equihash_125/4" 1 -ErrorAction SilentlyContinue
+                                $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "zelhash"
+                                $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "zelhash"
+                                $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "zelhash"
+                                $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "zelhash"
+                            }
+                        }
+                    }
+                    if ($ChangeFile -eq "lolminer-n.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "equihash_125/4" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "equihash_125/4" "ZEL" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "equihash_125/4" 1 -ErrorAction SilentlyContinue
+                                $Data.$_.commands = $Data.$_.commands | Select-Object -ExcludeProperty "zelhash"
+                                $Data.$_.difficulty = $Data.$_.difficulty | Select-Object -ExcludeProperty "zelhash"
+                                $Data.$_.naming = $Data.$_.naming | Select-Object -ExcludeProperty "zelhash"
+                                $Data.$_.fee = $Data.$_.fee | Select-Object -ExcludeProperty "zelhash"
+                            }
+                        }
+                    }
                     $Data | ConvertTo-Json -Depth 10 | Set-Content $NewJson;
                     log "Wrote To $NewJson"
                 }

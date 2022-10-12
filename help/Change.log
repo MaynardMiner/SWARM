@@ -1,12 +1,15 @@
-# Version 3.6.3
+# Version 3.6.4
 
 ## Beta Release
 * This project has all basic miners, but need more miners and updates.
 
 ## Improvements 
-* .Net method added for getting amd platform. 
-* Shut down autofan in windows before updating (happens post this release)
-* Zpool coin file fixed and tested.
+* Fix mph display on get stats.
+* Create error on failed lib64 download.
+* Angleparse module instead for future implementation.
+* Int32 fix on hashrate in pool files.
+* Zelhash on nicehash converts to equihash 125/4 for Hive oc.
+* All miners should be latest versions.
 
 ## KNOWN ISSUES
 * Get Wallets not working.
