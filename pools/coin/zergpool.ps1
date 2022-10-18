@@ -277,11 +277,11 @@ if ($Name -in $(arg).PoolName) {
                 ## User3
                 $User3,
                 ## Pass1
-                "c=$Pass1,$($mc)ID=$($Params.RigName1),refcode=25be7e349d2cfd7a5cd9fd7883fd08f2",
+                "c=$Pass1,$($mc)ID=$($Params.RigName1)",
                 ## Pass2
-                "c=$Pass2,$($mc)ID=$($Params.RigName2),refcode=25be7e349d2cfd7a5cd9fd7883fd08f2",
+                "c=$Pass2,$($mc)ID=$($Params.RigName2)",
                 ## Pass3
-                "c=$Pass3,$($mc)ID=$($Params.RigName3),refcode=25be7e349d2cfd7a5cd9fd7883fd08f2",
+                "c=$Pass3,$($mc)ID=$($Params.RigName3)",
                 ## Previous
                 $previous
             )
