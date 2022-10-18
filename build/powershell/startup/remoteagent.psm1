@@ -11,9 +11,68 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
+function Global:Update-Autofan([string]$Path) {
+    $Config_Path = [IO.Path]::Join($Path, "config\parameters\autofan.json")
+    if(Test-Path $Config_Path) {
+        $hello = [IO.Path]::Join($Path, "debug\hive_hello.txt")
+        $oclist = [IO.Path]::Join($Path, "debug\oclist.txt")
+        $arguments = [IO.Path]::Join($Path, "config\parameters\newarguments.json");
+        $hivekeys = [IO.Path]::Join($Path, "config\parameters\Hive_params_keys.json")
+
+        $new_config = [IO.Path]::Join("$($(vars).dir)", "config\parameters\autofan.json")
+        $new_hello = [IO.Path]::Join("$($(vars).dir)", "debug\hive_hello.txt")
+        $new_oclist = [IO.Path]::Join("$($(vars).dir)", "debug\oclist.txt")
+        $new_arguments = [IO.Path]::Join("$($(vars).dir)", "config\parameters\newarguments.json");
+        $new_hivekeys = [IO.Path]::Join("$($(vars).dir)", "config\parameters\Hive_params_keys.json")
+
+        log "Moving $Config_Path to $new_config";
+        Get-Content $Config_Path | Set-Content $new_config;
+
+        log "Moving $hello to $new_hello";
+        Get-Content $hello | Set-Content $new_hello;
+
+        log "Moving $oclist to $new_oclist";
+        Get-Content $oclist | Set-Content $new_oclist;
+
+        log "Moving $arguments to $new_arguments";
+        Get-Content $arguments | Set-Content $new_arguments;
+
+        log "Moving $hivekeys to $new_hivekeys";
+        Get-Content $hivekeys | Set-Content $new_hivekeys;
+        
+        ## Start Autofan if enabled.
+        $Enabled = $(Get-Content ".\config\parameters\autofan.json" | ConvertFrom-Json | ConvertFrom-StringData).ENABLED
+        if ($Enabled -eq 1) {
+            $ID = ".\build\pid\autofan.txt"
+            if (Test-Path $ID) { $Agent = Get-Content $ID }
+            if ($Agent) { $BackGroundID = Get-Process | Where-Object id -eq $Agent }
+            if (-not $BackGroundId -or $BackGroundID.name -ne "pwsh") {
+                log "Starting Autofan" -ForeGroundColor Cyan              
+                $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
+                $Windowstyle = "Minimized"
+                if ($(arg).Hidden -eq "Yes") {
+                    $Windowstyle = "Hidden"
+                }            
+                $File = "$($(vars).Dir)\build\powershell\scripts\autofan.ps1"
+                $exec = "$PSHOME/pwsh.exe"
+                $command = Start-Process $exec -ArgumentList "-executionpolicy bypass -noexit -windowstyle $windowstyle -file `"$file`"" -WindowStyle Minimized -PassThru -Verb Runas
+                $command.ID | Set-Content ".\build\pid\autofan.txt"
+                $BackgroundTimer.Restart()
+                do {
+                    Start-Sleep -S 1
+                    log "Getting Process ID for AutoFan"
+                    $ProcessId = if (Test-Path ".\build\pid\autofan.txt") { Get-Content ".\build\pid\autofan.txt" }
+                    if ($null -ne $ProcessID) { $Process = Get-Process | Where-Object id -eq $ProcessId }
+                }until($null -ne $ProcessId -or ($BackgroundTimer.Elapsed.TotalSeconds) -ge 10)  
+                $BackgroundTimer.Stop()
+            }
+        }
+    }
+}
+
 function Global:start-update {
 
-    $Exclude = @("teamredminer.json","pool-algos.json","yescrypt.json","miniz.json","lolminer.json","lolminer-n.json","gminer-amd.json","gminer.json")
+    $Exclude = @("teamredminer.json", "pool-algos.json", "yescrypt.json", "miniz.json", "lolminer.json", "lolminer-n.json", "gminer-amd.json", "gminer.json")
 
     $Parent = Split-Path $(vars).dir
     log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
@@ -63,9 +122,9 @@ function Global:start-update {
         $Path = $_
         $Name = [IO.Path]::GetFileName($Path);
         log "Detected Another SWARM version: $Name" -Foreground Yellow
-        $ThisVersion = (Get-Content ([IO.Path]::Join($Path,"h-manifest.conf")) | ConvertFrom-StringData).CUSTOM_VERSION;
+        $ThisVersion = (Get-Content ([IO.Path]::Join($Path, "h-manifest.conf")) | ConvertFrom-StringData).CUSTOM_VERSION;
         log "Previous Version is $ThisVersion" -Foreground Yellow
-        $ThisVersion = [Convert]::ToInt32($ThisVersion.Replace(".",""));
+        $ThisVersion = [Convert]::ToInt32($ThisVersion.Replace(".", ""));
         $Jsons = @("asic", "miners", "oc", "pools", "power", "wallets")
         if ($ThisVersion -gt $Version) { 
             $Jsons = @("asic", "oc", "power", "wallets")
@@ -78,6 +137,11 @@ function Global:start-update {
 
         Start-Sleep -S 10  ## Gives User a chance to stop
 
+        ## Transfer HiveOS autofan settings 
+        if ($IsWindows) {
+            Global:Update-Autofan $Path
+        }
+        
         $ID = ".\build\pid\background_pid.txt"
         if ($global:IsWindows) {
             log "Stopping Previous Agent"
