@@ -205,9 +205,9 @@
     "NVIDIA2": ".\\bin\\gminer-n-2\\miner",
     "NVIDIA3": ".\\bin\\gminer-n-3\\miner",
     "minername": "miner",
-    "version": "3.07",
+    "version": "3.09",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.07/gminer_3_07_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.09/gminer_3_09_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",
