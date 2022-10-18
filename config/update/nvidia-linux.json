@@ -337,9 +337,9 @@
     "NVIDIA2": ".\\bin\\wildrig-n-2\\wildrig-multi",
     "NVIDIA3": ".\\bin\\wildrig-n-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.33.1",
+    "version": "0.33.3",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.33.1/wildrig-multi-linux-0.33.1.tar.xz"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.33.3/wildrig-multi-linux-0.33.3.tar.xz"
   },
   "nanominer-n": {
     "name": "nanominer-n",
