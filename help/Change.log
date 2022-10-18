@@ -1,15 +1,15 @@
-# Version 3.6.4
+# Version 3.6.5
 
 ## Beta Release
 * This project has all basic miners, but need more miners and updates.
 
 ## Improvements 
-* Fix mph display on get stats.
-* Create error on failed lib64 download.
-* Angleparse module instead for future implementation.
-* Int32 fix on hashrate in pool files.
-* Zelhash on nicehash converts to equihash 125/4 for Hive oc.
-* All miners should be latest versions.
+* Simple Update to fix small items and update miners to latest version.
+* Fix zpool Equihash #384.
+* Windows Autofan configs transfer on update. #388
+* Miners Updated. #390 #393
+* Remove --http-enabled from xmrig-cpu
+* Remove refcode= from zergpool
 
 ## KNOWN ISSUES
 * Get Wallets not working.

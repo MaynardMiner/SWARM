@@ -3135,3 +3135,34 @@ identity. Was related to machine potentially having multiple active MAC addresse
 * -historical_bias 1:1 (Don't penalize based on historical data- Too much new activity now)
 * -Hashrate_Threshold 10 (Don't switch miner on same algorithm unless it falls below 10% hashrate of next best miner)
 * -Switch_Threshold 5 (Don't switch unless next profitable item is at least 5% better)
+
+######################################################
+######################################################
+
+# Version 3.6.4
+
+## Beta Release
+* This project has all basic miners, but need more miners and updates.
+
+## Improvements 
+* Fix mph display on get stats.
+* Create error on failed lib64 download.
+* Angleparse module instead for future implementation.
+* Int32 fix on hashrate in pool files.
+* Zelhash on nicehash converts to equihash 125/4 for Hive oc.
+* All miners should be latest versions.
+
+## KNOWN ISSUES
+* Get Wallets not working.
+* More miners are coming soon.
+* User reported issue with AMD ryzen cpu & SWARM- If you have issue please report in discord.
+
+## Suggested Settings- What I as the Dev use.
+* -Auto_Coin Yes (use coin for calculations when applicable)
+* -Stat_Coin live (Mine based on individual coin statistics live values)
+* -Stat_Algo Live (Use live data for algorithms)
+* -Min_Blocks 4 (Don't mine anything that is going to take more than 6 hours to find)
+* -historical_bias 1:1 (Don't penalize based on historical data- Too much new activity now)
+* -Hashrate_Threshold 10 (Don't switch miner on same algorithm unless it falls below 10% hashrate of next best miner)
+* -Switch_Threshold 5 (Don't switch unless next profitable item is at least 5% better)
+
