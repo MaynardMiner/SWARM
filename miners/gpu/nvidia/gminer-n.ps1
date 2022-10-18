@@ -102,6 +102,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                             "nlpool" { $AddArgs = "--algo 144_5 --pers auto " }
                             "zergpool" { $AddArgs = "--algo 144_5 --pers auto " }
                             "mph" { $AddArgs = "--algo 144_5 --pers BgoldPoW " }
+                            "zpool" { $AddArgs = "--algo 144_5 --pers auto " }
                         }
                     }
                     "equihash_210/9" { $AddArgs = "--algo 210_9 --pers auto " }
