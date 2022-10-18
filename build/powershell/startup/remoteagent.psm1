@@ -39,34 +39,6 @@ function Global:Update-Autofan([string]$Path) {
 
         log "Moving $hivekeys to $new_hivekeys";
         Get-Content $hivekeys | Set-Content $new_hivekeys;
-        
-        ## Start Autofan if enabled.
-        $Enabled = $(Get-Content ".\config\parameters\autofan.json" | ConvertFrom-Json | ConvertFrom-StringData).ENABLED
-        if ($Enabled -eq 1) {
-            $ID = ".\build\pid\autofan.txt"
-            if (Test-Path $ID) { $Agent = Get-Content $ID }
-            if ($Agent) { $BackGroundID = Get-Process | Where-Object id -eq $Agent }
-            if (-not $BackGroundId -or $BackGroundID.name -ne "pwsh") {
-                log "Starting Autofan" -ForeGroundColor Cyan              
-                $BackgroundTimer = New-Object -TypeName System.Diagnostics.Stopwatch
-                $Windowstyle = "Minimized"
-                if ($(arg).Hidden -eq "Yes") {
-                    $Windowstyle = "Hidden"
-                }            
-                $File = "$($(vars).Dir)\build\powershell\scripts\autofan.ps1"
-                $exec = "$PSHOME/pwsh.exe"
-                $command = Start-Process $exec -ArgumentList "-executionpolicy bypass -noexit -windowstyle $windowstyle -file `"$file`"" -WindowStyle Minimized -PassThru -Verb Runas
-                $command.ID | Set-Content ".\build\pid\autofan.txt"
-                $BackgroundTimer.Restart()
-                do {
-                    Start-Sleep -S 1
-                    log "Getting Process ID for AutoFan"
-                    $ProcessId = if (Test-Path ".\build\pid\autofan.txt") { Get-Content ".\build\pid\autofan.txt" }
-                    if ($null -ne $ProcessID) { $Process = Get-Process | Where-Object id -eq $ProcessId }
-                }until($null -ne $ProcessId -or ($BackgroundTimer.Elapsed.TotalSeconds) -ge 10)  
-                $BackgroundTimer.Stop()
-            }
-        }
     }
 }
 
