@@ -351,7 +351,7 @@ Argument          Options           Explanation
                Hour_MA,             is a weighted average which favors more recent pricing.
                Hour_EMA,
                Hour_4_MA,
-               Hour_4,EMA,
+               Hour_4_EMA,
                Day_MA,
                Day_EMA]
 
@@ -365,7 +365,7 @@ Argument          Options           Explanation
                Hour_MA,             is a weighted average which favors more recent pricing.
                Hour_EMA,            This value works specifically for coin values (-Auto_Coin Yes).
                Hour_4_MA,
-               Hour_4,EMA,
+               Hour_4_EMA,
                Day_MA,
                Day_EMA]
 
