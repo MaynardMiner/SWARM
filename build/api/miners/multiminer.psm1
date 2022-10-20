@@ -35,7 +35,7 @@ function Global:Get-StatsMultiminer {
         }
         else {
             if ($Hash) { 
-                for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { $global:GPUHashrates.$(Global:Get-GPUs) = (Global:Set-Array $Hash $global:i) / 1000 } 
+                for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { $global:GPUHashrates.$(Global:Get-GPUs) = (Global:Set-Array $Hash $global:i) } 
             }
             $J | ForEach-Object { $global:GPUKHS += $_ }
         }

@@ -21,7 +21,7 @@ function Global:Get-StatsMiniz {
         $Shares = $Data | Select-String "Shares" | Select-Object -Last 1 | ForEach-Object { $_ -split "</td>" | Select-Object -First 1 } | ForEach-Object { $_ -split ">" | Select-Object -Last 1 }
         try { 
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
-                $global:GPUHashrates.$(Global:Get-GPUs) = (Global:Set-Array $Hash $global:i) / 1000 
+                $global:GPUHashrates.$(Global:Get-GPUs) = (Global:Set-Array $Hash $global:i) 
             } 
         }
         catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };

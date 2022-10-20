@@ -22,7 +22,7 @@ function Global:Get-StatsEWBF {
         Global:Write-MinerData2;
         try {
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
-                $global:GPUHashrates.$(Global:Get-GPUs) = (Global:Set-Array $Hash $global:i) / 1000 
+                $global:GPUHashrates.$(Global:Get-GPUs) = (Global:Set-Array $Hash $global:i) 
             }
         }
         catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };
