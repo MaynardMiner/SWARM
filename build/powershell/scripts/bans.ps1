@@ -74,7 +74,14 @@ switch ($Action) {
                         "Command" {
                             ### If item in is pool-algos.json, it is a algorithm.
                             ### We add the specific exclusion (NVIDIA1,Pool,Miner) etc. to it.
-                            if ($Item -in $PoolJson.PSObject.Properties.Name) {
+                            ### Make sure to check in alt-names
+                            $PoolJson.PSObject.Properties.Name | Foreach-Object {
+                                if ($Item -in $PoolJson.$_.alt_names) {
+                                    $Item = $_;
+                                }
+                            }
+                            $IsValue = $Item -in $PoolJson.PSObject.Properties.Name;
+                            if ($IsValue) {
                                 if ($Value -notin $PoolJson.$Item.exclusions) {
                                     $PoolJson.$Item.exclusions += $Value
                                     $PoolChange = $true
@@ -129,45 +136,71 @@ switch ($Action) {
     "remove" {
         if ($Bans) {
             $Bans | Foreach-Object {
+                $Item = ($_.split("`:") | Select-Object -First 1).replace("cnight", "cryptonight");
+                $Value = ($_.split("`:") | Select-Object -Last 1).replace("cnight", "cryptonight");
                 $Arg = $_ -split "`:"
+                ### Remove single item from bans.json
                 if ($Arg.Count -eq 1) {
                     $Arg = $Arg.Replace("cnight", "cryptonight")
                     if ($Arg -in $JsonBanHammer) { $JsonBanHammer = $JsonBanHammer | ForEach-Object { if ($_ -ne $Arg) { $_ } } }
                     $BanChange = $true
                     $Screen += "Removed $Arg in bans.json"
-
                 }
-                else {
-                    $Item = ($_.split("`:") | Select-Object -First 1).replace("cnight", "cryptonight");
-                    $Value = ($_.split("`:") | Select-Object -Last 1).replace("cnight", "cryptonight");
-                    if ($Value -in $PoolJson.$Item.exclusions) {
-                        $array = @();
-                        $PoolJson.$Item.exclusions | Where-Object { $_ -ne $Value } | ForEach-Object {
-                            $array += $_;
-                        }
-                        $PoolJson.$Item.exclusions = $array
-                        $PoolChange = $true
-                        $Screen += "Removed $Value in $Item exclusions in pool-algos.json"
+                break;
+                ### Attempt to remove item from pool-algos.json
+                $PoolJson.PSObject.Properties.Name | Foreach-Object {
+                    if ($Item -in $PoolJson.$_.alt_names) {
+                        $Item = $_;
                     }
-                    else {
-                        $Screen += "WARNING: Item $Item Is Not Detected To Be An Algorithm. Assuming it is a Coin instead.";
-                        ## Create or get the current list of bans for coin:
-                        if ($Item -notin $CoinJson.PSobject.Properties.Name) {
-                            $Screen += "Adding $Item to list in pool-coins.json"
-                            $CoinJson | Add-Member @{ $item = @{alt_names = @($Item); exclusions = @() } };
-                            $CoinChange = $true;
-                        }
-                        if ($Value -in $CoinJson.$Item.exclusions) {
-                            $Screen += "Adding $Value in $Item exclusions in pool-coins.json";
-                            $array = @()
-                            $CoinJson.$Item.exclusions | Where-Object { $_ -ne $Value } | ForEach-Object {
-                                $array += $_;
-                            }
-                            $CoinJson.$Item.exclusions = $array
-                            $CoinChange = $true;
-                        }
-                        $Screen += "Removed $Value in $Item exclusions in pool-coins.json"
+                }
+                ### Remove from Pools-algos.json
+                if ($Value -in $PoolJson.$Item.exclusions) {
+                    $array = @();
+                    $PoolJson.$Item.exclusions | Where-Object { $_ -ne $Value } | ForEach-Object {
+                        $array += $_;
                     }
+                    $PoolJson.$Item.exclusions = $array
+                    $PoolChange = $true
+                    $Screen += "Removed $Value in $Item exclusions in pool-algos.json"
+                    
+                }
+                if ($Value -in $CoinJson.$Item.exclusions) {
+                    $Screen += "Removing $Value in $Item exclusions in pool-coins.json if there";
+                    $array = @()
+                    $CoinJson.$Item.exclusions | Where-Object { $_ -ne $Value } | ForEach-Object {
+                        $array += $_;
+                    }
+                    $CoinJson.$Item.exclusions = $array
+                    $CoinChange = $true;
+                    $Screen += "Removed $Value in $Item exclusions in pool-coins.json"
+                }
+                ### Remove from timeout
+                if(Test-Path ".\timeout\pool_block\pool_block.txt") {
+                    $GetPoolBlock = Get-Content ".\timeout\pool_block\pool_block.txt" | ConvertFrom-Json
+                    $NewPoolBlock = @();
+                    $GetPoolBlock | Where-Object { $_.Algo -ne $Item -and $_.MName -ne $Value } | ForEach-Object {
+                        $NewPoolBlock += $_;
+                    }    
+                    $NewPoolBlock | ConvertTo-Json | Set-Content ".\timeout\pool_block\pool_block.txt" 
+                    $Screen += "Removing $Value in $Item exclusions in .\timeout\pool_block\pool_block.txt if there";
+                }
+                if(Test-Path ".\timeout\algo_block\algo_block.txt") {
+                    $GetAlgoBlock = Get-Content ".\timeout\algo_block\algo_block.txt" | ConvertFrom-Json
+                    $NewAlgoBlock = @();
+                    $GetAlgoBlock | Where-Object { $_.Algo -ne $Item -and $_.MName -ne $Value } | ForEach-Object {
+                        $NewAlgoBlock += $_;
+                    }
+                    $NewAlgoBlock | ConvertTo-Json | Set-Content ".\timeout\algo_block\algo_block.txt" 
+                    $Screen += "Removing $Value in $Item exclusions in .\timeout\algo_block\algo_block.txt if there";
+                }
+                if(Test-Path ".\timeout\miner_block\miner_block.txt") {
+                    $GetMinerBlock = Get-Content ".\timeout\miner_block\miner_block.txt" | ConvertFrom-Json
+                    $NewMinerBlock = @();
+                    $GetMinerBlock | Where-Object { $_.Algo -ne $Item -and $_.MName -ne $Value } | ForEach-Object {
+                        $NewMinerBlock += $_;
+                    }
+                    $NewMinerBlock | ConvertTo-Json | Set-Content ".\timeout\miner_block\miner_block.txt"
+                    $Screen += "Removing $Value in $Item exclusions in .\timeout\miner_block\miner_block.txt if there";
                 }
             }
         }
