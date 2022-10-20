@@ -133,7 +133,8 @@ if (Test-Path $CheckForSWARM) {
     $Global:GETSWARM = Get-Process | Where-Object ID -eq $global:GETSWARMID
 }
 $(vars).ADD("GCount", (Get-Content ".\debug\devicelist.txt" | ConvertFrom-Json))
-$(vars).ADD("BusData", (if(Test-Path ".\debug\busdata.txt") { (Get-Content ".\debug\busdata.txt" | ConvertFrom-Json) }))
+$(vars).ADD("BusData", @{})
+if(Test-Path ".\debug\busdata.txt") { $(vars).BusData = (Get-Content ".\debug\busdata.txt" | ConvertFrom-Json) }
 $(vars).BusData = $(vars).BusData | Where-Object {$_.brand -ne "cpu"}
 $(vars).ADD("BackgroundTimer", (New-Object -TypeName System.Diagnostics.Stopwatch))
 $(vars).ADD("watchdog_start", (Get-Date))

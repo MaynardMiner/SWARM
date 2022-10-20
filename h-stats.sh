@@ -32,5 +32,5 @@ cd `dirname $0`
 					  --arg hs_units "$hsu" \
 					  --arg algo "$algo" \
 					  --argjson bus_numbers "`echo "${bus_numbers[@]}" | jq -c .`" \
-					  '{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $bus_numbers $algo}')
+					  '{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $bus_numbers, $algo}')
 		  fi
