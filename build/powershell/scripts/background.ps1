@@ -121,7 +121,7 @@ $global:CPUHashTable = $null
 $global:CPUKHS = $null
 $global:ASICHashrates = $null
 $global:ASICKHS = $null
-$global:Bus_Numbers = $null
+$global:Bus_Numbers = @()
 $global:ramfree = $null
 $global:diskSpace = $null
 $global:ramtotal = $null
@@ -626,7 +626,6 @@ While ($True) {
 
 
     $global:Bus_Numbers = @();
-
     ##Now To Format All Stats For Online Table And Screen
     if ($global:DoNVIDIA) {
         for ($global:i = 0; $global:i -lt $(vars).GCount.NVIDIA.PSObject.Properties.Value.Count; $global:i++) {
