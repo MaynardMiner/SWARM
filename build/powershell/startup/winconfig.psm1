@@ -14,7 +14,7 @@ Function Global:Get-Bus {
 
     $GPUS = @()
     
-    $OldCount = if (Test-Path ".\debug\gpu-count.txt") { $(Get-Content ".\debug\gpu-count.txt") }
+    $OldCount = if (Test-Path ".\debug\gpucount.txt") { $(Get-Content ".\debug\gpucount.txt") }
     if ($OldCount) {
         Write-Log "Previously Detected GPU List Is:" -ForegroundColor Yellow
         $OldCount | Out-Host
@@ -142,7 +142,7 @@ Function Global:Get-Bus {
     $GPUS += $GPUData | Where-Object busid -eq "00:02.0"
     $GPUs += $GPUData | Where-Object busid -ne "00:02.0" | Sort-Object -Property busid
 
-    $NewCount | Set-Content ".\debug\gpu-count.txt"
+    $NewCount | Set-Content ".\debug\gpucount.txt"
 
     $GPUS
 }
