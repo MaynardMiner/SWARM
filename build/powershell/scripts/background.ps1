@@ -121,6 +121,7 @@ $global:CPUHashTable = $null
 $global:CPUKHS = $null
 $global:ASICHashrates = $null
 $global:ASICKHS = $null
+$global:Bus_Numbers = $null
 $global:ramfree = $null
 $global:diskSpace = $null
 $global:ramtotal = $null
@@ -132,6 +133,8 @@ if (Test-Path $CheckForSWARM) {
     $Global:GETSWARM = Get-Process | Where-Object ID -eq $global:GETSWARMID
 }
 $(vars).ADD("GCount", (Get-Content ".\debug\devicelist.txt" | ConvertFrom-Json))
+$(vars).ADD("BusData", (if(Test-Path ".\debug\busdata.txt") { (Get-Content ".\debug\busdata.txt" | ConvertFrom-Json) }))
+$(vars).BusData = $(vars).BusData | Where-Object {$_.brand -ne "cpu"}
 $(vars).ADD("BackgroundTimer", (New-Object -TypeName System.Diagnostics.Stopwatch))
 $(vars).ADD("watchdog_start", (Get-Date))
 $(vars).ADD("watchdog_triggered", $false)
@@ -620,15 +623,18 @@ While ($True) {
     if ($global:Workers.Main) { $Global:StatWorker = $global:Workers.Main }
     else { $FirstWorker = $global:Workers.keys | Select-Object -First 1; if ($FirstWorker) { $Global:StatWorker = $global:Workers.$FirstWorker } }
 
+
+    $global:Bus_Numbers = @();
+
     ##Now To Format All Stats For Online Table And Screen
     if ($global:DoNVIDIA) {
         for ($global:i = 0; $global:i -lt $(vars).GCount.NVIDIA.PSObject.Properties.Value.Count; $global:i++) {
-            $global:GPUHashTable += 0; $global:GPUFanTable += 0; $global:GPUTempTable += 0; $global:GPUPowerTable += 0;
+            $global:GPUHashTable += 0; $global:GPUFanTable += 0; $global:GPUTempTable += 0; $global:GPUPowerTable += 0; $global:Bus_Numbers += 0;
         }
     }
     if ($global:DoAMD) {
         for ($global:i = 0; $global:i -lt $(vars).GCount.AMD.PSObject.Properties.Value.Count; $global:i++) {
-            $global:GPUHashTable += 0; $global:GPUFanTable += 0; $global:GPUTempTable += 0; $global:GPUPowerTable += 0;
+            $global:GPUHashTable += 0; $global:GPUFanTable += 0; $global:GPUTempTable += 0; $global:GPUPowerTable += 0; $global:Bus_Numbers += 0;
         }
     }
     if ($global:DoCPU) {
@@ -647,6 +653,8 @@ While ($True) {
             $global:GPUFanTable[$($(vars).GCount.NVIDIA.$global:i)] = "$($global:GPUFans.$($(vars).GCount.NVIDIA.$global:i))"
             $global:GPUTempTable[$($(vars).GCount.NVIDIA.$global:i)] = "$($global:GPUTemps.$($(vars).GCount.NVIDIA.$global:i))"
             $global:GPUPowerTable[$($(vars).GCount.NVIDIA.$global:i)] = "$($global:GPUPower.$($(vars).GCount.NVIDIA.$global:i))"
+            $bus_id = [int]"0x$($(vars).BusData[($(vars).GCount.NVIDIA.$global:i)].busid.Split(":") | Select-Object -First 1)"
+            $global:Bus_Numbers[($(vars).GCount.NVIDIA.$global:i)] = $bus_id;
         }
     }
     if ($global:DoAMD) {
@@ -655,6 +663,8 @@ While ($True) {
             $global:GPUFanTable[$($(vars).GCount.AMD.$global:i)] = "$($global:GPUFans.$($(vars).GCount.AMD.$global:i))"
             $global:GPUTempTable[$($(vars).GCount.AMD.$global:i)] = "$($global:GPUTemps.$($(vars).GCount.AMD.$global:i))"
             $global:GPUPowerTable[$($(vars).GCount.AMD.$global:i)] = "$($global:GPUPower.$($(vars).GCount.AMD.$global:i))"
+            $bus_id = [int]"0x$($(vars).BusData[($(vars).GCount.AMD.$global:i)].busid.Split(":") | Select-Object -First 1)"
+            $global:Bus_Numbers[($(vars).GCount.AMD.$global:i)] = $bus_id;
         }
     }
 
@@ -713,6 +723,35 @@ While ($True) {
         if ($global:GPUKHS -eq 0) { $global:GPUKHS = "0" }
     }
 
+    $Bus_Numbers = @()
+    if($(Test-Path ".\debug\busdata.txt") -and $(Test-Path ".\debug\devicelist.txt")) {
+        $Devicelist = Get-Content ".\debug\devicelist.txt" | ConvertFrom-Json
+        $Bus = Get-Content ".\debug\busdata.txt" | ConvertFrom-Json;
+        $Bus = $Bus | Where-Object {$_.brand -ne "cpu"}
+        ## First make an array with all devices used.
+        $DoNvidia = $Devicelist.NVIDIA.PSObject.Properties.Name.Count -gt 0
+        $DoAmd = $Devicelist.AMD.PSObject.Properties.Name.Count -gt 0
+        if($DoNvidia) {
+            $Devicelist.NVIDIA.PSObject.Properties.Name | Foreach-Object { $Bus_Numbers += 0 }
+        }
+        if($DoAmd) {
+            $Devicelist.NVIDIA.PSObject.Properties.Name | Foreach-Object { $Bus_Numbers += 0 }
+        }
+        ## Now we set a busid to each object in the array.
+        if($DoNvidia) {
+            for ($i = 0; $i -lt $Devicelist.NVIDIA.PSObject.Properties.Value.Count; $i++) {
+                $bus_id = [int]"0x$($Bus[$DeviceList.NVIDIA.$i].busid.Split(":") | Select-Object -First 1)"
+                $Bus_Numbers[$Devicelist.NVIDIA.$i] = $bus_id
+            }
+        }
+        if($DoAmd) {
+            for ($i = 0; $i -lt $Devicelist.AMD.PSObject.Properties.Value.Count; $i++) {
+                $bus_id = [int]"0x$($Bus[$DeviceList.AMD.$i].busid.Split(":") | Select-Object -First 1)"
+                $Bus_Numbers[$Devicelist.AMD.$i] = $bus_id
+            }
+        }
+    }
+
     $Global:config.summary = @{
         summary = $global:MinerTable;
     }
@@ -725,7 +764,7 @@ While ($True) {
         gpu_total  = $global:GPUKHS;
         algo       = $Global:StatAlgo;
         uptime     = $global:UPTIME;
-        hsu        = "khs";
+        hsu        = "hs";
         fans       = @($global:GPUFanTable);
         temps      = @($global:GPUTempTable);
         power      = @($global:GPUPowerTable);
@@ -734,6 +773,7 @@ While ($True) {
         stratum    = $Global:StatStratum;
         start_time = $Global:StartTime;
         workername = $Global:StatWorker;
+        bus_numbers = @($global:Bus_Numbers);
     }
     $global:Config.params = $(arg)
 
@@ -745,6 +785,7 @@ While ($True) {
         if ($global:DoAMD -or $global:DoNVIDIA) { Write-Host "GPU_Fans: $global:GPUFanTable" -ForegroundColor Yellow }
         if ($global:DoAMD -or $global:DoNVIDIA) { Write-Host "GPU_Temps: $global:GPUTempTable" -ForegroundColor Cyan }
         if ($global:DoAMD -or $global:DoNVIDIA) { Write-Host "GPU_Power: $global:GPUPowerTable"  -ForegroundColor Magenta }
+        if ($global:DoAMD -or $global:DoNVIDIA) { Write-Host "GPU_BUS_Numbers: $global:Bus_Numbers" -ForegroundColor Yellow }
         if ($global:DoAMD -or $global:DoNVIDIA) { Write-Host "GPU_TOTAL_KHS: $global:GPUKHS" -ForegroundColor Yellow }
         if ($global:DoCPU) { Write-Host "CPU_TOTAL_KHS: $global:CPUKHS" -ForegroundColor Yellow }
         if ($global:DoASIC) { Write-Host "ASIC_TOTAL_KHS: $global:ASICKHS" -ForegroundColor Yellow }

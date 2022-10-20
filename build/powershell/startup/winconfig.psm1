@@ -349,7 +349,10 @@ function Global:Start-WindowsConfig {
         }
     }
 
-    if ($DoBus -eq $true) { $(vars).BusData = Global:Get-Bus }
+    if ($DoBus -eq $true) { 
+        $(vars).BusData = Global:Get-Bus 
+        $(vars).BusData | ConvertTo-Json -Depth 5 | Set-Content ".\debug\busdata.txt"
+    }
     $(vars).GPU_Count = Global:Get-GPUCount
 
     ## Websites

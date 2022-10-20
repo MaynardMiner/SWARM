@@ -20,6 +20,7 @@ cd `dirname $0`
 			hsu=$(jq -r '.hsu' <<< "$stats_raw")
 			algo=$(jq -r '.algo' <<< "$stats_raw")
 			khs=$(jq -r '.gpu_total' <<< "$stats_raw")
+			bus_numbers=$(jq -r '.bus_numbers' <<< "$stats_raw" | tr -d '"')
 
 			stats=$(jq -n \
 					  --argjson hs "`echo "${gpus[@]}" | jq -c .`" \
@@ -30,5 +31,6 @@ cd `dirname $0`
 					  --arg rj "$rj" \
 					  --arg hs_units "$hsu" \
 					  --arg algo "$algo" \
-					  '{$hs, $fan, $temp, $uptime, ar: [$ac, $rj], $hs_units, $algo}')
+					  --argjson bus_numbers "`echo "${bus_numbers[@]}" | jq -c .`" \
+					  '{$hs, $hs_units, $temp, $fan, $uptime, ar: [$ac, $rj], $bus_numbers $algo}')
 		  fi
