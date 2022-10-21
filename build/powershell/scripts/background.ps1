@@ -121,7 +121,7 @@ $global:CPUHashTable = $null
 $global:CPUKHS = $null
 $global:ASICHashrates = $null
 $global:ASICKHS = $null
-$global:Bus_Numbers = @()
+$global:Bus_Numbers = $null
 $global:ramfree = $null
 $global:diskSpace = $null
 $global:ramtotal = $null
@@ -721,35 +721,6 @@ While ($True) {
     if ($global:DoNVIDIA -or $global:AMD) {
         for ($global:i = 0; $global:i -lt $global:GPUHashTable.Count; $global:i++) { $global:GPUHashTable[$global:i] = $global:GPUHashTable[$global:i] -replace "0.0000", "0" }
         if ($global:GPUKHS -eq 0) { $global:GPUKHS = "0" }
-    }
-
-    $Bus_Numbers = @()
-    if($(Test-Path ".\debug\busdata.txt") -and $(Test-Path ".\debug\devicelist.txt")) {
-        $Devicelist = Get-Content ".\debug\devicelist.txt" | ConvertFrom-Json
-        $Bus = Get-Content ".\debug\busdata.txt" | ConvertFrom-Json;
-        $Bus = $Bus | Where-Object {$_.brand -ne "cpu"}
-        ## First make an array with all devices used.
-        $DoNvidia = $Devicelist.NVIDIA.PSObject.Properties.Name.Count -gt 0
-        $DoAmd = $Devicelist.AMD.PSObject.Properties.Name.Count -gt 0
-        if($DoNvidia) {
-            $Devicelist.NVIDIA.PSObject.Properties.Name | Foreach-Object { $Bus_Numbers += 0 }
-        }
-        if($DoAmd) {
-            $Devicelist.NVIDIA.PSObject.Properties.Name | Foreach-Object { $Bus_Numbers += 0 }
-        }
-        ## Now we set a busid to each object in the array.
-        if($DoNvidia) {
-            for ($i = 0; $i -lt $Devicelist.NVIDIA.PSObject.Properties.Value.Count; $i++) {
-                $bus_id = [int]"0x$($Bus[$DeviceList.NVIDIA.$i].busid.Split(":") | Select-Object -First 1)"
-                $Bus_Numbers[$Devicelist.NVIDIA.$i] = $bus_id
-            }
-        }
-        if($DoAmd) {
-            for ($i = 0; $i -lt $Devicelist.AMD.PSObject.Properties.Value.Count; $i++) {
-                $bus_id = [int]"0x$($Bus[$DeviceList.AMD.$i].busid.Split(":") | Select-Object -First 1)"
-                $Bus_Numbers[$Devicelist.AMD.$i] = $bus_id
-            }
-        }
     }
 
     $Global:config.summary = @{
