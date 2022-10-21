@@ -99,13 +99,13 @@ if ($IsWindows) {
 ## Check Powershell version. Output warning.
 ## In most cases it will not cause issue, but notating they
 ## may be using a version that will.
-if ($PSVersionTable.PSVersion -ne "7.2.6") {
+if ($PSVersionTable.PSVersion -ne "7.2.7") {
     Write-Host "WARNING: Powershell Core Version is $($PSVersionTable.PSVersion)" -ForegroundColor Yellow
-    Write-Host "Currently supported version for SWARM is 7.2.6" -ForegroundColor Yellow
+    Write-Host "Currently supported version for SWARM is 7.2.7" -ForegroundColor Yellow
     Write-Host "SWARM will continue anyways- It may cause issues." -ForegroundColor Yellow
     Write-Host ""
     Write-Host "Link for Powershell:" -ForegroundColor Yellow
-    Write-Host "https://github.com/PowerShell/PowerShell/releases/tag/v7.2.6" -ForegroundColor Yellow
+    Write-Host "https://github.com/PowerShell/PowerShell/releases/tag/v7.2.7" -ForegroundColor Yellow
     Write-Host ""
     Write-Host "Windows: Microsoft Visual C++ Redistributable for Visual Studio (2012) (2013) (2015,2017 and 2019)" -ForegroundColor Yellow
     Write-Host "Link For download:" -ForegroundColor Yellow

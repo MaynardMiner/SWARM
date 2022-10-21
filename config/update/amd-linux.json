@@ -29,9 +29,9 @@
     "AMD2": ".\\bin\\gminer-a-2\\miner",
     "AMD3": ".\\bin\\gminer-a-3\\miner",
     "minername": "miner",
-    "version": "3.09",
+    "version": "3.10",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.09/gminer_3_09_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.10/gminer_3_10_linux64.tar.xz"
   },
   "kbminer-amd": {
     "name": "kbminer-amd",
@@ -161,9 +161,9 @@
     "AMD2": ".\\bin\\teamredminer-2\\teamredminer",
     "AMD3": ".\\bin\\teamredminer-3\\teamredminer",
     "minername": "teamredminer",
-    "version": "0.10.5",
+    "version": "0.10.5.1",
     "optional": "No",
-    "uri": "https://github.com/todxx/teamredminer/releases/download/v0.10.5/teamredminer-v0.10.5-linux.tgz"
+    "uri": "https://github.com/todxx/teamredminer/releases/download/v0.10.5.1/teamredminer-v0.10.5.1-linux.tgz"
   },
   "xmr-stak": {
     "name": "xmr-stak",
