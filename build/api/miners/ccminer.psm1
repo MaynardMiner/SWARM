@@ -32,7 +32,7 @@ function Global:Get-StatsCcminer {
         $Data = $GetThreads -split "\|"
         $DataHash = $Data -split ";" | Select-String "KHS" | ForEach-Object { $_ -replace ("KHS=", "") }
         $Hash = @()
-        $DataHash | Foreach-Object { $Hash += [Convert]::ToDouble($_) * 1000}
+        $DataHash | Foreach-Object { $Hash += [Convert]::ToDouble($_) / 1000}
         try { 
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
                 $global:GPUHashrates.$(Global:Get-GPUs) = Global:Set-Array $Hash $global:i 
