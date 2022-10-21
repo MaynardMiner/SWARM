@@ -191,7 +191,7 @@ if ($Name -in $(arg).PoolName) {
             $Pool_Host = "$($_.Original_Algo).$($reg).mine.zpool.ca$sub"
             $Pool_Algo = $_.algo.ToLower()
             $Pool_Symbol = $_.sym.ToUpper()
-            $mc = "zap=$Pool_Symbol,"
+            $mc = "zap=$Pool_Symbol"
 
             ## Wallet Swapping/Solo mining
             $Pass1 = $A_Wallets.Wallet1.Keys
@@ -235,7 +235,7 @@ if ($Name -in $(arg).PoolName) {
                             $Pass1 = $Sym
                             $Pass2 = $Sym
                             $Pass3 = $Sym
-                            $mc = "zap=$Sym,"
+                            $mc = "zap=$Sym"
                             if ($AltWallets.$Sym.address -ne "add address of coin if you wish to mine to that address, or leave alone." -and $AltWallets.$_.address -ne "") {
                                 $User1 = $AltWallets.$Sym.address
                                 $User2 = $AltWallets.$Sym.address
@@ -266,11 +266,11 @@ if ($Name -in $(arg).PoolName) {
                 ## User3
                 $User3,
                 ## Pass1
-                "c=$Pass1,$($mc)ID=$($Params.RigName1)",
+                "$($Params.RigName1),c=$Pass1,$($mc)",
                 ## Pass2
-                "c=$Pass2,$($mc)ID=$($Params.RigName2)",
+                "$($Params.RigName1),c=$Pass2,$($mc)",
                 ## Pass3
-                "c=$Pass3,$($mc)ID=$($Params.RigName3)",
+                "$($Params.RigName1),c=$Pass3,$($mc)",
                 ## Previous
                 $previous
             )
