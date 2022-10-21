@@ -33,8 +33,9 @@ function Global:Get-StatsCcminer {
         $DataHash = $Data -split ";" | Select-String "KHS" | ForEach-Object { $_ -replace ("KHS=", "") }
         $Hash = @()
         $DataHash | Foreach-Object { 
-            $HashValue = [Convert]::ToDecimal($_) * 1000
-            $Hash += $HashValue
+            $HashValue = [Double]$_
+            $NewValue = $HashValue * 1000
+            $Hash += $NewValue
         }
         try { 
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 

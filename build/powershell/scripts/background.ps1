@@ -649,7 +649,7 @@ While ($True) {
 
     if ($global:DoNVIDIA) {
         for ($global:i = 0; $global:i -lt $(vars).GCount.NVIDIA.PSObject.Properties.Value.Count; $global:i++) {
-            $global:GPUHashTable[$($(vars).GCount.NVIDIA.$global:i)] = "{0:f6}" -f $($global:GPUHashrates.$($(vars).GCount.NVIDIA.$global:i))
+            $global:GPUHashTable[$($(vars).GCount.NVIDIA.$global:i)] = "$($global:GPUHashrates.$($(vars).GCount.NVIDIA.$global:i))"
             $global:GPUFanTable[$($(vars).GCount.NVIDIA.$global:i)] = "$($global:GPUFans.$($(vars).GCount.NVIDIA.$global:i))"
             $global:GPUTempTable[$($(vars).GCount.NVIDIA.$global:i)] = "$($global:GPUTemps.$($(vars).GCount.NVIDIA.$global:i))"
             $global:GPUPowerTable[$($(vars).GCount.NVIDIA.$global:i)] = "$($global:GPUPower.$($(vars).GCount.NVIDIA.$global:i))"
@@ -659,7 +659,7 @@ While ($True) {
     }
     if ($global:DoAMD) {
         for ($global:i = 0; $global:i -lt $(vars).GCount.AMD.PSObject.Properties.Value.Count; $global:i++) {
-            $global:GPUHashTable[$($(vars).GCount.AMD.$global:i)] = "{0:f6}" -f $($global:GPUHashrates.$($(vars).GCount.AMD.$global:i))
+            $global:GPUHashTable[$($(vars).GCount.AMD.$global:i)] = "$($global:GPUHashrates.$($(vars).GCount.AMD.$global:i))"
             $global:GPUFanTable[$($(vars).GCount.AMD.$global:i)] = "$($global:GPUFans.$($(vars).GCount.AMD.$global:i))"
             $global:GPUTempTable[$($(vars).GCount.AMD.$global:i)] = "$($global:GPUTemps.$($(vars).GCount.AMD.$global:i))"
             $global:GPUPowerTable[$($(vars).GCount.AMD.$global:i)] = "$($global:GPUPower.$($(vars).GCount.AMD.$global:i))"
@@ -670,13 +670,13 @@ While ($True) {
 
     if ($global:DoCPU) {
         for ($global:i = 0; $global:i -lt $(vars).GCount.CPU.PSObject.Properties.Value.Count; $global:i++) {
-            $global:CPUHashTable[$($(vars).GCount.CPU.$global:i)] = "{0:f6}" -f $($global:CPUHashrates.$($(vars).GCount.CPU.$global:i))
+            $global:CPUHashTable[$($(vars).GCount.CPU.$global:i)] = "$($global:CPUHashrates.$($(vars).GCount.CPU.$global:i))"
         }
     }
 
     if ($global:DoASIC) {
         for ($global:i = 0; $global:i -lt $numbers; $global:i++) { 
-            $global:ASICHashTable[$global:i] = "{0:f6}" -f $($global:ASICHashrates.$($global:i)) 
+            $global:ASICHashTable[$global:i] = "$($global:ASICHashrates.$($global:i))"
         } 
         Remove-Variable numbers -ErrorAction Ignore
     }
