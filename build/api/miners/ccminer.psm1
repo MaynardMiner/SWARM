@@ -35,7 +35,7 @@ function Global:Get-StatsCcminer {
         $DataHash | Foreach-Object { $Hash += [Convert]::ToDouble($_) * 1000}
         try { 
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
-                $global:GPUHashrates.$(Global:Get-GPUs) = Global:Set-Array ([Double]$Hash * 1000) $global:i 
+                $global:GPUHashrates.$(Global:Get-GPUs) = Global:Set-Array [Double]$Hash $global:i 
             } 
         }
         catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };
