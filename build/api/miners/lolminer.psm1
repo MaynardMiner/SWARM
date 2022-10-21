@@ -30,7 +30,7 @@ function Global:Get-StatsLolminer {
         $Hash = $Data.Algorithms[0].Worker_Performance
         try { 
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
-                $global:GPUHashrates.$(Global:Get-GPUs) = ((Global:Set-Array $Hash $global:i) * $lolmulti) / 1000 
+                $global:GPUHashrates.$(Global:Get-GPUs) = ((Global:Set-Array $Hash $global:i) * $lolmulti) 
             } 
         }
         catch { Write-Host "Failed To parse GPU Array" -ForegroundColor Red };

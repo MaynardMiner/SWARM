@@ -17,7 +17,7 @@ function Global:Get-StatsNebutech {
         $global:RAW += [Double]$Data.miner.total_hashrate_raw
         $global:GPUKHS += [Double]$Data.miner.total_hashrate_raw / 1000
         Global:Write-MinerData2;
-        $Hash = $Data.Miner.devices.hashrate_raw | ForEach-Object{[Double]$_ / 1000}
+        $Hash = $Data.Miner.devices.hashrate_raw | ForEach-Object{[Double]$_}
         try {
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) {
                 $global:GPUHashrates.$(Global:Get-GPUs) = Global:Set-Array $Hash $global:i

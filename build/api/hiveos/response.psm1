@@ -21,16 +21,16 @@ function Global:Set-Stats($Site) {
     $global:GPUFanTable = $global:GPUFanTable | Foreach-Object  { $_ -replace ("GPUFAN=", "") }
     $global:GPUTempTable = $global:GPUTempTable | Foreach-Object  { $_ -replace ("GPUTEMP=", "") }
     $AR = @("$global:ALLACC", "$global:ALLREJ")
-
     if ($GPUHashTable) {
         $miner_stats = @{
             hs       = @($global:GPUHashTable)
-            hs_units = "khs"
+            hs_units = "hs"
             temp     = @($global:GPUTempTable)
             fan      = @($global:GPUFanTable)
             uptime   = $global:UPTIME
             ar       = @($AR)
             algo     = $Global:StatAlgo
+            bus_numbers = @($global:Bus_Numbers)
         }
     } else {
         $Miner_stats = $null
