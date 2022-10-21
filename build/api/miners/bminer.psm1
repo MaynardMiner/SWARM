@@ -23,7 +23,7 @@ function Global:Get-StatsBminer {
         $Hash = $Data.Miners
         try {
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
-                $GPU = $Devices[$global:i]; $global:GPUHashrates.$(Global:Get-GPUs) = [Double]$Hash.$GPU.solver.solution_rate / 1000
+                $GPU = $Devices[$global:i]; $global:GPUHashrates.$(Global:Get-GPUs) = [Double]$Hash.$GPU.solver.solution_rate
             } 
         }
         catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };

@@ -38,7 +38,7 @@ function Global:Get-StatsEthminer {
         $global:RAW += $Summary -split ";" | Select-Object -First 1 | ForEach-Object { [Convert]::ToDouble($_) * $Multiplier } 
         Global:Write-MinerData2;
         $global:GPUKHS += $Summary -split ";" | Select-Object -First 1 | ForEach-Object { [Convert]::ToDouble($_) / $Divsor } 
-        $Hash = $Threads -split ";" | ForEach-Object { [Convert]::ToDouble($_) / $Divsor }
+        $Hash = $Threads -split ";" | ForEach-Object { [Convert]::ToDouble($_) }
         
         try { 
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
