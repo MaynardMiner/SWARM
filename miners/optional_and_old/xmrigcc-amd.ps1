@@ -20,7 +20,7 @@ $(vars).AMDTypes | ForEach-Object {
     }
 
     ##Log Directory
-    $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($(vars).dir) "logs\$Name.log"
 
     ##Get Configuration File
     ##This is located in config\miners

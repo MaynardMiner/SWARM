@@ -102,7 +102,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
         $Export = Join-Path $($(vars).dir) "build\export"
         $PIDMiners = "$($MinerCurrent.Type)"
         if (Test-Path ".\build\pid\*$PIDMiners*") { Remove-Item ".\build\pid\*$PIDMiners*" }
-        $Logs = Join-Path $($(vars).dir) "logs\$($MinerCurrent.Type).log" 
+        $Logs = Join-Path $($(vars).dir) "logs\$($MinerCurrent.Name).log" 
 
         switch -WildCard ($MinerCurrent.Type) {
             "*NVIDIA*" {

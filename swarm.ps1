@@ -220,10 +220,6 @@ if ($IsWindows -and [string]$Global:config.hive_params.MINER_DELAY -ne "") {
     Remove-Variable -Name Sleep -ErrorAction Ignore
 }
 
-## Crash Reporting
-Global:Add-Module "$($(vars).startup)\crashreport.psm1"
-Global:Start-CrashReporting
-
 ## Start The Log
 if (-not (Test-Path "logs")) { New-Item "logs" -ItemType "directory" | Out-Null; Start-Sleep -S 1 }
 $($(vars).dir) | Set-Content ".\build\bash\dir.sh";
@@ -705,7 +701,7 @@ $($_.InvocationInfo.PositionMessage)
     Global:Get-ActiveMiners
     Global:Get-BestActiveMiners
     Global:Get-ActivePricing
-=
+
     ## Start / Stop / Restart Miners - Load Modules
     Global:Add-Module "$($(vars).control)\run.psm1"
     Global:Add-Module "$($(vars).control)\launchcode.psm1"

@@ -227,7 +227,6 @@ function Global:Start-Benchmark {
                                     if (-not (Test-Path $NewHashrateFilePath)) {
                                         Copy-Item $HashrateFilePath -Destination $NewHashrateFilePath -force
                                         log "$($_.Name) $($_.Symbol) Was Benchmarked And Backed Up" -foregroundcolor yellow
-                                        log "if SWARM was able to record intesity and/or difficulty, it is in .\bin\$($_.name)" -foregroundcolor yellow
                                     }
                                     $global:WasBenchmarked = $True
                                     log "Stat Written" -foregroundcolor green

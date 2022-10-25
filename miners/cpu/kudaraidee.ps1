@@ -15,7 +15,7 @@ $(vars).CPUTypes | ForEach-Object {
     $Name = "kudaraidee";
 
     ##Log Directory
-    $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($(vars).dir) "logs\$Name.log"
 
     ##Parse -CPUThreads
     if ($(arg).CPUThreads -ne '') { $Devices = $(arg).CPUThreads }
