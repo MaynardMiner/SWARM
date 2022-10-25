@@ -12,10 +12,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
 function Global:Update-Log {
-    #Start the log
-    if (-not (Test-Path "logs")) {New-Item "logs" -ItemType "directory" | Out-Null; Start-Sleep -S 1}
     $Global:log_params.lognum++
-    ## When we have looped 288 times, we have reached a full day of log.
+    ## When we have looped 288 times, we have reached a full day of logs.
     if($Global:log_params.lognum -gt 288) {
         $LogName = Get-Date -Format "HH_mm__dd__MM__yyyy"
         $Global:log_params.logname = Join-Path $($(vars).dir) "logs\swarm_$LogName.log"

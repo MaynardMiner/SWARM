@@ -119,31 +119,6 @@ function Global:Get-Logo {
                                                                                  ' -foregroundcolor "Yellow"
 }
 
-function Global:Update-Logging {
-    if ($global:log_params.lognum -eq 12) {
-        Remove-Item ".\logs\*miner*" -Force -ErrorAction SilentlyContinue
-        Remove-Item ".\logs\*crash_report*" -Force -Recurse -ErrorAction SilentlyContinue
-        $global:log_params.lognum = 0
-    }
-    if ((Get-ChildItem ".\logs" | Where-Object BaseName -match "crash_report").count -gt 12) {
-        Remove-Item ".\logs\*crash_report*" -Force -Recurse -ErrorAction SilentlyContinue
-    }
-    if ($(vars).logtimer.Elapsed.TotalSeconds -ge 3600) {
-        Start-Sleep -S 3
-        if (Test-Path ".\logs\*active*") {
-            $OldActiveFile = Get-ChildItem ".\logs" | Where-Object BaseName -like "*active*"
-            $OldActiveFile | ForEach-Object {
-                $RenameActive = $_.fullname -replace ("-active", "")
-                if (Test-Path $RenameActive) { Remove-Item $RenameActive -Force }
-                Rename-Item $_.FullName -NewName $RenameActive -force
-            }
-        }
-        $global:log_params.lognum++
-        $global:log_params.logname = ".\logs\miner$($global:log_params.lognum)-active.log"
-        $(vars).logtimer.Restart()
-    }
-}
-
 function Global:Get-MinerActive {
     $(vars).ActiveMinerPrograms | Sort-Object -Descending Status, Instance | Select-Object -First (1 + 6 + 6) | Format-Table -Wrap -GroupBy Status (
         @{Label = "Name"; Expression = { "$($_.Name)" } },

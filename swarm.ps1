@@ -115,7 +115,7 @@ if ($PSVersionTable.PSVersion -ne "7.2.7") {
 }
 
 ## Install AngleParse For Future Implementation
-if($null -eq (Get-InstalledModule | Where-Object { $_.Name -eq "AngleParse"})) {
+if ($null -eq (Get-InstalledModule | Where-Object { $_.Name -eq "AngleParse" })) {
     Install-Package AngleParse -force
 }
 
@@ -225,9 +225,10 @@ Global:Add-Module "$($(vars).startup)\crashreport.psm1"
 Global:Start-CrashReporting
 
 ## Start The Log
+if (-not (Test-Path "logs")) { New-Item "logs" -ItemType "directory" | Out-Null; Start-Sleep -S 1 }
 $($(vars).dir) | Set-Content ".\build\bash\dir.sh";
 $Global:log_params = [hashtable]::Synchronized(@{ })
-$Global:log_params.Add("lognum", 1)
+$Global:log_params.Add("lognum", 0)
 $global:log_params.Add("logname", (Join-Path $($(vars).dir) "logs\swarm_$(Get-Date -Format "HH_mm__dd__MM__yyyy").log"))
 $Global:log_params.Add( "dir", (Split-Path $script:MyInvocation.MyCommand.Path) )
 log "Logging has started- Logfile is $($global:log_params.logname)";
@@ -268,7 +269,7 @@ $($_.InvocationInfo.PositionMessage)
     Global:Clear-Stats
     Global:Get-ArgNotice
     ## Make sure all -TYPE values are upper case.
-    if($(arg).Type.Count -gt 0) {
+    if ($(arg).Type.Count -gt 0) {
         $(arg).Type = $(arg).Type.ToUpper()
     }
 
@@ -471,7 +472,7 @@ $($_.InvocationInfo.PositionMessage)
     Global:Get-MinerConfigs
     $global:Config.Pool_Algos = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
     $global:Config.Pool_Coins = [PSCustomObject]@{}
-    if(test-path ".\config\pools\pool-coins.json") {
+    if (test-path ".\config\pools\pool-coins.json") {
         $global:Config.Pool_Coins = Get-Content ".\config\pools\pool-coins.json" | ConvertFrom-Json;
     }
     Global:Add-ASICS
@@ -772,11 +773,12 @@ $($_.InvocationInfo.PositionMessage)
 
     ## Refreshing Pricing Data
     Global:Add-Module "$($(vars).run)\commands.psm1"
+    Global:Add-Module "$($(vars).run)\logging.psm1"
     Global:Get-PriceMessage
     Global:Get-Commands
     remove Miners
     Global:Get-Logo
-    Global:Update-Logging
+    Global:Update-Log
     Get-Date | Out-File ".\debug\mineractive.txt"
     Global:Get-MinerActive | Out-File ".\debug\mineractive.txt" -Append
 
