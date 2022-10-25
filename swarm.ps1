@@ -229,7 +229,7 @@ if (-not (Test-Path "logs")) { New-Item "logs" -ItemType "directory" | Out-Null;
 $($(vars).dir) | Set-Content ".\build\bash\dir.sh";
 $Global:log_params = [hashtable]::Synchronized(@{ })
 $Global:log_params.Add("lognum", 0)
-$global:log_params.Add("logname", (Join-Path $($(vars).dir) "logs\swarm_$(Get-Date -Format "HH_mm__dd__MM__yyyy").log"))
+$global:log_params.Add("logname", (Join-Path $($(vars).dir) "logs\swarm__$(Get-Date -Format "HH_mm__dd__MM__yyyy").log"))
 $Global:log_params.Add( "dir", (Split-Path $script:MyInvocation.MyCommand.Path) )
 log "Logging has started- Logfile is $($global:log_params.logname)";
 
@@ -449,6 +449,9 @@ $($_.InvocationInfo.PositionMessage)
     create ASICS @{ }
     create All_AltWalltes $null
     $(vars).ETH_exchange = 0;
+
+    Global:Add-Module "$($(vars).build)\logging.psm1"
+    Global:Update-Log
     
     ##Insert Build Single Modules Here
 
@@ -702,7 +705,7 @@ $($_.InvocationInfo.PositionMessage)
     Global:Get-ActiveMiners
     Global:Get-BestActiveMiners
     Global:Get-ActivePricing
-
+=
     ## Start / Stop / Restart Miners - Load Modules
     Global:Add-Module "$($(vars).control)\run.psm1"
     Global:Add-Module "$($(vars).control)\launchcode.psm1"
@@ -773,12 +776,10 @@ $($_.InvocationInfo.PositionMessage)
 
     ## Refreshing Pricing Data
     Global:Add-Module "$($(vars).run)\commands.psm1"
-    Global:Add-Module "$($(vars).run)\logging.psm1"
     Global:Get-PriceMessage
     Global:Get-Commands
     remove Miners
     Global:Get-Logo
-    Global:Update-Log
     Get-Date | Out-File ".\debug\mineractive.txt"
     Global:Get-MinerActive | Out-File ".\debug\mineractive.txt" -Append
 
