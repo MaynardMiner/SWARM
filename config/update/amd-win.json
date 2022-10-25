@@ -143,12 +143,12 @@
     "optional": "No",
     "uri": "https://github.com/fireice-uk/xmr-stak/releases/download/1.0.5-rx/xmr-stak-rx-win64-1.0.5.zip"
   },
-  "wildrig": {
-    "name": "wildrig",
+  "wildrig-a": {
+    "name": "wildrig-a",
     "type": "amd",
-    "AMD1": ".\\bin\\wildrig-1\\wildrig.exe",
-    "AMD2": ".\\bin\\wildrig-2\\wildrig.exe",
-    "AMD3": ".\\bin\\wildrig-3\\wildrig.exe",
+    "AMD1": ".\\bin\\wildrig-a-1\\wildrig.exe",
+    "AMD2": ".\\bin\\wildrig-a-2\\wildrig.exe",
+    "AMD3": ".\\bin\\wildrig-a-3\\wildrig.exe",
     "minername": "wildrig.exe",
     "version": "0.33.3",
     "optional": "No",

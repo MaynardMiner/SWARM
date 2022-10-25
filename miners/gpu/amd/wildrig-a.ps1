@@ -3,16 +3,17 @@
 $(vars).AMDTypes | ForEach-Object {
 
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $Cname = "wildrig-a"
 
     ##Miner Path Information
-    if ($(vars).amd.wildrig.$ConfigType) { $Path = "$($(vars).amd.wildrig.$ConfigType)" }
+    if ($(vars).amd.$Cname.$ConfigType) { $Path = "$($(vars).amd.$Cname.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).amd.wildrig.uri) { $Uri = "$($(vars).amd.wildrig.uri)" }
+    if ($(vars).amd.$Cname.uri) { $Uri = "$($(vars).amd.$Cname.uri)" }
     else { $Uri = "None" }
-    if ($(vars).amd.wildrig.minername) { $MinerName = "$($(vars).amd.wildrig.minername)" }
+    if ($(vars).amd.$Cname.minername) { $MinerName = "$($(vars).amd.$Cname.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "wildrig-$Num"; $Port = "2900$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$Cname-$Num"; $Port = "2900$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
@@ -27,7 +28,7 @@ $(vars).AMDTypes | ForEach-Object {
 
     ##Get Configuration File
     ##This is located in config\miners
-    $MinerConfig = $Global:config.miners.wildrig
+    $MinerConfig = $Global:config.miners.$Cname
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = "/usr/local/swarm/lib64"
@@ -79,9 +80,9 @@ $(vars).AMDTypes | ForEach-Object {
                     Path       = $Path
                     Devices    = "none"
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
-                    Version    = "$($(vars).amd.wildrig.version)"
+                    Version    = "$($(vars).amd.$Cname.version)"
                     DeviceCall = "wildrig"
-                    Arguments  = "--opencl-platforms amd --api-port $Port --multiple-instance --algo $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Pool_Host):$($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) --log-file `'$Log`' $($MinerConfig.$ConfigType.commands.$($MinerConfig.$ConfigType.naming.$($_.Algorithm)))"
+                    Arguments  = "--opencl-platforms amd --api-port $Port --multiple-instance --algo $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Pool_Host):$($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) --log-file `'$Log`' $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
