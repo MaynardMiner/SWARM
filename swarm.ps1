@@ -225,14 +225,12 @@ Global:Add-Module "$($(vars).startup)\crashreport.psm1"
 Global:Start-CrashReporting
 
 ## Start The Log
-Global:Add-Module "$($(vars).startup)\startlog.psm1"
 $($(vars).dir) | Set-Content ".\build\bash\dir.sh";
 $Global:log_params = [hashtable]::Synchronized(@{ })
 $Global:log_params.Add("lognum", 1)
-$global:log_params.Add("logname", $null)
+$global:log_params.Add("logname", (Join-Path $($(vars).dir) "logs\swarm_$(Get-Date -Format "HH_mm__dd__MM__yyyy").log"))
 $Global:log_params.Add( "dir", (Split-Path $script:MyInvocation.MyCommand.Path) )
-$Global:log_params.dir = $Global:Config.vars.dir -replace "/var/tmp", "/root"
-Global:Start-Log -Number $global:log_params.lognum;
+log "Logging has started- Logfile is $($global:log_params.logname)";
 
 $start = $true
 While ($start) {

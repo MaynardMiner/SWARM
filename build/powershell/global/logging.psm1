@@ -11,20 +11,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 
-function Global:start-log {
-    param (
-        [Parameter(Mandatory = $false)]
-        [int]$Number
-    )
+function Global:Update-Log {
     #Start the log
     if (-not (Test-Path "logs")) {New-Item "logs" -ItemType "directory" | Out-Null; Start-Sleep -S 1}
-    if (Test-Path ".\logs\*active*") {
-        $OldActiveFile = Get-ChildItem ".\logs" -Force | Where-Object BaseName -like "*active*"
-        $OldActiveFile | ForEach-Object {
-            $RenameActive = ".\logs\$($_.Name)" -replace ("-active", "")
-            if (Test-Path $RenameActive) {Remove-Item $RenameActive -Force}
-            Move-Item ".\logs\$($_.Name)" $RenameActive -force
-        }
+    $Global:log_params.lognum++
+    ## When we have looped 288 times, we have reached a full day of log.
+    if($Global:log_params.lognum -gt 288) {
+        $LogName = Get-Date -Format "HH_mm__dd__MM__yyyy"
+        $Global:log_params.logname = Join-Path $($(vars).dir) "logs\swarm_$LogName.log"
+        $Global:log_params.lognum = 1
     }
-    $Global:log_params.logname = Join-Path $($(vars).dir) "logs\miner$($Number)-active.log"
 }
