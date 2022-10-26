@@ -374,6 +374,7 @@ $($_.InvocationInfo.PositionMessage)
     $(vars).Add("Load_Timer", (Get-Date).ToUniversalTime());
     $(vars).Add("Hashtable", @{});
     $(vars).Add("Downloads", $false);
+    $(vars).Add("InConserve", $false);
     [GC]::Collect()
     [GC]::WaitForPendingFinalizers()
     [GC]::Collect()    
@@ -653,8 +654,18 @@ $($_.InvocationInfo.PositionMessage)
     $CutMiners = Global:Start-MinerReduction	
     $CutMiners | ForEach-Object { $(vars).Miners.Remove($_) } | Out-Null;	
     Remove-Variable -Name CutMiners -ErrorAction Ignore	
-        
-    log "Most Ideal Choice Is $($(vars).bestminers_combo.Symbol) on $($(vars).bestminers_combo.MinerPool)" -foregroundcolor green
+    
+    if ($(arg).Conserve -eq "Yes" -and $(vars).bestminers_combo.Count -eq 0) {
+        log "Most Ideal Choice Is To Conserve" -foregroundcolor green
+        if($(vars).InConserve -eq $false) {
+            Global:Start-OCConserve
+            $(vars).InConserve = $true
+        }
+    }
+    else {
+        log "Most Ideal Choice Is $($(vars).bestminers_combo.Symbol) on $($(vars).bestminers_combo.MinerPool)" -foregroundcolor green
+        $(vars).InConserve = $false
+    }
 
     ## Phase Clean up
     Global:Remove-Modules
