@@ -3,7 +3,7 @@
 ## SWARM logs
 Swarm will by default log its runtime. Swarm saves logs as:
 
-swarm__[hour]_[minute]__[day]__[Month]__[year].log
+```swarm__[hour]_[minute]__[day]__[Month]__[year].log```
 
 If Swarm detects it has ran for 24 hours, it will create a new log using the same schema above based
 on the date the log rolls over.
