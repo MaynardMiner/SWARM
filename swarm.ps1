@@ -646,6 +646,7 @@ $($_.InvocationInfo.PositionMessage)
 
     ##Choose The Best Miners
     Global:Add-Module "$($(vars).miner)\choose.psm1"
+    Global:Add-Module "$($(vars).miner)\conserve.psm1"
     Remove-BadMiners
     create Miners_Combo (Global:Get-BestMiners)
     $(vars).bestminers_combo = Global:Get-Conservative
