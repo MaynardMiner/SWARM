@@ -23,6 +23,3 @@ of that miner. If there is more than 10,000 lines of output, it will trim half t
 some miners will start the log fresh, while other miners will continue to append the selected log. This is
 done so that miner log files do not get too large of a size, but you will still be able to review the most
 recent running data (at least the last 5000 lines of the miner).
-
-This data can be pulled remotely with the command ``get screen [TYPE]``, which will show you as much of
-the log it can print out and send remotely.
