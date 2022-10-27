@@ -32,9 +32,9 @@
     "type": "cpu",
     "CPU": ".\\bin\\xmrig-cpu-1\\xmrig",
     "minername": "xmrig",
-    "version": "6.18.0",
+    "version": "6.18.1",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.18.0/xmrig-6.18.0-linux-static-x64.tar.gz"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.18.1/xmrig-6.18.1-linux-static-x64.tar.gz"
   },
   "xmrigcc-cpu": {
     "name": "xmrigcc-cpu",

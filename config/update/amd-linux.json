@@ -227,9 +227,9 @@
     "AMD2": ".\\bin\\xmrig-a-2\\xmrig",
     "AMD3": ".\\bin\\xmrig-a-3\\xmrig",
     "minername": "xmrig",
-    "version": "6.18.0",
+    "version": "6.18.1",
     "optional": "No",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/xmrig-linux.tar.gz"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.18.1/xmrig-6.18.1-linux-x64.tar.gz"
   },
   "xmrigcc-amd": {
     "name": "xmrigcc-amd",

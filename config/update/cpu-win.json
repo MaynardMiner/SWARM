@@ -32,9 +32,9 @@
     "type": "cpu",
     "CPU": ".\\bin\\xmrig-cpu-1\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "6.18.0",
+    "version": "6.18.1",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.18.0/xmrig-6.18.0-msvc-win64.zip"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/xmrig-windows.zip"
   },
   "xmrigcc-cpu": {
     "name": "xmrigcc-cpu",
