@@ -348,9 +348,9 @@
     "NVIDIA2": ".\\bin\\nanominer-n-2\\nanominer",
     "NVIDIA3": ".\\bin\\nanominer-n-3\\nanominer",
     "minername": "nanominer",
-    "version": "3.7.3",
+    "version": "3.7.4",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.3/nanominer-linux-3.7.3-cuda11.tar.gz"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.4/nanominer-linux-3.7.4-cuda11.tar.gz"
   },
   "cdredge": {
     "name": "cdredge",

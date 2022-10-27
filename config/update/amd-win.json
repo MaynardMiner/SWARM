@@ -227,9 +227,9 @@
     "AMD2": ".\\bin\\nanominer-2\\nanominer.exe",
     "AMD3": ".\\bin\\nanominer-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "3.7.3",
+    "version": "3.7.4",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.3/nanominer-windows-3.7.3.zip"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.4/nanominer-windows-3.7.4.zip"
   },
   "nbminer-amd": {
     "name": "nbminer-amd",
