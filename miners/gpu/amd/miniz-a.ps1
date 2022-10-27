@@ -3,7 +3,7 @@
 $(vars).AMDTypes | ForEach-Object {
 
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
-    $CName = "miniz-n"
+    $CName = "miniz-a"
 
     ##Miner Path Information
     if ($(vars).amd.$CName.$ConfigType) { $Path = "$($(vars).amd.$CName.$ConfigType)" }
