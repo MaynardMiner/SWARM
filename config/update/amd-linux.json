@@ -113,9 +113,9 @@
   "lolminer-a": {
     "name": "lolminer-a",
     "type": "amd",
-    "AMD1": ".\\bin\\lolminer-a-AMD-1\\lolMiner",
-    "AMD2": ".\\bin\\lolminer-a-AMD-2\\lolMiner",
-    "AMD3": ".\\bin\\lolminer-a-AMD-3\\lolMiner",
+    "AMD1": ".\\bin\\lolminer-a-1\\lolMiner",
+    "AMD2": ".\\bin\\lolminer-a-2\\lolMiner",
+    "AMD3": ".\\bin\\lolminer-a-3\\lolMiner",
     "minername": "lolMiner",
     "version": "1.60",
     "optional": "No",
