@@ -29,9 +29,9 @@
     "AMD2": ".\\bin\\gminer-a-2\\miner",
     "AMD3": ".\\bin\\gminer-a-3\\miner",
     "minername": "miner",
-    "version": "3.10",
+    "version": "3.11",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.10/gminer_3_10_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.11/gminer_3_11_linux64.tar.xz"
   },
   "kbminer-amd": {
     "name": "kbminer-amd",

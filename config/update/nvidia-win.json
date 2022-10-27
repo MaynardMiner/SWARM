@@ -106,9 +106,9 @@
     "NVIDIA2": ".\\bin\\gminer-n-2\\miner.exe",
     "NVIDIA3": ".\\bin\\gminer-n-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "3.10",
+    "version": "3.11",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.10/gminer_3_10_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.11/gminer_3_11_windows64.zip"
   },
   "claymore": {
     "name": "claymore",
