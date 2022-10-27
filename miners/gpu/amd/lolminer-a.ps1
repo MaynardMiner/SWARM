@@ -28,7 +28,7 @@ $(vars).AMDTypes | ForEach-Object {
 
     ##Get Configuration File
     ##This is located in config\miners
-    $MinerConfig = $Global:config.miners.lolminer
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export && Bleeding Edge Check##
     $ExportDir = "/usr/local/swarm/lib64"

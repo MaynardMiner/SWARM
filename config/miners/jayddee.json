@@ -5,6 +5,8 @@
         "prestart": [],
         "commands": {
             "argon2d4096": "",
+            "c11": "",
+            "hmq1725": "",
             "lyra2z330": "",
             "m7m": "",
             "power2b": "",
@@ -16,6 +18,8 @@
         },
         "difficulty": {
             "argon2d4096": "",
+            "c11": "",
+            "hmq1725": "",
             "lyra2z330": "",
             "m7m": "",
             "power2b": "",
@@ -27,6 +31,8 @@
         },
         "naming": {
             "argon2d4096": "argon2d4096",
+            "c11": "c11",
+            "hmq1725": "hmq1725",
             "lyra2z330": "lyra2z330",
             "m7m": "m7m",
             "power2b": "power2b",
@@ -38,6 +44,8 @@
         },
         "fee": {
             "argon2d4096": 0,
+            "c11": 0,
+            "hmq1725": 0,
             "lyra2z330": 0,
             "m7m": 0,
             "power2b": 0,

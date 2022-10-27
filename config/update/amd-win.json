@@ -1,5 +1,16 @@
 {
   "name": "amd-win",
+  "miniz-a": {
+    "name": "miniz-a",
+    "type": "amd",
+    "AMD1": ".\\bin\\miniz-a-1\\miniZ.exe",
+    "AMD2": ".\\bin\\miniz-a-2\\miniZ.exe",
+    "AMD3": ".\\bin\\miniz-a-3\\miniZ.exe",
+    "minername": "miniZ.exe",
+    "version": "v1.9z4",
+    "optional": "No",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/miniz-windows.zip"
+  },
   "srbmulti-a": {
     "name": "srbmulti-a",
     "type": "amd",
@@ -62,9 +73,9 @@
     "AMD2": ".\\bin\\gminer-a-2\\miner.exe",
     "AMD3": ".\\bin\\gminer-a-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "3.10",
+    "version": "3.11",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.10/gminer_3_10_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.11/gminer_3_11_windows64.zip"
   },
   "phoenix-amd": {
     "name": "phoenix-amd",
@@ -102,9 +113,9 @@
   "lolminer-a": {
     "name": "lolminer-a",
     "type": "amd",
-    "AMD1": ".\\bin\\lolminer-a-AMD-1\\lolMiner.exe",
-    "AMD2": ".\\bin\\lolminer-a-AMD-2\\lolMiner.exe",
-    "AMD3": ".\\bin\\lolminer-a-AMD-3\\lolMiner.exe",
+    "AMD1": ".\\bin\\lolminer-a-1\\lolMiner.exe",
+    "AMD2": ".\\bin\\lolminer-a-2\\lolMiner.exe",
+    "AMD3": ".\\bin\\lolminer-a-3\\lolMiner.exe",
     "minername": "lolMiner.exe",
     "version": "1.60",
     "optional": "No",
@@ -172,7 +183,7 @@
     "AMD2": ".\\bin\\xmrig-a-2\\xmrig.exe",
     "AMD3": ".\\bin\\xmrig-a-3\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "6.18.0",
+    "version": "6.18.1",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/xmrig-windows.zip"
   },
@@ -220,16 +231,16 @@
     "optional": "Yes",
     "uri": "https://github.com/ethereum-mining/ethminer/releases/download/v0.19.0-alpha.0/ethminer-0.19.0-alpha.0-cuda10.0-windows-amd64.zip"
   },
-  "nanominer": {
-    "name": "nanominer",
+  "nanominer-a": {
+    "name": "nanominer-a",
     "type": "amd",
-    "AMD1": ".\\bin\\nanominer-1\\nanominer.exe",
-    "AMD2": ".\\bin\\nanominer-2\\nanominer.exe",
-    "AMD3": ".\\bin\\nanominer-3\\nanominer.exe",
+    "AMD1": ".\\bin\\nanominer-a-1\\nanominer.exe",
+    "AMD2": ".\\bin\\nanominer-a-2\\nanominer.exe",
+    "AMD3": ".\\bin\\nanominer-a-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "3.7.3",
+    "version": "3.7.4",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.3/nanominer-windows-3.7.3.zip"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.4/nanominer-windows-3.7.4.zip"
   },
   "nbminer-amd": {
     "name": "nbminer-amd",

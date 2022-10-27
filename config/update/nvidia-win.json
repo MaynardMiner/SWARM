@@ -106,9 +106,9 @@
     "NVIDIA2": ".\\bin\\gminer-n-2\\miner.exe",
     "NVIDIA3": ".\\bin\\gminer-n-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "3.10",
+    "version": "3.11",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.10/gminer_3_10_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.11/gminer_3_11_windows64.zip"
   },
   "claymore": {
     "name": "claymore",
@@ -165,14 +165,14 @@
     "optional": "Yes",
     "uri": "https://github.com/KlausT/ccminer/releases/download/8.26/ccminer-826-cuda114-x64.zip"
   },
-  "miniz": {
-    "name": "miniz",
+  "miniz-n": {
+    "name": "miniz-n",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\miniz-1\\miniZ.exe",
-    "NVIDIA2": ".\\bin\\miniz-2\\miniZ.exe",
-    "NVIDIA3": ".\\bin\\miniz-3\\miniZ.exe",
+    "NVIDIA1": ".\\bin\\miniz-n-1\\miniZ.exe",
+    "NVIDIA2": ".\\bin\\miniz-n-2\\miniZ.exe",
+    "NVIDIA3": ".\\bin\\miniz-n-3\\miniZ.exe",
     "minername": "miniZ.exe",
-    "version": "v1.9z3",
+    "version": "v1.9z4",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/miniz-windows.zip"
   },
@@ -260,7 +260,7 @@
     "NVIDIA2": ".\\bin\\xmrig-n-2\\xmrig.exe",
     "NVIDIA3": ".\\bin\\xmrig-n-3\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "6.18.0",
+    "version": "6.18.1",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/xmrig-windows.zip"
   },
@@ -315,9 +315,9 @@
     "NVIDIA2": ".\\bin\\nanominer-n-2\\nanominer.exe",
     "NVIDIA3": ".\\bin\\nanominer-n-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "3.7.3",
+    "version": "3.7.4",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.3/nanominer-windows-3.7.3-cuda11.zip"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.4/nanominer-windows-3.7.4-cuda11.zip"
   },
   "cdredge": {
     "name": "cdredge",

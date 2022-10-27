@@ -55,7 +55,7 @@
             "equihash_144/5": 1,
             "equihash_192/7": 1,
             "equihash_210/9": 1,
-            "etchash": 0.7,           
+            "etchash": 0.7,
             "ethash": 0.7
         }
     }

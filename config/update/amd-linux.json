@@ -1,5 +1,16 @@
 {
   "name": "amd-linux",
+  "miniz-a": {
+    "name": "miniz-a",
+    "type": "amd",
+    "AMD1": ".\\bin\\miniz-a-1\\miniZ",
+    "AMD2": ".\\bin\\miniz-a-2\\miniZ",
+    "AMD3": ".\\bin\\miniz-a-3\\miniZ",
+    "minername": "miniZ",
+    "version": "v1.9z4",
+    "optional": "Yes",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/miniz-linux.tar.gz"
+  },
   "srbmulti-a": {
     "name": "srbmulti-a",
     "type": "amd",
@@ -29,9 +40,9 @@
     "AMD2": ".\\bin\\gminer-a-2\\miner",
     "AMD3": ".\\bin\\gminer-a-3\\miner",
     "minername": "miner",
-    "version": "3.10",
+    "version": "3.11",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.10/gminer_3_10_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.11/gminer_3_11_linux64.tar.xz"
   },
   "kbminer-amd": {
     "name": "kbminer-amd",
@@ -102,9 +113,9 @@
   "lolminer-a": {
     "name": "lolminer-a",
     "type": "amd",
-    "AMD1": ".\\bin\\lolminer-a-AMD-1\\lolMiner",
-    "AMD2": ".\\bin\\lolminer-a-AMD-2\\lolMiner",
-    "AMD3": ".\\bin\\lolminer-a-AMD-3\\lolMiner",
+    "AMD1": ".\\bin\\lolminer-a-1\\lolMiner",
+    "AMD2": ".\\bin\\lolminer-a-2\\lolMiner",
+    "AMD3": ".\\bin\\lolminer-a-3\\lolMiner",
     "minername": "lolMiner",
     "version": "1.60",
     "optional": "No",
@@ -216,9 +227,9 @@
     "AMD2": ".\\bin\\xmrig-a-2\\xmrig",
     "AMD3": ".\\bin\\xmrig-a-3\\xmrig",
     "minername": "xmrig",
-    "version": "6.18.0",
+    "version": "6.18.1",
     "optional": "No",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/xmrig-linux.tar.gz"
+    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.18.1/xmrig-6.18.1-linux-x64.tar.gz"
   },
   "xmrigcc-amd": {
     "name": "xmrigcc-amd",
@@ -253,16 +264,16 @@
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/ethminer-linux.tar.gz"
   },
-  "nanominer": {
-    "name": "nanominer",
+  "nanominer-a": {
+    "name": "nanominer-a",
     "type": "amd",
-    "AMD1": ".\\bin\\nanominer-1\\nanominer",
-    "AMD2": ".\\bin\\nanominer-2\\nanominer",
-    "AMD3": ".\\bin\\nanominer-3\\nanominer",
+    "AMD1": ".\\bin\\nanominer-a-1\\nanominer",
+    "AMD2": ".\\bin\\nanominer-a-2\\nanominer",
+    "AMD3": ".\\bin\\nanominer-a-3\\nanominer",
     "minername": "nanominer",
-    "version": "3.7.3",
+    "version": "3.7.4",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.3/nanominer-linux-3.7.3.tar.gz"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.4/nanominer-linux-3.7.4.tar.gz"
   },
   "nbminer-amd": {
     "name": "nbminer-amd",
