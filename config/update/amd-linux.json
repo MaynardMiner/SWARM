@@ -3,9 +3,9 @@
   "miniz-a": {
     "name": "miniz-a",
     "type": "amd",
-    "NVIDIA1": ".\\bin\\miniz-a-1\\miniZ",
-    "NVIDIA2": ".\\bin\\miniz-a-2\\miniZ",
-    "NVIDIA3": ".\\bin\\miniz-a-3\\miniZ",
+    "AMD1": ".\\bin\\miniz-a-1\\miniZ",
+    "AMD2": ".\\bin\\miniz-a-2\\miniZ",
+    "AMD3": ".\\bin\\miniz-a-3\\miniZ",
     "minername": "miniZ",
     "version": "v1.9z4",
     "optional": "No",
