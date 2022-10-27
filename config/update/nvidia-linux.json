@@ -231,14 +231,14 @@
     "optional": "No",
     "uri": "https://www.bminercontent.com/releases/bminer-v16.4.11-2849b5c-amd64.tar.xz"
   },
-  "miniz": {
-    "name": "miniz",
+  "miniz-n": {
+    "name": "miniz-n",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\miniz-1\\miniZ",
-    "NVIDIA2": ".\\bin\\miniz-2\\miniZ",
-    "NVIDIA3": ".\\bin\\miniz-3\\miniZ",
+    "NVIDIA1": ".\\bin\\miniz-n-1\\miniZ",
+    "NVIDIA2": ".\\bin\\miniz-n-2\\miniZ",
+    "NVIDIA3": ".\\bin\\miniz-n-3\\miniZ",
     "minername": "miniZ",
-    "version": "v1.9z3",
+    "version": "v1.9z4",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/miniz-linux.tar.gz"
   },

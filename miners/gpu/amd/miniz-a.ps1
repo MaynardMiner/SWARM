@@ -2,22 +2,23 @@
 . .\build\powershell\global\modules.ps1;
 $(vars).NVIDIATypes | ForEach-Object {
 
-    $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
+    $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $CName = "miniz-n"
 
     ##Miner Path Information
-    if ($(vars).nvidia.miniz.$ConfigType) { $Path = "$($(vars).nvidia.miniz.$ConfigType)" }
+    if ($(vars).amd.$CName.$ConfigType) { $Path = "$($(vars).amd.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).nvidia.miniz.uri) { $Uri = "$($(vars).nvidia.miniz.uri)" }
+    if ($(vars).amd.$CName.uri) { $Uri = "$($(vars).amd.$CName.uri)" }
     else { $Uri = "None" }
-    if ($(vars).nvidia.miniz.minername) { $MinerName = "$($(vars).nvidia.miniz.minername)" }
+    if ($(vars).amd.$CName.minername) { $MinerName = "$($(vars).amd.$CName.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "miniz-$Num"; $Port = "6000$Num";
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "6000$Num";
 
     Switch ($Num) {
-        1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
-        2 { $Get_Devices = $(vars).NVIDIADevices2; $Rig = $(arg).RigName2 }
-        3 { $Get_Devices = $(vars).NVIDIADevices3; $Rig = $(arg).RigName3 }
+        1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).RigName1 }
+        2 { $Get_Devices = $(vars).AMDDevices2; $Rig = $(arg).RigName2 }
+        3 { $Get_Devices = $(vars).AMDDevices3; $Rig = $(arg).RigName3 }
     }
 
     ##Log Directory
@@ -33,7 +34,7 @@ $(vars).NVIDIATypes | ForEach-Object {
 
     ##Get Configuration File
     ##This is located in config\miners
-    $MinerConfig = $Global:config.miners.miniz
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = "/usr/local/swarm/lib64"
@@ -110,9 +111,9 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Path       = $Path
                     Devices    = $Devices
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
-                    Version    = "$($(vars).nvidia.miniz.version)"
+                    Version    = "$($(vars).amd.$CName.version)"
                     DeviceCall = "miniz"
-                    Arguments  = "--nvidia --telemetry 0.0.0.0:$Port --url=$($_.$User)@$($_.Pool_Host):$($_.Port) $AddArgs --logfile=`'$log`' --pass=$($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "--amd --telemetry 0.0.0.0:$Port --url=$($_.$User)@$($_.Pool_Host):$($_.Port) $AddArgs --logfile=`'$log`' --pass=$($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price

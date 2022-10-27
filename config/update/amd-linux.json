@@ -1,5 +1,16 @@
 {
   "name": "amd-linux",
+  "miniz-a": {
+    "name": "miniz-a",
+    "type": "amd",
+    "NVIDIA1": ".\\bin\\miniz-a-1\\miniZ",
+    "NVIDIA2": ".\\bin\\miniz-a-2\\miniZ",
+    "NVIDIA3": ".\\bin\\miniz-a-3\\miniZ",
+    "minername": "miniZ",
+    "version": "v1.9z4",
+    "optional": "No",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/miniz-linux.tar.gz"
+  },
   "srbmulti-a": {
     "name": "srbmulti-a",
     "type": "amd",
