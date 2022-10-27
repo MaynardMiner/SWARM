@@ -115,7 +115,7 @@ if ($PSVersionTable.PSVersion -ne "7.2.7") {
 }
 
 ## Install AngleParse For Future Implementation
-if($null -eq (Get-InstalledModule | Where-Object { $_.Name -eq "AngleParse"})) {
+if ($null -eq (Get-InstalledModule | Where-Object { $_.Name -eq "AngleParse" })) {
     Install-Package AngleParse -force
 }
 
@@ -220,19 +220,14 @@ if ($IsWindows -and [string]$Global:config.hive_params.MINER_DELAY -ne "") {
     Remove-Variable -Name Sleep -ErrorAction Ignore
 }
 
-## Crash Reporting
-Global:Add-Module "$($(vars).startup)\crashreport.psm1"
-Global:Start-CrashReporting
-
 ## Start The Log
-Global:Add-Module "$($(vars).startup)\startlog.psm1"
+if (-not (Test-Path "logs")) { New-Item "logs" -ItemType "directory" | Out-Null; Start-Sleep -S 1 }
 $($(vars).dir) | Set-Content ".\build\bash\dir.sh";
 $Global:log_params = [hashtable]::Synchronized(@{ })
-$Global:log_params.Add("lognum", 1)
-$global:log_params.Add("logname", $null)
+$Global:log_params.Add("lognum", 0)
+$global:log_params.Add("logname", (Join-Path $($(vars).dir) "logs\swarm__$(Get-Date -Format "HH_mm__dd__MM__yyyy").log"))
 $Global:log_params.Add( "dir", (Split-Path $script:MyInvocation.MyCommand.Path) )
-$Global:log_params.dir = $Global:Config.vars.dir -replace "/var/tmp", "/root"
-Global:Start-Log -Number $global:log_params.lognum;
+log "Logging has started- Logfile is $($global:log_params.logname)";
 
 $start = $true
 While ($start) {
@@ -270,7 +265,7 @@ $($_.InvocationInfo.PositionMessage)
     Global:Clear-Stats
     Global:Get-ArgNotice
     ## Make sure all -TYPE values are upper case.
-    if($(arg).Type.Count -gt 0) {
+    if ($(arg).Type.Count -gt 0) {
         $(arg).Type = $(arg).Type.ToUpper()
     }
 
@@ -379,6 +374,7 @@ $($_.InvocationInfo.PositionMessage)
     $(vars).Add("Load_Timer", (Get-Date).ToUniversalTime());
     $(vars).Add("Hashtable", @{});
     $(vars).Add("Downloads", $false);
+    $(vars).Add("InConserve", $false);
     [GC]::Collect()
     [GC]::WaitForPendingFinalizers()
     [GC]::Collect()    
@@ -450,6 +446,9 @@ $($_.InvocationInfo.PositionMessage)
     create ASICS @{ }
     create All_AltWalltes $null
     $(vars).ETH_exchange = 0;
+
+    Global:Add-Module "$($(vars).build)\logging.psm1"
+    Global:Update-Log
     
     ##Insert Build Single Modules Here
 
@@ -473,7 +472,7 @@ $($_.InvocationInfo.PositionMessage)
     Global:Get-MinerConfigs
     $global:Config.Pool_Algos = Get-Content ".\config\pools\pool-algos.json" | ConvertFrom-Json
     $global:Config.Pool_Coins = [PSCustomObject]@{}
-    if(test-path ".\config\pools\pool-coins.json") {
+    if (test-path ".\config\pools\pool-coins.json") {
         $global:Config.Pool_Coins = Get-Content ".\config\pools\pool-coins.json" | ConvertFrom-Json;
     }
     Global:Add-ASICS
@@ -647,6 +646,7 @@ $($_.InvocationInfo.PositionMessage)
 
     ##Choose The Best Miners
     Global:Add-Module "$($(vars).miner)\choose.psm1"
+    Global:Add-Module "$($(vars).miner)\conserve.psm1"
     Remove-BadMiners
     create Miners_Combo (Global:Get-BestMiners)
     $(vars).bestminers_combo = Global:Get-Conservative
@@ -655,8 +655,18 @@ $($_.InvocationInfo.PositionMessage)
     $CutMiners = Global:Start-MinerReduction	
     $CutMiners | ForEach-Object { $(vars).Miners.Remove($_) } | Out-Null;	
     Remove-Variable -Name CutMiners -ErrorAction Ignore	
-        
-    log "Most Ideal Choice Is $($(vars).bestminers_combo.Symbol) on $($(vars).bestminers_combo.MinerPool)" -foregroundcolor green
+    
+    if ($(arg).Conserve -eq "Yes" -and $(vars).bestminers_combo.Count -eq 0) {
+        log "Most Ideal Choice Is To Conserve" -foregroundcolor green
+        if($(vars).InConserve -eq $false) {
+            Global:Start-OCConserve
+            $(vars).InConserve = $true
+        }
+    }
+    else {
+        log "Most Ideal Choice Is $($(vars).bestminers_combo.Symbol) on $($(vars).bestminers_combo.MinerPool)" -foregroundcolor green
+        $(vars).InConserve = $false
+    }
 
     ## Phase Clean up
     Global:Remove-Modules
@@ -778,7 +788,6 @@ $($_.InvocationInfo.PositionMessage)
     Global:Get-Commands
     remove Miners
     Global:Get-Logo
-    Global:Update-Logging
     Get-Date | Out-File ".\debug\mineractive.txt"
     Global:Get-MinerActive | Out-File ".\debug\mineractive.txt" -Append
 

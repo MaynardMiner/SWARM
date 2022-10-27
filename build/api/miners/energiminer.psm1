@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Global:Get-StatsEnergiminer {
-    try { $Request = Get-Content ".\logs\$MinerType.log" -ErrorAction Stop }catch { }
+    try { $Request = Get-Content ".\logs\$($global:Name).log" -ErrorAction Stop }catch { }
     if ($Request) {
         $Data = $Request | Select-String "Mh/s" | Select-Object -Last 1
         $Data = $Data -split " ";

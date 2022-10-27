@@ -21,9 +21,8 @@ $(vars).NVIDIATypes | ForEach-Object {
         3 { $Get_Devices = $(vars).NVIDIADevices3; $Rig = $(arg).RigName3 }
     }
 
-
     ##Log Directory
-    $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($(vars).dir) "logs\$Name.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") { $Devices = $Get_Devices }

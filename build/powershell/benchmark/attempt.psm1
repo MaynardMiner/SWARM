@@ -74,28 +74,6 @@ function Global:Get-HiveWarning($HiveMessage) {
     }
 }
 
-function Global:Get-Intensity {
-    param(
-        [Parameter(Position = 0, Mandatory = $false)]
-        [String]$LogMiner,
-        [Parameter(Position = 1, Mandatory = $false)]
-        [String]$LogAlgo,
-        [Parameter(Position = 2, Mandatory = $false)]
-        [String]$LogPath
-    )
-
-    $LogAlgo = $LogAlgo -replace "`/", "`-"
-    $ParseLog = ".\logs\$($LogMiner).log"
-    if (Test-Path $ParseLog) {
-        $GetInfo = Get-Content $ParseLog
-        $GetIntensity = $GetInfo | Select-String "intensity"
-        $GetDifficulty = $GetInfo | Select-String "difficulty"
-        $NotePath = Split-Path $LogPath
-        if ($GetIntensity) { $GetIntensity | Set-Content "$NotePath\$($LogAlgo)_intensity.txt" }
-        if ($GetDifficulty) { $GetDifficulty | Set-Content "$NotePath\$($LogAlgo)_difficulty.txt" }
-    }
-}
-
 function Global:Start-WattOMeter {
     log "
 
@@ -249,10 +227,8 @@ function Global:Start-Benchmark {
                                     if (-not (Test-Path $NewHashrateFilePath)) {
                                         Copy-Item $HashrateFilePath -Destination $NewHashrateFilePath -force
                                         log "$($_.Name) $($_.Symbol) Was Benchmarked And Backed Up" -foregroundcolor yellow
-                                        log "if SWARM was able to record intesity and/or difficulty, it is in .\bin\$($_.name)" -foregroundcolor yellow
                                     }
                                     $global:WasBenchmarked = $True
-                                    Global:Get-Intensity $_.Type $_.Symbol $_.Path
                                     log "Stat Written" -foregroundcolor green
                                     log "Was this stat not correct? You can run command 'bench miner $($_.Name) $($_.algo)' to reset benchmark" -foregroundcolor cyan
                                     if ($IsWindows) { log "There is also a batch file labeled swarm_start_$($_.algo).bat for testing in .\bin\$($_.name)`n" -foregroundcolor cyan }

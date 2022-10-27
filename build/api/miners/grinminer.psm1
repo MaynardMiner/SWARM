@@ -11,7 +11,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Global:Get-StatsGrinMiner {
-    try { $Request = Get-Content ".\logs\$Global:MinerType.log" -ErrorAction SilentlyContinue }catch { Write-Host "Failed to Read Miner Log"; break }
+    try { $Request = Get-Content ".\logs\$($global:Name).log" -ErrorAction SilentlyContinue }catch { Write-Host "Failed to Read Miner Log"; break }
     if ($Request) {
         $Hash = @()
         $global:Devices | ForEach-Object {

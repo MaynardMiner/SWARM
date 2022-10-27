@@ -86,22 +86,6 @@ get oc NVIDIA1 aergo power
 
 ITEMS:
 
-screen
-    can be used to remotely view SWARM's transcripts. Great way to
-    view miner remotely. Returns last 300 lines in log.
-
-    USES:
-
-        get screen [platform]
-
-    OPTIONS:
-
-        platform:
-        [miner] [NVIDIA1] [NVIDIA2] [NVIDIA3] [CPU] [AMD1]
- 
-###################################################################
-###################################################################
-
 benchmarks
     used to view current a benchmark.
 
@@ -712,11 +696,6 @@ https://github.com/MaynardMiner/SWARM/wiki/HiveOS-management
         else {
             $Get += $SwarmParameters
         }
-    }
-    "screen" {
-        if (Test-Path ".\logs\$($argument2).log") { $Get += Get-Content ".\logs\$($argument2).log" }
-        if ($argument2 -eq "miner") { if (Test-Path ".\logs\*active*") { $Get += Get-Content ".\logs\*active.log*" } }
-        $Get += $Get | Select -Last 300
     }
     "oc" {
         if (Test-Path ".\debug\oc-settings.txt") { $Get += Get-Content ".\debug\oc-settings.txt" }
