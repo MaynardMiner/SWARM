@@ -13,7 +13,7 @@
 * Logging changes, see new readme in logs folder or read issue on github. #395
 * `-Conserve` will now switch to oc for algo SHA256 so you can set an idle OC for SHA256
 * Miners Updated. #424
-* Miniz added for amd, but made optional using -Optional argument. Works on only certain gpus.
+* Miniz added for amd, but made optional using `-Optional` argument. Works on only certain gpus.
 
 ## KNOWN ISSUES
 * Get Wallets not working.
