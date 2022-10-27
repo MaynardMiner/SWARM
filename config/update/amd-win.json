@@ -231,12 +231,12 @@
     "optional": "Yes",
     "uri": "https://github.com/ethereum-mining/ethminer/releases/download/v0.19.0-alpha.0/ethminer-0.19.0-alpha.0-cuda10.0-windows-amd64.zip"
   },
-  "nanominer": {
-    "name": "nanominer",
+  "nanominer-a": {
+    "name": "nanominer-a",
     "type": "amd",
-    "AMD1": ".\\bin\\nanominer-1\\nanominer.exe",
-    "AMD2": ".\\bin\\nanominer-2\\nanominer.exe",
-    "AMD3": ".\\bin\\nanominer-3\\nanominer.exe",
+    "AMD1": ".\\bin\\nanominer-a-1\\nanominer.exe",
+    "AMD2": ".\\bin\\nanominer-a-2\\nanominer.exe",
+    "AMD3": ".\\bin\\nanominer-a-3\\nanominer.exe",
     "minername": "nanominer.exe",
     "version": "3.7.4",
     "optional": "No",
