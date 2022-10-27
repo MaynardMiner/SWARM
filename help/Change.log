@@ -3,12 +3,17 @@
 ## Beta Release
 * This project has all basic miners, but need more miners and updates.
 
+## Important Note!
+* Lolminer has changed to lolminer-a on AMD. Your config lolminer.json will be deleted on update.
+* Miniz has changed to miniz-n on NVIDIA. Your config miniz.json will be deleted on update.
+* These changes were done for log updates. One time change only.
+* Since name of miner in SWARM has changed, SWARM will bench them again.
+
 ## Improvements 
-* Better HiveOS statistics. Larger change, if you see issues let me know. #405
-* bans command attempt to remove timeouts where applicable #404.
-* Miners Updated. #409 #396
-* Remove --enable-opencl-cleanup on srbmulti, seemed to cause issues on miner shutdown. Doesn't need it.
-* Password reconfig on pools #410
+* Logging changes, see new readme in logs folder or read issue on github. #395
+* `-Conserve` will now switch to oc for algo SHA256 so you can set an idle OC for SHA256
+* Miners Updated. #424
+* Miniz added for amd, but made optional using -Optional argument. Works on only certain gpus.
 
 ## KNOWN ISSUES
 * Get Wallets not working.
