@@ -8,7 +8,7 @@
     "AMD3": ".\\bin\\miniz-a-3\\miniZ",
     "minername": "miniZ",
     "version": "v1.9z4",
-    "optional": "No",
+    "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/miniz-linux.tar.gz"
   },
   "srbmulti-a": {
