@@ -30,7 +30,13 @@ function Global:Get-StatsSgminer {
         elseif ($summary.'KHS 5s' -gt 0) { $Sum = $summary.'KHS 5s'; $sgkey = 'KHS 5s' }
         elseif ($summary.'KHS_30s' -gt 0) { $Sum = $Summary.'KHS_30s'; $sgkey = 'KHS_30s' }
         elseif ($summary.'KHS 30s' -gt 0) { $sum = $summary.'KHS 30s'; $sgkey = 'KHS 30s' }
-        $Hash = $threads.$sgkey
+        $DataHash = $threads.$sgkey
+        $Hash = @()
+        $DataHash | Foreach-Object { 
+            $HashValue = [Double]$_
+            $NewValue = $HashValue * 1000
+            $Hash += $NewValue
+        }
         $global:RAW += [Double]$Sum * 1000
         Global:Write-MinerData2;
         $global:GPUKHS += $Sum

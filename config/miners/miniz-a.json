@@ -1,0 +1,56 @@
+{
+    "name": "miniz-a",
+    "AMD1": {
+        "name": "AMD1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "equihash_144/5": "",
+            "equihash_210/9": "",
+            "equihash_200/9": "",
+            "equihash_192/7": "",
+            "equihash_125/4": "",
+            "equihash_150/5": "",
+            "equihash_96/5": "",
+            "beamhashv3": "",
+            "kawpow": "",
+            "ethash": ""
+        },
+        "difficulty": {
+            "equihash_144/5": "",
+            "equihash_210/9": "",
+            "equihash_200/9": "",
+            "equihash_192/7": "",
+            "equihash_125/4": "",
+            "equihash_150/5": "",
+            "equihash_96/5": "",
+            "beamhashv3": "",
+            "kawpow": "",
+            "ethash": ""
+        },
+        "naming": {
+            "equihash_144/5": "equihash_144/5",
+            "equihash_210/9": "equihash_210/9",
+            "equihash_200/9": "equihash_200/9",
+            "equihash_192/7": "equihash_192/7",
+            "equihash_125/4": "equihash_125/4",
+            "equihash_150/5": "equihash_150/5",
+            "equihash_96/5": "equihash_96/5",
+            "beamhashv3": "beamhashv3",
+            "kawpow": "kawpow",
+            "ethash": "ethash"
+        },
+        "fee": {
+            "equihash_144/5": 2,
+            "equihash_210/9": 2,
+            "equihash_200/9": 2,
+            "equihash_192/7": 2,
+            "equihash_125/4": 2,
+            "equihash_150/5": 2,
+            "equihash_96/5": 2,
+            "beamhashv3": 2,
+            "kawpow": 2,
+            "ethash": 2
+        }
+    }
+}

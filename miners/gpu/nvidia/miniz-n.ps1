@@ -3,16 +3,17 @@
 $(vars).NVIDIATypes | ForEach-Object {
 
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
+    $CName = "miniz-n"
 
     ##Miner Path Information
-    if ($(vars).nvidia.miniz.$ConfigType) { $Path = "$($(vars).nvidia.miniz.$ConfigType)" }
+    if ($(vars).nvidia.$CName.$ConfigType) { $Path = "$($(vars).nvidia.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).nvidia.miniz.uri) { $Uri = "$($(vars).nvidia.miniz.uri)" }
+    if ($(vars).nvidia.$CName.uri) { $Uri = "$($(vars).nvidia.$CName.uri)" }
     else { $Uri = "None" }
-    if ($(vars).nvidia.miniz.minername) { $MinerName = "$($(vars).nvidia.miniz.minername)" }
+    if ($(vars).nvidia.$CName.minername) { $MinerName = "$($(vars).nvidia.$CName.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "miniz-$Num"; $Port = "6000$Num";
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "6000$Num";
 
     Switch ($Num) {
         1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
@@ -21,7 +22,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     }
 
     ##Log Directory
-    $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($(vars).dir) "logs\$Name.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") {
@@ -33,7 +34,7 @@ $(vars).NVIDIATypes | ForEach-Object {
 
     ##Get Configuration File
     ##This is located in config\miners
-    $MinerConfig = $Global:config.miners.miniz
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = "/usr/local/swarm/lib64"
@@ -110,7 +111,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Path       = $Path
                     Devices    = $Devices
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
-                    Version    = "$($(vars).nvidia.miniz.version)"
+                    Version    = "$($(vars).nvidia.$CName.version)"
                     DeviceCall = "miniz"
                     Arguments  = "--nvidia --telemetry 0.0.0.0:$Port --url=$($_.$User)@$($_.Pool_Host):$($_.Port) $AddArgs --logfile=`'$log`' --pass=$($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour

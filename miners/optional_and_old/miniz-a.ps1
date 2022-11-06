@@ -3,31 +3,38 @@
 $(vars).AMDTypes | ForEach-Object {
 
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $CName = "miniz-a"
 
     ##Miner Path Information
-    if ($(vars).amd.wildrig.$ConfigType) { $Path = "$($(vars).amd.wildrig.$ConfigType)" }
+    if ($(vars).amd.$CName.$ConfigType) { $Path = "$($(vars).amd.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).amd.wildrig.uri) { $Uri = "$($(vars).amd.wildrig.uri)" }
+    if ($(vars).amd.$CName.uri) { $Uri = "$($(vars).amd.$CName.uri)" }
     else { $Uri = "None" }
-    if ($(vars).amd.wildrig.minername) { $MinerName = "$($(vars).amd.wildrig.minername)" }
+    if ($(vars).amd.$CName.minername) { $MinerName = "$($(vars).amd.$CName.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "wildrig-$Num"; $Port = "2900$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "6001$Num";
 
     Switch ($Num) {
-        1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
+        1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).RigName1 }
+        2 { $Get_Devices = $(vars).AMDDevices2; $Rig = $(arg).RigName2 }
+        3 { $Get_Devices = $(vars).AMDDevices3; $Rig = $(arg).RigName3 }
     }
 
     ##Log Directory
-    $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($(vars).dir) "logs\$Name.log"
 
     ##Parse -GPUDevices
-    if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
+    if ($Get_Devices -ne "none") {
+        $GPUDevices1 = $Get_Devices
+        $GPUDevices1 = $GPUDevices1 -replace ',', ' '
+        $Devices = $GPUDevices1
+    }
     else { $Devices = $Get_Devices }
 
     ##Get Configuration File
     ##This is located in config\miners
-    $MinerConfig = $Global:config.miners.wildrig
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = "/usr/local/swarm/lib64"
@@ -60,6 +67,31 @@ $(vars).AMDTypes | ForEach-Object {
             if ($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3) { $HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
             else { $HashStat = $Stat.Hour }
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+                $SelName = $_.Name
+                $SelAlgo = $_.Algorithm
+                switch ($SelAlgo) {
+                    "equihash_96/5" { $AddArgs = "--par=96,5 --pers=auto " }
+                    "equihash_144/5" {
+                        switch ($SelName) {
+                            "mph" { $AddArgs = "--par=144,5 --pers=BgoldPoW " }
+                            default { $AddArgs = "--par=144,5 --pers=auto " }
+                        }
+                    }
+                    "equihash_210/9" { $AddArgs = "--par=210,9 --pers=auto " }
+                    "equihash_200/9" { $AddArgs = "--par=200,9 --pers=auto " }
+                    "equihash_192/7" {
+                        switch ($SelName) {
+                        "mph" { $AddArgs = "--par=192,7 --pers=ZcashPoW " }
+                        default { $AddArgs = "--par=192,7 --pers=auto " }
+                        }
+                    }
+                    "equihash_125/4" { $AddArgs = "--par=125,4 --pers=auto " }
+                    "equihash_150/5" { $AddArgs = "--par=150,5 --pers=auto " }
+                    "beamhashv3" { $AddArgs = "--par=beam3 --pers=auto " }
+                    "ethash" { $AddArgs = "--par=ethash " }
+                    "etchash" { $AddArgs = "--par=ethash --pers=etchash " }
+                    "kawpow" { $AddArgs = "--par=kawpow " }
+                }
                 $Diff = ""
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { 
                     switch($_.Name) {
@@ -77,20 +109,20 @@ $(vars).AMDTypes | ForEach-Object {
                     Prestart   = $PreStart
                     Type       = $ConfigType
                     Path       = $Path
-                    Devices    = "none"
+                    Devices    = $Devices
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
-                    Version    = "$($(vars).amd.wildrig.version)"
-                    DeviceCall = "wildrig"
-                    Arguments  = "--opencl-platforms amd --api-port $Port --multiple-instance --algo $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --url stratum+tcp://$($_.Pool_Host):$($_.Port) --user $($_.$User) --pass $($_.$Pass)$($Diff) --log-file `'$Log`' $($MinerConfig.$ConfigType.commands.$($MinerConfig.$ConfigType.naming.$($_.Algorithm)))"
+                    Version    = "$($(vars).amd.$CName.version)"
+                    DeviceCall = "miniz"
+                    Arguments  = "--amd --telemetry 0.0.0.0:$Port --url=$($_.$User)@$($_.Pool_Host):$($_.Port) $AddArgs --logfile=`'$log`' --pass=$($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
                     Rejections = $Stat.Rejections
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 }
                     MinerPool  = "$($_.Name)"
+                    API        = "miniz"
                     Port       = $Port
                     Worker     = $Rig
-                    API        = "wildrig"
                     Wallet     = "$($_.$User)"
                     URI        = $Uri
                     Server     = "localhost"

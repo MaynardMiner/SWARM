@@ -32,9 +32,9 @@
     "type": "cpu",
     "CPU": ".\\bin\\xmrig-cpu-1\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "6.15.3",
+    "version": "6.18.1",
     "optional": "No",
-    "uri": "https://github.com/xmrig/xmrig/releases/download/v6.15.3/xmrig-6.15.3-msvc-win64.zip"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/xmrig-windows.zip"
   },
   "xmrigcc-cpu": {
     "name": "xmrigcc-cpu",
@@ -59,9 +59,9 @@
     "type": "cpu",
     "CPU": ".\\bin\\jayddee-1\\cpuminer-avx2.exe",
     "minername": "cpuminer-avx2.exe",
-    "version": "3.20.2",
+    "version": "3.20.3",
     "optional": "No",
-    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.20.2/cpuminer-opt-3.20.2-windows.zip"
+    "uri": "https://github.com/JayDDee/cpuminer-opt/releases/download/v3.20.3/cpuminer-opt-3.20.3-windows.zip"
   },
   "kudaraidee": {
     "name": "kudaraidee",

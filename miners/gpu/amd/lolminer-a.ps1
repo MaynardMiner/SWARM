@@ -1,38 +1,43 @@
 . .\build\powershell\global\miner_stat.ps1;
 . .\build\powershell\global\modules.ps1;
-$(vars).CPUTypes | ForEach-Object {
+$(vars).AMDTypes | ForEach-Object {
     
-    $ConfigType = $_;
+    $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $CName = "lolminer-a";
 
     ##Miner Path Information
-    if ($(vars).cpu.jayddee.$ConfigType) { $Path = "$($(vars).cpu.jayddee.$ConfigType)" }
+    if ($(vars).amd.$CName.$ConfigType) { $Path = "$($(vars).amd.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).cpu.jayddee.uri) { $Uri = "$($(vars).cpu.jayddee.uri)" }
+    if ($(vars).amd.$CName.uri) { $Uri = "$($(vars).amd.$CName.uri)" }
     else { $Uri = "None" }
-    if ($(vars).cpu.jayddee.minername) { $MinerName = "$($(vars).cpu.jayddee.minername)" }
+    if ($(vars).amd.$CName.minername) { $MinerName = "$($(vars).amd.$CName.minername)" }
     else { $MinerName = "None" }
 
-    $Name = "jayddee";
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "2400$Num"
+
+    Switch ($Num) {
+        1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
+    }
 
     ##Log Directory
     $Log = Join-Path $($(vars).dir) "logs\$Name.log"
 
-    ##Parse -CPUThreads
-    if ($(arg).CPUThreads -ne '') { $Devices = $(arg).CPUThreads }
+    ##Parse -GPUDevices
+    if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
+    else { $Devices = $Get_Devices }
 
     ##Get Configuration File
     ##This is located in config\miners
-    $MinerConfig = $Global:config.miners.jayddee
+    $MinerConfig = $Global:config.miners.$CName
 
-    ##Export would be /path/to/[SWARMVERSION]/build/export##
+    ##Export would be /path/to/[SWARMVERSION]/build/export && Bleeding Edge Check##
     $ExportDir = "/usr/local/swarm/lib64"
     $Miner_Dir = Join-Path ($(vars).dir) ((Split-Path $Path).replace(".", ""))
 
     ##Prestart actions before miner launch
     ##This can be edit in miner.json
     $Prestart = @()
-    if ($IsLinux) { $Prestart += "export LD_PRELOAD=/usr/local/swarm/lib64/libcurl.so.4" }          
-    #$PreStart += "export LD_LIBRARY_PATH=$ExportDir`:$Miner_Dir"
+    $PreStart += "export LD_LIBRARY_PATH=$ExportDir`:$Miner_Dir"
     if ($IsLinux) { $Prestart += "export DISPLAY=:0" }
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
 
@@ -40,6 +45,7 @@ $(vars).CPUTypes | ForEach-Object {
 
     if ($(vars).Bancount -lt 1) { $(vars).Bancount = 5 }
 
+    ##Build Miner Settings
     $MinerConfig.$ConfigType.commands | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
 
         $MinerAlgo = $_
@@ -54,7 +60,9 @@ $(vars).CPUTypes | ForEach-Object {
             $Stat = Global:Get-Stat -Name "$($Name)_$($StatAlgo)_hashrate" 
             if ($(arg).Rej_Factor -eq "Yes" -and $Stat.Rejections -gt 0 -and $Stat.Rejection_Periods -ge 3) { $HashStat = $Stat.Hour * (1 - ($Stat.Rejections * 0.01)) }
             else { $HashStat = $Stat.Hour }
+        
             $Pools | Where-Object Algorithm -eq $MinerAlgo | ForEach-Object {
+                $SelAlgo = $_.Algorithm
                 $Diff = ""
                 if ($MinerConfig.$ConfigType.difficulty.$($_.Algorithm)) { 
                     switch($_.Name) {
@@ -74,22 +82,22 @@ $(vars).CPUTypes | ForEach-Object {
                     Path       = $Path
                     Devices    = $Devices
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)" 
-                    Version    = "$($(vars).cpu.jayddee.version)"
-                    DeviceCall = "cpuminer-opt"
-                    Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --cpu-priority $($(arg).cpu_priority) -o stratum+tcp://$($_.Pool_Host):$($_.Port) -b 0.0.0.0:10001 -u $($_.User1) -p $($_.Pass1)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Version    = "$($(vars).amd.$CName.version)"
+                    DeviceCall = "lolminer"
+                    Arguments  = "--coin $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --user $($_.$User) $AddArgs--pass $($_.$Pass)$($Diff) --apiport $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
-                    Worker     = $(arg).Rigname1
                     Rejections = $Stat.Rejections
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 } 
                     MinerPool  = "$($_.Name)"
-                    Port       = 10001
-                    API        = "cpuminer"
-                    Wallet     = "$($_.User1)"
+                    Port       = $Port
+                    Worker     = $Rig
+                    API        = "lolminer"
+                    Wallet     = "$($_.$User)"
                     URI        = $Uri
                     Server     = "localhost"
-                    Algo       = "$($_.Algorithm)"
+                    Algo       = "$($_.Algorithm)"                         
                     Log        = $Log 
                 }            
             }

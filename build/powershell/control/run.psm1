@@ -307,6 +307,16 @@ function Global:Start-NewMiners {
                 }
             }
 
+            ## Append the log of the miner if it exists to keep data low:
+            $IsLog = Test-Path ".\logs\$($Miner.Name).log"
+            if($IsLog) {
+                $Miner_Log = Get-Content ".\logs\$($Miner.Name).log"
+                if($Miner_Log.Count -ge 10000) {
+                    $Split = [Math]::Round($Miner_Log.Count / 2);
+                    $Miner_Log | Select-Object -last $Split | Set-Content ".\logs\$($Miner.Name).log"
+                }
+            }
+
             ##Launch Miners
             log "Starting $($Miner.InstanceName)"
             if ($Miner.Type -notlike "*ASIC*") {

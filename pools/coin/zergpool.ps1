@@ -197,7 +197,7 @@ if ($Name -in $(arg).PoolName) {
             $Pool_Host = "$($_.Original_Algo.ToLower()).$reg.mine.zergpool.com$sub"
             $Pool_Algo = $_.algo.ToLower()
             $Pool_Symbol = $_.sym.ToUpper()
-            $mc = "mc=$Pool_Symbol,"
+            $mc = "mc=$Pool_Symbol"
 
             ## Wallet Swapping/Solo mining
             $Pass1 = $A_Wallets.Wallet1.Keys
@@ -241,7 +241,7 @@ if ($Name -in $(arg).PoolName) {
                             $Pass1 = $Sym
                             $Pass2 = $Sym
                             $Pass3 = $Sym
-                            $mc = "mc=$Sym,"
+                            $mc = "mc=$Sym"
                             if ($AltWallets.$Sym.address -ne "add address of coin if you wish to mine to that address, or leave alone." -and $AltWallets.$_.address -ne "") {
                                 $User1 = $AltWallets.$Sym.address
                                 $User2 = $AltWallets.$Sym.address
@@ -249,7 +249,7 @@ if ($Name -in $(arg).PoolName) {
                             }
                         }
                         if ($AltWallets.$Sym.params -ne "enter additional params here, such as 'm=solo' or m=party.partypassword") {
-                            $mc += "m=$($AltWallets.$Sym.params),"
+                            $mc += "m=$($AltWallets.$Sym.params)"
                             $mc = $mc.replace("SOLO", "solo")
                             $mc = $mc.replace("PARTY", "party")
                         }    
@@ -277,11 +277,11 @@ if ($Name -in $(arg).PoolName) {
                 ## User3
                 $User3,
                 ## Pass1
-                "c=$Pass1,$($mc)ID=$($Params.RigName1),refcode=25be7e349d2cfd7a5cd9fd7883fd08f2",
+                "ID=$($Params.RigName1),c=$Pass1,$($mc)",
                 ## Pass2
-                "c=$Pass2,$($mc)ID=$($Params.RigName2),refcode=25be7e349d2cfd7a5cd9fd7883fd08f2",
+                "ID=$($Params.RigName2),c=$Pass2,$($mc)",
                 ## Pass3
-                "c=$Pass3,$($mc)ID=$($Params.RigName3),refcode=25be7e349d2cfd7a5cd9fd7883fd08f2",
+                "ID=$($Params.RigName3),c=$Pass3,$($mc)",
                 ## Previous
                 $previous
             )

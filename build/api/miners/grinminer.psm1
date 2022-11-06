@@ -11,14 +11,14 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #>
 function Global:Get-StatsGrinMiner {
-    try { $Request = Get-Content ".\logs\$Global:MinerType.log" -ErrorAction SilentlyContinue }catch { Write-Host "Failed to Read Miner Log"; break }
+    try { $Request = Get-Content ".\logs\$($global:Name).log" -ErrorAction SilentlyContinue }catch { Write-Host "Failed to Read Miner Log"; break }
     if ($Request) {
         $Hash = @()
         $global:Devices | ForEach-Object {
             $DeviceData = $Null
             $DeviceData = $Request | Select-String "Device $($_)" | ForEach-Object { $_ | Select-String "Graphs per second: " } | Select-Object -Last 1
             $DeviceData = $DeviceData -split "Graphs per second: " | Select-Object -Last 1 | ForEach-Object { $_ -split " - Total" | Select-Object -First 1 }
-            if ($DeviceData) { $Hash += [Double]$DeviceData / 1000 ; $global:RAW += [Double]$DeviceData; $global:GPUKHS += [Double]$DeviceData / 1000 }
+            if ($DeviceData) { $Hash += [Double]$DeviceData ; $global:RAW += [Double]$DeviceData; $global:GPUKHS += [Double]$DeviceData / 1000 }
             else { $Hash += 0; $global:RAW += 0; $global:GPUKHS += 0 }
         }
         Global:Write-MinerData2;

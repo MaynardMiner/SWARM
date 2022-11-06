@@ -30,7 +30,7 @@ function Global:Get-StatsLolminer {
         $Hash = $Data.Algorithms[0].Worker_Performance
         try { 
             for ($global:i = 0; $global:i -lt $Devices.Count; $global:i++) { 
-                $global:GPUHashrates.$(Global:Get-GPUs) = ((Global:Set-Array $Hash $global:i) * $lolmulti) / 1000 
+                $global:GPUHashrates.$(Global:Get-GPUs) = ((Global:Set-Array $Hash $global:i) * $lolmulti) 
             } 
         }
         catch { Write-Host "Failed To parse GPU Array" -ForegroundColor Red };
@@ -39,10 +39,10 @@ function Global:Get-StatsLolminer {
         $global:ALLACC += $global:MinerACC
         $global:ALLREJ += $global:MinerREJ
     }
-    elseif (Test-Path ".\logs\$MinerType.log") {
+    elseif (Test-Path ".\logs\$($global:Name).log") {
         Write-Host "Miner API failed- Attempting to get hashrate through logs." -ForegroundColor Yellow
         Write-Host "Will only pull total hashrate in this manner." -ForegroundColor Yellow
-        $MinerLog = Get-Content ".\logs\$MinerType.log" | Select-String "Average Speed " | Select-Object -Last 1
+        $MinerLog = Get-Content ".\logs\$($global:Name).log" | Select-String "Average Speed " | Select-Object -Last 1
         $Speed = $MinerLog -split "Total: " | Select-Object -Last 1
         $Speed = $Speed -split "sol/s" | Select-Object -First 1
         if ($Speed) {

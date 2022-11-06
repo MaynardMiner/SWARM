@@ -204,7 +204,13 @@ function Global:Get-MinerHashRate {
         log "$($_.Name) average rejection percentage for $($_.Algo) is " -NoNewLine -Start
         log "$( if($_.Rejections){ $( $($_.Rejections).ToString("N2") ) }else{"0.00"})`%" -foregroundcolor yellow -End
         log "Current Pool Projection: $CurrentProfit `| $BTCCurrentProfit  (This is live value with no modifiers)"
-        log "Current Daily Profit   : $ScreenProfit `| $BTCScreenProfit  (This is daily average with watt calculations)
-"
+        if($_.Type -ne "CPU" -and $_.Type -ne "ASIC") {
+            log "Current Daily Profit   : $ScreenProfit `| $BTCScreenProfit  (This is daily miner average with watt calculations)
+            "            
+        }
+        else {
+            log "Current Daily Profit   : $ScreenProfit `| $BTCScreenProfit  (This is daily miner average)
+            "            
+        }
     }
 }

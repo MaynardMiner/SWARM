@@ -1,5 +1,16 @@
 {
   "name": "amd-win",
+  "miniz-a": {
+    "name": "miniz-a",
+    "type": "amd",
+    "AMD1": ".\\bin\\miniz-a-1\\miniZ.exe",
+    "AMD2": ".\\bin\\miniz-a-2\\miniZ.exe",
+    "AMD3": ".\\bin\\miniz-a-3\\miniZ.exe",
+    "minername": "miniZ.exe",
+    "version": "v1.9z4",
+    "optional": "No",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/miniz-windows.zip"
+  },
   "srbmulti-a": {
     "name": "srbmulti-a",
     "type": "amd",
@@ -62,9 +73,9 @@
     "AMD2": ".\\bin\\gminer-a-2\\miner.exe",
     "AMD3": ".\\bin\\gminer-a-3\\miner.exe",
     "minername": "miner.exe",
-    "version": "3.07",
+    "version": "3.11",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.07/gminer_3_07_windows64.zip"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.11/gminer_3_11_windows64.zip"
   },
   "phoenix-amd": {
     "name": "phoenix-amd",
@@ -99,12 +110,12 @@
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/sgminer-kl-windows.zip"
   },
-  "lolminer": {
-    "name": "lolminer",
+  "lolminer-a": {
+    "name": "lolminer-a",
     "type": "amd",
-    "AMD1": ".\\bin\\lolMiner-AMD-1\\lolMiner.exe",
-    "AMD2": ".\\bin\\lolMiner-AMD-2\\lolMiner.exe",
-    "AMD3": ".\\bin\\lolMiner-AMD-3\\lolMiner.exe",
+    "AMD1": ".\\bin\\lolminer-a-1\\lolMiner.exe",
+    "AMD2": ".\\bin\\lolminer-a-2\\lolMiner.exe",
+    "AMD3": ".\\bin\\lolminer-a-3\\lolMiner.exe",
     "minername": "lolMiner.exe",
     "version": "1.60",
     "optional": "No",
@@ -117,9 +128,9 @@
     "AMD2": ".\\bin\\teamredminer-2\\teamredminer.exe",
     "AMD3": ".\\bin\\teamredminer-3\\teamredminer.exe",
     "minername": "teamredminer.exe",
-    "version": "0.10.4",
+    "version": "0.10.5.1",
     "optional": "No",
-    "uri": "https://github.com/todxx/teamredminer/releases/download/v0.10.4/teamredminer-v0.10.4-win.zip"
+    "uri": "https://github.com/todxx/teamredminer/releases/download/v0.10.5.1/teamredminer-v0.10.5.1-win.zip"
   },
   "xmr-stak": {
     "name": "xmr-stak",
@@ -143,16 +154,16 @@
     "optional": "No",
     "uri": "https://github.com/fireice-uk/xmr-stak/releases/download/1.0.5-rx/xmr-stak-rx-win64-1.0.5.zip"
   },
-  "wildrig": {
-    "name": "wildrig",
+  "wildrig-a": {
+    "name": "wildrig-a",
     "type": "amd",
-    "AMD1": ".\\bin\\wildrig-1\\wildrig.exe",
-    "AMD2": ".\\bin\\wildrig-2\\wildrig.exe",
-    "AMD3": ".\\bin\\wildrig-3\\wildrig.exe",
+    "AMD1": ".\\bin\\wildrig-a-1\\wildrig.exe",
+    "AMD2": ".\\bin\\wildrig-a-2\\wildrig.exe",
+    "AMD3": ".\\bin\\wildrig-a-3\\wildrig.exe",
     "minername": "wildrig.exe",
-    "version": "0.33.1",
+    "version": "0.33.3",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.33.1/wildrig-multi-windows-0.33.1.7z"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.33.3/wildrig-multi-windows-0.33.3.7z"
   },
   "fancyix": {
     "name": "fancyix",
@@ -172,7 +183,7 @@
     "AMD2": ".\\bin\\xmrig-a-2\\xmrig.exe",
     "AMD3": ".\\bin\\xmrig-a-3\\xmrig.exe",
     "minername": "xmrig.exe",
-    "version": "6.18.0",
+    "version": "6.18.1",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v9.0/xmrig-windows.zip"
   },
@@ -220,16 +231,16 @@
     "optional": "Yes",
     "uri": "https://github.com/ethereum-mining/ethminer/releases/download/v0.19.0-alpha.0/ethminer-0.19.0-alpha.0-cuda10.0-windows-amd64.zip"
   },
-  "nanominer": {
-    "name": "nanominer",
+  "nanominer-a": {
+    "name": "nanominer-a",
     "type": "amd",
-    "AMD1": ".\\bin\\nanominer-1\\nanominer.exe",
-    "AMD2": ".\\bin\\nanominer-2\\nanominer.exe",
-    "AMD3": ".\\bin\\nanominer-3\\nanominer.exe",
+    "AMD1": ".\\bin\\nanominer-a-1\\nanominer.exe",
+    "AMD2": ".\\bin\\nanominer-a-2\\nanominer.exe",
+    "AMD3": ".\\bin\\nanominer-a-3\\nanominer.exe",
     "minername": "nanominer.exe",
-    "version": "3.7.3",
+    "version": "3.7.4",
     "optional": "No",
-    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.3/nanominer-windows-3.7.3.zip"
+    "uri": "https://github.com/nanopool/nanominer/releases/download/v3.7.4/nanominer-windows-3.7.4.zip"
   },
   "nbminer-amd": {
     "name": "nbminer-amd",

@@ -1,15 +1,19 @@
-# Version 3.6.4
+# Version 3.6.7
 
 ## Beta Release
 * This project has all basic miners, but need more miners and updates.
 
+## Important Note!
+* Lolminer has changed to lolminer-a on AMD. Your config lolminer.json will be deleted on update.
+* Miniz has changed to miniz-n on NVIDIA. Your config miniz.json will be deleted on update.
+* These changes were done for log updates. One time change only.
+* Since name of miner in SWARM has changed, SWARM will bench them again.
+
 ## Improvements 
-* Fix mph display on get stats.
-* Create error on failed lib64 download.
-* Angleparse module instead for future implementation.
-* Int32 fix on hashrate in pool files.
-* Zelhash on nicehash converts to equihash 125/4 for Hive oc.
-* All miners should be latest versions.
+* Logging changes, see new readme in logs folder or read issue on github. #395
+* `-Conserve` will now switch to oc for algo SHA256 so you can set an idle OC for SHA256
+* Miners Updated. #424
+* Miniz added for amd, but made optional using `-Optional` argument. Works on only certain gpus.
 
 ## KNOWN ISSUES
 * Get Wallets not working.
@@ -18,8 +22,8 @@
 
 ## Suggested Settings- What I as the Dev use.
 * -Auto_Coin Yes (use coin for calculations when applicable)
-* -Stat_Coin live (Mine based on individual coin statistics live values)
-* -Stat_Algo Live (Use live data for algorithms)
+* -Stat_Coin Hour_EMA (Mine based on individual coin statistics hourly values)
+* -Stat_Algo Hour_EMA (Use hourly data for algorithms)
 * -Min_Blocks 4 (Don't mine anything that is going to take more than 6 hours to find)
 * -historical_bias 1:1 (Don't penalize based on historical data- Too much new activity now)
 * -Hashrate_Threshold 10 (Don't switch miner on same algorithm unless it falls below 10% hashrate of next best miner)

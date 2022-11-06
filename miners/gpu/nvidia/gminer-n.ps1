@@ -22,7 +22,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     }
 
     ##Log Directory
-    $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($(vars).dir) "logs\$Name.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") {
@@ -102,6 +102,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                             "nlpool" { $AddArgs = "--algo 144_5 --pers auto " }
                             "zergpool" { $AddArgs = "--algo 144_5 --pers auto " }
                             "mph" { $AddArgs = "--algo 144_5 --pers BgoldPoW " }
+                            "zpool" { $AddArgs = "--algo 144_5 --pers auto " }
                         }
                     }
                     "equihash_210/9" { $AddArgs = "--algo 210_9 --pers auto " }

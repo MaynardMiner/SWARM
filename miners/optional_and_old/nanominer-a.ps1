@@ -3,23 +3,24 @@
 $(vars).AMDTypes | ForEach-Object {
 
     $ConfigType = $_; $Num = $ConfigType -replace "AMD", ""
+    $CName = "nanominer-a"
 
     ##Miner Path Information
-    if ($(vars).amd.nanominer.$ConfigType) { $Path = "$($(vars).amd.nanominer.$ConfigType)" }
+    if ($(vars).amd.$CName.$ConfigType) { $Path = "$($(vars).amd.$CName.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).amd.nanominer.uri) { $Uri = "$($(vars).amd.nanominer.uri)" }
+    if ($(vars).amd.$CName.uri) { $Uri = "$($(vars).amd.$CName.uri)" }
     else { $Uri = "None" }
-    if ($(vars).amd.nanominer.minername) { $MinerName = "$($(vars).amd.nanominer.minername)" }
+    if ($(vars).amd.$CName.minername) { $MinerName = "$($(vars).amd.$CName.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "nanominer-$Num"; $Port = "3800$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "3800$Num"
 
     Switch ($Num) {
         1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
     }
 
     ##Log Directory
-    $Log = Join-Path $($(vars).dir) "logs\$ConfigType.log"
+    $Log = Join-Path $($(vars).dir) "logs\$Name.log"
 
     ##Parse -GPUDevices
     if ($Get_Devices -ne "none") { $Devices = $Get_Devices }
@@ -39,7 +40,7 @@ $(vars).AMDTypes | ForEach-Object {
 
     ##Get Configuration File
     ##This is located in config\miners
-    $MinerConfig = $Global:config.miners.nanominer
+    $MinerConfig = $Global:config.miners.$CName
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = "/usr/local/swarm/lib64"
@@ -92,7 +93,7 @@ $(vars).AMDTypes | ForEach-Object {
                     Path              = $Path
                     Devices           = $Devices
                     Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
-                    Version           = "$($(vars).amd.nanominer.version)"
+                    Version           = "$($(vars).amd.$CName.version)"
                     DeviceCall        = "nanominer"
                     ## Use Host because there is already an object set
                     Host              = @{
