@@ -20,7 +20,7 @@ if ($Name -in $(arg).PoolName) {
     if ($(arg).Ban_GLT -eq "Yes") { $NoGLT = "GLT"; }
     if ($(arg).xnsub -eq "Yes") { $X = "#xnsub"; } 
     
-    try { $Pool_Request = Invoke-RestMethod "https://www.zpool.ca/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
+    try { $Pool_Request = Invoke-RestMethod "https://www.zpool.ca/api/currencies" -UseBasicParsing -TimeoutSec 30 -ErrorAction Stop }
     catch {
         return "WARNING: SWARM contacted ($Name) for a failed API check. (Coins)"; 
     }

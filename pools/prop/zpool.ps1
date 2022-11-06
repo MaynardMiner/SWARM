@@ -19,7 +19,7 @@ if ($Name -in $(arg).PoolName) {
     $X = ""
     if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" } 
 
-    try { $Pool_Request = Invoke-RestMethod "https://www.zpool.ca/api/status" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
+    try { $Pool_Request = Invoke-RestMethod "https://www.zpool.ca/api/status" -UseBasicParsing -TimeoutSec 30 -ErrorAction Stop } 
     catch { return "WARNING: SWARM contacted ($Name) but there was no response." }
  
     if (($Pool_Request | Get-Member -MemberType NoteProperty -ErrorAction Ignore | Measure-Object Name).Count -le 1) { 

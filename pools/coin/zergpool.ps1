@@ -21,7 +21,7 @@ if ($Name -in $(arg).PoolName) {
     if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" } 
 
     ## Skip if user didn't specify
-    try { $Pool_Request = Invoke-RestMethod "http://zergpool.com:8080/api/currencies" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop }
+    try { $Pool_Request = Invoke-RestMethod "http://zergpool.com:8080/api/currencies" -UseBasicParsing -TimeoutSec 30 -ErrorAction Stop }
     catch {
         return "WARNING: SWARM contacted ($Name) for a failed API check. (Coins)"; 
     }
