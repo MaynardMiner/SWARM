@@ -154,6 +154,17 @@
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/EWBF.Equihash.miner.v0.6.zip"
   },
+  "cxaya": {
+    "name": "cxaya",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\cxaya-1\\ccminer.exe",
+    "NVIDIA2": ".\\bin\\cxaya-2\\ccminer.exe",
+    "NVIDIA3": ".\\bin\\cxaya-3\\ccminer.exe",
+    "minername": "ccminer.exe",
+    "version": "8.26",
+    "optional": "Yes",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/cxaya-windows.zip"
+  },
   "cklaust": {
     "name": "cklaust",
     "type": "nvidia",
@@ -162,7 +173,7 @@
     "NVIDIA3": ".\\bin\\cklaust-3\\ccminer.exe",
     "minername": "ccminer.exe",
     "version": "8.26",
-    "optional": "No",
+    "optional": "Yes",
     "uri": "https://github.com/KlausT/ccminer/releases/download/8.26/ccminer-826-cuda114-x64.zip"
   },
   "miniz-n": {

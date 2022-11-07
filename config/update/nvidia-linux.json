@@ -132,6 +132,17 @@
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/ehssand-linux.tar.gz"
   },
+  "cxaya": {
+    "name": "cxaya",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\cxaya-1\\ccminer",
+    "NVIDIA2": ".\\bin\\cxaya-2\\ccminer",
+    "NVIDIA3": ".\\bin\\cxaya-3\\ccminer",
+    "minername": "ccminer",
+    "version": "8.26",
+    "optional": "Yes",
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cxaya-linux.tar.gz"
+  },
   "cklaust": {
     "name": "cklaust",
     "type": "nvidia",
@@ -140,7 +151,7 @@
     "NVIDIA3": ".\\bin\\cklaust-3\\ccminer",
     "minername": "ccminer",
     "version": "8.26",
-    "optional": "No",
+    "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cklaust-linux.tar.gz"
   },
   "tpruvot": {

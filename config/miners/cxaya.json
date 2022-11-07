@@ -1,0 +1,54 @@
+{
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "neoscrypt-xaya": ""
+        },
+        "difficulty": {
+            "neoscrypt-xaya": ""
+        },
+        "naming": {
+            "neoscrypt-xaya": "neoscrypt-xaya"
+        },
+        "fee": {
+            "neoscrypt-xaya": 0
+        }
+    },
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "neoscrypt-xaya": ""
+        },
+        "difficulty": {
+            "neoscrypt-xaya": ""
+        },
+        "naming": {
+            "neoscrypt-xaya": "neoscrypt-xaya"
+        },
+        "fee": {
+            "neoscrypt-xaya": 0
+        }
+    },
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "neoscrypt-xaya": ""
+        },
+        "difficulty": {
+            "neoscrypt-xaya": ""
+        },
+        "naming": {
+            "neoscrypt-xaya": "neoscrypt-xaya"
+        },
+        "fee": {
+            "neoscrypt-xaya": 0
+        }   
+    },
+    "name": "cxaya"
+}
