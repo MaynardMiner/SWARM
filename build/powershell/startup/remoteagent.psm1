@@ -205,6 +205,16 @@ Access Denied Error prevented.
                             }
                         }
                     }
+                    if ($ChangeFile -eq "fancyix.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "neoscrypt-xaya" "-w 256 -I 17 -s 1 -g 1" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "neoscrypt-xaya" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "neoscrypt-xaya" "neoscrypt-xaya" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "neoscrypt-xaya" 0.85 -ErrorAction SilentlyContinue
+                            }
+                        }
+                    }
                     $Data | ConvertTo-Json -Depth 10 | Set-Content $NewJson;
                     log "Wrote To $NewJson"
                 }

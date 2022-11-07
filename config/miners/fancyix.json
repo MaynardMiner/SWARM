@@ -17,7 +17,7 @@
             "allium": "--gpu-threads 1 --worksize 256 --intensity 20",
             "lyra2rev3": "--gpu-threads 1 --worksize 256 --intensity 22",
             "argon2d500": "--worksize 64 -g 2",
-            "mtp": "--intensity 18",
+            "neoscrypt-xaya": "-w 256 -I 17 -s 1 -g 1",
             "x25x": "--gpu-threads 2 --worksize 256 --intensity 22"
         },
         "difficulty": {
@@ -27,7 +27,7 @@
             "allium": "",
             "lyra2rev3": "",
             "argon2d500": "",
-            "mtp": "700",
+            "neoscrypt-xaya": "",
             "x25x": ""
         },
         "naming": {
@@ -37,7 +37,7 @@
             "allium": "allium",
             "lyra2rev3": "lyra2rev3",
             "argon2d500": "argon2d",
-            "mtp": "mtp",
+            "neoscrypt-xaya": "neoscrypt-xaya",
             "x25x": "x25x"
         },
         "fee": {
@@ -47,7 +47,7 @@
             "allium": 0,
             "lyra2rev3": 0,
             "argon2d500": 0,
-            "mtp": 0,
+            "neoscrypt-xaya": 0,
             "x25x": 0
         }
     }

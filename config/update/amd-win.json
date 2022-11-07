@@ -172,9 +172,9 @@
     "AMD2": ".\\bin\\fancyix-2\\sgminer.exe",
     "AMD3": ".\\bin\\fancyix-3\\sgminer.exe",
     "minername": "sgminer.exe",
-    "version": "0.7.6",
+    "version": "0.9.4",
     "optional": "No",
-    "uri": "https://github.com/fancyIX/sgminer-phi2-branch/releases/download/0.7.5-0/sgminer-fancyIX-win64-0.7.5.zip"
+    "uri": "https://github.com/fancyIX/sgminer-phi2-branch/releases/download/0.9.4/sgminer-fancyIX-win64-0.9.4.zip"
   },
   "xmrig-a": {
     "name": "xmrig-a",
