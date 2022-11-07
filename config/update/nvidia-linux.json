@@ -132,15 +132,15 @@
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/ehssand-linux.tar.gz"
   },
-  "klaust": {
-    "name": "klaust",
+  "cklaust": {
+    "name": "cklaust",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\klaust-1\\ccminer",
-    "NVIDIA2": ".\\bin\\klaust-2\\ccminer",
-    "NVIDIA3": ".\\bin\\klaust-3\\ccminer",
+    "NVIDIA1": ".\\bin\\cklaust-1\\ccminer",
+    "NVIDIA2": ".\\bin\\cklaust-2\\ccminer",
+    "NVIDIA3": ".\\bin\\cklaust-3\\ccminer",
     "minername": "ccminer",
     "version": "8.24",
-    "optional": "Yes",
+    "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/klaust-linux-10.tar.gz"
   },
   "tpruvot": {

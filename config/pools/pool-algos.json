@@ -890,6 +890,15 @@
       "comma seperated"
     ]
   },
+  "neoscrypt-xaya": {
+    "alt_names": [
+      "neoscrypt-xaya"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "ninja": {
     "alt_names": [
       "ninja"

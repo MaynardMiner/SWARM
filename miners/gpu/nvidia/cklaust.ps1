@@ -5,14 +5,14 @@ $(vars).NVIDIATypes | ForEach-Object {
     $ConfigType = $_; $Num = $ConfigType -replace "NVIDIA", ""
 
     ##Miner Path Information
-    if ($(vars).nvidia.klaust.$ConfigType) { $Path = "$($(vars).nvidia.klaust.$ConfigType)" }
+    if ($(vars).nvidia.cklaust.$ConfigType) { $Path = "$($(vars).nvidia.cklaust.$ConfigType)" }
     else { $Path = "None" }
-    if ($(vars).nvidia.klaust.uri) { $Uri = "$($(vars).nvidia.klaust.uri)" }
+    if ($(vars).nvidia.cklaust.uri) { $Uri = "$($(vars).nvidia.cklaust.uri)" }
     else { $Uri = "None" }
-    if ($(vars).nvidia.klaust.minername) { $MinerName = "$($(vars).nvidia.klaust.minername)" }
+    if ($(vars).nvidia.cklaust.minername) { $MinerName = "$($(vars).nvidia.cklaust.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "klaust-$Num"; $Port = "5900$Num";
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "cklaust-$Num"; $Port = "5900$Num";
 
     Switch ($Num) {
         1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
@@ -29,7 +29,7 @@ $(vars).NVIDIATypes | ForEach-Object {
 
     ##Get Configuration File
     ##This is located in config\miners
-    $MinerConfig = $Global:config.miners.klaust
+    $MinerConfig = $Global:config.miners.cklaust
 
     ##Export would be /path/to/[SWARMVERSION]/build/export##
     $ExportDir = "/usr/local/swarm/lib64"
@@ -38,7 +38,7 @@ $(vars).NVIDIATypes | ForEach-Object {
     ##Prestart actions before miner launch
     ##This can be edit in miner.json
     $Prestart = @()
-    if ($IsLinux) { $Prestart += "export LD_PRELOAD=/usr/local/swarm/lib64/libcurl.so.3" }
+    if ($IsLinux) { $Prestart += "export LD_PRELOAD=/usr/local/swarm/lib64/libcurl.so.4" }
     $PreStart += "export LD_LIBRARY_PATH=$ExportDir`:$Miner_Dir"
     if ($IsLinux) { $Prestart += "export DISPLAY=:0" }
     $MinerConfig.$ConfigType.prestart | ForEach-Object { $Prestart += "$($_)" }
@@ -76,7 +76,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                     Path       = $Path
                     Devices    = $Devices
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
-                    Version    = "$($(vars).nvidia.klaust.version)"
+                    Version    = "$($(vars).nvidia.cklaust.version)"
                     DeviceCall = "ccminer"
                     Arguments  = "-a $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) -o stratum+tcp://$($_.Pool_Host):$($_.Port) -b 0.0.0.0:$Port -u $($_.$User) -p $($_.$Pass)$($Diff) $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour

@@ -154,15 +154,15 @@
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/EWBF.Equihash.miner.v0.6.zip"
   },
-  "klaust": {
-    "name": "klaust",
+  "cklaust": {
+    "name": "cklaust",
     "type": "nvidia",
-    "NVIDIA1": ".\\bin\\klaust-1\\ccminer.exe",
-    "NVIDIA2": ".\\bin\\klaust-2\\ccminer.exe",
-    "NVIDIA3": ".\\bin\\klaust-3\\ccminer.exe",
+    "NVIDIA1": ".\\bin\\cklaust-1\\ccminer.exe",
+    "NVIDIA2": ".\\bin\\cklaust-2\\ccminer.exe",
+    "NVIDIA3": ".\\bin\\cklaust-3\\ccminer.exe",
     "minername": "ccminer.exe",
     "version": "8.26",
-    "optional": "Yes",
+    "optional": "No",
     "uri": "https://github.com/KlausT/ccminer/releases/download/8.26/ccminer-826-cuda114-x64.zip"
   },
   "miniz-n": {

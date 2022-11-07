@@ -44,7 +44,7 @@ function Global:Update-Autofan([string]$Path) {
 
 function Global:start-update {
 
-    $Exclude = @("teamredminer.json", "yescrypt.json", "miniz.json", "lolminer.json", "gminer-amd.json", "gminer.json", "wildrig.json", "miniz.json", "nanominer.json")
+    $Exclude = @("teamredminer.json", "yescrypt.json", "miniz.json", "lolminer.json", "gminer-amd.json", "pool-algos.json", "gminer.json", "wildrig.json", "miniz.json", "nanominer.json","klaust.json")
 
     $Parent = Split-Path $(vars).dir
     log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
