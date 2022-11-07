@@ -15,9 +15,9 @@
             "neoscrypt-xaya": ""
         },
         "naming": {
-            "lyra2rev3": "",
-            "neoscrypt": "",
-            "neoscrypt-xaya": ""
+            "lyra2rev3": "lyra2rev3",
+            "neoscrypt": "neoscrypt",
+            "neoscrypt-xaya": "neoscrypt-xaya"
         },
         "fee": {
             "lyra2rev3": 0,
@@ -40,9 +40,9 @@
             "neoscrypt-xaya": ""
         },
         "naming": {
-            "lyra2rev3": "",
-            "neoscrypt": "",
-            "neoscrypt-xaya": ""
+            "lyra2rev3": "lyra2rev3",
+            "neoscrypt": "neoscrypt",
+            "neoscrypt-xaya": "neoscrypt-xaya"
         },
         "fee": {
             "lyra2rev3": 0,
@@ -65,9 +65,9 @@
             "neoscrypt-xaya": ""
         },
         "naming": {
-            "lyra2rev3": "",
-            "neoscrypt": "",
-            "neoscrypt-xaya": ""
+            "lyra2rev3": "lyra2rev3",
+            "neoscrypt": "neoscrypt",
+            "neoscrypt-xaya": "neoscrypt-xaya"
         },
         "fee": {
             "lyra2rev3": 0,
