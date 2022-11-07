@@ -6,7 +6,7 @@
         "prestart": [],
         "commands": {
             "lyra2rev3": "",
-            "neoscrypt": "-i 16.25",
+            "neoscrypt": "",
             "neoscrypt-xaya": "-i 16.25"
         },
         "difficulty": {
@@ -31,7 +31,7 @@
         "prestart": [],
         "commands": {
             "lyra2rev3": "",
-            "neoscrypt": "-i 16.25",
+            "neoscrypt": "",
             "neoscrypt-xaya": "-i 16.25"
         },
         "difficulty": {
