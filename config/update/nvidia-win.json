@@ -162,7 +162,7 @@
     "NVIDIA3": ".\\bin\\cxaya-3\\ccminer.exe",
     "minername": "ccminer.exe",
     "version": "8.26",
-    "optional": "Yes",
+    "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v.3.0/cxaya-windows.zip"
   },
   "cklaust": {

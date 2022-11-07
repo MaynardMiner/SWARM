@@ -140,7 +140,7 @@
     "NVIDIA3": ".\\bin\\cxaya-3\\ccminer",
     "minername": "ccminer",
     "version": "8.26",
-    "optional": "Yes",
+    "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cxaya-linux.tar.gz"
   },
   "cklaust": {
