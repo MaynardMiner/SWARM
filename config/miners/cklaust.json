@@ -6,8 +6,8 @@
         "prestart": [],
         "commands": {
             "lyra2rev3": "",
-            "neoscrypt": "",
-            "neoscrypt-xaya": ""
+            "neoscrypt": "-i 16.25",
+            "neoscrypt-xaya": "-i 16.25"
         },
         "difficulty": {
             "lyra2rev3": "",
@@ -31,8 +31,8 @@
         "prestart": [],
         "commands": {
             "lyra2rev3": "",
-            "neoscrypt": "",
-            "neoscrypt-xaya": ""
+            "neoscrypt": "-i 16.25",
+            "neoscrypt-xaya": "-i 16.25"
         },
         "difficulty": {
             "lyra2rev3": "",
@@ -56,8 +56,8 @@
         "prestart": [],
         "commands": {
             "lyra2rev3": "",
-            "neoscrypt": "",
-            "neoscrypt-xaya": ""
+            "neoscrypt": "-i 16.25",
+            "neoscrypt-xaya": "-i 16.25"
         },
         "difficulty": {
             "lyra2rev3": "",
