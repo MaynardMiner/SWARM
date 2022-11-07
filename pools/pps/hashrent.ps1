@@ -18,7 +18,7 @@ if ($Name -in $(arg).PoolName) {
 
     $Request = [PSCustomObject]@{ } 
 
-    try { $request = Invoke-Webrequest "https://hashrent.pro/" -TimeoutSec 10 -ErrorAction Stop } 
+    try { $request = Invoke-Webrequest "https://hashrent.pro/" -TimeoutSec 30 -ErrorAction Stop } 
     catch { return "WARNING: SWARM contacted ($Name) but there was no response." }
  
     if (!$request.content) {

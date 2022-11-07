@@ -46,7 +46,7 @@ if ($Name -in $(arg).PoolName) {
     $X = ""
     if ($(arg).xnsub -eq "Yes") { $X = "#xnsub" }
 
-    try { $nicehash_Request = Invoke-RestMethod "https://api2.nicehash.com/main/api/v2/public/simplemultialgo/info" -UseBasicParsing -TimeoutSec 10 -ErrorAction Stop } 
+    try { $nicehash_Request = Invoke-RestMethod "https://api2.nicehash.com/main/api/v2/public/simplemultialgo/info" -UseBasicParsing -TimeoutSec 30 -ErrorAction Stop } 
     catch { return "WARNING: SWARM contacted ($Name) but there was no response." }
  
     if ($nicehash_Request.miningAlgorithms.Count -le 1) {
