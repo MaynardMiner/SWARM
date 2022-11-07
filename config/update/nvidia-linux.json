@@ -139,9 +139,9 @@
     "NVIDIA2": ".\\bin\\cklaust-2\\ccminer",
     "NVIDIA3": ".\\bin\\cklaust-3\\ccminer",
     "minername": "ccminer",
-    "version": "8.24",
+    "version": "8.26",
     "optional": "No",
-    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/klaust-linux-10.tar.gz"
+    "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/cklaust-linux.tar.gz"
   },
   "tpruvot": {
     "name": "tpruvot",
