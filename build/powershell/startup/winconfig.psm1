@@ -150,7 +150,7 @@ Function Global:Get-Bus {
 function Global:Get-GPUCount {
 
     $Bus = $(vars).BusData
-    $DeviceList = @{ AMD = @{ }; NVIDIA = @{ }; CPU = @{ } }
+    $DeviceList = @{ AMD = [ordered]@{ }; NVIDIA = [ordered]@{ }; CPU = [ordered]@{ } }
     $OCList = @{ AMD = @{ }; Onboard = @{ }; NVIDIA = @{ }; }
     $GN = $false
     $GA = $false
