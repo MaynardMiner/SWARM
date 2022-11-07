@@ -188,7 +188,7 @@ function Global:Get-GPUCount {
     $GN = $false
     $GA = $false
     $NoType = $true
-    $DeviceList = @{ AMD = @{ }; NVIDIA = @{ }; CPU = @{ }; }
+    $DeviceList = @{ AMD = [ordered]@{ }; NVIDIA = [ordered]@{ }; CPU = [ordered]@{ }; }
     Invoke-Expression "lspci" | Tee-Object -Variable lspci | Out-null
     $lspci | Set-Content ".\debug\gpucount.txt"
     $GetBus = $lspci | Select-String "VGA", "3D"
