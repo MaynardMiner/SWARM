@@ -6,17 +6,14 @@
         "prestart": [],
         "commands": {
             "lyra2rev3": "",
-            "neoscrypt": "",
             "neoscrypt-xaya": "-i 16.25"
         },
         "difficulty": {
             "lyra2rev3": "",
-            "neoscrypt": "",
             "neoscrypt-xaya": ""
         },
         "naming": {
             "lyra2rev3": "lyra2rev3",
-            "neoscrypt": "neoscrypt",
             "neoscrypt-xaya": "neoscrypt-xaya"
         },
         "fee": {
@@ -31,17 +28,14 @@
         "prestart": [],
         "commands": {
             "lyra2rev3": "",
-            "neoscrypt": "",
             "neoscrypt-xaya": "-i 16.25"
         },
         "difficulty": {
             "lyra2rev3": "",
-            "neoscrypt": "",
             "neoscrypt-xaya": ""
         },
         "naming": {
             "lyra2rev3": "lyra2rev3",
-            "neoscrypt": "neoscrypt",
             "neoscrypt-xaya": "neoscrypt-xaya"
         },
         "fee": {
@@ -56,22 +50,18 @@
         "prestart": [],
         "commands": {
             "lyra2rev3": "",
-            "neoscrypt": "",
             "neoscrypt-xaya": "-i 16.25"
         },
         "difficulty": {
             "lyra2rev3": "",
-            "neoscrypt": "",
             "neoscrypt-xaya": ""
         },
         "naming": {
             "lyra2rev3": "lyra2rev3",
-            "neoscrypt": "neoscrypt",
             "neoscrypt-xaya": "neoscrypt-xaya"
         },
         "fee": {
             "lyra2rev3": 0,
-            "neoscrypt": 0,
             "neoscrypt-xaya": 0
         }
     }
