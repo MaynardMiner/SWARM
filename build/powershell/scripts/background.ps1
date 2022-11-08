@@ -171,6 +171,7 @@ While ($True) {
     $global:CPUOnly = $True ; $global:DoCPU = $false; $global:DoAMD = $false; 
     $global:DoNVIDIA = $false; $global:DoASIC = $false; $global:AllKHS = 0; 
     $global:AllACC = 0; $global:ALLREJ = 0;
+    $global:AllRAW = 0;
     $global:HIVE_ALGO = @{ }; $Group1 = $null; $Default_Group = $null; 
     $Hive = $null; $global:UPTIME = 0; $global:Web_Stratum = @{ }; $global:Workers = @{ }
 
@@ -598,9 +599,11 @@ While ($True) {
             if ($RJPercent -gt $(arg).Rejections -and $Shares -gt 0) {
                 Write-Host "Warning: Miner is reaching Rejection Limit- $($RJPercent.ToString("N2")) Percent Out of $Shares Shares" -foreground yellow
             }
+
             
             ## ADD Power to API
             if ($global:TypeS -eq "NVIDIA" -or $global:TypeS -eq "AMD") {
+                $global:AllRAW += $global:RAW
                 $WattValue = 0
                 $Global:Devices | Foreach-Object { 
                     $WattGPU = $(vars).GCOUNT.$global:TypeS.$_
@@ -723,8 +726,6 @@ While ($True) {
         if ($global:GPUKHS -eq 0) { $global:GPUKHS = "0" }
     }
 
-    $gpu_total_khs = $global:RAW / 1000
-
     $Global:config.summary = @{
         summary = $global:MinerTable;
     }
@@ -734,7 +735,7 @@ While ($True) {
         asics      = @($global:ASICHashTable);
         cpu_total  = $global:CPUKHS;
         asic_total = $global:ASICKHS;
-        gpu_total_khs = $gpu_total_khs;
+        gpu_total_khs = ($global:AllRAW / 1000)
         algo       = $Global:StatAlgo;
         uptime     = $global:UPTIME;
         hsu        = "hs";
