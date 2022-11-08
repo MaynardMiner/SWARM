@@ -18,9 +18,9 @@
     "AMD2": ".\\bin\\srbmulti-a-2\\SRBMiner-MULTI.exe",
     "AMD3": ".\\bin\\srbmulti-a-3\\SRBMiner-MULTI.exe",
     "minername": "SRBMiner-MULTI.exe",
-    "version": "1.0.8",
+    "version": "1.1.1",
     "optional": "No",
-    "uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/1.0.8/SRBMiner-Multi-1-0-8-win64.zip"
+    "uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/1.1.1/SRBMiner-Multi-1-1-1-win64.zip"
   },
   "claymore-amd": {
     "name": "claymore-amd",
