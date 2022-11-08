@@ -216,9 +216,9 @@
     "NVIDIA2": ".\\bin\\gminer-n-2\\miner",
     "NVIDIA3": ".\\bin\\gminer-n-3\\miner",
     "minername": "miner",
-    "version": "3.11",
+    "version": "3.12",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.11/gminer_3_11_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.12/gminer_3_12_linux64.tar.xz"
   },
   "grin-miner": {
     "name": "grin-miner",
@@ -249,7 +249,7 @@
     "NVIDIA2": ".\\bin\\miniz-n-2\\miniZ",
     "NVIDIA3": ".\\bin\\miniz-n-3\\miniZ",
     "minername": "miniZ",
-    "version": "v1.9z4",
+    "version": "v1.9z5b",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/miniz-linux.tar.gz"
   },
@@ -304,9 +304,9 @@
     "NVIDIA2": ".\\bin\\lolminer-n-2\\lolMiner",
     "NVIDIA3": ".\\bin\\lolminer-n-3\\lolMiner",
     "minername": "lolMiner",
-    "version": "1.60",
+    "version": "1.61",
     "optional": "No",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.60/lolMiner_v1.60_Lin64.tar.gz"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.61/lolMiner_v1.61_Lin64.tar.gz"
   },
   "tt-miner": {
     "name": "tt-miner",
@@ -348,9 +348,9 @@
     "NVIDIA2": ".\\bin\\wildrig-n-2\\wildrig-multi",
     "NVIDIA3": ".\\bin\\wildrig-n-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.33.3",
+    "version": "0.33.6",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.33.3/wildrig-multi-linux-0.33.3.tar.xz"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.33.6/wildrig-multi-linux-0.33.6.tar.xz"
   },
   "nanominer-n": {
     "name": "nanominer-n",

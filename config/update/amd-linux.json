@@ -7,7 +7,7 @@
     "AMD2": ".\\bin\\miniz-a-2\\miniZ",
     "AMD3": ".\\bin\\miniz-a-3\\miniZ",
     "minername": "miniZ",
-    "version": "v1.9z4",
+    "version": "v1.9z5b",
     "optional": "Yes",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v4.0/miniz-linux.tar.gz"
   },
@@ -40,9 +40,9 @@
     "AMD2": ".\\bin\\gminer-a-2\\miner",
     "AMD3": ".\\bin\\gminer-a-3\\miner",
     "minername": "miner",
-    "version": "3.11",
+    "version": "3.12",
     "optional": "No",
-    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.11/gminer_3_11_linux64.tar.xz"
+    "uri": "https://github.com/develsoftware/GMinerRelease/releases/download/3.12/gminer_3_12_linux64.tar.xz"
   },
   "kbminer-amd": {
     "name": "kbminer-amd",
@@ -117,9 +117,9 @@
     "AMD2": ".\\bin\\lolminer-a-2\\lolMiner",
     "AMD3": ".\\bin\\lolminer-a-3\\lolMiner",
     "minername": "lolMiner",
-    "version": "1.60",
+    "version": "1.61",
     "optional": "No",
-    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.60/lolMiner_v1.60_Lin64.tar.gz"
+    "uri": "https://github.com/Lolliedieb/lolMiner-releases/releases/download/1.61/lolMiner_v1.61_Lin64.tar.gz"
   },
   "avermore": {
     "name": "avermore",
@@ -205,9 +205,9 @@
     "AMD2": ".\\bin\\wildrig-a-2\\wildrig-multi",
     "AMD3": ".\\bin\\wildrig-a-3\\wildrig-multi",
     "minername": "wildrig-multi",
-    "version": "0.33.3",
+    "version": "0.33.6",
     "optional": "No",
-    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.33.3/wildrig-multi-linux-0.33.3.tar.xz"
+    "uri": "https://github.com/andru-kun/wildrig-multi/releases/download/0.33.6/wildrig-multi-linux-0.33.6.tar.xz"
   },
   "fancyix": {
     "name": "fancyix",
