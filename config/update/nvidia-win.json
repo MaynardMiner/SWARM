@@ -340,5 +340,16 @@
     "version": "0.27.0",
     "optional": "No",
     "uri": "https://github.com/cryptodredge/miner/releases/download/v0.27.0/cryptodredge_0.27.0_cuda_11.4_windows.zip"
+  },
+  "cradiator": {
+    "name": "cradiator",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\cradiator-1\\ccminer.exe",
+    "NVIDIA2": ".\\bin\\cradiator-2\\ccminer.exe",
+    "NVIDIA3": ".\\bin\\cradiator-3\\ccminer.exe",
+    "minername": "ccminer.exe",
+    "version": "1.0.0",
+    "optional": "No",
+    "uri": "https://github.com/xiaolin1579/radiator/releases/download/v1.0.0/Radiator1.0.0_cuda11.6_Win64.zip"
   }
 }

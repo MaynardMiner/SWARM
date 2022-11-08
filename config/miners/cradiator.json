@@ -1,0 +1,66 @@
+{
+    "NVIDIA1": {
+        "name": "NVIDIA1",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "SHA512256d": "",
+            "SHA256dt": ""
+        },
+        "difficulty": {
+            "SHA512256d": "",
+            "SHA256dt": ""
+        },
+        "naming": {
+            "SHA512256d": "rad",
+            "SHA256dt": "novo"
+        },
+        "fee": {
+            "SHA512256d": 0,
+            "SHA256dt": 0
+        }
+    },
+    "NVIDIA2": {
+        "name": "NVIDIA2",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "SHA512256d": "",
+            "SHA256dt": ""
+        },
+        "difficulty": {
+            "SHA512256d": "",
+            "SHA256dt": ""
+        },
+        "naming": {
+            "SHA512256d": "rad",
+            "SHA256dt": "novo"
+        },
+        "fee": {
+            "SHA512256d": 0,
+            "SHA256dt": 0
+        }
+    },
+    "NVIDIA3": {
+        "name": "NVIDIA3",
+        "delay": "1",
+        "prestart": [],
+        "commands": {
+            "SHA512256d": "",
+            "SHA256dt": ""
+        },
+        "difficulty": {
+            "SHA512256d": "",
+            "SHA256dt": ""
+        },
+        "naming": {
+            "SHA512256d": "rad",
+            "SHA256dt": "novo"
+        },
+        "fee": {
+            "SHA512256d": 0,
+            "SHA256dt": 0
+        }
+    },
+    "name": "cxaya"
+}

@@ -373,5 +373,16 @@
     "version": "0.27.0",
     "optional": "No",
     "uri": "https://github.com/cryptodredge/miner/releases/download/v0.27.0/cryptodredge_0.27.0_cuda_11.4_linux.tar.gz"
+  },
+  "cradiator": {
+    "name": "cradiator",
+    "type": "nvidia",
+    "NVIDIA1": ".\\bin\\cradiator-1\\ccminer",
+    "NVIDIA2": ".\\bin\\cradiator-2\\ccminer",
+    "NVIDIA3": ".\\bin\\cradiator-3\\ccminer",
+    "minername": "ccminer",
+    "version": "1.0.0",
+    "optional": "No",
+    "uri": "https://github.com/radifier/radiator/releases/download/v1.0.0-hiveos/radiator-1.0.0.tar.gz"
   }
 }
