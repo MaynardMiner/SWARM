@@ -14,7 +14,10 @@ function Global:Get-Watts {
     if (-not $(vars).Watts) { $(vars).Watts = Get-Content ".\config\power\power.json" | ConvertFrom-Json }
     if($(arg).kwh -ne "") {
         $global:WattHour = $(arg).kwh
-    } else { $global:WattHour = $(vars).Watts.KWh.$((Get-Date | Select-Object hour).Hour) }
+    } else { 
+        $Date = Get-Date
+        $global:WattHour = $(vars).Watts.KWh.$(($Date | Select-Object DayOfWeek).DayOfWeek).$(($Date | Select-Object Hour).Hour) 
+    }
 }
 
 function Global:Get-Pricing {
