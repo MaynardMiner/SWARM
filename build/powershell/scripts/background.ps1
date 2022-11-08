@@ -723,6 +723,8 @@ While ($True) {
         if ($global:GPUKHS -eq 0) { $global:GPUKHS = "0" }
     }
 
+    $gpu_total_khs = $global:RAW / 1000
+
     $Global:config.summary = @{
         summary = $global:MinerTable;
     }
@@ -732,7 +734,7 @@ While ($True) {
         asics      = @($global:ASICHashTable);
         cpu_total  = $global:CPUKHS;
         asic_total = $global:ASICKHS;
-        gpu_total_khs = ($global:RAW / 1000);
+        gpu_total_khs = $gpu_total_khs;
         algo       = $Global:StatAlgo;
         uptime     = $global:UPTIME;
         hsu        = "hs";
