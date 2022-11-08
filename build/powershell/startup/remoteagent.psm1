@@ -195,6 +195,26 @@ Access Denied Error prevented.
                             }
                         }
                     }
+                    if ($ChangeFile -eq "wilrig-a.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "sha512256d" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "sha512256d" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "sha512256d" "sha512256d" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "sha512256d" 1 -ErrorAction SilentlyContinue
+                            }
+                        }
+                    }
+                    if ($ChangeFile -eq "wilrig-n.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "sha512256d" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "sha512256d" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "sha512256d" "sha512256d" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "sha512256d" 1 -ErrorAction SilentlyContinue
+                            }
+                        }
+                    }
                     if ($ChangeFile -eq "srbmulti-a.json") {
                         $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
                             if ($_ -ne "name") {
