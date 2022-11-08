@@ -19,7 +19,7 @@ cd `dirname $0`
 			temps=$(jq -r '.temps' <<< "$stats_raw" | tr -d '"')
 			hsu=$(jq -r '.hsu' <<< "$stats_raw")
 			algo=$(jq -r '.algo' <<< "$stats_raw")
-			khs=$(jq -r '.gpu_total' <<< "$stats_raw")
+			khs=$(jq -r '.gpu_total_khs' <<< "$stats_raw")
 			bus_numbers=$(jq -r '.bus_numbers' <<< "$stats_raw" | tr -d '"')
 
 			stats=$(jq -n \

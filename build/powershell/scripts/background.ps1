@@ -732,7 +732,7 @@ While ($True) {
         asics      = @($global:ASICHashTable);
         cpu_total  = $global:CPUKHS;
         asic_total = $global:ASICKHS;
-        gpu_total  = $global:RAW;
+        gpu_total_khs = ($global:RAW / 1000);
         algo       = $Global:StatAlgo;
         uptime     = $global:UPTIME;
         hsu        = "hs";
