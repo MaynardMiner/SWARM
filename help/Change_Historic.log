@@ -3224,3 +3224,37 @@ identity. Was related to machine potentially having multiple active MAC addresse
 * -historical_bias 1:1 (Don't penalize based on historical data- Too much new activity now)
 * -Hashrate_Threshold 10 (Don't switch miner on same algorithm unless it falls below 10% hashrate of next best miner)
 * -Switch_Threshold 5 (Don't switch unless next profitable item is at least 5% better)
+
+######################################################
+######################################################
+
+# Version 3.6.7
+
+## Beta Release
+* This project has all basic miners, but need more miners and updates.
+
+## Important Note!
+* Lolminer has changed to lolminer-a on AMD. Your config lolminer.json will be deleted on update.
+* Miniz has changed to miniz-n on NVIDIA. Your config miniz.json will be deleted on update.
+* These changes were done for log updates. One time change only.
+* Since name of miner in SWARM has changed, SWARM will bench them again.
+
+## Improvements 
+* Logging changes, see new readme in logs folder or read issue on github. #395
+* `-Conserve` will now switch to oc for algo SHA256 so you can set an idle OC for SHA256
+* Miners Updated. #424
+* Miniz added for amd, but made optional using `-Optional` argument. Works on only certain gpus.
+
+## KNOWN ISSUES
+* Get Wallets not working.
+* More miners are coming soon.
+* User reported issue with AMD ryzen cpu & SWARM- If you have issue please report in discord.
+
+## Suggested Settings- What I as the Dev use.
+* -Auto_Coin Yes (use coin for calculations when applicable)
+* -Stat_Coin Hour_EMA (Mine based on individual coin statistics hourly values)
+* -Stat_Algo Hour_EMA (Use hourly data for algorithms)
+* -Min_Blocks 4 (Don't mine anything that is going to take more than 6 hours to find)
+* -historical_bias 1:1 (Don't penalize based on historical data- Too much new activity now)
+* -Hashrate_Threshold 10 (Don't switch miner on same algorithm unless it falls below 10% hashrate of next best miner)
+* -Switch_Threshold 5 (Don't switch unless next profitable item is at least 5% better)

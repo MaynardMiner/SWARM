@@ -1,19 +1,20 @@
-# Version 3.6.7
+# Version 3.6.8
 
 ## Beta Release
-* This project has all basic miners, but need more miners and updates.
+* This project has all basic miners, but more support for them are needed.
 
-## Important Note!
-* Lolminer has changed to lolminer-a on AMD. Your config lolminer.json will be deleted on update.
-* Miniz has changed to miniz-n on NVIDIA. Your config miniz.json will be deleted on update.
-* These changes were done for log updates. One time change only.
-* Since name of miner in SWARM has changed, SWARM will bench them again.
+## Note
+A lot of changes were made in various miner.json files. Consider saving/backing up your
+personal settings before updating just in case.
 
 ## Improvements 
-* Logging changes, see new readme in logs folder or read issue on github. #395
-* `-Conserve` will now switch to oc for algo SHA256 so you can set an idle OC for SHA256
-* Miners Updated. #424
-* Miniz added for amd, but made optional using `-Optional` argument. Works on only certain gpus.
+* Add Days To Power Calcs #441.
+* Timeout for API increased. #437
+* Neoscrypt-xaya added. Sha256512d added. #435
+* ccminer radiator added.
+* ccminer-xaya added and improvements made to source.
+* Fix double hashrate using miner summary for stats #433
+* Miners Updated #426
 
 ## KNOWN ISSUES
 * Get Wallets not working.
