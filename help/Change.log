@@ -12,6 +12,7 @@ personal settings before updating just in case.
 * Timeout for API increased. #437
 * Neoscrypt-xaya added. Sha256512d added. #435
 * ccminer radiator added.
+* fancyix added back into AMD side.
 * ccminer-xaya added and improvements made to source.
 * Fix double hashrate using miner summary for stats #433
 * Miners Updated #426
