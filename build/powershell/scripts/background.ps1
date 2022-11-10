@@ -13,7 +13,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 param(
     # Parameter help description
-    [Parameter(mandatory=$false)]
+    [Parameter(mandatory = $false)]
     [string]$WorkingDir
 )
 
@@ -30,7 +30,7 @@ if ($isWindows) {
 }
 #$WorkingDir = "C:\Users\Mayna\Documents\GitHub\SWARM"
 #$WorkingDir = "/SWARM"
-if($IsLinux){
+if ($IsLinux) {
     $env:SWARM_DIR = $WorkingDir;
 }
 Set-Location $env:SWARM_DIR
@@ -41,7 +41,7 @@ $Global:config = [hashtable]::Synchronized(@{ })
 $global:config.Add("vars", @{ })
 . .\build\powershell\global\modules.ps1
 $(vars).Add("dir", $env:SWARM_DIR)
-if($isWindows){$env:Path += ";$($(vars).dir)\build\cmd"}
+if ($isWindows) { $env:Path += ";$($(vars).dir)\build\cmd" }
 
 try { if ((Get-MpPreference).ExclusionPath -notcontains (Convert-Path .)) { Start-Process "powershell" -Verb runAs -ArgumentList "Add-MpPreference -ExclusionPath `'$WorkingDir`'" -WindowStyle Minimized } }catch { }
 try { $Net = Get-NetFireWallRule } catch { }
@@ -134,8 +134,8 @@ if (Test-Path $CheckForSWARM) {
 }
 $(vars).ADD("GCount", (Get-Content ".\debug\devicelist.txt" | ConvertFrom-Json))
 $(vars).ADD("BusData", @{})
-if(Test-Path ".\debug\busdata.txt") { $(vars).BusData = (Get-Content ".\debug\busdata.txt" | ConvertFrom-Json) }
-$(vars).BusData = $(vars).BusData | Where-Object {$_.brand -ne "cpu"}
+if (Test-Path ".\debug\busdata.txt") { $(vars).BusData = (Get-Content ".\debug\busdata.txt" | ConvertFrom-Json) }
+$(vars).BusData = $(vars).BusData | Where-Object { $_.brand -ne "cpu" }
 $(vars).ADD("BackgroundTimer", (New-Object -TypeName System.Diagnostics.Stopwatch))
 $(vars).ADD("watchdog_start", (Get-Date))
 $(vars).ADD("watchdog_triggered", $false)
@@ -590,6 +590,14 @@ While ($True) {
                     }
                     catch { Global:Get-OhNo } 
                 }
+                'srbmulti-cpu' { 
+                    try { 
+                        Global:Add-Module "$($(vars).miners)\srbcpu.psm1"; 
+                        Global:Get-StatsSrbcpu
+                        Remove-Module -name "srbcpu"
+                    }
+                    catch { Global:Get-OhNo }
+                }    
             }
 
             ##Check To See if High Rejections
@@ -730,24 +738,24 @@ While ($True) {
         summary = $global:MinerTable;
     }
     $global:Config.stats = @{
-        gpus       = @($global:GPUHashTable);
-        cpus       = @($global:CPUHashTable);
-        asics      = @($global:ASICHashTable);
-        cpu_total  = $global:CPUKHS;
-        asic_total = $global:ASICKHS;
+        gpus          = @($global:GPUHashTable);
+        cpus          = @($global:CPUHashTable);
+        asics         = @($global:ASICHashTable);
+        cpu_total     = $global:CPUKHS;
+        asic_total    = $global:ASICKHS;
         gpu_total_khs = ($global:AllRAW / 1000)
-        algo       = $Global:StatAlgo;
-        uptime     = $global:UPTIME;
-        hsu        = "hs";
-        fans       = @($global:GPUFanTable);
-        temps      = @($global:GPUTempTable);
-        power      = @($global:GPUPowerTable);
-        accepted   = $global:AllACC;
-        rejected   = $global:AllREJ;
-        stratum    = $Global:StatStratum;
-        start_time = $Global:StartTime;
-        workername = $Global:StatWorker;
-        bus_numbers = @($global:Bus_Numbers);
+        algo          = $Global:StatAlgo;
+        uptime        = $global:UPTIME;
+        hsu           = "hs";
+        fans          = @($global:GPUFanTable);
+        temps         = @($global:GPUTempTable);
+        power         = @($global:GPUPowerTable);
+        accepted      = $global:AllACC;
+        rejected      = $global:AllREJ;
+        stratum       = $Global:StatStratum;
+        start_time    = $Global:StartTime;
+        workername    = $Global:StatWorker;
+        bus_numbers   = @($global:Bus_Numbers);
     }
     $global:Config.params = $(arg)
 

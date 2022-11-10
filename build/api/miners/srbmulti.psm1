@@ -29,7 +29,7 @@ function Global:Get-StatsSrbmulti {
             }
             catch { Write-Host "Failed To parse Threads" -ForegroundColor Red };
             $global:MinerACC = $Data.algorithms.shares.accepted; $global:ALLACC += $Data.algorithms.shares.accepted 
-            $global:MinerREJ = $Data.algorithms.shares.rejected; $global:ALLREG += $Data.algorithms.shares.rejected
+            $global:MinerREJ = $Data.algorithms.shares.rejected; $global:ALLREJ += $Data.algorithms.shares.rejected
             $Hash | ForEach-Object { $global:GPUKHS += [Double]$_ / 1000 }
         }
     }
