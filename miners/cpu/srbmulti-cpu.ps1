@@ -79,7 +79,7 @@ $(vars).CPUTypes | ForEach-Object {
                     Prestart   = $PreStart
                     Type       = $ConfigType
                     Path       = $Path
-                    Devices    = "none"
+                    Devices    = $Devices
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version    = "$($(vars).cpu.$CName.version)"
                     DeviceCall = "srbmulti-cpu"
