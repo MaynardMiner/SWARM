@@ -14,7 +14,7 @@ $(vars).CPUTypes | ForEach-Object {
     if ($(vars).cpu.$CName.minername) { $MinerName = "$($(vars).cpu.$CName.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "3400$Num"
+    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName"; $Port = "3400$Num"
 
     ##Log Directory
     $Log = Join-Path $($(vars).dir) "logs\$Name.log"
