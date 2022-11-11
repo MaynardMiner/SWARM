@@ -14,7 +14,7 @@ $(vars).CPUTypes | ForEach-Object {
     if ($(vars).cpu.$CName.minername) { $MinerName = "$($(vars).cpu.$CName.minername)" }
     else { $MinerName = "None" }
 
-    $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName"; $Port = "3400$Num"
+    $Name = "$CName";
 
     ##Log Directory
     $Log = Join-Path $($(vars).dir) "logs\$Name.log"
@@ -83,14 +83,14 @@ $(vars).CPUTypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version    = "$($(vars).cpu.$CName.version)"
                     DeviceCall = "srbmulti-cpu"
-                    Arguments  = "$Nicehash--disable-gpu --cpu-threads-priority $($(arg).cpu_priority) --disable-worker-watchdog --algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --wallet $($_.$User) --password $($_.$Pass)$Diff --api-enable --log-file `'$Log`' --api-port $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "$Nicehash--disable-gpu --cpu-threads-priority $($(arg).cpu_priority) --disable-worker-watchdog --algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --wallet $($_.User1) --password $($_.Pass1)$Diff --api-enable --log-file `'$Log`' --api-port $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
                     Rejections = $Stat.Rejections
                     Power      = if ($(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts") { $(vars).Watts.$($_.Algorithm)."$($ConfigType)_Watts" }elseif ($(vars).Watts.default."$($ConfigType)_Watts") { $(vars).Watts.default."$($ConfigType)_Watts" }else { 0 }
                     MinerPool  = "$($_.Name)"
-                    Port       = $Port
+                    Port       = 10001
                     Worker     = $Rig
                     API        = "srbmulti-cpu"
                     Wallet     = "$($_.$User)"
