@@ -19,6 +19,9 @@ $(vars).CPUTypes | ForEach-Object {
     ##Log Directory
     $Log = Join-Path $($(vars).dir) "logs\$Name.log"
 
+    ##Parse -CPUThreads
+    if ($(arg).CPUThreads -ne '') { $Devices = $(arg).CPUThreads }
+
     ##Get Configuration File
     ##This is located in config\miners
     $MinerConfig = $Global:config.miners.$CName
