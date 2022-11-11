@@ -83,7 +83,7 @@ $(vars).CPUTypes | ForEach-Object {
                     Stratum    = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                     Version    = "$($(vars).cpu.$CName.version)"
                     DeviceCall = "srbmulti-cpu"
-                    Arguments  = "$Nicehash--disable-gpu --cpu-threads-priority $($(arg).cpu_priority) --disable-worker-watchdog --algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --wallet $($_.User1) --password $($_.Pass1)$Diff --api-enable --log-file `'$Log`' --api-port $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                    Arguments  = "$Nicehash--disable-gpu --cpu-threads-priority $($(arg).cpu_priority) --disable-worker-watchdog --algorithm $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --wallet $($_.User1) --password $($_.Pass1)$Diff --api-enable --log-file `'$Log`' --api-port 10001 $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                     HashRates  = [Decimal]$Stat.Hour
                     HashRate_Adjusted = [Decimal]$Hashstat
                     Quote      = $_.Price
