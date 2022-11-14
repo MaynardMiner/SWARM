@@ -224,6 +224,7 @@ function Global:Start-LaunchCode($MinerCurrent, $AIP) {
                 if ($MinerCurrent.Devices -eq '') { $MinerArguments = "$($MinerCurrent.Arguments)" }
                 elseif ($MinerCurrent.DeviceCall -eq "cpuminer-opt") { $MinerArguments = "-t $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
                 elseif ($MinerCurrent.DeviceCall -eq "xmrig-opt") { $MinerArguments = "-t $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
+                elseif ($MinerCurrent.DeviceCall -eq "srbmulti-cpu") { $MinerArguments = "--cpu-threads $($MinerCurrent.Devices) $($MinerCurrent.Arguments)" }
             }
         }
 

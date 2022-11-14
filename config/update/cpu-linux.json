@@ -80,5 +80,14 @@
     "version": "1.0",
     "optional": "No",
     "uri": "https://github.com/MaynardMiner/MM.Compiled-Miners/releases/download/v8.0/cpupower-linux.tar.gz"
+  },
+  "srbmulti-cpu": {
+    "name": "srbmulti-cpu",
+    "type": "cpu",
+    "CPU": ".\\bin\\srbmulti-cpu-1\\SRBMiner-MULTI",
+    "minername": "SRBMiner-MULTI",
+    "version": "1.1.1",
+    "optional": "No",
+    "uri": "https://github.com/doktor83/SRBMiner-Multi/releases/download/1.1.1/SRBMiner-Multi-1-1-1-Linux.tar.xz"
   }
 }
