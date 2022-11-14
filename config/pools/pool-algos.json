@@ -625,7 +625,8 @@
   },
   "heavyhash": {
     "alt_names": [
-      "heavyhash"
+      "heavyhash",
+      "kheavyhash"
     ],
     "exclusions": [
       "add pool or miner here",

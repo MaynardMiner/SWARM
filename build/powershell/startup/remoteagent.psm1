@@ -235,6 +235,16 @@ Access Denied Error prevented.
                             }
                         }
                     }
+                    if ($ChangeFile -eq "teamredminer.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "heavyhash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "heavyhash" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "heavyhash" "kaspa" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "heavyhash" 1 -ErrorAction SilentlyContinue
+                            }
+                        }
+                    }
                     $Data | ConvertTo-Json -Depth 10 | Set-Content $NewJson;
                     log "Wrote To $NewJson"
                 }
