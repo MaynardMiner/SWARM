@@ -161,6 +161,15 @@
       "comma seperated"
     ]
   },
+  "evrprogpow": {
+    "alt_names": [
+      "evrprogpow"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
   "beamv2": {
     "alt_names": [
       "beamv2"
