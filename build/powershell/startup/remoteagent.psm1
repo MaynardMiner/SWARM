@@ -265,6 +265,36 @@ Access Denied Error prevented.
                             }
                         }
                     }
+                    if ($ChangeFile -eq "gminer-a.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "heavyhash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "heavyhash" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "heavyhash" "KASPA" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "heavyhash" 0.75 -ErrorAction SilentlyContinue
+                            }
+                        }
+                    }
+                    if ($ChangeFile -eq "gminer-a.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "heavyhash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "heavyhash" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "heavyhash" "kheavyhash" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "heavyhash" 1 -ErrorAction SilentlyContinue
+                            }
+                        }
+                    }                    
+                    if ($ChangeFile -eq "gminer-n.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "heavyhash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "heavyhash" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "heavyhash" "kheavyhash" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "heavyhash" 1 -ErrorAction SilentlyContinue
+                            }
+                        }
+                    }
                     $Data | ConvertTo-Json -Depth 10 | Set-Content $NewJson;
                     log "Wrote To $NewJson"
                 }

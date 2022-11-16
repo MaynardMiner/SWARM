@@ -12,7 +12,7 @@
             "equihash_144/5": "",
             "equihash_210/9": "",
             "equihash_125/4": "",
-            "autolykos2": ""
+            "heavyhash":""
         },
         "difficulty": {
             "ethash": "",
@@ -22,7 +22,7 @@
             "equihash_144/5": "",
             "equihash_210/9": "",
             "equihash_125/4": "",
-            "autolykos2": ""
+            "heavyhash":""
         },
         "naming": {
             "ethash": "ethash",
@@ -32,7 +32,7 @@
             "equihash_144/5": "equihash_144/5",
             "equihash_210/9": "equihash_210/9",
             "equihash_125/4": "equihash_125/4",
-            "autolykos2": "autolykos2"
+            "heavyhash": "kheavyhash"
         },
         "fee": {
             "ethash": 1,
@@ -42,7 +42,7 @@
             "equihash_144/5": 2,
             "equihash_210/9": 2,
             "equihash_125/4": 2,
-            "autolykos2": 2
+            "heavyhash": 1
         }
     },
     "NVIDIA2": {
@@ -57,7 +57,7 @@
             "equihash_144/5": "",
             "equihash_210/9": "",
             "equihash_125/4": "",
-            "autolykos2": ""
+            "heavyhash":""
         },
         "difficulty": {
             "ethash": "",
@@ -67,7 +67,7 @@
             "equihash_144/5": "",
             "equihash_210/9": "",
             "equihash_125/4": "",
-            "autolykos2": ""
+            "heavyhash":""
         },
         "naming": {
             "ethash": "ethash",
@@ -77,7 +77,7 @@
             "equihash_144/5": "equihash_144/5",
             "equihash_210/9": "equihash_210/9",
             "equihash_125/4": "equihash_125/4",
-            "autolykos2": "autolykos2"
+            "heavyhash": "kheavyhash"
         },
         "fee": {
             "ethash": 1,
@@ -87,7 +87,7 @@
             "equihash_144/5": 2,
             "equihash_210/9": 2,
             "equihash_125/4": 2,
-            "autolykos2": 2
+            "heavyhash": 1
         }
     },
     "NVIDIA3": {
@@ -102,7 +102,7 @@
             "equihash_144/5": "",
             "equihash_210/9": "",
             "equihash_125/4": "",
-            "autolykos2": ""
+            "heavyhash":""
         },
         "difficulty": {
             "ethash": "",
@@ -112,7 +112,7 @@
             "equihash_144/5": "",
             "equihash_210/9": "",
             "equihash_125/4": "",
-            "autolykos2": ""
+            "heavyhash":""
         },
         "naming": {
             "ethash": "ethash",
@@ -122,7 +122,7 @@
             "equihash_144/5": "equihash_144/5",
             "equihash_210/9": "equihash_210/9",
             "equihash_125/4": "equihash_125/4",
-            "autolykos2": "autolykos2"
+            "heavyhash": "kheavyhash"
         },
         "fee": {
             "ethash": 1,
@@ -132,7 +132,7 @@
             "equihash_144/5": 2,
             "equihash_210/9": 2,
             "equihash_125/4": 2,
-            "autolykos2": 2
+            "heavyhash": 1
         }
    }
 }
