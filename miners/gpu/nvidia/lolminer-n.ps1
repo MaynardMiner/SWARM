@@ -82,7 +82,7 @@ $(vars).NVIDIATypes | ForEach-Object {
                         Stratum           = "$($_.Protocol)://$($_.Pool_Host):$($_.Port)"
                         Version           = "$($(vars).nvidia.$CName.version)"
                         DeviceCall        = "lolminer"
-                        Arguments         = "--coin $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --user $($_.$User) $AddArgs--pass $($_.$Pass)$($Diff) --apiport $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
+                        Arguments         = "--algo $($MinerConfig.$ConfigType.naming.$($_.Algorithm)) --pool $($_.Pool_Host):$($_.Port) --user $($_.$User) $AddArgs--pass $($_.$Pass)$($Diff) --apiport $Port $($MinerConfig.$ConfigType.commands.$($_.Algorithm))"
                         HashRates         = [Decimal]$Stat.Hour
                         HashRate_Adjusted = [Decimal]$Hashstat
                         Quote             = $_.Price

@@ -44,7 +44,7 @@ function Global:Update-Autofan([string]$Path) {
 
 function Global:start-update {
 
-    $Exclude = @("teamredminer.json", "yescrypt.json", "miniz.json", "lolminer.json", "gminer-amd.json", "pool-algos.json", "gminer.json", "wildrig.json", "miniz.json", "nanominer.json","klaust.json")
+    $Exclude = @("yescrypt.json", "miniz.json", "lolminer.json", "gminer-amd.json", "pool-algos.json", "gminer.json", "wildrig.json", "miniz.json", "nanominer.json","klaust.json")
 
     $Parent = Split-Path $(vars).dir
     log "User Specfied Updates: Searching For Previous Version" -ForegroundColor Yellow
@@ -242,6 +242,26 @@ Access Denied Error prevented.
                                 $Data.$_.difficulty | Add-Member "heavyhash" "" -ErrorAction SilentlyContinue 
                                 $Data.$_.naming | Add-Member "heavyhash" "kaspa" -ErrorAction SilentlyContinue
                                 $Data.$_.fee | Add-Member "heavyhash" 1 -ErrorAction SilentlyContinue
+                            }
+                        }
+                    }
+                    if ($ChangeFile -eq "lolminer-a.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "heavyhash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "heavyhash" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "heavyhash" "KASPA" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "heavyhash" 0.75 -ErrorAction SilentlyContinue
+                            }
+                        }
+                    }
+                    if ($ChangeFile -eq "lolminer-n.json") {
+                        $Data | Get-Member -MemberType NoteProperty | Select-Object -ExpandProperty Name | ForEach-Object {
+                            if ($_ -ne "name") {
+                                $Data.$_.commands | Add-Member "heavyhash" "" -ErrorAction SilentlyContinue
+                                $Data.$_.difficulty | Add-Member "heavyhash" "" -ErrorAction SilentlyContinue 
+                                $Data.$_.naming | Add-Member "heavyhash" "KASPA" -ErrorAction SilentlyContinue
+                                $Data.$_.fee | Add-Member "heavyhash" 0.75 -ErrorAction SilentlyContinue
                             }
                         }
                     }

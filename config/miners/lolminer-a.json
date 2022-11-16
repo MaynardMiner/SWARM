@@ -20,7 +20,8 @@
             "equihash_192/7": "",
             "equihash_210/9": "",
             "etchash": "",
-            "ethash": ""
+            "ethash": "",
+            "heavyhash": ""
         },
         "difficulty": {
             "cuckaroo29": "",
@@ -32,7 +33,8 @@
             "equihash_192/7": "",
             "equihash_210/9": "",
             "etchash": "",
-            "ethash": ""
+            "ethash": "",
+            "heavyhash": ""
         },
         "naming": {
             "cuckaroo29": "GRIN-C29M",
@@ -44,7 +46,8 @@
             "equihash_192/7": "AUTO192_7",
             "equihash_210/9": "AION",
             "etchash": "ETC",
-            "ethash": "ETH"
+            "ethash": "ETH",
+            "heavyhash": "KASPA"
         },
         "fee": {
             "cuckaroo29": 2,
@@ -56,7 +59,8 @@
             "equihash_192/7": 1,
             "equihash_210/9": 1,
             "etchash": 0.7,
-            "ethash": 0.7
+            "ethash": 0.7,
+            "heavyhash": 0.75
         }
     }
 }
