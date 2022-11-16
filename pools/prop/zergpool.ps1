@@ -28,8 +28,13 @@ if ($Name -in $(arg).PoolName) {
     } 
 
     $Algos = @()
-    $Algos += $(vars).Algorithm
-    $Algos += $(arg).ASIC_ALGO
+    $Algos = @()
+    $(vars).Algorithm | Foreach-Object {
+        $Algos += $_
+    }
+    $(arg).ASIC_ALGO | ForEach-Object {
+        $Algos += $_
+    }
     
     ## Only get algos we need & convert name to universal schema
     $Pool_Algos = $global:Config.Pool_Algos;

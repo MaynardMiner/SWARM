@@ -72,7 +72,7 @@ $(vars).AMDTypes | ForEach-Object {
         $MinerAlgo = $_
 
         if (
-            $MinerAlgo -in $(vars).Algorithm -and
+            $MinerAlgo -in $MinerAlgos -and
             $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and
             $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and
             $Name -notin $(vars).BanHammer

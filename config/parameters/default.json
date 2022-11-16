@@ -1,8 +1,5 @@
 {
     "AlgoBanCount": 3,
-    "Algorithm": [
-        ""
-    ],
     "AltPassword1": "",
     "AltPassword2": "",
     "AltPassword3": "",
@@ -30,6 +27,9 @@
     "Coin_Params": [],
     "CoinExchange": "ETH",
     "Conserve": "No",
+    "CPUAlgorithm": [
+        ""
+    ],
     "CPUOnly": "No",
     "CPUThreads": "",
     "Cuda": "10.1",
@@ -37,6 +37,15 @@
     "Custom_Periods": 1,
     "Donate": 0.5,
     "ETH": "",
+    "GPUAlgorithm1": [
+        ""
+    ],
+    "GPUAlgorithm2": [
+        ""
+    ],
+    "GPUAlgorithm3": [
+        ""
+    ],
     "GPUDevices1": [
         ""
     ],
