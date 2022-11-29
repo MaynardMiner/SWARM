@@ -16,7 +16,8 @@
             "cortex": "",
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_125/4": ""
+            "equihash_125/4": "",
+            "heavyhash":""
         },
         "difficulty": {
             "ethash": "",
@@ -25,7 +26,8 @@
             "cortex": "",
             "equihash_144/5": "",
             "equihash_210/9": "",
-            "equihash_125/4": ""
+            "equihash_125/4": "",
+            "heavyhash":""
         },
         "naming": {
             "ethash": "ethash",
@@ -34,7 +36,8 @@
             "cortex": "cortex",
             "equihash_144/5": "equihash_144/5",
             "equihash_210/9": "equihash_210/9",
-            "equihash_125/4": "equihash_125/4"
+            "equihash_125/4": "equihash_125/4",
+            "heavyhash": "kheavyhash"
         },
         "fee": {
             "ethash": 1,
@@ -43,7 +46,8 @@
             "cortex": 5,
             "equihash_144/5": 2,
             "equihash_210/9": 2,
-            "equihash_125/4": 2
+            "equihash_125/4": 2,
+            "heavyhash": 1
         }
     }
 }
