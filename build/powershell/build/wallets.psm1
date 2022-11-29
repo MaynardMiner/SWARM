@@ -179,10 +179,49 @@ function Global:Get-Wallets {
 }
 
 function Global:Add-Algorithms {
-    if ([string]($(arg).Algorithm) -ne "") { 
-        $(arg).Algorithm | ForEach-Object { $(vars).Algorithm += $_ } 
+    $(vars).GPUAlgorithm1 = $global:Config.Pool_Algos.PSObject.Properties.Name 
+    $(vars).GPUAlgorithm2 = $global:Config.Pool_Algos.PSObject.Properties.Name 
+    $(vars).GPUAlgorithm3 = $global:Config.Pool_Algos.PSObject.Properties.Name 
+    $(vars).CpuAlgorithm = $global:Config.Pool_Algos.PSObject.Properties.Name 
+
+    if ([string]($(arg).GPUAlgorithm1) -ne "") { 
+        $(vars).GPUAlgorithm1 = @();
+        $(arg).GPUAlgorithm1 | ForEach-Object { $(vars).GPUAlgorithm1 += $_ } 
     }
-    elseif ($(arg).Auto_Algo -eq "Yes") { $(vars).Algorithm = $global:Config.Pool_Algos.PSObject.Properties.Name }
+    if ([string]($(arg).GPUAlgorithm2) -ne "") { 
+        $(vars).GPUAlgorithm2 = @();
+        $(arg).GPUAlgorithm2 | ForEach-Object { $(vars).GPUAlgorithm2 += $_ } 
+    }
+    if ([string]($(arg).GPUAlgorithm3) -ne "") { 
+        $(vars).GPUAlgorithm3 = @();
+        $(arg).GPUAlgorithm3 | ForEach-Object { $(vars).GPUAlgorithm3 += $_ } 
+    }
+    if ([string]($(arg).CpuAlgorithm) -ne "") { 
+        $(vars).CpuAlgorithm = @();
+        $(arg).CpuAlgorithm | ForEach-Object { $(vars).CpuAlgorithm += $_ } 
+    }
+
+    $(vars).GPUAlgorithm1 | ForEach-Object { 
+        if($(vars).Algorithm -notcontains $_) {
+            $(vars).Algorithm += $_ 
+        }
+    }
+    $(vars).GPUAlgorithm2 | ForEach-Object { 
+        if($(vars).Algorithm -notcontains $_) {
+            $(vars).Algorithm += $_ 
+        }
+    }
+    $(vars).GPUAlgorithm3 | ForEach-Object { 
+        if($(vars).Algorithm -notcontains $_) {
+            $(vars).Algorithm += $_ 
+        }
+    }
+    $(vars).CpuAlgorithm | ForEach-Object { 
+        if($(vars).Algorithm -notcontains $_) {
+            $(vars).Algorithm += $_ 
+        }
+    }
+
     $NUll_Out = $true
     $(arg).Type | Foreach-Object  {
         if ($_ -like "NVIDIA*" -or

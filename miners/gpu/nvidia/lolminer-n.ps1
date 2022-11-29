@@ -17,12 +17,14 @@ $(vars).NVIDIATypes | ForEach-Object {
 
         $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$CName-$Num"; $Port = "6300$Num"
 
-        Switch ($Num) {
-            1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1 }
-            2 { $Get_Devices = $(vars).NVIDIADevices2; $Rig = $(arg).RigName2 }
-            3 { $Get_Devices = $(vars).NVIDIADevices3; $Rig = $(arg).RigName3 }
-        }
+        $MinerAlgos = @();
 
+        Switch ($Num) {
+            1 { $Get_Devices = $(vars).NVIDIADevices1; $Rig = $(arg).RigName1; $MinerAlgos = $(vars).GPUAlgorithm1 }
+            2 { $Get_Devices = $(vars).NVIDIADevices2; $Rig = $(arg).RigName2;  $MinerAlgos = $(vars).GPUAlgorithm2 }
+            3 { $Get_Devices = $(vars).NVIDIADevices3; $Rig = $(arg).RigName3;  $MinerAlgos = $(vars).GPUAlgorithm3 }
+        }
+    
         ##Log Directory
         $Log = Join-Path $($(vars).dir) "logs\$Name.log"
 
@@ -56,7 +58,7 @@ $(vars).NVIDIATypes | ForEach-Object {
             $MinerAlgo = $_
 
             if (
-                $MinerAlgo -in $(vars).Algorithm -and
+                $MinerAlgo -in $MinerAlgos -and
                 $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and
                 $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and
                 $Name -notin $(vars).BanHammer

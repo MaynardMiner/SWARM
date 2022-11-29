@@ -441,6 +441,11 @@ $($_.InvocationInfo.PositionMessage)
     $(vars).Load_Timer = (Get-Date).ToUniversalTime()
 
     create Algorithm @()
+    create GPUAlgorithm1 @()
+    create GPUAlgorithm2 @()
+    create GPUAlgorithm3 @()
+    create CPUAlgorithm @()
+
     create BanHammer @()
     create ASICTypes @()
     create ASICS @{ }

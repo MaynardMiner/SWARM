@@ -15,9 +15,12 @@ $(vars).AMDTypes | ForEach-Object {
 
     $User = "User$Num"; $Pass = "Pass$Num"; $Name = "$Cname-$Num"; $Port = "2900$Num"
 
+    $MinerAlgos = @();
+
     Switch ($Num) {
-        1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1 }
+        1 { $Get_Devices = $(vars).AMDDevices1; $Rig = $(arg).Rigname1; $MinerAlgos = $(vars).GPUAlgorithm1 }
     }
+
 
     ##Log Directory
     $Log = Join-Path $($(vars).dir) "logs\$Name.log"
@@ -51,7 +54,7 @@ $(vars).AMDTypes | ForEach-Object {
         $MinerAlgo = $_
 
         if (
-            $MinerAlgo -in $(vars).Algorithm -and
+            $MinerAlgo -in $MinerAlgos -and
             $Name -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and
             $ConfigType -notin $global:Config.Pool_Algos.$MinerAlgo.exclusions -and
             $Name -notin $(vars).BanHammer

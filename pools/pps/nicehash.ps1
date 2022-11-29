@@ -64,8 +64,12 @@ if ($Name -in $(arg).PoolName) {
 
     $Get_Params = $Global:Config.params
     $Algos = @()
-    $Algos += $(vars).Algorithm
-    $Algos += $(arg).ASIC_ALGO;
+    $(vars).Algorithm | Foreach-Object {
+        $Algos += $_
+    }
+    $(arg).ASIC_ALGO | ForEach-Object {
+        $Algos += $_
+    }
     $Pool_Algos = $global:Config.Pool_Algos
     $Ban_Hammer = $global:Config.vars.BanHammer;
 
