@@ -93,7 +93,7 @@ $(vars).CPUTypes | ForEach-Object {
                     Port       = 10001
                     Worker     = $Rig
                     API        = "srbmulti-cpu"
-                    Wallet     = "$($_.$User)"
+                    Wallet     = "$($_.User1)"
                     URI        = $Uri
                     Server     = "localhost"
                     Algo       = "$($_.Algorithm)"
