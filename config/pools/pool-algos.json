@@ -634,8 +634,7 @@
   },
   "heavyhash": {
     "alt_names": [
-      "heavyhash",
-      "kheavyhash"
+      "heavyhash"
     ],
     "exclusions": [
       "add pool or miner here",
@@ -738,6 +737,15 @@
   "keccakc": {
     "alt_names": [
       "keccakc"
+    ],
+    "exclusions": [
+      "add pool or miner here",
+      "comma seperated"
+    ]
+  },
+  "kheavyhash": {
+    "alt_names": [
+      "kheavyhash"
     ],
     "exclusions": [
       "add pool or miner here",
