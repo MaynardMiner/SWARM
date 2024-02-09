@@ -17,7 +17,7 @@
             "equihash_144/5": "",
             "equihash_210/9": "",
             "equihash_125/4": "",
-            "heavyhash":""
+            "kheavyhash":""
         },
         "difficulty": {
             "ethash": "",
@@ -27,7 +27,7 @@
             "equihash_144/5": "",
             "equihash_210/9": "",
             "equihash_125/4": "",
-            "heavyhash":""
+            "kheavyhash":""
         },
         "naming": {
             "ethash": "ethash",
@@ -37,7 +37,7 @@
             "equihash_144/5": "equihash_144/5",
             "equihash_210/9": "equihash_210/9",
             "equihash_125/4": "equihash_125/4",
-            "heavyhash": "kheavyhash"
+            "kheavyhash": "kheavyhash"
         },
         "fee": {
             "ethash": 1,
@@ -47,7 +47,7 @@
             "equihash_144/5": 2,
             "equihash_210/9": 2,
             "equihash_125/4": 2,
-            "heavyhash": 1
+            "kheavyhash": 1
         }
     }
 }

@@ -12,7 +12,7 @@
         "commands": {
             "etchash": "",
             "ethash": "",
-            "heavyhash": "",
+            "kheavyhash": "",
             "kawpow": "",
             "firopow": "",
             "verthash": "",
@@ -23,7 +23,7 @@
         "difficulty": {
             "etchash": "",
             "ethash": "",
-            "heavyhash": "",
+            "kheavyhash": "",
             "kawpow": "",
             "firopow": "",
             "verthash": "",
@@ -34,7 +34,7 @@
         "naming": {
             "etchash": "etchash",
             "ethash": "ethash",
-            "heavyhash": "kaspa",
+            "kheavyhash": "kaspa",
             "kawpow": "kawpow",
             "firopow": "firopow",
             "verthash": "verthash",
@@ -45,7 +45,7 @@
         "fee": {
             "etchash": 1,
             "ethash": 1,
-            "heavyhash": 1,
+            "kheavyhash": 1,
             "kawpow": 2,
             "firopow": 2,
             "verthash": 2,
